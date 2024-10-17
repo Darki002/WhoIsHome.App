@@ -1,9 +1,10 @@
 import WihText from "@/components/WihText";
+import WihView from "@/components/WihView";
 import { Text, View } from "react-native";
 
 export default function Index() {
   return (
-    <View
+    <WihView
       style={{
         flex: 1,
         justifyContent: "center",
@@ -11,6 +12,6 @@ export default function Index() {
       }}
     >
       <WihText style={{ fontSize: 12 }}>Hello World!</WihText>
-    </View >
+    </WihView >
   );
 }
