@@ -1,10 +1,10 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
 
-import { ThemedText } from '../ThemedText';
+import WihText from '../WihText';
 
 it(`renders correctly`, () => {
-  const tree = renderer.create(<ThemedText>Snapshot test!</ThemedText>).toJSON();
+  const tree = renderer.create(<WihText style={{ fontSize: 12 }}>Snapshot test!</WihText>).toJSON();
 
   expect(tree).toMatchSnapshot();
 });
