@@ -16,7 +16,7 @@ const RootLayout = () => {
   const backgroundColor = useThemeColor("background");
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Roboto: require('../assets/fonts/Roboto-Black.ttf'),
   });
 
   useEffect(() => {
