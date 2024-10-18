@@ -1,14 +1,41 @@
 import { WihAvatar } from "@/components/WihAvatar";
-import WihText from "@/components/WihText";
+import { WihText } from "@/components/WihText";
 import WihView from "@/components/WihView";
+import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 
 const Profile = () => {
+    const dim = Dimensions.get("screen");
+    var viewStyle: ViewStyle = {
+        marginLeft: dim.width / 8,
+        marginTop: dim.height / 12
+    }
+
+    const avatarStyle = {
+        marginRight: dim.width / 20
+    }
+
+    const textStyle = {
+        fontSize: dim.fontScale * 24
+    }
+
     return (
-        <WihView center>
-            <WihAvatar name="Darki" />
-            <WihText>Hello Profile!</WihText>
-        </WihView >
+        <>
+            <WihView style={[viewStyle, styles.view]}>
+                <WihAvatar name="Darki" size={dim.scale * 14} style={avatarStyle} />
+                <WihText style={[styles.text, textStyle]}>Darki</WihText>
+            </WihView >
+        </>
     );
 }
+
+const styles = StyleSheet.create({
+    view: {
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    text: {
+        fontWeight: "bold"
+    }
+})
 
 export default Profile;

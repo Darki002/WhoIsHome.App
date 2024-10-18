@@ -1,4 +1,4 @@
-import WihText from "@/components/WihText";
+import { WihText } from "@/components/WihText";
 import WihView from "@/components/WihView";
 
 const Create = () => {

@@ -1,5 +1,5 @@
 import { Link, LinkProps } from 'expo-router';
-import WihText from './WihText';
+import { WihText } from './WihText';
 
 const WihLink = ({ style, children, href }: LinkProps<string>) => {
     return (

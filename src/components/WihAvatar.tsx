@@ -1,16 +1,17 @@
-import WihText from "./WihText";
+import { WihText } from "./WihText";
 import WihView from "./WihView";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, ViewStyle } from 'react-native';
 
 export interface AvatarProps {
     name: string;
     size?: number;
     backgroundColor?: string;
     textColor?: string;
+    style?: ViewStyle
 }
 
-export const WihAvatar = ({ name, size, backgroundColor, textColor }: AvatarProps) => {
+export const WihAvatar = ({ name, size, backgroundColor, textColor, style }: AvatarProps) => {
 
     const avatarSize = size ?? 40;
     const background = useThemeColor("primary", { light: backgroundColor, dark: backgroundColor });
@@ -24,7 +25,7 @@ export const WihAvatar = ({ name, size, backgroundColor, textColor }: AvatarProp
             width: avatarSize,
             borderRadius: avatarSize / 2,
             backgroundColor: background,
-        }, styles.avatar]}>
+        }, styles.avatar, style]}>
             <WihText style={[styles.letter, { fontSize: avatarSize / 2, color: text, fontFamily: "Roboto" }]}>{letter}</WihText>
         </WihView>
     )
