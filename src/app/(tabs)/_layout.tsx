@@ -1,7 +1,6 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import WihTabIcon from '@/components/navigation/WihTabIcon';
+import { WihTabIcon, AwesomeTabIcon } from '@/components/navigation/TabIcon';
 import { Tabs } from "expo-router";
-import WihView from "@/components/WihView";
 
 export default function RootLayout() {
   const tint = useThemeColor("tint");
@@ -26,7 +25,7 @@ export default function RootLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <WihTabIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <AwesomeTabIcon name={focused ? 'user-circle' : 'user-circle-o'} color={color} />
           ),
         }}
       />
