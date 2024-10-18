@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Text, TextProps } from "react-native";
+import { Text, TextProps, TextStyle } from "react-native";
 
-const WihText = ({ children, style, ...rest }: TextProps) => {
+export const WihText = ({ children, style, ...rest }: TextProps) => {
     const color = useThemeColor("text");
 
     return (
@@ -9,4 +9,16 @@ const WihText = ({ children, style, ...rest }: TextProps) => {
     );
 }
 
-export default WihText;
+export const WihTitle = ({ children, style, ...rest }: TextProps) => {
+    const color = useThemeColor("text");
+    const titleStyle: TextStyle = {
+        marginTop: 10,
+        fontWeight: "bold",
+        fontSize: 20,
+        color
+    }
+
+    return (
+        <Text style={[titleStyle, style]} {...rest}>{children}</Text>
+    )
+}

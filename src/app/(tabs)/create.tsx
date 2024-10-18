@@ -1,15 +1,9 @@
-import WihText from "@/components/WihText";
+import { WihText } from "@/components/WihText";
 import WihView from "@/components/WihView";
 
 const Create = () => {
     return (
-        <WihView
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <WihView center="full">
             <WihText>Hello Create!</WihText>
         </WihView >
     );
