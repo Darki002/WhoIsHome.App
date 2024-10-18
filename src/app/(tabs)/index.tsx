@@ -10,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <WihText>Hello World!</WihText>
+      <WihText>Hello Home!</WihText>
     </WihView >
   );
 }

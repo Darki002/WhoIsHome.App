@@ -9,6 +9,7 @@ export type ThemedViewProps = ViewProps & {
 
 const WihView = ({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) => {
   const backgroundColor = useThemeColor('background', { light: lightColor, dark: darkColor });
+  console.log(backgroundColor);
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }

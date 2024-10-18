@@ -1,0 +1,18 @@
+import WihText from "@/components/WihText";
+import WihView from "@/components/WihView";
+
+const profilePage = () => {
+    return (
+        <WihView
+            style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <WihText>Hello Profile!</WihText>
+        </WihView >
+    );
+}
+
+export default profilePage;
