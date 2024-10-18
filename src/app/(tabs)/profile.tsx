@@ -6,8 +6,8 @@ import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 const Profile = () => {
     const dim = Dimensions.get("screen");
     var viewStyle: ViewStyle = {
-        marginLeft: dim.width / 8,
-        marginTop: dim.height / 12
+        marginLeft: dim.width / 12,
+        marginTop: dim.height / 16
     }
 
     const avatarStyle = {
@@ -29,6 +29,7 @@ const Profile = () => {
                 {/* Collabsalbes for Today, this week, future */}
                 {/* OR all Events listed in albathatic order */}
                 {/* OR custom sort: name, date, created */}
+                <WihText>laoding...</WihText>
             </WihView>
         </>
     );
