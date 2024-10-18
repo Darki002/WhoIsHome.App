@@ -3,7 +3,7 @@ import WihView from "@/components/WihView";
 
 const Index = () => {
   return (
-    <WihView center>
+    <WihView center="full">
       <WihText>Hello Home!</WihText>
     </WihView >
   );

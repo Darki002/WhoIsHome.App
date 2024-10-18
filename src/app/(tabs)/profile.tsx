@@ -1,5 +1,5 @@
 import { WihAvatar } from "@/components/WihAvatar";
-import { WihText } from "@/components/WihText";
+import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 
@@ -24,6 +24,9 @@ const Profile = () => {
                 <WihAvatar name="Darki" size={dim.scale * 14} style={avatarStyle} />
                 <WihText style={[styles.text, textStyle]}>Darki</WihText>
             </WihView >
+            <WihView center="horizontal">
+                <WihTitle>Hi</WihTitle>
+            </WihView>
         </>
     );
 }

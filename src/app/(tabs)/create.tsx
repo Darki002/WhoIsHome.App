@@ -3,7 +3,7 @@ import WihView from "@/components/WihView";
 
 const Create = () => {
     return (
-        <WihView center>
+        <WihView center="full">
             <WihText>Hello Create!</WihText>
         </WihView >
     );
