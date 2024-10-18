@@ -12,7 +12,7 @@ import { DarkTheme, LightTheme } from '@/constants/Colors';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+const RootLayout = () => {
   const backgroundColor = useThemeColor("background");
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -43,3 +43,5 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
+
+export default RootLayout;

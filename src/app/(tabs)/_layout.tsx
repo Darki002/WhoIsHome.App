@@ -2,7 +2,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { IonTabIcon, AwesomeTabIcon } from '@/components/navigation/TabIcon';
 import { Tabs } from "expo-router";
 
-export default function RootLayout() {
+const TabsLayout = () => {
   const tint = useThemeColor("tint");
 
   return (
@@ -32,3 +32,5 @@ export default function RootLayout() {
     </Tabs>
   );
 }
+
+export default TabsLayout;
