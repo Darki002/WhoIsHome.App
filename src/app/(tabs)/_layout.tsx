@@ -1,6 +1,14 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { IonTabIcon, AwesomeTabIcon } from '@/components/navigation/TabIcon';
+import { IonIcon, MateriaIcon, MaterialCommunityIcon } from '@/components/WihIcon';
 import { Tabs } from "expo-router";
+import React from "react";
+
+const TabIconProps = {
+  size: 28,
+  style: {
+    marginBottom: -3
+  }
+}
 
 const TabsLayout = () => {
   const tint = useThemeColor("tint");
@@ -16,7 +24,16 @@ const TabsLayout = () => {
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <IonTabIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <IonIcon name={focused ? 'home' : 'home-outline'} color={color} {...TabIconProps} />
+          )
+        }}
+      />
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: "Create",
+          tabBarIcon: ({ color, focused }) => (
+            <MateriaIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={color} {...TabIconProps} />
           )
         }}
       />
@@ -25,7 +42,7 @@ const TabsLayout = () => {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <AwesomeTabIcon name={focused ? 'user-circle' : 'user-circle-o'} color={color} />
+            <MaterialCommunityIcon name={focused ? 'account-circle' : 'account-circle-outline'} color={color} {...TabIconProps} />
           ),
         }}
       />
