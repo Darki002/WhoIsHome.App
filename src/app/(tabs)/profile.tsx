@@ -1,7 +1,7 @@
 import WihText from "@/components/WihText";
 import WihView from "@/components/WihView";
 
-const profilePage = () => {
+const Profile = () => {
     return (
         <WihView
             style={{
@@ -15,4 +15,4 @@ const profilePage = () => {
     );
 }
 
-export default profilePage;
+export default Profile;
