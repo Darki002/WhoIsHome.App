@@ -7,6 +7,6 @@ export const AwesomeTabIcon = ({ name, color, style }: IconProps<ComponentProps<
     return <FontAwesome name={name} color={color} size={28} style={[{ marginBottom: -3 }, style]} />
 }
 
-export const WihTabIcon = ({ style, ...rest }: IconProps<ComponentProps<typeof Ionicons>['name']>) => {
+export const IonTabIcon = ({ style, ...rest }: IconProps<ComponentProps<typeof Ionicons>['name']>) => {
     return <Ionicons size={28} style={[{ marginBottom: -3 }, style]} {...rest} />;
 }

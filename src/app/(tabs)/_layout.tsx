@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { WihTabIcon, AwesomeTabIcon } from '@/components/navigation/TabIcon';
+import { IonTabIcon, AwesomeTabIcon } from '@/components/navigation/TabIcon';
 import { Tabs } from "expo-router";
 
 export default function RootLayout() {
@@ -16,7 +16,7 @@ export default function RootLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <WihTabIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <IonTabIcon name={focused ? 'home' : 'home-outline'} color={color} />
           )
         }}
       />
