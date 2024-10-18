@@ -3,13 +3,7 @@ import WihView from "@/components/WihView";
 
 const Create = () => {
     return (
-        <WihView
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <WihView center>
             <WihText>Hello Create!</WihText>
         </WihView >
     );
