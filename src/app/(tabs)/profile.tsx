@@ -25,7 +25,10 @@ const Profile = () => {
                 <WihText style={[styles.text, textStyle]}>Darki</WihText>
             </WihView >
             <WihView center="horizontal">
-                <WihTitle>Hi</WihTitle>
+                <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
+                {/* Collabsalbes for Today, this week, future */}
+                {/* OR all Events listed in albathatic order */}
+                {/* OR custom sort: name, date, created */}
             </WihView>
         </>
     );
