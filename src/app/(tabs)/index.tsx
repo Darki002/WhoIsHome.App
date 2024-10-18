@@ -1,7 +1,7 @@
 import WihText from "@/components/WihText";
 import WihView from "@/components/WihView";
 
-export default function Index() {
+const Index = () => {
   return (
     <WihView
       style={{
@@ -10,7 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <WihText>Hello World!</WihText>
+      <WihText>Hello Home!</WihText>
     </WihView >
   );
 }
+
+export default Index;
