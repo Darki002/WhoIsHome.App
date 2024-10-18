@@ -33,7 +33,6 @@ export default function RootLayout() {
   const screenOptions = {
     ...(isWeb ? {} : { contentStyle: { backgroundColor } })
   };
-  console.log(screenOptions);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
