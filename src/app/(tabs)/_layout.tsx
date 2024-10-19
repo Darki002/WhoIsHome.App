@@ -1,7 +1,9 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IonIcon, MateriaIcon, MaterialCommunityIcon } from '@/components/WihIcon';
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
+import { useSession } from "@/components/auth/context";
+import { WihTitle } from "@/components/WihText";
 
 const TabIconProps = {
   size: 28,
@@ -11,6 +13,16 @@ const TabIconProps = {
 }
 
 const TabsLayout = () => {
+  const { session, isLoading } = useSession();
+
+  if (isLoading) {
+    return <WihTitle>Loading...</WihTitle>
+  }
+
+  if (!session) {
+    return <Redirect href="/login" />;
+  }
+
   const tint = useThemeColor("tint");
 
   return (
