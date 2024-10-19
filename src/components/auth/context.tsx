@@ -1,8 +1,19 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
 
+export type LoginInfos = {
+    email: string | undefined;
+    password: string | undefined;
+}
+
+export interface Creds {
+    userName: string;
+    email: string;
+    token: string;
+}
+
 const AuthContext = createContext<{
-    signIn: () => void;
+    signIn: (login: LoginInfos) => Creds | null;
     signOut: () => void;
     session?: string | null;
     isLoading: boolean;
@@ -34,6 +45,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
                 signIn: () => {
                     // Perform sign-in logic here
                     setSession('xxx');
+                    return null;
                 },
                 signOut: () => {
                     setSession(null);
