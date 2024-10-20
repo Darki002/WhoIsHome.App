@@ -23,10 +23,7 @@ const Login = () => {
             return;
         }
 
-        const creds = signIn({ email, password });
-
-        // Login on server
-        // Save user name, email and token to session
+        signIn({ email, password });
     }
 
     return (
