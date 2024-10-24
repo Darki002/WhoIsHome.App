@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WhoIsHome.App",
-    "slug": "WhoIsHome.App",
+    "name": "WhoIsHome",
+    "slug": "WhoIsHome",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

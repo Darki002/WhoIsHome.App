@@ -15,11 +15,13 @@ export interface Creds {
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => void;
     signOut: () => void;
+    refresh: () => void;
     session?: string | null;
     isLoading: boolean;
 }>({
     signIn: () => null,
     signOut: () => null,
+    refresh: () => null,
     session: null,
     isLoading: false,
 });
@@ -42,13 +44,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
     return (
         <AuthContext.Provider
             value={{
-                signIn: ({ email, password }) => {
-                    // Perform sign-in logic here
-                    // Save user name, email and token to session
+                signIn: async ({ email, password }) => {
+                    const respone = await fetch(""); // Configer URL over env vars
+
                     setSession('xxx');
                 },
                 signOut: () => {
                     setSession(null);
+                },
+                refresh: () => {
+
                 },
                 session,
                 isLoading,
