@@ -1,9 +1,13 @@
+import { useSession } from "@/components/auth/context";
 import { WihAvatar } from "@/components/WihAvatar";
+import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 
 const Profile = () => {
+    const { signOut } = useSession();
+
     const dim = Dimensions.get("screen");
     var viewStyle: ViewStyle = {
         marginLeft: dim.width / 12,
@@ -23,6 +27,7 @@ const Profile = () => {
             <WihView style={[viewStyle, styles.view]}>
                 <WihAvatar name="Darki" size={dim.scale * 14} style={avatarStyle} />
                 <WihText style={[styles.text, textStyle]}>Darki</WihText>
+                <WihButton onPress={() => signOut()}>Logout</WihButton>
             </WihView >
             <WihView center="horizontal">
                 <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>

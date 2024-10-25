@@ -1,14 +1,14 @@
 import { WihText } from "./WihText";
 import WihView from "./WihView";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Platform, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 export interface AvatarProps {
     name: string;
     size?: number;
     backgroundColor?: string;
     textColor?: string;
-    style?: ViewStyle
+    style?: ViewStyle;
 }
 
 export const WihAvatar = ({ name, size, backgroundColor, textColor, style }: AvatarProps) => {

@@ -1,5 +1,6 @@
 import { LoginInfos, useSession } from "@/components/auth/context";
 import { WihEmailInput, WihPasswordInput } from "@/components/login/WihInput";
+import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { useState } from "react";
@@ -41,7 +42,7 @@ const Login = () => {
                 <WihText style={{ color: "red" }}>{error}</WihText>
             }
 
-            <Button title="Login" onPress={async () => OnLogIn({ email, password })} />
+            <WihButton onPress={async () => OnLogIn({ email, password })} >Login</WihButton>
         </WihView>
     )
 }
