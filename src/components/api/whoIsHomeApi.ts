@@ -62,7 +62,7 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<To
     const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v1/refresh`;
     const header: KeyValuePaire = {
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
-        "Refresh": refreshToken // TODO: backend should read it from the header
+        "RefreshToken": refreshToken
     }
 
     const response = await fetch(uri, {
