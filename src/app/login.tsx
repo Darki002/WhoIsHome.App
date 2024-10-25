@@ -9,9 +9,9 @@ import { Button, StyleSheet } from "react-native";
 // https://docs.expo.dev/router/reference/authentication/
 
 const Login = () => {
-    const [email, onChangeEmail] = useState<string>();
-    const [password, onChangePassword] = useState<string>();
-    const [error, setError] = useState<string>();
+    const [email, onChangeEmail] = useState<string>("");
+    const [password, onChangePassword] = useState<string>("");
+    const [error, setError] = useState<string>("");
     const { signIn } = useSession();
 
     async function OnLogIn({ email, password }: LoginInfos) {

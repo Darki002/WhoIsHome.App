@@ -44,11 +44,13 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
 }
 
 async function authFetch<T>(endpoint: string, method: string, body: KeyValuePaire | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
-    const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/${version}/${endpoint}`;
+    const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
     const headers: { [key: string]: string } = {
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
         ...(tokens ? { "Authorization": `Bearer ${tokens?.Token}` } : {})
     }
+
+    console.info(`Fetch for ${uri}`)
 
     const response = await fetch(uri, {
         method,
