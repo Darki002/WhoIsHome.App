@@ -14,19 +14,21 @@ export interface Creds {
 }
 
 export type Tokens = {
-    Token: string;
-    RefreshToken: string;
+    Token: string | null;
+    RefreshToken: string | null;
 }
+
+// Add Registraition
 
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    session?: Tokens | null;
+    session?: Tokens;
     isLoading: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
-    session: null,
+    session: undefined,
     isLoading: false,
 });
 
@@ -64,11 +66,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
-                    // In theory redirects automaticly to the Login screent when Layout is rerendered
+                    // Redirects automaticly to the Login screent when Layout is rerendered
                 },
                 session: {
-                    Token: session!,
-                    RefreshToken: refreshToken!
+                    Token: session,
+                    RefreshToken: refreshToken
                 },
                 isLoading: isLoadingSession || isLoadingRefreshToken,
             }}>

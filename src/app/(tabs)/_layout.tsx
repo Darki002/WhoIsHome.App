@@ -19,7 +19,7 @@ const TabsLayout = () => {
     return <WihTitle>Loading...</WihTitle>
   }
 
-  if (!session) {
+  if (!session || !session.Token || !session.RefreshToken) {
     return <Redirect href="/login" />;
   }
 
