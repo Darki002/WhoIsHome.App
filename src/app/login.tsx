@@ -11,9 +11,9 @@ const Login = () => {
     const [email, onChangeEmail] = useState<string>();
     const [password, onChangePassword] = useState<string>();
     const [error, setError] = useState<string>();
-    const { session, isLoading, signIn } = useSession();
+    const { signIn } = useSession();
 
-    function OnLogIn({ email, password }: LoginInfos) {
+    async function OnLogIn({ email, password }: LoginInfos) {
         if (!email) {
             setError("Email is missing!");
             return;
@@ -23,7 +23,11 @@ const Login = () => {
             return;
         }
 
-        signIn({ email, password });
+        const error = await signIn({ email, password });
+
+        if (error) {
+            setError(error);
+        }
     }
 
     return (
@@ -37,7 +41,7 @@ const Login = () => {
                 <WihText style={{ color: "red" }}>{error}</WihText>
             }
 
-            <Button title="Login" onPress={() => OnLogIn({ email, password })} />
+            <Button title="Login" onPress={async () => OnLogIn({ email, password })} />
         </WihView>
     )
 }

@@ -1,5 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
+import { wihFetch } from '../api/whoIsHomeApi';
 
 export type LoginInfos = {
     email: string | undefined;
@@ -12,16 +13,19 @@ export interface Creds {
     token: string;
 }
 
+export type Tokens = {
+    Token: string;
+    RefreshToken: string;
+}
+
 const AuthContext = createContext<{
-    signIn: ({ email, password }: LoginInfos) => void;
+    signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    refresh: () => void;
-    session?: string | null;
+    session?: Tokens | null;
     isLoading: boolean;
 }>({
-    signIn: () => null,
+    signIn: async () => null,
     signOut: () => null,
-    refresh: () => null,
     session: null,
     isLoading: false,
 });
@@ -39,26 +43,36 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
-    const [[isLoading, session], setSession] = useStorageState('session');
+    const [[isLoadingSession, session], setSession] = useStorageState('session');
+    const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
     return (
         <AuthContext.Provider
             value={{
                 signIn: async ({ email, password }) => {
-                    const respone = await fetch(""); // Configer URL over env vars
+                    if (!email || !password)
+                        return "Missing Login Informations";
 
-                    setSession('xxx');
+                    const respones = await wihFetch<Tokens>({ endpoint: "login", method: "POST", body: { email, password } });
+                    if (respones.hasError) {
+                        return respones.errorMessage;
+                    }
+                    setSession(respones.response?.Token!);
+                    setRefreshToken(respones.response?.RefreshToken!)
+                    return null;
                 },
                 signOut: () => {
                     setSession(null);
+                    setRefreshToken(null);
+                    // In theory redirects automaticly to the Login screent when Layout is rerendered
                 },
-                refresh: () => {
-
+                session: {
+                    Token: session!,
+                    RefreshToken: refreshToken!
                 },
-                session,
-                isLoading,
+                isLoading: isLoadingSession || isLoadingRefreshToken,
             }}>
             {children}
-        </AuthContext.Provider>
+        </AuthContext.Provider >
     );
 }
