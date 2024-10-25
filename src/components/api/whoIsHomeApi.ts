@@ -1,72 +1,105 @@
+export type KeyValuePaire = { [key: string]: string };
+
+export type WihFetchError = "Unauthorized" | "Refresh Failed" | "Inernal" | "Unknown";
+
 export type TokensProps = {
-    session: string;
-    refresh: string;
+    Token: string;
+    RefreshToken: string;
 }
 
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
-    tokens: TokensProps | null;
-    version: number;
-    onNewTokens: (newTokens: TokensProps) => void;
+    tokens?: TokensProps;
+    version?: number;
+    body?: KeyValuePaire;
+    onNewTokens?: (newTokens: TokensProps | null) => void;
 }
 
-export const wihFetch = async ({ endpoint, method, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<Response | undefined> => {
-
-    // Add payload (body) and add it to the request
-
-    try {
-        const responese = await authFetch({ endpoint, method, tokens, version, onNewTokens });
-
-        // Check status code and throw with message so UI can react to it
-
-        return await responese.json();
-    }
-    catch (e) {
-        if (tokens) {
-            const newTokens: TokensProps = await refreshJwtToken(tokens.refresh);
-            onNewTokens(newTokens);
-
-            const responese = await authFetch({ endpoint, method, tokens: newTokens, version, onNewTokens });
-
-            // Check status code and throw with message so UI can react to it
-
-            return await responese.json();
-        }
-        else {
-            throw e;
-        }
-    }
+export interface WihResponsePops<T> {
+    status: number;
+    hasError: boolean;
+    error: WihFetchError | null;
+    errorMessage: any;
+    response: T;
 }
 
-async function authFetch({ endpoint, method, tokens, version }: WihFetchProps): Promise<any> {
+export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponsePops<TBody | null>> => {
+    let responese = await authFetch<TBody>(endpoint, method, body, tokens, version);
+
+    if (responese.hasError && tokens) {
+        const newTokens = await refreshJwtToken(tokens.RefreshToken);
+
+        if (newTokens.hasError) {
+            onNewTokens!(null);
+            return newTokens as WihResponsePops<null>;
+        }
+
+        onNewTokens!(newTokens.response);
+        responese = await authFetch<TBody>(endpoint, method, body, newTokens.response!, version);
+        return responese;
+    }
+
+    return responese;
+}
+
+async function authFetch<T>(endpoint: string, method: string, body: KeyValuePaire | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
     const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/${version}/${endpoint}`;
     const headers: { [key: string]: string } = {
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
-        ...(tokens ? { "Authentication": `Bearer ${tokens?.session}` } : {})
+        ...(tokens ? { "Authorization": `Bearer ${tokens?.Token}` } : {})
     }
 
     const response = await fetch(uri, {
         method,
-        headers
+        headers,
+        body: JSON.stringify(body)
     });
-    return await response.json();
+    return await handleResponse(response);
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<TokensProps> {
+async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<TokensProps | null>> {
     const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v1/refresh`;
-    const header: { [key: string]: string } = {
+    const header: KeyValuePaire = {
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
-        "Refresh-Token": refreshToken
+        "Refresh": refreshToken // TODO: backend should read it from the header
     }
 
     const response = await fetch(uri, {
         method: "POST",
         headers: header
     });
-    const responseText = await response.json();
+
+    return await handleResponse<TokensProps>(response);
+}
+
+async function handleResponse<T>(response: Response): Promise<WihResponsePops<T | null>> {
+
+    if (response.status === 200) {
+
+        const body = await response.json();
+        return ({
+            status: response.status,
+            hasError: false,
+            error: null,
+            errorMessage: null,
+            response: body as T
+        });
+    }
+
     return ({
-        session: responseText.Token,
-        refresh: responseText.RefreshToken
-    })
+        status: response.status,
+        hasError: true,
+        error: stringifyErrorStatus(response.status),
+        errorMessage: response.body,
+        response: null
+    });
+}
+
+function stringifyErrorStatus(status: number): WihFetchError {
+    if (status === 401)
+        return "Unauthorized"
+    if (status >= 500 && status < 600)
+        return "Inernal"
+    return "Unknown"
 }
