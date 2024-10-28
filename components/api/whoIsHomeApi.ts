@@ -1,7 +1,5 @@
 export type KeyValuePaire = { [key: string]: string };
 
-export type WihFetchError = "Unauthorized" | "Refresh Failed" | "Inernal" | "Unknown";
-
 export type TokensProps = {
     Token: string;
     RefreshToken: string;
@@ -19,8 +17,7 @@ export interface WihFetchProps {
 export interface WihResponsePops<T> {
     status: number;
     hasError: boolean;
-    error: WihFetchError | null;
-    errorMessage: any;
+    error: string | null;
     response: T;
 }
 
@@ -44,35 +41,60 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
 }
 
 async function authFetch<T>(endpoint: string, method: string, body: KeyValuePaire | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
-    const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
+    const uri = getUri(endpoint, version);
     const headers: { [key: string]: string } = {
+        "Content-Type": "application/json",
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
         ...(tokens ? { "Authorization": `Bearer ${tokens?.Token}` } : {})
     }
 
     console.info(`Fetch for ${uri}`)
 
-    const response = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify(body)
-    });
-    return await handleResponse(response);
+    try {
+        const response = await fetch(uri, {
+            method,
+            headers,
+            body: JSON.stringify(body)
+        });
+
+        return await handleResponse(response);
+    }
+    catch (error: any) {
+        console.error(`Request failed: ${error.message}`);
+        return ({
+            status: 0,
+            hasError: true,
+            error: error.message,
+            response: null
+        });
+    }
 }
 
 async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<TokensProps | null>> {
-    const uri = `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v1/refresh`;
+    const uri = getUri("refresh");
     const header: KeyValuePaire = {
+        "Content-Type": "application/json",
         "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
         "RefreshToken": refreshToken
     }
 
-    const response = await fetch(uri, {
-        method: "POST",
-        headers: header
-    });
+    try {
+        const response = await fetch(uri, {
+            method: "POST",
+            headers: header
+        });
 
-    return await handleResponse<TokensProps>(response);
+        return await handleResponse<TokensProps>(response);
+    }
+    catch (error: any) {
+        console.error(`Request failed: ${error.message}`);
+        return ({
+            status: 0,
+            hasError: true,
+            error: error.message,
+            response: null
+        });
+    }
 }
 
 async function handleResponse<T>(response: Response): Promise<WihResponsePops<T | null>> {
@@ -84,24 +106,31 @@ async function handleResponse<T>(response: Response): Promise<WihResponsePops<T 
             status: response.status,
             hasError: false,
             error: null,
-            errorMessage: null,
             response: body as T
         });
     }
 
-    return ({
-        status: response.status,
-        hasError: true,
-        error: stringifyErrorStatus(response.status),
-        errorMessage: response.body,
-        response: null
-    });
+    console.warn(`Request with error Status "${response.statusText}" - ${response.status}`);
+
+    switch (response.status) {
+        case 401:
+            console.error(response.body);
+            return ({
+                status: response.status,
+                hasError: true,
+                error: response.statusText,
+                response: null
+            });
+        default:
+            return ({
+                status: response.status,
+                hasError: true,
+                error: response.statusText,
+                response: null
+            });
+    }
 }
 
-function stringifyErrorStatus(status: number): WihFetchError {
-    if (status === 401)
-        return "Unauthorized"
-    if (status >= 500 && status < 600)
-        return "Inernal"
-    return "Unknown"
+function getUri(endpoint: string, version: number = 1) : string {
+    return `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
 }

@@ -7,12 +7,6 @@ export type LoginInfos = {
     password: string | undefined;
 }
 
-export interface Creds {
-    userName: string;
-    email: string;
-    token: string;
-}
-
 export type Tokens = {
     Token: string | null;
     RefreshToken: string | null;
@@ -53,11 +47,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
             value={{
                 signIn: async ({ email, password }) => {
                     if (!email || !password)
-                        return "Missing Login Informations";
+                        return "Missing Login Information";
 
                     const respones = await wihFetch<Tokens>({ endpoint: "login", method: "POST", body: { email, password } });
                     if (respones.hasError) {
-                        return respones.errorMessage;
+                        return respones.error;
                     }
                     setSession(respones.response?.Token!);
                     setRefreshToken(respones.response?.RefreshToken!)
@@ -66,7 +60,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
-                    // Redirects automaticly to the Login screent when Layout is rerendered
+                    // Redirects automatically to the Login screen when Layout is rendered
                 },
                 session: {
                     Token: session,
