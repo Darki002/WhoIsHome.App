@@ -42,18 +42,22 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
 
 async function authFetch<T>(endpoint: string, method: string, body: KeyValuePaire | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
     const uri = getUri(endpoint, version);
-    const headers: { [key: string]: string } = {
-        "Content-Type": "application/json",
-        "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
-        ...(tokens ? { "Authorization": `Bearer ${tokens?.Token}` } : {})
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
+
+    if(tokens){
+        headers.append("Authorization", `Bearer ${tokens?.Token}`);
     }
 
     console.info(`Fetch for ${uri}`)
 
     try {
         const response = await fetch(uri, {
-            method,
-            headers,
+            method: method,
+            headers: headers,
+            mode: "cors",
             body: JSON.stringify(body)
         });
 
@@ -72,16 +76,18 @@ async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair
 
 async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<TokensProps | null>> {
     const uri = getUri("refresh");
-    const header: KeyValuePaire = {
-        "Content-Type": "application/json",
-        "X-API-KEY": process.env.EXPO_PUBLIC_API_KEY!,
-        "RefreshToken": refreshToken
-    }
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
+    headers.append("RefreshToken", refreshToken);
+
 
     try {
         const response = await fetch(uri, {
             method: "POST",
-            headers: header
+            mode: "cors",
+            headers: headers
         });
 
         return await handleResponse<TokensProps>(response);

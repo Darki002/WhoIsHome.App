@@ -49,7 +49,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     if (!email || !password)
                         return "Missing Login Information";
 
-                    const respones = await wihFetch<Tokens>({ endpoint: "login", method: "POST", body: { email, password } });
+                    const respones = await wihFetch<Tokens>({ endpoint: "Auth/Login", method: "POST", body: { email, password } });
                     if (respones.hasError) {
                         return respones.error;
                     }
