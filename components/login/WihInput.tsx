@@ -10,7 +10,7 @@ export const WihUsernameInput = ({ value, onChangeText, style, ...rest }: TextIn
 export const WihEmailInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
-    return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email" placeholder="email" style={[{ color, borderColor }, style]} {...rest} />
+    return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email" placeholder="Email" style={[{ color, borderColor }, style]} {...rest} />
 }
 
 export type WihPasswordInputProps = TextInputProps & {
@@ -34,5 +34,5 @@ export const WihPasswordInput = ({ autoCompleteType, value, onChangeText, style,
             break;
     }
 
-    return <TextInput inputMode="text" value={value} onChangeText={onChangeText} autoComplete={type} placeholder="password" secureTextEntry style={[{ color, borderColor }, style]} {...rest} />
+    return <TextInput inputMode="text" value={value} onChangeText={onChangeText} autoComplete={type} placeholder="Password" secureTextEntry style={[{ color, borderColor }, style]} {...rest} />
 }

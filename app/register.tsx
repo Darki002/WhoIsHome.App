@@ -1,24 +1,25 @@
-import {LoginInfos, useSession} from "@/components/auth/context";
 import React, {useState} from "react";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/login/WihInput";
 import {WihButton} from "@/components/WihButton";
 import {StyleSheet} from "react-native";
+import {wihFetch} from "@/components/api/whoIsHomeApi";
+import {useSession} from "@/components/auth/context";
+import WihLink from "@/components/WihLink";
 
 const register = () => {
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
     const [error, setError] = useState<string>("");
-    const { signIn } = useSession();
+    const {signIn} = useSession();
 
-    async function onRegister({ email, password }: LoginInfos) {
+    async function onRegister(email: string, password: string, userName: string) {
         if(!userName) {
             setError("UserName is missing!");
             return;
         }
-
         if (!email) {
             setError("Email is missing!");
             return;
@@ -28,9 +29,19 @@ const register = () => {
             return;
         }
 
-        // Register
-        const error = await signIn({email, password});
+        const body = {
+            userName,
+            email,
+            password
+        }
 
+        const response = await wihFetch<string>({endpoint: "/Auth/Register", method: "POST", body });
+        if (response.hasError) {
+            setError(response.error!);
+            return;
+        }
+
+        const error = await signIn({email, password});
         if (error) {
             setError(error);
         }
@@ -38,15 +49,17 @@ const register = () => {
 
     return (
         <WihView center="horizontal">
-            <WihTitle>Login</WihTitle>
+            <WihTitle>Register</WihTitle>
 
-            <WihUsernameInput value={userName} onChangeText={onChangeUserName} style={styles.userName} autoFocus />
-            <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email} />
-            <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password} autoCompleteType="current" />
+            <WihUsernameInput value={userName} onChangeText={onChangeUserName} style={styles.userName} autoFocus/>
+            <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email}/>
+            <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password}
+                              autoCompleteType="current"/>
 
-            { error && <WihText style={{ color: "red" }}>{error}</WihText> }
+            {error && <WihText style={{color: "red"}}>{error}</WihText>}
 
-            <WihButton onPress={async () => onRegister({ email, password })} >Register</WihButton>
+            <WihButton onPress={async () => onRegister(email, password, userName)}>Register</WihButton>
+            <WihLink href="/login" style={styles.register}>Login</WihLink>
         </WihView>
     )
 
@@ -57,10 +70,13 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     email: {
-        marginVertical: 20
+        marginTop: 20
     },
     password: {
         marginVertical: 20
+    },
+    register: {
+        marginTop: 15
     }
 });
 
