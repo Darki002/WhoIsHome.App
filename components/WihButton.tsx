@@ -1,4 +1,5 @@
 import { Button } from "react-native";
+import {useThemeColor} from "@/hooks/useThemeColor";
 
 export interface WihButtonProps {
     onPress?: () => void | Promise<void>;
@@ -6,5 +7,6 @@ export interface WihButtonProps {
 }
 
 export const WihButton = ({ children, onPress }: WihButtonProps) => {
-    return <Button title={children} onPress={onPress} />
+    const color = useThemeColor("primary");
+    return <Button title={children} onPress={onPress} color={color} />
 }
