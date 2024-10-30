@@ -9,7 +9,6 @@ import { Platform, useColorScheme } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
 import { DarkTheme, LightTheme } from '@/constants/Colors';
 import { SessionProvider } from '@/components/auth/context';
-import register from "@/app/register";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
