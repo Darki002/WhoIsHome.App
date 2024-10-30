@@ -8,6 +8,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { Platform, useColorScheme } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
 import { DarkTheme, LightTheme } from '@/constants/Colors';
+import { SessionProvider } from '@/components/auth/context';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,12 +36,15 @@ const RootLayout = () => {
   };
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
-      <Stack screenOptions={screenOptions}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <SessionProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
+        <Stack screenOptions={screenOptions}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }
 
