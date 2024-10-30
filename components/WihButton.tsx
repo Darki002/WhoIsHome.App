@@ -1,12 +1,26 @@
-import { Button } from "react-native";
+import {Pressable, StyleSheet} from "react-native";
 import {useThemeColor} from "@/hooks/useThemeColor";
+import {WihText} from "@/components/WihText";
+import {ReactNode} from "react";
 
-export interface WihButtonProps {
-    onPress?: () => void | Promise<void>;
-    children: string;
-}
+type WihButtonProps = {
+    children: ReactNode;
+    onPress: () => void;
+    style?: object;
+};
 
-export const WihButton = ({ children, onPress }: WihButtonProps) => {
+export const WihButton = ({ children, onPress, style }: WihButtonProps) => {
     const color = useThemeColor("primary");
-    return <Button title={children} onPress={onPress} color={color} />
+    return (
+        <Pressable onPress={onPress} style={[{backgroundColor: color}, styles.button, style]}>
+            <WihText>{children}</WihText>
+        </Pressable>
+    )
 }
+
+const styles = StyleSheet.create({
+    button: {
+        padding: 8,
+        borderRadius: 7
+    }
+});
