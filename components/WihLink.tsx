@@ -1,10 +1,13 @@
 import { Link, LinkProps } from 'expo-router';
 import { WihText } from './WihText';
+import {useThemeColor} from "@/hooks/useThemeColor";
 
 const WihLink = ({ style, children, href }: LinkProps<string>) => {
+    const color = useThemeColor("text");
+
     return (
-        <Link href={href}>
-            <WihText style={style}>{children}</WihText>
+        <Link href={href} style={[{ color }, style]}>
+            {children}
         </Link>
     )
 }

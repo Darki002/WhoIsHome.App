@@ -13,8 +13,6 @@ export type Tokens = {
     RefreshToken: string | null;
 }
 
-// TODO: Add Registration
-
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;

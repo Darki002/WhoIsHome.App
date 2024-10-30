@@ -3,10 +3,9 @@ import { WihEmailInput, WihPasswordInput } from "@/components/login/WihInput";
 import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
-import { useState } from "react";
-import { Button, StyleSheet } from "react-native";
-
-// https://docs.expo.dev/router/reference/authentication/
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import WihLink from "@/components/WihLink";
 
 const Login = () => {
     const [email, onChangeEmail] = useState<string>("");
@@ -14,7 +13,7 @@ const Login = () => {
     const [error, setError] = useState<string>("");
     const { signIn } = useSession();
 
-    async function OnLogIn({ email, password }: LoginInfos) {
+    async function onLogIn({ email, password }: LoginInfos) {
         if (!email) {
             setError("Email is missing!");
             return;
@@ -25,7 +24,6 @@ const Login = () => {
         }
 
         const error = await signIn({ email, password });
-
         if (error) {
             setError(error);
         }
@@ -35,12 +33,23 @@ const Login = () => {
         <WihView center="horizontal">
             <WihTitle>Login</WihTitle>
 
-            <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email} autoFocus />
-            <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password} autoCompleteType="current" />
+            <WihEmailInput
+                value={email}
+                onChangeText={onChangeEmail}
+                style={styles.email}
+                autoFocus
+            />
+            <WihPasswordInput
+                value={password}
+                onChangeText={onChangePassword}
+                style={styles.password}
+                autoCompleteType="current"
+            />
 
-            { error && <WihText style={{ color: "red" }}>{error}</WihText> }
+            { error ? <WihText style={{ color: "red" }}>{error}</WihText> : null }
 
-            <WihButton onPress={async () => OnLogIn({ email, password })} >Login</WihButton>
+            <WihButton onPress={async () => onLogIn({ email, password })} >Login</WihButton>
+            <WihLink href="/register" style={styles.login}>Register</WihLink>
         </WihView>
     )
 }
@@ -51,6 +60,9 @@ const styles = StyleSheet.create({
     },
     password: {
         marginVertical: 20
+    },
+    login: {
+        marginTop: 15
     }
 });
 
