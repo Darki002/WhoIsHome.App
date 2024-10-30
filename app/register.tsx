@@ -51,18 +51,30 @@ const register = () => {
         <WihView center="horizontal">
             <WihTitle>Register</WihTitle>
 
-            <WihUsernameInput value={userName} onChangeText={onChangeUserName} style={styles.userName} autoFocus/>
-            <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email}/>
-            <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password}
-                              autoCompleteType="current"/>
+            <WihUsernameInput
+                value={userName}
+                onChangeText={onChangeUserName}
+                style={styles.userName}
+                autoFocus
+            />
+            <WihEmailInput
+                value={email}
+                onChangeText={onChangeEmail}
+                style={styles.email}
+            />
+            <WihPasswordInput
+                value={password}
+                onChangeText={onChangePassword}
+                style={styles.password}
+                autoCompleteType="current"
+            />
 
-            {error && <WihText style={{color: "red"}}>{error}</WihText>}
+            {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
             <WihButton onPress={async () => onRegister(email, password, userName)}>Register</WihButton>
             <WihLink href="/login" style={styles.register}>Login</WihLink>
         </WihView>
     )
-
 }
 
 const styles = StyleSheet.create({
