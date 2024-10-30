@@ -1,6 +1,11 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { TextInput, TextInputProps } from "react-native";
 
+export const WihTextInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
+    const color = useThemeColor("text");
+    const borderColor = useThemeColor("border");
+    return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email" placeholder="email" style={[{ color, borderColor }, style]} {...rest} />
+}
 
 export const WihEmailInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");

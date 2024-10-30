@@ -6,15 +6,13 @@ import WihView from "@/components/WihView";
 import { useState } from "react";
 import { Button, StyleSheet } from "react-native";
 
-// https://docs.expo.dev/router/reference/authentication/
-
 const Login = () => {
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
     const [error, setError] = useState<string>("");
     const { signIn } = useSession();
 
-    async function OnLogIn({ email, password }: LoginInfos) {
+    async function onLogIn({ email, password }: LoginInfos) {
         if (!email) {
             setError("Email is missing!");
             return;
@@ -40,7 +38,7 @@ const Login = () => {
 
             { error && <WihText style={{ color: "red" }}>{error}</WihText> }
 
-            <WihButton onPress={async () => OnLogIn({ email, password })} >Login</WihButton>
+            <WihButton onPress={async () => onLogIn({ email, password })} >Login</WihButton>
         </WihView>
     )
 }
