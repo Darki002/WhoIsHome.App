@@ -1,4 +1,4 @@
-export type KeyValuePaire = { [key: string]: string };
+export type KeyValuePair = { [key: string]: string };
 
 export type TokensProps = {
     Token: string;
@@ -10,7 +10,7 @@ export interface WihFetchProps {
     method: "GET" | "POST" | "DELETE";
     tokens?: TokensProps;
     version?: number;
-    body?: KeyValuePaire;
+    body?: KeyValuePair;
     onNewTokens?: (newTokens: TokensProps | null) => void;
 }
 
@@ -22,9 +22,9 @@ export interface WihResponsePops<T> {
 }
 
 export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponsePops<TBody | null>> => {
-    let responese = await authFetch<TBody>(endpoint, method, body, tokens, version);
+    let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
-    if (responese.hasError && tokens) {
+    if (response.hasError && tokens) {
         const newTokens = await refreshJwtToken(tokens.RefreshToken);
 
         if (newTokens.hasError) {
@@ -33,14 +33,14 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
         }
 
         onNewTokens!(newTokens.response);
-        responese = await authFetch<TBody>(endpoint, method, body, newTokens.response!, version);
-        return responese;
+        response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, version);
+        return response;
     }
 
-    return responese;
+    return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: KeyValuePaire | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();

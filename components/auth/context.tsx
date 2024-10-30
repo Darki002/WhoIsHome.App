@@ -1,6 +1,7 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
 import { wihFetch } from '../api/whoIsHomeApi';
+import {useRouter} from "expo-router";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -12,7 +13,7 @@ export type Tokens = {
     RefreshToken: string | null;
 }
 
-// Add Registraition
+// TODO: Add Registration
 
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
@@ -41,6 +42,7 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
+    const router = useRouter()
 
     return (
         <AuthContext.Provider
@@ -49,18 +51,19 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     if (!email || !password)
                         return "Missing Login Information";
 
-                    const respones = await wihFetch<Tokens>({ endpoint: "Auth/Login", method: "POST", body: { email, password } });
-                    if (respones.hasError) {
-                        return respones.error;
+                    const response = await wihFetch<Tokens>({ endpoint: "Auth/Login", method: "POST", body: { email, password } });
+                    if (response.hasError) {
+                        return response.error;
                     }
-                    setSession(respones.response?.Token!);
-                    setRefreshToken(respones.response?.RefreshToken!)
+                    setSession(response.response?.Token!);
+                    setRefreshToken(response.response?.RefreshToken!)
+                    router.replace("/");
                     return null;
                 },
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
-                    // Redirects automatically to the Login screen when Layout is rendered
+                    router.replace("/login");
                 },
                 session: {
                     Token: session,
