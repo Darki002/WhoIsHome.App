@@ -9,7 +9,7 @@ const Profile = () => {
     const { signOut } = useSession();
 
     const dim = Dimensions.get("screen");
-    var viewStyle: ViewStyle = {
+    const viewStyle: ViewStyle = {
         marginLeft: dim.width / 12,
         marginTop: dim.height / 16
     }
