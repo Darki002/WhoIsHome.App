@@ -33,10 +33,20 @@ const Login = () => {
         <WihView center="horizontal">
             <WihTitle>Login</WihTitle>
 
-            <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email} autoFocus />
-            <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password} autoCompleteType="current" />
+            <WihEmailInput
+                value={email}
+                onChangeText={onChangeEmail}
+                style={styles.email}
+                autoFocus
+            />
+            <WihPasswordInput
+                value={password}
+                onChangeText={onChangePassword}
+                style={styles.password}
+                autoCompleteType="current"
+            />
 
-            { error && <WihText style={{ color: "red" }}>{error}</WihText> }
+            { error ? <WihText style={{ color: "red" }}>{error}</WihText> : null }
 
             <WihButton onPress={async () => onLogIn({ email, password })} >Login</WihButton>
         </WihView>

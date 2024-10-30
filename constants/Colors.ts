@@ -6,14 +6,14 @@ const secondary = "#D499B9";
 const light = {
   text: "#11181C",
   background: "#fff",
-  border: "#b5b5b5",
+  border: "#454545",
   icon: "#687076",
 }
 
 const dark = {
   text: "#ECEDEE",
   background: "#151718",
-  border: "#454545",
+  border: "#b5b5b5",
   icon: "#9BA1A6",
 }
 

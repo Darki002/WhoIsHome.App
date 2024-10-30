@@ -1,10 +1,10 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { TextInput, TextInputProps } from "react-native";
 
-export const WihTextInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
+export const WihUsernameInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
-    return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email" placeholder="email" style={[{ color, borderColor }, style]} {...rest} />
+    return <TextInput inputMode="text" value={value} onChangeText={onChangeText} autoComplete="username" placeholder="UserName" style={[{ color, borderColor }, style]} {...rest} />
 }
 
 export const WihEmailInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
@@ -13,11 +13,11 @@ export const WihEmailInput = ({ value, onChangeText, style, ...rest }: TextInput
     return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email" placeholder="email" style={[{ color, borderColor }, style]} {...rest} />
 }
 
-export type WihPassowrdInputProps = TextInputProps & {
+export type WihPasswordInputProps = TextInputProps & {
     autoCompleteType: "new" | "current";
 }
 
-export const WihPasswordInput = ({ autoCompleteType, value, onChangeText, style, ...rest }: WihPassowrdInputProps) => {
+export const WihPasswordInput = ({ autoCompleteType, value, onChangeText, style, ...rest }: WihPasswordInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
 

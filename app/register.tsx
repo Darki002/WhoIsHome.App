@@ -2,7 +2,7 @@ import {LoginInfos, useSession} from "@/components/auth/context";
 import React, {useState} from "react";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
-import {WihEmailInput, WihPasswordInput, WihTextInput} from "@/components/login/WihInput";
+import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/login/WihInput";
 import {WihButton} from "@/components/WihButton";
 import {StyleSheet} from "react-native";
 
@@ -40,7 +40,7 @@ const register = () => {
         <WihView center="horizontal">
             <WihTitle>Login</WihTitle>
 
-            <WihTextInput value={userName} onChangeText={onChangeUserName} style={styles.userName} autoFocus />
+            <WihUsernameInput value={userName} onChangeText={onChangeUserName} style={styles.userName} autoFocus />
             <WihEmailInput value={email} onChangeText={onChangeEmail} style={styles.email} />
             <WihPasswordInput value={password} onChangeText={onChangePassword} style={styles.password} autoCompleteType="current" />
 
