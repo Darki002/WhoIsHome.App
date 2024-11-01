@@ -5,7 +5,6 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import React, {useState} from "react";
 import { StyleSheet } from "react-native";
-import WihLink from "@/components/WihLink";
 
 const Login = () => {
     const [email, onChangeEmail] = useState<string>("");

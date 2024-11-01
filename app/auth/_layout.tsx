@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IonIcon, MateriaIcon} from '@/components/WihIcon';
-import { Redirect, Tabs } from "expo-router";
-import React from "react";
+import { useRouter, Tabs } from "expo-router";
+import React, {useEffect} from "react";
 import { useSession } from "@/components/auth/context";
 import { WihTitle } from "@/components/WihText";
 
@@ -15,14 +15,17 @@ const TabIconProps = {
 const AuthLayout = () => {
   const { session, isLoading } = useSession();
   const tint = useThemeColor("tint");
+  const router = useRouter();
+
+    useEffect(() => {
+        if(session && session.jwtToken && session.refreshToken){
+            router.replace("/");
+        }
+    }, [session]);
 
   if (isLoading) {
     return <WihTitle>Loading...</WihTitle>
   }
-
-    if (session) {
-        return <Redirect href="/" />
-    }
 
   return (
     <Tabs

@@ -8,19 +8,19 @@ export type LoginInfos = {
 }
 
 export type Tokens = {
-    Token: string | null;
-    RefreshToken: string | null;
+    jwtToken: string | null;
+    refreshToken: string | null;
 }
 
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    session?: Tokens | null;
+    session: Tokens | null;
     isLoading: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
-    session: undefined,
+    session: null,
     isLoading: false,
 });
 
@@ -41,10 +41,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
     const isLoading = isLoadingSession || isLoadingRefreshToken;
-    const sessionTokens = session ? {
-        Token: session,
-        RefreshToken: refreshToken
-    } : null;
 
     return (
         <AuthContext.Provider
@@ -57,15 +53,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     if (response.hasError) {
                         return response.error;
                     }
-                    setSession(response.response?.Token!);
-                    setRefreshToken(response.response?.RefreshToken!);
+                    setSession(response.response?.jwtToken || null);
+                    setRefreshToken(response.response?.refreshToken || null);
                     return null;
                 },
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
                 },
-                session: sessionTokens,
+                session: session && refreshToken ?  { jwtToken: session, refreshToken: refreshToken } : null,
                 isLoading: isLoading,
             }}>
             {children}
