@@ -120,7 +120,6 @@ async function handleResponse<T>(response: Response): Promise<WihResponsePops<T 
 
     switch (response.status) {
         case 401:
-            console.error(response.body);
             return ({
                 status: response.status,
                 hasError: true,
