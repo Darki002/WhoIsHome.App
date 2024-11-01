@@ -1,7 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
 import { wihFetch } from '../api/whoIsHomeApi';
-import {useRouter} from "expo-router";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -16,7 +15,7 @@ export type Tokens = {
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    session?: Tokens;
+    session?: Tokens | null;
     isLoading: boolean;
 }>({
     signIn: async () => null,
@@ -40,7 +39,12 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
-    const router = useRouter()
+
+    const isLoading = isLoadingSession || isLoadingRefreshToken;
+    const sessionTokens = session ? {
+        Token: session,
+        RefreshToken: refreshToken
+    } : null;
 
     return (
         <AuthContext.Provider
@@ -54,20 +58,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
                         return response.error;
                     }
                     setSession(response.response?.Token!);
-                    setRefreshToken(response.response?.RefreshToken!)
-                    router.replace("/");
+                    setRefreshToken(response.response?.RefreshToken!);
                     return null;
                 },
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
-                    router.replace("/login");
                 },
-                session: {
-                    Token: session,
-                    RefreshToken: refreshToken
-                },
-                isLoading: isLoadingSession || isLoadingRefreshToken,
+                session: sessionTokens,
+                isLoading: isLoading,
             }}>
             {children}
         </AuthContext.Provider >

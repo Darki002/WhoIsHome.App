@@ -72,7 +72,6 @@ const register = () => {
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
             <WihButton onPress={async () => onRegister(email, password, userName)}>Register</WihButton>
-            <WihLink href="/login" style={styles.register}>Login</WihLink>
         </WihView>
     )
 }

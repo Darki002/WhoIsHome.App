@@ -3,7 +3,7 @@ import { WihEmailInput, WihPasswordInput } from "@/components/login/WihInput";
 import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { StyleSheet } from "react-native";
 import WihLink from "@/components/WihLink";
 
@@ -49,7 +49,6 @@ const Login = () => {
             { error ? <WihText style={{ color: "red" }}>{error}</WihText> : null }
 
             <WihButton onPress={async () => onLogIn({ email, password })}>Login</WihButton>
-            <WihLink href="/register" style={styles.login}>Register</WihLink>
         </WihView>
     )
 }
