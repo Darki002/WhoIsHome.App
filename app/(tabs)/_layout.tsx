@@ -14,6 +14,7 @@ const TabIconProps = {
 
 const TabsLayout = () => {
   const { session, isLoading } = useSession();
+    const tint = useThemeColor("tint");
 
   if (isLoading) {
     return <WihTitle>Loading...</WihTitle>
@@ -22,8 +23,6 @@ const TabsLayout = () => {
   if (!session || !session.Token || !session.RefreshToken) {
     return <Redirect href="/login" />;
   }
-
-  const tint = useThemeColor("tint");
 
   return (
     <Tabs
