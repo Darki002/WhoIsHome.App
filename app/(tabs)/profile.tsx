@@ -4,7 +4,7 @@ import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
-import {TokensProps, wihFetch} from "@/components/api/whoIsHomeApi";
+import {wihFetch} from "@/components/api/whoIsHomeApi";
 
 type User = {
     Id: number;
