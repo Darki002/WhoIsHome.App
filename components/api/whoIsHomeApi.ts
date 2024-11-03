@@ -14,14 +14,14 @@ export interface WihFetchProps {
     onNewTokens?: (newTokens: TokensProps | null) => void;
 }
 
-export interface WihResponsePops<T> {
+export interface WihResponse<T> {
     status: number;
     hasError: boolean;
     error: string | null;
     response: T;
 }
 
-export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponsePops<TBody | null>> => {
+export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody | null>> => {
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
     if (response.hasError && tokens) {
@@ -29,7 +29,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
 
         if (newTokens.hasError) {
             onNewTokens!(null);
-            return newTokens as WihResponsePops<null>;
+            return newTokens as WihResponse<null>;
         }
 
         onNewTokens!(newTokens.response);
@@ -40,7 +40,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponsePops<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponse<T | null>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();
@@ -74,7 +74,7 @@ async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair
     }
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<TokensProps | null>> {
+async function refreshJwtToken(refreshToken: string): Promise<WihResponse<TokensProps | null>> {
     const uri = getUri("refresh");
 
     const headers = new Headers();
@@ -103,7 +103,7 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponsePops<To
     }
 }
 
-async function handleResponse<T>(response: Response): Promise<WihResponsePops<T | null>> {
+async function handleResponse<T>(response: Response): Promise<WihResponse<T | null>> {
 
     if (response.status === 200) {
 

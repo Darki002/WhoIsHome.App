@@ -4,12 +4,28 @@ import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
-import {wihFetch} from "@/components/api/whoIsHomeApi";
+import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 
 type User = {
     Id: number;
     UserName: string;
     Email: string;
+}
+
+type Event = {
+    Id: number;
+    Title: string;
+    Date: Date;
+    StartTime: Date;
+    EndTime: Date;
+    EventType: string;
+}
+
+type Overview = {
+    User: User;
+    Today: Event[];
+    ThisWeek: Event[];
+    FutureEvents: Event[];
 }
 
 const Profile = async () => {
@@ -31,13 +47,12 @@ const Profile = async () => {
         fontSize: dim.fontScale * 24
     }
 
-    const userResponse = await getUser(session);
-
-    if(userResponse.hasError) {
+    const eventResponse = await getEvents(session);
+    if(eventResponse.hasError) {
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
-    const userName = userResponse.response!.UserName
+    const userName = eventResponse.response!.User.UserName
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
@@ -56,8 +71,8 @@ const Profile = async () => {
     );
 }
 
-async function getUser(session : Tokens) {
-    const response = await wihFetch<User>({
+async function getUser(session : Tokens) : Promise<WihResponse<User | null>> {
+    return await wihFetch<User>({
         endpoint: "Auth/Me",
         method: "GET",
         tokens: {
@@ -65,8 +80,17 @@ async function getUser(session : Tokens) {
             RefreshToken: session.refreshToken!
         }
     });
+}
 
-    return response;
+async function getEvents(session: Tokens) : Promise<WihResponse<Overview | null>> {
+    return await wihFetch<Overview>({
+        endpoint: "PersonOverview/Me",
+        method: "GET",
+        tokens: {
+            Token: session.jwtToken!,
+            RefreshToken: session.refreshToken!
+        }
+    });
 }
 
 const styles = StyleSheet.create({
