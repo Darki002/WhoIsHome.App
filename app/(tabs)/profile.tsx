@@ -6,6 +6,7 @@ import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 import {useEffect, useState} from "react";
+import {Redirect} from "expo-router";
 
 type User = {
     Id: number;
@@ -65,10 +66,13 @@ const Profile = () => {
     }
 
     if(response.hasError) {
+        if(response.status == 400) {
+            return <Redirect href="/auth/login" />
+        }
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
-    const userName = response.response!.User.UserName
+    const userName = response.response!.User.UserName;
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
