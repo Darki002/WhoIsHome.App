@@ -89,9 +89,12 @@ const Profile = () => {
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
-    const today = response.response?.Today.map(event => (<WihText>{event.Title}</WihText>));
-    const thisWeek = response.response?.ThisWeek.map(event => (<WihText>{event.Title}</WihText>));
-    const futureEvents = response.response?.FutureEvents.map(event => (<WihText>{event.Title}</WihText>));
+    const today = response.response?.Today
+        .map(event => (<WihText>{event.Title}</WihText>));
+    const thisWeek = response.response?.ThisWeek
+        .map(event => (<WihText>{event.Title}</WihText>));
+    const futureEvents = response.response?.FutureEvents
+        .map(event => (<WihText>{event.Title}</WihText>));
 
     const userName = response.response!.User.UserName;
     return (
