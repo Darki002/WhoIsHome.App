@@ -7,6 +7,7 @@ import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 import {useEffect, useState} from "react";
 import {Redirect} from "expo-router";
+import {WihEventCard} from "@/components/WihEventCard";
 
 type User = {
     Id: number;
@@ -90,11 +91,11 @@ const Profile = () => {
     }
 
     const today = response.response?.Today
-        .map(event => (<WihText>{event.Title}</WihText>));
+        .map(event => (<WihEventCard event={event} />));
     const thisWeek = response.response?.ThisWeek
-        .map(event => (<WihText>{event.Title}</WihText>));
+        .map(event => (<WihEventCard event={event} />));
     const futureEvents = response.response?.FutureEvents
-        .map(event => (<WihText>{event.Title}</WihText>));
+        .map(event => (<WihEventCard event={event} />));
 
     const userName = response.response!.User.UserName;
     return (
