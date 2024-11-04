@@ -28,11 +28,11 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
         const newTokens = await refreshJwtToken(tokens.RefreshToken);
 
         if (newTokens.hasError) {
-            onNewTokens!(null);
+            onNewTokens ? onNewTokens(null) : null;
             return newTokens as WihResponse<null>;
         }
 
-        onNewTokens!(newTokens.response);
+        onNewTokens ? onNewTokens(newTokens.response) : null;
         response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, version);
         return response;
     }

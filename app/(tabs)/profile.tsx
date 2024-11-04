@@ -5,6 +5,7 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
+import {useEffect, useState} from "react";
 
 type User = {
     Id: number;
@@ -28,11 +29,27 @@ type Overview = {
     FutureEvents: Event[];
 }
 
-const Profile = async () => {
+const Profile = () => {
     const { signOut, session } = useSession();
+    const [response, setResponse] = useState<WihResponse<Overview | null> | null>(null);
+
+    useEffect(() => {
+        if(session){
+            loadData(session);
+        }
+    }, [session]);
 
     if(!session) {
         return <WihTitle>Oops, Error occurred...</WihTitle>
+    }
+
+    async function loadData(tokens : Tokens) {
+        const res = await getEvents(tokens);
+        setResponse(res);
+    }
+
+    if(!response){
+        return <WihTitle>Loading...</WihTitle>
     }
 
     const dim = Dimensions.get("screen");
@@ -47,12 +64,11 @@ const Profile = async () => {
         fontSize: dim.fontScale * 24
     }
 
-    const eventResponse = await getEvents(session);
-    if(eventResponse.hasError) {
+    if(response.hasError) {
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
-    const userName = eventResponse.response!.User.UserName
+    const userName = response.response!.User.UserName
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
