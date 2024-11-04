@@ -24,7 +24,7 @@ export interface WihResponse<T> {
 export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody | null>> => {
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
-    if (response.hasError && tokens) {
+    if (tokens && response.hasError && response.status === 400) {
         const newTokens = await refreshJwtToken(tokens.RefreshToken);
 
         if (newTokens.hasError) {

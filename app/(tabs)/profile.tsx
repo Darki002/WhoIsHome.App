@@ -36,11 +36,15 @@ const Profile = () => {
 
     useEffect(() => {
         if(session){
+            // Fire and Forget, we do not care. Want to show the loading page
+            // Will set the response later and rerender
+            // noinspection JSIgnoredPromiseFromCall
             loadData(session);
         }
     }, [session]);
 
     if(!session) {
+        console.error("Session is not set.");
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
@@ -69,6 +73,7 @@ const Profile = () => {
         if(response.status == 400) {
             return <Redirect href="/auth/login" />
         }
+        console.error(response.error);
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
 
@@ -89,17 +94,6 @@ const Profile = () => {
             </WihView>
         </>
     );
-}
-
-async function getUser(session : Tokens) : Promise<WihResponse<User | null>> {
-    return await wihFetch<User>({
-        endpoint: "Auth/Me",
-        method: "GET",
-        tokens: {
-            Token: session.jwtToken!,
-            RefreshToken: session.refreshToken!
-        }
-    });
 }
 
 async function getEvents(session: Tokens) : Promise<WihResponse<Overview | null>> {
