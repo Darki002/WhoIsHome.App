@@ -53,10 +53,6 @@ const Profile = () => {
         setResponse(res);
     }
 
-    if(!response){
-        return <WihTitle>Loading...</WihTitle>
-    }
-
     const dim = Dimensions.get("screen");
     const viewStyle: ViewStyle = {
         marginLeft: dim.width / 12,
@@ -69,6 +65,22 @@ const Profile = () => {
         fontSize: dim.fontScale * 24
     }
 
+    if(!response){
+        return (
+            <>
+                <WihView style={[viewStyle, styles.view]}>
+                    <WihAvatar name="" size={dim.scale * 14} style={avatarStyle} />
+                    <WihText style={[styles.text, textStyle]}>Loading...</WihText>
+                    <WihButton onPress={() => {}}>Logout</WihButton>
+                </WihView >
+                <WihView center="horizontal">
+                    <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
+                    <WihText>Loading...</WihText>
+                </WihView>
+            </>
+        )
+    }
+
     if(response.hasError) {
         if(response.status == 400) {
             return <Redirect href="/auth/login" />
@@ -76,6 +88,10 @@ const Profile = () => {
         console.error(response.error);
         return <WihTitle>Oops, Error occurred...</WihTitle>
     }
+
+    const today = response.response?.Today.map(event => (<WihText>{event.Title}</WihText>));
+    const thisWeek = response.response?.ThisWeek.map(event => (<WihText>{event.Title}</WihText>));
+    const futureEvents = response.response?.FutureEvents.map(event => (<WihText>{event.Title}</WihText>));
 
     const userName = response.response!.User.UserName;
     return (
@@ -87,10 +103,15 @@ const Profile = () => {
             </WihView >
             <WihView center="horizontal">
                 <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
-                {/* Collabsalbes for Today, this week, future */}
-                {/* OR all Events listed in albathatic order */}
-                {/* OR custom sort: name, date, created */}
-                <WihText>Loading...</WihText>
+
+                <WihTitle style={{ marginTop: dim.height / 25 }}>Today</WihTitle>
+                {today}
+
+                <WihTitle style={{ marginTop: dim.height / 25 }}>This Week</WihTitle>
+                {thisWeek}
+
+                <WihTitle style={{ marginTop: dim.height / 25 }}>Other</WihTitle>
+                {futureEvents}
             </WihView>
         </>
     );
