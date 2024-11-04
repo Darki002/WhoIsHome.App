@@ -98,7 +98,7 @@ const Profile = () => {
 
 async function getEvents(session: Tokens) : Promise<WihResponse<Overview | null>> {
     return await wihFetch<Overview>({
-        endpoint: "PersonOverview/Me",
+        endpoint: "PersonOverview",
         method: "GET",
         tokens: {
             Token: session.jwtToken!,
