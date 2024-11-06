@@ -15,11 +15,13 @@ export type Tokens = {
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
+    onNewSession: (tokens : Tokens) => void;
     session: Tokens | null;
     isLoading: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
+    onNewSession: _ => null,
     session: null,
     isLoading: false,
 });
@@ -60,6 +62,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
+                },
+                onNewSession: tokens => {
+                    setSession(tokens.jwtToken);
+                    setRefreshToken(tokens.refreshToken)
                 },
                 session: session && refreshToken ?  { jwtToken: session, refreshToken: refreshToken } : null,
                 isLoading: isLoading,

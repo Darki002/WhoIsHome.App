@@ -4,7 +4,7 @@ import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
-import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
+import {TokensProps, wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 import {useEffect, useState} from "react";
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
@@ -32,7 +32,7 @@ type Overview = {
 }
 
 const Profile = () => {
-    const { signOut, session } = useSession();
+    const { signOut, session, onNewSession } = useSession();
     const [response, setResponse] = useState<WihResponse<Overview | null> | null>(null);
 
     useEffect(() => {
@@ -50,7 +50,16 @@ const Profile = () => {
     }
 
     async function loadData(tokens : Tokens) {
-        const res = await getEvents(tokens);
+        const res = await getEvents(tokens, tokens => {
+            if(!tokens){
+                console.warn("New Tokens but empty");
+                return;
+            }
+            onNewSession({
+                jwtToken: tokens?.Token,
+                refreshToken: tokens?.RefreshToken
+            })
+        });
         setResponse(res);
     }
 
@@ -97,7 +106,7 @@ const Profile = () => {
     const futureEvents = response.response?.FutureEvents
         .map(event => (<WihEventCard event={event} />));
 
-    const userName = response.response!.User.UserName;
+    const userName = response.response?.User.UserName ?? "";
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
@@ -121,14 +130,15 @@ const Profile = () => {
     );
 }
 
-async function getEvents(session: Tokens) : Promise<WihResponse<Overview | null>> {
+async function getEvents(session: Tokens, onNewTokens: (newTokens: TokensProps | null) => void) : Promise<WihResponse<Overview | null>> {
     return await wihFetch<Overview>({
         endpoint: "PersonOverview",
         method: "GET",
         tokens: {
             Token: session.jwtToken!,
             RefreshToken: session.refreshToken!
-        }
+        },
+        onNewTokens: onNewTokens
     });
 }
 

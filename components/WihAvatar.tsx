@@ -17,7 +17,7 @@ export const WihAvatar = ({ name, size, backgroundColor, textColor, style }: Ava
     const background = useThemeColor("primary", { light: backgroundColor, dark: backgroundColor });
     const text = useThemeColor("text", { light: textColor, dark: textColor });
 
-    const letter = name[0].toUpperCase();
+    const letter = name.length > 0 ?  name[0].toUpperCase() : "";
 
     return (
         <WihView style={[{
