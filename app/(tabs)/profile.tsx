@@ -4,10 +4,9 @@ import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
-import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
-import {Tokens, User, WihEvent} from "@/constants/WihTypes";
+import {User, WihEvent} from "@/constants/WihTypes";
 import useWihApiInterval from "@/components/api/WihApiInterval";
 
 const TIME = 5 * 60 * 1000;
@@ -86,15 +85,6 @@ const Profile = () => {
             </WihView>
         </>
     );
-}
-
-async function getEvents(session: Tokens, onNewTokens: (newTokens: Tokens | null) => void) : Promise<WihResponse<Overview | null>> {
-    return await wihFetch<Overview>({
-        endpoint: "PersonOverview",
-        method: "GET",
-        tokens: session,
-        onNewTokens
-    });
 }
 
 function getEventView(title : string, events : WihEvent[] | undefined, height : number){
