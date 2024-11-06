@@ -7,12 +7,13 @@ import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
 import {User, WihEvent} from "@/constants/WihTypes";
-import useWihApiInterval from "@/components/api/WihApiInterval";
+import useWihApiInterval from "@/hooks/useWihApiInterval";
+import useWihApi from "@/hooks/useWihApi";
 
 const TIME = 5 * 60 * 1000;
 
 type Overview = {
-    user: User;
+    userId: number;
     today: WihEvent[];
     thisWeek: WihEvent[];
     futureEvents: WihEvent[];
@@ -26,6 +27,11 @@ const Profile = () => {
             method: "GET",
         });
 
+    const user = useWihApi<User>({
+        endpoint: "Auth/Me",
+        method: "GET"
+    });
+
     const dim = Dimensions.get("screen");
     const viewStyle: ViewStyle = {
         marginLeft: dim.width / 12,
@@ -38,7 +44,7 @@ const Profile = () => {
         fontSize: dim.fontScale * 24
     }
 
-    if(!response){
+    if(!response || !user){
         return (
             <>
                 <WihView style={[viewStyle, styles.view]}>
@@ -62,6 +68,14 @@ const Profile = () => {
         return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
     }
 
+    if(user.hasError) {
+        if(user.status == 401) {
+            return <Redirect href="/auth/login" />
+        }
+        console.error(user.error);
+        return <WihTitle>Oops, Error occurred: {user.error}</WihTitle>
+    }
+
     const height = dim.height / 25;
     const overview = response.response;
 
@@ -69,7 +83,7 @@ const Profile = () => {
     const thisWeek = getEventView("This Week", overview?.thisWeek, height);
     const futureEvents = getEventView("Other", overview?.futureEvents, height);
 
-    const userName = response.response?.user.userName ?? "";
+    const userName = user.response?.userName ?? "";
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>

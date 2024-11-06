@@ -1,6 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
-import { wihFetch } from '../api/whoIsHomeApi';
+import { wihFetch } from '../api/WihApi';
 import {Tokens} from "@/constants/WihTypes";
 
 export type LoginInfos = {

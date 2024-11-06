@@ -4,7 +4,7 @@ import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/login/WihInput";
 import {WihButton} from "@/components/WihButton";
 import {StyleSheet} from "react-native";
-import {wihFetch} from "@/components/api/whoIsHomeApi";
+import {wihFetch} from "@/components/api/WihApi";
 import {useSession} from "@/components/auth/context";
 import WihLink from "@/components/WihLink";
 
