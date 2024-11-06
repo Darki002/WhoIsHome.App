@@ -21,16 +21,15 @@ type Overview = {
 
 const Profile = () => {
     const { signOut } = useSession();
+    const user = useWihApi<User>({
+        endpoint: "Auth/Me",
+        method: "GET"
+    });
     const response = useWihApiInterval<Overview | null>({
             time: TIME,
             endpoint: "PersonOverview",
             method: "GET",
         });
-
-    const user = useWihApi<User>({
-        endpoint: "Auth/Me",
-        method: "GET"
-    });
 
     const dim = Dimensions.get("screen");
     const viewStyle: ViewStyle = {
