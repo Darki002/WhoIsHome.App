@@ -10,7 +10,7 @@ export interface WihApiProps {
     body?: KeyValuePair;
 }
 
-export default function useWihApi<T>({endpoint, method, version = 0, body} : WihApiProps){
+export default function useWihApi<T>({endpoint, method, version = 1, body} : WihApiProps){
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
