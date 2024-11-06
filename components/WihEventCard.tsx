@@ -1,5 +1,4 @@
 import {Pressable, StyleSheet} from "react-native";
-import {useRouter} from "expo-router";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {useThemeColor} from "@/hooks/useThemeColor";
@@ -8,7 +7,6 @@ import {WihEvent} from "@/constants/WihTypes";
 export const WihEventCard = ({event} : {event: WihEvent}) => {
     const borderColor = useThemeColor("border");
 
-    const router = useRouter();
     function onEventPress(){
         // TODO: route to event view
         // Idea: like pop up View that is on top of the current view, so you can also go back with arrow back
