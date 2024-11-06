@@ -56,7 +56,6 @@ function DailyOverview(overview : DailyOverview, key : number, onPress : (userId
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>
                 <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText>
-                {/* isAtHome seems to be wrong! getting false from the server with empty db */}
                 {overview.dinnerTime ? <WihText>{overview.dinnerTime}</WihText> : null}
             </WihView>
         </Pressable>
