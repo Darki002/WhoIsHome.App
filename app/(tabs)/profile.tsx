@@ -25,10 +25,10 @@ type Event = {
 }
 
 type Overview = {
-    User: User;
-    Today: Event[];
-    ThisWeek: Event[];
-    FutureEvents: Event[];
+    user: User;
+    today: Event[];
+    thisWeek: Event[];
+    futureEvents: Event[];
 }
 
 const Profile = () => {
@@ -92,21 +92,44 @@ const Profile = () => {
     }
 
     if(response.hasError) {
-        if(response.status == 400) {
+        if(response.status == 401) {
             return <Redirect href="/auth/login" />
         }
         console.error(response.error);
-        return <WihTitle>Oops, Error occurred...</WihTitle>
+        return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
     }
 
-    const today = response.response?.Today
-        .map(event => (<WihEventCard event={event} />));
-    const thisWeek = response.response?.ThisWeek
-        .map(event => (<WihEventCard event={event} />));
-    const futureEvents = response.response?.FutureEvents
-        .map(event => (<WihEventCard event={event} />));
+    const today = response.response?.today.length == 0 ? null : (
+        <>
+            <WihTitle style={{ marginTop: dim.height / 25 }}>Today</WihTitle>
+            {
+                response.response?.today
+                    .map(event => (<WihEventCard event={event} />))
+            }
+        </>
+    );
 
-    const userName = response.response?.User.UserName ?? "";
+    const thisWeek = response.response?.thisWeek.length == 0 ? null : (
+        <>
+            <WihTitle style={{ marginTop: dim.height / 25 }}>This Week</WihTitle>
+            {
+                response.response?.today
+                .map(event => (<WihEventCard event={event} />))
+            }
+        </>
+    );
+
+    const futureEvents = response.response?.futureEvents.length == 0 ? null : (
+        <>
+            <WihTitle style={{ marginTop: dim.height / 25 }}>Other</WihTitle>
+            {
+                response.response?.today
+                    .map(event => (<WihEventCard event={event} />))
+            }
+        </>
+    );
+
+    const userName = response.response?.user.UserName ?? "";
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
@@ -116,14 +139,8 @@ const Profile = () => {
             </WihView >
             <WihView center="horizontal">
                 <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
-
-                <WihTitle style={{ marginTop: dim.height / 25 }}>Today</WihTitle>
                 {today}
-
-                <WihTitle style={{ marginTop: dim.height / 25 }}>This Week</WihTitle>
                 {thisWeek}
-
-                <WihTitle style={{ marginTop: dim.height / 25 }}>Other</WihTitle>
                 {futureEvents}
             </WihView>
         </>
