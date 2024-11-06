@@ -1,27 +1,24 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
-import { wihFetch } from '../api/whoIsHomeApi';
-import {useRouter} from "expo-router";
+import { wihFetch } from '../api/WihApi';
+import {Tokens} from "@/constants/WihTypes";
 
 export type LoginInfos = {
     email: string | undefined;
     password: string | undefined;
 }
 
-export type Tokens = {
-    Token: string | null;
-    RefreshToken: string | null;
-}
-
 const AuthContext = createContext<{
     signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    session?: Tokens;
+    onNewSession: (tokens : Tokens) => void;
+    session: Tokens | null;
     isLoading: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
-    session: undefined,
+    onNewSession: _ => null,
+    session: null,
     isLoading: false,
 });
 
@@ -40,7 +37,8 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
-    const router = useRouter()
+
+    const isLoading = isLoadingSession || isLoadingRefreshToken;
 
     return (
         <AuthContext.Provider
@@ -53,21 +51,20 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     if (response.hasError) {
                         return response.error;
                     }
-                    setSession(response.response?.Token!);
-                    setRefreshToken(response.response?.RefreshToken!)
-                    router.replace("/");
+                    setSession(response.response?.jwtToken || null);
+                    setRefreshToken(response.response?.refreshToken || null);
                     return null;
                 },
                 signOut: () => {
                     setSession(null);
                     setRefreshToken(null);
-                    router.replace("/login");
                 },
-                session: {
-                    Token: session,
-                    RefreshToken: refreshToken
+                onNewSession: tokens => {
+                    setSession(tokens.jwtToken);
+                    setRefreshToken(tokens.refreshToken)
                 },
-                isLoading: isLoadingSession || isLoadingRefreshToken,
+                session: session && refreshToken ?  { jwtToken: session, refreshToken: refreshToken } : null,
+                isLoading: isLoading,
             }}>
             {children}
         </AuthContext.Provider >

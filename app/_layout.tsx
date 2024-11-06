@@ -40,8 +40,7 @@ const RootLayout = () => {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
         <Stack screenOptions={screenOptions}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="register" options={{ headerShown: false }} />
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
