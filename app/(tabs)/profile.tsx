@@ -1,34 +1,22 @@
-import {Tokens, useSession} from "@/components/auth/context";
+import {useSession} from "@/components/auth/context";
 import { WihAvatar } from "@/components/WihAvatar";
 import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
-import {TokensProps, wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
+import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
 import {useEffect, useState} from "react";
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
+import {Tokens, User, WihEvent} from "@/constants/WihTypes";
 
-type User = {
-    Id: number;
-    UserName: string;
-    Email: string;
-}
-
-type Event = {
-    Id: number;
-    Title: string;
-    Date: Date;
-    StartTime: Date;
-    EndTime: Date;
-    EventType: string;
-}
+const TIME = 5 * 60 * 1000;
 
 type Overview = {
     user: User;
-    today: Event[];
-    thisWeek: Event[];
-    futureEvents: Event[];
+    today: WihEvent[];
+    thisWeek: WihEvent[];
+    futureEvents: WihEvent[];
 }
 
 const Profile = () => {
@@ -36,12 +24,16 @@ const Profile = () => {
     const [response, setResponse] = useState<WihResponse<Overview | null> | null>(null);
 
     useEffect(() => {
-        if(session){
-            // Fire and Forget, we do not care. Want to show the loading page
-            // Will set the response later and rerender
-            // noinspection JSIgnoredPromiseFromCall
-            loadData(session);
-        }
+        // Refresh every other Minute
+        const id = setInterval(() => {
+            if(session){
+                // Fire and Forget, we do not care. Want to show the loading page
+                // Will set the response later and rerender
+                // noinspection JSIgnoredPromiseFromCall
+                loadData(session);
+            }
+        }, TIME);
+        return () => clearInterval(id);
     }, [session]);
 
     if(!session) {
@@ -55,10 +47,7 @@ const Profile = () => {
                 console.warn("New Tokens but empty");
                 return;
             }
-            onNewSession({
-                jwtToken: tokens?.Token,
-                refreshToken: tokens?.RefreshToken
-            })
+            onNewSession(tokens);
         });
         setResponse(res);
     }
@@ -99,37 +88,14 @@ const Profile = () => {
         return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
     }
 
-    const today = response.response?.today.length == 0 ? null : (
-        <>
-            <WihTitle style={{ marginTop: dim.height / 25 }}>Today</WihTitle>
-            {
-                response.response?.today
-                    .map(event => (<WihEventCard event={event} />))
-            }
-        </>
-    );
+    const height = dim.height / 25;
+    const overview = response.response;
 
-    const thisWeek = response.response?.thisWeek.length == 0 ? null : (
-        <>
-            <WihTitle style={{ marginTop: dim.height / 25 }}>This Week</WihTitle>
-            {
-                response.response?.today
-                .map(event => (<WihEventCard event={event} />))
-            }
-        </>
-    );
+    const today = getEventView("Today", overview?.today, height);
+    const thisWeek = getEventView("This Week", overview?.thisWeek, height);
+    const futureEvents = getEventView("Other", overview?.futureEvents, height);
 
-    const futureEvents = response.response?.futureEvents.length == 0 ? null : (
-        <>
-            <WihTitle style={{ marginTop: dim.height / 25 }}>Other</WihTitle>
-            {
-                response.response?.today
-                    .map(event => (<WihEventCard event={event} />))
-            }
-        </>
-    );
-
-    const userName = response.response?.user.UserName ?? "";
+    const userName = response.response?.user.userName ?? "";
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>
@@ -147,16 +113,28 @@ const Profile = () => {
     );
 }
 
-async function getEvents(session: Tokens, onNewTokens: (newTokens: TokensProps | null) => void) : Promise<WihResponse<Overview | null>> {
+async function getEvents(session: Tokens, onNewTokens: (newTokens: Tokens | null) => void) : Promise<WihResponse<Overview | null>> {
     return await wihFetch<Overview>({
         endpoint: "PersonOverview",
         method: "GET",
-        tokens: {
-            Token: session.jwtToken!,
-            RefreshToken: session.refreshToken!
-        },
-        onNewTokens: onNewTokens
+        tokens: session,
+        onNewTokens
     });
+}
+
+function getEventView(title : string, events : WihEvent[] | undefined, height : number){
+    if(!events || events.length < 1){
+        return null;
+    }
+
+    return(
+        <>
+            <WihTitle style={{ marginTop: height }}>{title}</WihTitle>
+            {
+                events.map(event => (<WihEventCard event={event} />))
+            }
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -169,4 +147,5 @@ const styles = StyleSheet.create({
     }
 })
 
+// noinspection JSUnusedGlobalSymbols
 export default Profile;

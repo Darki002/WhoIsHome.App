@@ -1,17 +1,14 @@
-export type KeyValuePair = { [key: string]: string };
+import {Tokens} from "@/constants/WihTypes";
 
-export type TokensProps = {
-    Token: string;
-    RefreshToken: string;
-}
+export type KeyValuePair = { [key: string]: string };
 
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
-    tokens?: TokensProps;
+    tokens?: Tokens;
     version?: number;
     body?: KeyValuePair;
-    onNewTokens?: (newTokens: TokensProps | null) => void;
+    onNewTokens?: (newTokens: Tokens | null) => void;
 }
 
 export interface WihResponse<T> {
@@ -25,7 +22,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
     if (tokens && response.hasError && response.status === 401) {
-        const newTokens = await refreshJwtToken(tokens.RefreshToken);
+        const newTokens = await refreshJwtToken(tokens.refreshToken!);
 
         if (newTokens.hasError) {
             onNewTokens ? onNewTokens(null) : null;
@@ -40,7 +37,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: TokensProps | undefined, version: number): Promise<WihResponse<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T | null>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();
@@ -48,7 +45,7 @@ async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair
     headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
 
     if(tokens){
-        headers.append("Authorization", `Bearer ${tokens?.Token}`);
+        headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
     }
 
     console.info(`Fetch for ${uri}`)
@@ -74,7 +71,7 @@ async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair
     }
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<WihResponse<TokensProps | null>> {
+async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens | null>> {
     const uri = getUri("Auth/Refresh");
 
     const headers = new Headers();
@@ -90,7 +87,7 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
             headers: headers
         });
 
-        return await handleResponse<TokensProps>(response);
+        return await handleResponse<Tokens>(response);
     }
     catch (error: any) {
         console.error(`Request failed: ${error.message}`);

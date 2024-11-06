@@ -1,15 +1,11 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './useStorageState';
 import { wihFetch } from '../api/whoIsHomeApi';
+import {Tokens} from "@/constants/WihTypes";
 
 export type LoginInfos = {
     email: string | undefined;
     password: string | undefined;
-}
-
-export type Tokens = {
-    jwtToken: string | null;
-    refreshToken: string | null;
 }
 
 const AuthContext = createContext<{
