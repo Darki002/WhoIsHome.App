@@ -24,15 +24,13 @@ export default function useWihApiInterval<T>({time, endpoint, method, version = 
     useEffect(() => {
         if(!session) return () => {};
 
-        // Fire and Forget, we do not care. Want to show the loading page
-        // Will set the response later and rerender
-        // noinspection JSIgnoredPromiseFromCall
-        wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens}).then(e => setResponse(e));
+        wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
+            .then(e => setResponse(e));
 
         // Refresh every other Minute
         const id = setInterval(() => {
-            // noinspection JSIgnoredPromiseFromCall
-            wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens}).then(e => setResponse(e));
+            wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
+                .then(e => setResponse(e));
         }, time);
         return () => clearInterval(id);
     }, []);
