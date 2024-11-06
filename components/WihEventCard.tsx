@@ -9,6 +9,7 @@ export const WihEventCard = ({event} : {event: WihEvent}) => {
 
     function onEventPress(){
         // TODO: route to event view
+        // Can edit the Event there and also see more details (mb more usefull later)
         // Idea: like pop up View that is on top of the current view, so you can also go back with arrow back
     }
 
