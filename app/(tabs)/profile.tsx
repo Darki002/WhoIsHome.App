@@ -5,10 +5,10 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {wihFetch, WihResponse} from "@/components/api/whoIsHomeApi";
-import {useEffect, useState} from "react";
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
 import {Tokens, User, WihEvent} from "@/constants/WihTypes";
+import useWihApiInterval from "@/components/api/WihApiInterval";
 
 const TIME = 5 * 60 * 1000;
 
@@ -20,37 +20,12 @@ type Overview = {
 }
 
 const Profile = () => {
-    const { signOut, session, onNewSession } = useSession();
-    const [response, setResponse] = useState<WihResponse<Overview | null> | null>(null);
-
-    useEffect(() => {
-        // Refresh every other Minute
-        const id = setInterval(() => {
-            if(session){
-                // Fire and Forget, we do not care. Want to show the loading page
-                // Will set the response later and rerender
-                // noinspection JSIgnoredPromiseFromCall
-                loadData(session);
-            }
-        }, TIME);
-        return () => clearInterval(id);
-    }, [session]);
-
-    if(!session) {
-        console.error("Session is not set.");
-        return <WihTitle>Oops, Error occurred...</WihTitle>
-    }
-
-    async function loadData(tokens : Tokens) {
-        const res = await getEvents(tokens, tokens => {
-            if(!tokens){
-                console.warn("New Tokens but empty");
-                return;
-            }
-            onNewSession(tokens);
+    const { signOut } = useSession();
+    const response = useWihApiInterval<Overview | null>({
+            time: TIME,
+            endpoint: "PersonOverview",
+            method: "GET",
         });
-        setResponse(res);
-    }
 
     const dim = Dimensions.get("screen");
     const viewStyle: ViewStyle = {
