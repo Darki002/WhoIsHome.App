@@ -6,6 +6,7 @@ import {User, UserOverview} from "@/constants/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
+import useWihApiFocus from "@/hooks/useWihApiFocus";
 
 export default function UserView() {
     const { id } = useLocalSearchParams();
@@ -14,7 +15,7 @@ export default function UserView() {
         endpoint: `User/${id}`,
         method: "GET",
     });
-    const response = useWihApi<UserOverview>({
+    const response = useWihApiFocus<UserOverview>({
         endpoint: `UserOverview/${id}`,
         method: "GET"
     });
