@@ -6,18 +6,11 @@ import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
 import {WihEventCard} from "@/components/WihEventCard";
-import {User, WihEvent} from "@/constants/WihTypes";
+import {UserOverview, User, WihEvent} from "@/constants/WihTypes";
 import useWihApiInterval from "@/hooks/useWihApiInterval";
 import useWihApi from "@/hooks/useWihApi";
 
 const TIME = 5 * 60 * 1000;
-
-type Overview = {
-    userId: number;
-    today: WihEvent[];
-    thisWeek: WihEvent[];
-    futureEvents: WihEvent[];
-}
 
 const Profile = () => {
     const { signOut } = useSession();
@@ -25,7 +18,7 @@ const Profile = () => {
         endpoint: "Auth/Me",
         method: "GET"
     });
-    const response = useWihApiInterval<Overview | null>({
+    const response = useWihApiInterval<UserOverview | null>({
             time: TIME,
             endpoint: "PersonOverview",
             method: "GET",
