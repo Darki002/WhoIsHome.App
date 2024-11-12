@@ -20,7 +20,7 @@ const Profile = () => {
     });
     const response = useWihApiInterval<UserOverview | null>({
             time: TIME,
-            endpoint: "PersonOverview",
+            endpoint: "UserOverview",
             method: "GET",
         });
 

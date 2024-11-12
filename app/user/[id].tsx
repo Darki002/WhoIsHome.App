@@ -7,11 +7,11 @@ import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
 
-export default function PersonView() {
+export default function UserView() {
     const { id } = useLocalSearchParams();
     const navigation = useNavigation();
     const response = useWihApi<UserOverview>({
-        endpoint: `PersonOverview/${id}`,
+        endpoint: `UserOverview/${id}`,
         method: "GET"
     });
     const user = useWihApi<User>({
