@@ -9,7 +9,7 @@ import {useEffect} from "react";
 import useWihApiFocus from "@/hooks/useWihApiFocus";
 
 export default function UserView() {
-    const { id } = useLocalSearchParams();
+    const { id } = useLocalSearchParams<{id: string}>();
     const navigation = useNavigation();
     const user = useWihApi<User | null>({
         endpoint: `User/${id}`,
