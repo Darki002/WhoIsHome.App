@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/useWihApi";
-import {UserOverview} from "@/constants/WihTypes";
+import {User, UserOverview} from "@/constants/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
@@ -10,24 +10,28 @@ import {useEffect} from "react";
 export default function UserView() {
     const { id } = useLocalSearchParams();
     const navigation = useNavigation();
+    const user = useWihApi<User | null>({
+        endpoint: `User/${id}`,
+        method: "GET",
+    });
     const response = useWihApi<UserOverview>({
         endpoint: `UserOverview/${id}`,
         method: "GET"
     });
 
     useEffect(() => {
-        if(!response){
+        if(!user){
             navigation.setOptions({title: "Loading..."});
             return;
         }
-        if(response.hasError) {
+        if(user.hasError) {
             navigation.setOptions({title: "Error"});
             return;
         }
-        navigation.setOptions({title: response.response?.user.userName});
-    }, [response]);
+        navigation.setOptions({title: user.response?.userName});
+    }, [user]);
 
-    if(!response){
+    if(!response || !user){
         return <WihLoading />
     }
 
@@ -40,10 +44,19 @@ export default function UserView() {
         )
     }
 
+    if(user.hasError){
+        return (
+            <WihView center="full">
+                <WihText>Oops, Error occurred, while trying to get user {id}.</WihText>
+                <WihText>{user.error}</WihText>
+            </WihView>
+        )
+    }
+
     const overview = response.response;
     return (
         <WihView>
-            <WihTitle>{response.response!.user.userName}'s Events</WihTitle>
+            <WihTitle>{user.response!.userName}'s Events</WihTitle>
 
             <WihEventList events={overview?.today} title="Today" />
             <WihEventList events={overview?.thisWeek} title="This Week" />

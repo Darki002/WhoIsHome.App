@@ -5,14 +5,19 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
-import {UserOverview} from "@/constants/WihTypes";
+import {User, UserOverview} from "@/constants/WihTypes";
 import useWihApiInterval from "@/hooks/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
+import useWihApi from "@/hooks/useWihApi";
 
 const TIME = 5 * 60 * 1000;
 
 const Profile = () => {
     const { signOut } = useSession();
+    const user = useWihApi<User | null>({
+        endpoint: "User/Me",
+        method: "GET",
+    });
     const response = useWihApiInterval<UserOverview | null>({
             time: TIME,
             endpoint: "UserOverview",
@@ -31,7 +36,7 @@ const Profile = () => {
         fontSize: dim.fontScale * 24
     }
 
-    if(!response){
+    if(!response || !user){
         return (
             <>
                 <WihView style={[viewStyle, styles.view]}>
@@ -47,6 +52,14 @@ const Profile = () => {
         )
     }
 
+    if(user.hasError) {
+        if(user.status == 401) {
+            return <Redirect href="/auth/login" />
+        }
+        console.error(user.error);
+        return <WihTitle>Oops, Error occurred: {user.error}</WihTitle>
+    }
+
     if(response.hasError) {
         if(response.status == 401) {
             return <Redirect href="/auth/login" />
@@ -56,7 +69,7 @@ const Profile = () => {
     }
 
     const overview = response.response;
-    const userName = response.response?.user.userName ?? "";
+    const userName = user.response?.userName ?? "";
     return (
         <>
             <WihView style={[viewStyle, styles.view]}>

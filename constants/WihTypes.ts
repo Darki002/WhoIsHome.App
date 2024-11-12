@@ -14,10 +14,7 @@ export type WihEvent = {
 }
 
 export type UserOverview = {
-    user: {
-        id: number;
-        userName: string;
-    };
+    userId: number;
     today: WihEvent[];
     thisWeek: WihEvent[];
     futureEvents: WihEvent[];
