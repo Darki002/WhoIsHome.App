@@ -25,7 +25,7 @@ export default function useWihApi<T>({endpoint, method, version = 1, body} : Wih
 
         wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
             .then(e => setResponse(e));
-    }, []);
+    }, [endpoint]);
 
     return response;
 }

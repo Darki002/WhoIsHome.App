@@ -5,10 +5,10 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
-import {WihEventCard} from "@/components/WihEventCard";
-import {UserOverview, User, WihEvent} from "@/constants/WihTypes";
+import {UserOverview, User} from "@/constants/WihTypes";
 import useWihApiInterval from "@/hooks/useWihApiInterval";
 import useWihApi from "@/hooks/useWihApi";
+import WihEventList from "@/components/wihEvent/WihEventList";
 
 const TIME = 5 * 60 * 1000;
 
@@ -68,13 +68,7 @@ const Profile = () => {
         return <WihTitle>Oops, Error occurred: {user.error}</WihTitle>
     }
 
-    const height = dim.height / 25;
     const overview = response.response;
-
-    const today = getEventView("Today", overview?.today, height);
-    const thisWeek = getEventView("This Week", overview?.thisWeek, height);
-    const futureEvents = getEventView("Other", overview?.futureEvents, height);
-
     const userName = user.response?.userName ?? "";
     return (
         <>
@@ -85,25 +79,10 @@ const Profile = () => {
             </WihView >
             <WihView center="horizontal">
                 <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
-                {today}
-                {thisWeek}
-                {futureEvents}
+                <WihEventList events={overview?.today} title="Today" />
+                <WihEventList events={overview?.thisWeek} title="This Week" />
+                <WihEventList events={overview?.futureEvents} title="Other" />
             </WihView>
-        </>
-    );
-}
-
-function getEventView(title : string, events : WihEvent[] | undefined, height : number){
-    if(!events || events.length < 1){
-        return null;
-    }
-
-    return(
-        <>
-            <WihTitle style={{ marginTop: height }}>{title}</WihTitle>
-            {
-                events.map(event => (<WihEventCard event={event} />))
-            }
         </>
     );
 }
