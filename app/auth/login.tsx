@@ -29,7 +29,7 @@ const Login = () => {
     }
 
     return (
-        <WihView center="horizontal">
+        <WihView center="full">
             <WihTitle>Login</WihTitle>
 
             <WihEmailInput
