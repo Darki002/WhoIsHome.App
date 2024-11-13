@@ -5,29 +5,22 @@ import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
-import {WihEventCard} from "@/components/WihEventCard";
-import {User, WihEvent} from "@/constants/WihTypes";
+import {User, UserOverview} from "@/constants/WihTypes";
 import useWihApiInterval from "@/hooks/useWihApiInterval";
+import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/useWihApi";
 
 const TIME = 5 * 60 * 1000;
 
-type Overview = {
-    userId: number;
-    today: WihEvent[];
-    thisWeek: WihEvent[];
-    futureEvents: WihEvent[];
-}
-
 const Profile = () => {
     const { signOut } = useSession();
-    const user = useWihApi<User>({
-        endpoint: "Auth/Me",
-        method: "GET"
+    const user = useWihApi<User | null>({
+        endpoint: "User/Me",
+        method: "GET",
     });
-    const response = useWihApiInterval<Overview | null>({
+    const response = useWihApiInterval<UserOverview | null>({
             time: TIME,
-            endpoint: "PersonOverview",
+            endpoint: "UserOverview",
             method: "GET",
         });
 
@@ -59,14 +52,6 @@ const Profile = () => {
         )
     }
 
-    if(response.hasError) {
-        if(response.status == 401) {
-            return <Redirect href="/auth/login" />
-        }
-        console.error(response.error);
-        return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
-    }
-
     if(user.hasError) {
         if(user.status == 401) {
             return <Redirect href="/auth/login" />
@@ -75,13 +60,15 @@ const Profile = () => {
         return <WihTitle>Oops, Error occurred: {user.error}</WihTitle>
     }
 
-    const height = dim.height / 25;
+    if(response.hasError) {
+        if(response.status == 401) {
+            return <Redirect href="/auth/login" />
+        }
+        console.error(response.error);
+        return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
+    }
+
     const overview = response.response;
-
-    const today = getEventView("Today", overview?.today, height);
-    const thisWeek = getEventView("This Week", overview?.thisWeek, height);
-    const futureEvents = getEventView("Other", overview?.futureEvents, height);
-
     const userName = user.response?.userName ?? "";
     return (
         <>
@@ -92,25 +79,10 @@ const Profile = () => {
             </WihView >
             <WihView center="horizontal">
                 <WihTitle style={{ marginTop: dim.height / 20 }}>Your Events</WihTitle>
-                {today}
-                {thisWeek}
-                {futureEvents}
+                <WihEventList events={overview?.today} title="Today" />
+                <WihEventList events={overview?.thisWeek} title="This Week" />
+                <WihEventList events={overview?.futureEvents} title="Other" />
             </WihView>
-        </>
-    );
-}
-
-function getEventView(title : string, events : WihEvent[] | undefined, height : number){
-    if(!events || events.length < 1){
-        return null;
-    }
-
-    return(
-        <>
-            <WihTitle style={{ marginTop: height }}>{title}</WihTitle>
-            {
-                events.map(event => (<WihEventCard event={event} />))
-            }
         </>
     );
 }

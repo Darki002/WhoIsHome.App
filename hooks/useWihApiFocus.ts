@@ -1,7 +1,8 @@
 import {KeyValuePair, wihFetch, WihResponse} from "@/components/api/WihApi";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";
+import {useFocusEffect} from "expo-router";
 
 export interface WihApiProps {
     endpoint: string;
@@ -10,7 +11,7 @@ export interface WihApiProps {
     body?: KeyValuePair;
 }
 
-export default function useWihApi<T>({endpoint, method, version = 1, body} : WihApiProps){
+export default function useWihApiFocus<T>({endpoint, method, version = 1, body} : WihApiProps) {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
@@ -20,12 +21,14 @@ export default function useWihApi<T>({endpoint, method, version = 1, body} : Wih
         }
     }
 
-    useEffect(() => {
-        if(!session) return;
+    useFocusEffect(
+        useCallback(() => {
+            if(!session) return;
 
-        wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
-            .then(e => setResponse(e));
-    }, [endpoint]);
+            wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
+                .then(e => setResponse(e));
+        }, [endpoint])
+    );
 
     return response;
 }

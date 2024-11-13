@@ -48,7 +48,7 @@ const register = () => {
     }
 
     return (
-        <WihView center="horizontal">
+        <WihView center="full">
             <WihTitle>Register</WihTitle>
 
             <WihUsernameInput

@@ -2,6 +2,7 @@ import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import useWihApiInterval from "@/hooks/useWihApiInterval";
 import {Pressable} from "react-native";
+import {router} from "expo-router";
 
 const TIME = 5 * 60 * 1000;
 
@@ -20,11 +21,6 @@ export default function Index() {
         method: "GET",
         endpoint: "DailyOverview"
     });
-
-    function onPress(userId : number) {
-        // TODO: Route to the person overview
-        // Idea: like pop up View that is on top of the current view, so you can also go back with arrow back
-    }
 
     if(!response){
         return (
@@ -45,14 +41,14 @@ export default function Index() {
   return (
     <WihView center="horizontal">
         <WihTitle style={{fontSize: 25}}>Welcome!</WihTitle>
-        {response.response!.map((o, i) => DailyOverview(o, i, onPress))}
+        {response.response!.map((o, i) => DailyOverview(o, i))}
     </WihView >
   );
 }
 
-function DailyOverview(overview : DailyOverview, key : number, onPress : (userId : number) => void) {
+function DailyOverview(overview : DailyOverview, key : number) {
     return(
-        <Pressable onPress={() => onPress(overview.user.id)} key={key}>
+        <Pressable onPress={() => router.push(`/user/${overview.user.id}`)} key={key}>
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>
                 <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText>

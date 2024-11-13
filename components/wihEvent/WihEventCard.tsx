@@ -4,7 +4,7 @@ import WihView from "@/components/WihView";
 import {useThemeColor} from "@/hooks/useThemeColor";
 import {WihEvent} from "@/constants/WihTypes";
 
-export const WihEventCard = ({event} : {event: WihEvent}) => {
+export default function WihEventCard({event} : {event: WihEvent}) {
     const borderColor = useThemeColor("border");
 
     function onEventPress(){
