@@ -7,7 +7,7 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { WihView } from '@/components/WihView';
+import WihView from '@/components/WihView';
 
 const HEADER_HEIGHT = 250;
 
