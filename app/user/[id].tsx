@@ -56,7 +56,7 @@ export default function UserView() {
 
     const overview = response.response;
     return (
-        <WihView>
+        <WihView center="horizontal">
             <WihTitle>{user.response!.userName}'s Events</WihTitle>
 
             <WihEventList events={overview?.today} title="Today" />
