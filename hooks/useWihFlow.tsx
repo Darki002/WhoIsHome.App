@@ -8,7 +8,7 @@ export interface WihFlowComponent<T> {
 
 export type WihFlowParam<T> = {
     initValue: T;
-    onFinish: (state : T) => void;
+    onFinish: () => void;
     onCancel: () => void;
     components: Array<ComponentType<WihFlowComponent<T>>>;
 }
@@ -23,7 +23,7 @@ export function useWihFlow<T>({initValue, onFinish, onCancel, components} : WihF
                 setStep(currentStep + 1);
                 break;
             case "Finish":
-                onFinish(state);
+                onFinish();
                 break;
             case "Back":
                 setStep(currentStep - 1);

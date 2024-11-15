@@ -6,7 +6,6 @@ import {WihButton} from "@/components/WihButton";
 import {StyleSheet} from "react-native";
 import {wihFetch} from "@/components/api/WihApi";
 import {useSession} from "@/components/auth/context";
-import WihLink from "@/components/WihLink";
 
 const register = () => {
     const [userName, onChangeUserName] = useState<string>("");
