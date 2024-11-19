@@ -1,6 +1,6 @@
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import useWihApiInterval from "@/hooks/useWihApiInterval";
+import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import {Pressable} from "react-native";
 import {router} from "expo-router";
 

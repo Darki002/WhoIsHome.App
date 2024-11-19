@@ -4,6 +4,9 @@ import {Time} from "lightningcss";
 import {useRouter} from "expo-router";
 import React from "react";
 import WihView from "@/components/WihView";
+import {wihFetch} from "@/components/api/WihApi";
+import {useSession} from "@/components/auth/context";
+import useWihApi from "@/hooks/wihApi/useWihApi";
 
 interface OneTimeEvent {
     Title?: string;
@@ -18,16 +21,16 @@ export default function OneTimeEventFlow() {
     const [state, flow] = useWihFlow<OneTimeEvent>({
         initValue: {},
         onFinish,
-        onCancel,
-        components: [firstStep]
+        onCancel: () => router.replace("/(tabs)/create"),
+        components: [
+            firstStep,
+            summaryStep
+        ]
     });
 
     function onFinish(){
-        // TODO: show overview, don't route, should be able to go back and edit again
-    }
-
-    function onCancel() {
-        router.replace("/(tabs)/create");
+        // TODO: sent to API
+        router.replace("/(tabs)");
     }
 
     if(!flow) {
@@ -41,11 +44,11 @@ function firstStep({} : WihFlowComponent<OneTimeEvent>){
     return <WihTitle>Hi</WihTitle>
 }
 
-function summary(state: OneTimeEvent){
+function summaryStep({state} : WihFlowComponent<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
         </WihView>
-    )
+    );
 }

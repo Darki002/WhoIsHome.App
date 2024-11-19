@@ -6,9 +6,9 @@ import WihView from "@/components/WihView";
 import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import {Redirect} from "expo-router";
 import {User, UserOverview} from "@/constants/WihTypes";
-import useWihApiInterval from "@/hooks/useWihApiInterval";
+import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
-import useWihApi from "@/hooks/useWihApi";
+import useWihApi from "@/hooks/wihApi/useWihApi";
 
 const TIME = 5 * 60 * 1000;
 

@@ -1,13 +1,11 @@
 import {Tokens} from "@/constants/WihTypes";
 
-export type KeyValuePair = { [key: string]: string };
-
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
     tokens?: Tokens;
     version?: number;
-    body?: KeyValuePair;
+    body?: any;
     onNewTokens?: (newTokens: Tokens | null) => void;
 }
 
@@ -37,7 +35,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T | null>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();
