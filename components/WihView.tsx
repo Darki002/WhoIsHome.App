@@ -4,18 +4,20 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 
 export type ThemedViewProps = ViewProps & {
   center?: "full" | "horizontal" | "vertical";
-  flex?: "horizontal" | "vertical";
+  flex?: "row" | "column";
+  gap?: number;
   lightColor?: string;
   darkColor?: string;
 };
 
-const WihView = ({ style, center, flex, lightColor, darkColor, ...otherProps }: ThemedViewProps) => {
+const WihView = ({ style, center, gap, flex, lightColor, darkColor, ...otherProps }: ThemedViewProps) => {
   const backgroundColor = useThemeColor('background', { light: lightColor, dark: darkColor });
 
   const cStyle = center ? centerStyle[center] : {}
   const fStyle = flex ? flexStyle[flex] : {}
+  const gStyle = gap ? {gap} : {};
 
-  return <View style={[{ backgroundColor }, cStyle, fStyle, style]} {...otherProps} />;
+  return <View style={[{ backgroundColor }, cStyle, fStyle, gStyle, style]} {...otherProps} />;
 }
 
 type CenterStyle = {
@@ -25,17 +27,17 @@ type CenterStyle = {
 }
 
 type FlexStyle = {
-  horizontal: ViewStyle;
-  vertical: ViewStyle;
+  row: ViewStyle;
+  column: ViewStyle;
 }
 
 const flexStyle: FlexStyle = {
-  horizontal: {
-    flex: 1,
+  row: {
+    display: "flex",
     flexDirection: "row"
   },
-  vertical: {
-    flex: 1,
+  column: {
+    display: "flex",
     flexDirection: "column"
   }
 }
@@ -44,15 +46,15 @@ const centerStyle: CenterStyle = {
   full: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   horizontal: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "center"
   },
   vertical: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "center"
   }
 }
 

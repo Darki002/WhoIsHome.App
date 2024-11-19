@@ -36,5 +36,5 @@ export default function OneTimeEventFlow() {
 }
 
 function firstStep({} : WihFlowComponent<OneTimeEvent>){
-    return <></>
+    return <WihTitle>Hi</WihTitle>
 }
