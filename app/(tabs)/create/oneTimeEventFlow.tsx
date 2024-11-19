@@ -1,7 +1,9 @@
 import {useWihFlow, WihFlowComponent} from "@/hooks/useWihFlow";
-import {WihTitle} from "@/components/WihText";
+import {WihText, WihTitle} from "@/components/WihText";
 import {Time} from "lightningcss";
 import {useRouter} from "expo-router";
+import React from "react";
+import WihView from "@/components/WihView";
 
 interface OneTimeEvent {
     Title?: string;
@@ -37,4 +39,13 @@ export default function OneTimeEventFlow() {
 
 function firstStep({} : WihFlowComponent<OneTimeEvent>){
     return <WihTitle>Hi</WihTitle>
+}
+
+function summary(state: OneTimeEvent){
+    return (
+        <WihView center="full">
+            <WihTitle>Summary</WihTitle>
+            <WihText>Title: {state.Title}</WihText>
+        </WihView>
+    )
 }
