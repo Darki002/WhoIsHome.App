@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {KeyValuePair, wihFetch, WihResponse} from "@/components/api/WihApi";
+import {wihFetch, WihResponse} from "@/components/api/WihApi";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";
 
@@ -8,7 +8,7 @@ export interface WihApiIntervalProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
     version?: number;
-    body?: KeyValuePair;
+    body?: any;
 }
 
 export default function useWihApiInterval<T>({time, endpoint, method, version = 1, body} : WihApiIntervalProps) : WihResponse<T | null> | null {

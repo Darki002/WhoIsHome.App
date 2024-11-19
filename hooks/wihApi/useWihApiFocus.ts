@@ -1,5 +1,5 @@
-import {KeyValuePair, wihFetch, WihResponse} from "@/components/api/WihApi";
-import {useCallback, useEffect, useState} from "react";
+import {wihFetch, WihResponse} from "@/components/api/WihApi";
+import {useCallback, useState} from "react";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";
 import {useFocusEffect} from "expo-router";
@@ -8,7 +8,7 @@ export interface WihApiProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
     version?: number;
-    body?: KeyValuePair;
+    body?: any;
 }
 
 export default function useWihApiFocus<T>({endpoint, method, version = 1, body} : WihApiProps) {

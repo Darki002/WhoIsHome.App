@@ -4,9 +4,7 @@ import {Time} from "lightningcss";
 import {useRouter} from "expo-router";
 import React from "react";
 import WihView from "@/components/WihView";
-import {wihFetch} from "@/components/api/WihApi";
-import {useSession} from "@/components/auth/context";
-import useWihApi from "@/hooks/wihApi/useWihApi";
+import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 
 interface OneTimeEvent {
     Title?: string;
@@ -18,9 +16,16 @@ interface OneTimeEvent {
 
 export default function OneTimeEventFlow() {
     const router = useRouter();
+
+    const callWihApi = useWihApiCallable<{}>({
+        endpoint: "oneTimeEvent",
+        method: "POST",
+        onResponse: (response) => router.replace("/(tabs)") // TODO: check response for status code
+    });
+
     const [state, flow] = useWihFlow<OneTimeEvent>({
         initValue: {},
-        onFinish,
+        onFinish: () => callWihApi(state),
         onCancel: () => router.replace("/(tabs)/create"),
         components: [
             firstStep,
@@ -28,16 +33,7 @@ export default function OneTimeEventFlow() {
         ]
     });
 
-    function onFinish(){
-        // TODO: sent to API
-        router.replace("/(tabs)");
-    }
-
-    if(!flow) {
-        return <WihTitle>Oops, Error</WihTitle>
-    }
-
-    return flow;
+    return !flow ? <WihTitle>Oops, Error</WihTitle> : flow;
 }
 
 function firstStep({} : WihFlowComponent<OneTimeEvent>){

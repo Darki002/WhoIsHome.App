@@ -1,17 +1,16 @@
+import {useCallback} from "react";
 import {wihFetch, WihResponse} from "@/components/api/WihApi";
-import {useEffect, useState} from "react";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";
 
-export interface WihApiProps {
+export interface WihApiProps<T> {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
+    onResponse: (response: WihResponse<T | null> | null) => void;
     version?: number;
-    body?: any;
 }
 
-export default function useWihApi<T>({endpoint, method, version = 1, body} : WihApiProps){
-    const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
+export default function useWihApiCallable<T>({endpoint, onResponse, method, version = 1} : WihApiProps<T>) : (body : any) => void {
     const {session, onNewSession} = useSession();
 
     function onNewTokens(tokens : Tokens | null) {
@@ -20,12 +19,10 @@ export default function useWihApi<T>({endpoint, method, version = 1, body} : Wih
         }
     }
 
-    useEffect(() => {
-        if(!session) return;
+    return useCallback((body: any) => {
+        if (!session) return;
 
         wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
-            .then(e => setResponse(e));
+            .then(e => onResponse(e));
     }, [endpoint]);
-
-    return response;
 }
