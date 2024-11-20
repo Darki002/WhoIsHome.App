@@ -1,6 +1,12 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { TextInput, TextInputProps } from "react-native";
 
+export const WihTextInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
+    const color = useThemeColor("text");
+    const borderColor = useThemeColor("border");
+    return <TextInput inputMode="text" value={value} onChangeText={onChangeText} style={[{ color, borderColor }, style]} {...rest} />
+}
+
 export const WihUsernameInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");

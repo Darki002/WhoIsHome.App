@@ -1,5 +1,5 @@
 import { LoginInfos, useSession } from "@/components/auth/context";
-import { WihEmailInput, WihPasswordInput } from "@/components/login/WihInput";
+import { WihEmailInput, WihPasswordInput } from "@/components/input/WihInput";
 import { WihButton } from "@/components/WihButton";
 import { WihText, WihTitle } from "@/components/WihText";
 import WihView from "@/components/WihView";

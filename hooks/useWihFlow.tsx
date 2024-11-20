@@ -3,7 +3,7 @@ import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavig
 
 export interface WihFlowComponent<T> {
     state: T;
-    setState: React.Dispatch<React.SetStateAction<T>>
+    setState: (changes: T) => void;
 }
 
 export type WihFlowParam<T> = {
@@ -34,8 +34,12 @@ export function useWihFlow<T>({initValue, onFinish, onCancel, components} : WihF
         }
     }
 
+    function onStateChange(changes: T){
+        setState({...state, ...changes});
+    }
+
     const CurrentComponent = components[currentStep];
-    const element = CurrentComponent  ?  <CurrentComponent state={state} setState={setState} /> : null;
+    const element = CurrentComponent  ?  <CurrentComponent state={state} setState={onStateChange} /> : null;
 
     if(!element){
         return [state, null];
