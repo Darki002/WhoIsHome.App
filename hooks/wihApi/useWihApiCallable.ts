@@ -6,14 +6,14 @@ import {Tokens} from "@/constants/WihTypes";
 export interface WihApiProps<T> {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
-    onResponse: (response: WihResponse<T | null> | null) => void;
+    onResponse: (response: WihResponse<T> | null) => void;
     version?: number;
 }
 
-export default function useWihApiCallable<T>({endpoint, onResponse, method, version = 1} : WihApiProps<T>) : (body : any) => void {
+export default function useWihApiCallable<T = {}>({endpoint, onResponse, method, version = 1} : WihApiProps<T>) : (body : any) => void {
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens : Tokens | null) {
+    function onNewTokens(tokens : Tokens | undefined) {
         if(tokens){
             onNewSession(tokens);
         }

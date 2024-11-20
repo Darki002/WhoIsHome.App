@@ -6,25 +6,29 @@ export interface WihFetchProps {
     tokens?: Tokens;
     version?: number;
     body?: any;
-    onNewTokens?: (newTokens: Tokens | null) => void;
+    onNewTokens?: (newTokens: Tokens | undefined) => void;
 }
 
 export interface WihResponse<T> {
     status: number;
     hasError: boolean;
     error: string | null;
-    response: T;
+    response?: T;
 }
 
-export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody | null>> => {
+export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody>> => {
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
     if (tokens && response.hasError && response.status === 401) {
         const newTokens = await refreshJwtToken(tokens.refreshToken!);
 
         if (newTokens.hasError) {
-            onNewTokens ? onNewTokens(null) : null;
-            return newTokens as WihResponse<null>;
+            onNewTokens ? onNewTokens(undefined) : null;
+            return ({
+                status: newTokens.status,
+                hasError: true,
+                error: newTokens.error
+            });
         }
 
         onNewTokens ? onNewTokens(newTokens.response) : null;
@@ -35,7 +39,7 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();
@@ -63,13 +67,12 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
         return ({
             status: 0,
             hasError: true,
-            error: error.message,
-            response: null
+            error: error.message
         });
     }
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens | null>> {
+async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens>> {
     const uri = getUri("Auth/Refresh");
 
     const headers = new Headers();
@@ -92,13 +95,12 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
         return ({
             status: 0,
             hasError: true,
-            error: error.message,
-            response: null
+            error: error.message
         });
     }
 }
 
-async function handleResponse<T>(response: Response): Promise<WihResponse<T | null>> {
+async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
 
     if (response.status === 200) {
 
@@ -118,15 +120,13 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T | nu
             return ({
                 status: response.status,
                 hasError: true,
-                error: response.statusText,
-                response: null
+                error: response.statusText
             });
         default:
             return ({
                 status: response.status,
                 hasError: true,
-                error: response.statusText,
-                response: null
+                error: response.statusText
             });
     }
 }

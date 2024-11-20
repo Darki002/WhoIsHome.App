@@ -5,25 +5,28 @@ import {useRouter} from "expo-router";
 import React from "react";
 import WihView from "@/components/WihView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
+import {WihResponse} from "@/components/api/WihApi";
+import Toast from "react-native-root-toast";
 
-interface OneTimeEvent {
+interface OneTimeEventDto {
     Title?: string;
     Date?: Date;
     StateTime?: Time;
     EndTime?: Time;
-    // TODO: what else needs the API?
+    PresenceType?: "Unknown" | "Default" | "Late" | "NotPresent";
+    DinnerTime?: Time | null;
 }
 
 export default function OneTimeEventFlow() {
     const router = useRouter();
 
-    const callWihApi = useWihApiCallable<{}>({
+    const callWihApi = useWihApiCallable({
         endpoint: "oneTimeEvent",
         method: "POST",
-        onResponse: (response) => router.replace("/(tabs)") // TODO: check response for status code
+        onResponse
     });
 
-    const [state, flow] = useWihFlow<OneTimeEvent>({
+    const [state, flow] = useWihFlow<OneTimeEventDto>({
         initValue: {},
         onFinish: () => callWihApi(state),
         onCancel: () => router.replace("/(tabs)/create"),
@@ -33,14 +36,24 @@ export default function OneTimeEventFlow() {
         ]
     });
 
-    return !flow ? <WihTitle>Oops, Error</WihTitle> : flow;
+    function onResponse(response : WihResponse<{}> | null){
+        if(!response || response.hasError){
+            console.error(response?.error);
+            Toast.show('Failed to create Event', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        router.replace("/(tabs)");
+    }
+
+    return flow ? flow : <WihTitle>Oops, Error</WihTitle>;
 }
 
-function firstStep({} : WihFlowComponent<OneTimeEvent>){
+function firstStep({} : WihFlowComponent<OneTimeEventDto>){
     return <WihTitle>Hi</WihTitle>
 }
 
-function summaryStep({state} : WihFlowComponent<OneTimeEvent>){
+function summaryStep({state} : WihFlowComponent<OneTimeEventDto>){
     return (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
