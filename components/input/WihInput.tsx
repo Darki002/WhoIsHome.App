@@ -1,11 +1,40 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { TextInput, TextInputProps } from "react-native";
+import {Text, TextInput, TextInputProps, TextStyle} from "react-native";
+import React from "react";
+import {DateTimePickerAndroid, DateTimePickerEvent} from '@react-native-community/datetimepicker';
 
 export const WihTextInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
     return <TextInput inputMode="text" value={value} onChangeText={onChangeText} style={[{ color, borderColor }, style]} {...rest} />
 }
+
+export interface WihDateInputProps {
+    value?: Date;
+    onChangeDate: (date: Date | undefined) => void;
+    style?: TextStyle;
+}
+
+export const WihDateInput = ({value, onChangeDate, style}: WihDateInputProps) => {
+    const onChange= (_ : DateTimePickerEvent, newDate : Date | undefined) => {
+        onChangeDate(newDate)
+    }
+
+    const show = () => {
+        DateTimePickerAndroid.open({
+            value: value ?? new Date(Date.now()),
+            onChange,
+            mode: "date",
+            is24Hour: true,
+        });
+    }
+
+    // TODO: ios? Support? Browser? Probably to new file with platform extension
+
+    return <Text onPress={show} style={style}>{value?.toDateString()}</Text>
+}
+
+// TODO: same for the time
 
 export const WihUsernameInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
@@ -27,7 +56,7 @@ export const WihPasswordInput = ({ autoCompleteType, value, onChangeText, style,
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
 
-    let type: TextInputProps["autoComplete"] = undefined;
+    let type: TextInputProps["autoComplete"];
     switch (autoCompleteType) {
         case "new":
             type = "new-password";
