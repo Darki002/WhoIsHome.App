@@ -22,7 +22,5 @@ export const WihDateInput = ({value, onChangeDate, style}: WihDateInputProps) =>
         });
     }
 
-    // TODO: ios? Support? Browser? Probably to new file with platform extension
-
     return <Text onPress={show} style={style}>{value?.toDateString()}</Text>
 }

@@ -1,8 +1,8 @@
-import {useWihFlow, WihFlowComponent} from "@/hooks/useWihFlow";
+import {WihFlow, WihFlowComponent} from "@/components/wihFlow/wihFlow";
 import {WihText, WihTitle} from "@/components/WihText";
 import {Time} from "lightningcss";
 import {useRouter} from "expo-router";
-import React from "react";
+import React, {useCallback} from "react";
 import WihView from "@/components/WihView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/components/api/WihApi";
@@ -18,8 +18,28 @@ interface OneTimeEventDto {
     DinnerTime?: Time | null;
 }
 
+const components = [
+    titleStep,
+    dateStep,
+    presenceStep,
+    dinnerTimeStep,
+    summaryStep
+];
+
 export default function OneTimeEventFlow() {
     const router = useRouter();
+
+    const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
+
+    const onResponse = useCallback((response : WihResponse<{}> | null) => {
+        if(!response || response.hasError){
+            console.error(response?.error ?? "Unknown Error");
+            Toast.show('Failed to create Event', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        router.replace("/(tabs)");
+    }, []);
 
     const callWihApi = useWihApiCallable({
         endpoint: "oneTimeEvent",
@@ -27,30 +47,9 @@ export default function OneTimeEventFlow() {
         onResponse
     });
 
-    const [state, flow] = useWihFlow<OneTimeEventDto>({
-        initValue: {},
-        onFinish: () => callWihApi(state),
-        onCancel: () => router.replace("/(tabs)/create"),
-        components: [
-            titleStep,
-            dateStep,
-            presenceStep,
-            dinnerTimeStep,
-            summaryStep
-        ]
-    });
+    const onFinish = (state: OneTimeEventDto) => callWihApi(state);
 
-    function onResponse(response : WihResponse<{}> | null){
-        if(!response || response.hasError){
-            console.error(response?.error);
-            Toast.show('Failed to create Event', {
-                duration: Toast.durations.SHORT,
-            });
-        }
-        router.replace("/(tabs)");
-    }
-
-    return flow ? flow : <WihTitle>Oops, Error</WihTitle>;
+    return <WihFlow<OneTimeEventDto> onFinish={onFinish} onCancel={onCancel} components={components} />
 }
 
 function titleStep({state, setState} : WihFlowComponent<OneTimeEventDto>){
