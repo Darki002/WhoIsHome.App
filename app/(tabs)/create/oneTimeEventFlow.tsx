@@ -9,24 +9,7 @@ import Toast from "react-native-root-toast";
 import {WihTextInput} from "@/components/input/WihInput";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/components/helper/datetimehelper";
-
-interface OneTimeEvent {
-    Title?: string;
-    Date?: Date;
-    StateTime?: Date;
-    EndTime?: Date;
-    PresenceType?: "Unknown" | "Late" | "NotPresent";
-    DinnerTime?: Date | null;
-}
-
-interface OneTimeEventDto {
-    Title: string;
-    Date: string;
-    StateTime: string;
-    EndTime: string;
-    PresenceType: "Unknown" | "Default" | "Late" | "NotPresent";
-    DinnerTime: string | null;
-}
+import {OneTimeEvent, OneTimeEventDto} from "@/constants/WihTypes";
 
 const components = [
     titleStep,
