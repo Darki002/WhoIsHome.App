@@ -13,7 +13,7 @@ export type WihFlowParam<T> = {
     initValue?: T;
     onFinish: (state: T) => void;
     onCancel: () => void;
-    components: Array<ComponentType<WihFlowComponent<T>>>;
+    components: Array<ComponentType<WihFlowComponent<T>>>; // TODO: Get a list of view and validation functions
 }
 
 export function WihFlow<T extends object>({
@@ -26,6 +26,7 @@ export function WihFlow<T extends object>({
     const [currentStep, setStep] = useState<number>(0);
 
     function onNavAction(action : WihFlowNavAction) {
+        // TODO: validate current step before doing action. If failed, show current component again and tell him it was a failed attempt
         switch (action) {
             case "Next":
                 setStep(currentStep + 1);

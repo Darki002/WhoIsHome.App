@@ -8,13 +8,14 @@ import {WihResponse} from "@/components/api/WihApi";
 import Toast from "react-native-root-toast";
 import {WihTextInput} from "@/components/input/WihInput";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
+import {formatDate, formatTime} from "@/components/helper/datetimehelper";
 
 interface OneTimeEvent {
     Title?: string;
     Date?: Date;
     StateTime?: Date;
     EndTime?: Date;
-    PresenceType?: "Unknown" | "Default" | "Late" | "NotPresent";
+    PresenceType?: "Unknown" | "Late" | "NotPresent";
     DinnerTime?: Date | null;
 }
 
@@ -30,10 +31,18 @@ interface OneTimeEventDto {
 const components = [
     titleStep,
     dateStep,
-    presenceStep,
     dinnerTimeStep,
     summaryStep
 ];
+
+const defaultOneTimeEvent: OneTimeEvent = {
+    Title: "",
+    Date: new Date(),
+    StateTime: new Date(),
+    EndTime: new Date(),
+    PresenceType: "Unknown",
+    DinnerTime: null,
+};
 
 export default function OneTimeEventFlow() {
     const router = useRouter();
@@ -59,16 +68,16 @@ export default function OneTimeEventFlow() {
     const onFinish = (state: OneTimeEvent) => {
         const body : OneTimeEventDto = {
             Title: state.Title!,
-            Date: state.Date!.toDateString(),
-            StateTime: state.StateTime!.toTimeString(),
-            EndTime: state.EndTime!.toTimeString(),
+            Date: formatDate(state.Date!),
+            StateTime: formatTime(state.StateTime!),
+            EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
-            DinnerTime: state.DinnerTime?.toTimeString() ?? null
+            DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }
         callWihApi(body);
     }
 
-    return <WihFlow<OneTimeEvent> onFinish={onFinish} onCancel={onCancel} components={components} />
+    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} components={components} />
 }
 
 function titleStep({state, setState} : WihFlowComponent<OneTimeEvent>){
@@ -111,20 +120,15 @@ function dateStep({state, setState} : WihFlowComponent<OneTimeEvent>){
     )
 }
 
-function presenceStep({state, setState} : WihFlowComponent<OneTimeEvent>){
-    // TODO: Single choice for presence
-    return(
-        <></>
-    )
-}
-
 function dinnerTimeStep({state, setState} : WihFlowComponent<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
+            {/* TODO: Single Choice for PresenceType. But you can only select a time if you have selected "Late" */}
             <WihTimeInput
                 value={state.DinnerTime ?? undefined}
-                onChange={(time) => setState({DinnerTime: time})} />
+                onChange={(time) => setState({DinnerTime: time})}
+                disabled={state.PresenceType !== "Late"} />
         </WihView>
     )
 }
