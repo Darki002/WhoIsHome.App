@@ -1,41 +1,49 @@
 import React, {ComponentType, useState} from "react";
 import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
-import {WihText, WihTitle} from "@/components/WihText";
-import Interceptors from "undici/types/interceptors";
-import retry = Interceptors.retry;
+import {WihTitle} from "@/components/WihText";
 
-export interface WihFlowComponent<T> {
+export interface WihFlowComponentProps<T> {
     state: T;
     setState: (changes: T) => void;
+}
+
+export interface WihFlowComponentWithValidation {
+    validate: () => boolean;
+}
+
+export type WihFlowComponent<T> = ComponentType<WihFlowComponentProps<T>>;
+
+export interface WihFlowStep<T> {
+    component: WihFlowComponent<T>;
+    validate: (state: T) => boolean;
 }
 
 export type WihFlowParam<T> = {
     initValue?: T;
     onFinish: (state: T) => void;
     onCancel: () => void;
-    components: Array<ComponentType<WihFlowComponent<T>>>; // TODO: Get a list of view and validation functions
+    steps: Array<WihFlowComponent<T>>;
 }
 
 export function WihFlow<T extends object>({
   initValue = {} as T,
   onFinish,
   onCancel,
-  components
+  steps
 } : WihFlowParam<T>) {
     const [state, setState] = useState<T>(initValue);
-    const [currentStep, setStep] = useState<number>(0);
+    const [currentStepNumber, setStep] = useState<number>(0);
 
-    function onNavAction(action : WihFlowNavAction) {
-        // TODO: validate current step before doing action. If failed, show current component again and tell him it was a failed attempt
+    const onNavAction = (action : WihFlowNavAction) => {
         switch (action) {
             case "Next":
-                setStep(currentStep + 1);
+                setStep(currentStepNumber + 1);
                 break;
             case "Finish":
                 onFinish(state);
                 break;
             case "Back":
-                setStep(currentStep - 1);
+                setStep(currentStepNumber - 1);
                 break;
             case "Cancel":
                 onCancel();
@@ -47,7 +55,7 @@ export function WihFlow<T extends object>({
         setState({...state, ...changes});
     }
 
-    const CurrentComponent = components[currentStep];
+    const CurrentComponent = steps[currentStepNumber];
     const element = CurrentComponent  ?  <CurrentComponent state={state} setState={onStateChange} /> : null;
 
     if(!element){
@@ -56,8 +64,8 @@ export function WihFlow<T extends object>({
 
     return (
         <WihFlowNavBar
-            currentStep={currentStep}
-            lastStep={components.length - 1}
+            currentStep={currentStepNumber}
+            lastStep={steps.length - 1}
             onNavAction={onNavAction}
             children={element} />
     );

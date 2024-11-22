@@ -27,7 +27,7 @@ function WihFlowNavStart({onNavAction, children}: {onNavAction: (action: WihFlow
                 <WihButton onPress={() => onNavAction("Cancel")}>Cancel</WihButton>
                 <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
         </StepLayout>
-)
+    )
 }
 
 function WihFlowNav({onNavAction, children}: {onNavAction: (action: WihFlowNavAction) => void, children?: ReactNode}) {
@@ -36,7 +36,7 @@ function WihFlowNav({onNavAction, children}: {onNavAction: (action: WihFlowNavAc
                 <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
                 <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
         </StepLayout>
-)
+    )
 }
 
 function WihFlowNavEnd({onNavAction, children}: {onNavAction: (action: WihFlowNavAction) => void, children?: ReactNode}) {
@@ -56,5 +56,5 @@ function StepLayout({children, content} : {children : ReactNode, content : React
                 {children}
             </WihView>
         </WihView>
-    );
+    )
 }

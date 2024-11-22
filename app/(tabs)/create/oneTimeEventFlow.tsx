@@ -1,4 +1,4 @@
-import {WihFlow, WihFlowComponent} from "@/components/wihFlow/wihFlow";
+import {WihFlow, WihFlowComponentProps} from "@/components/wihFlow/wihFlow";
 import {WihText, WihTitle} from "@/components/WihText";
 import {useRouter} from "expo-router";
 import React, {useCallback} from "react";
@@ -60,10 +60,10 @@ export default function OneTimeEventFlow() {
         callWihApi(body);
     }
 
-    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} components={components} />
+    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
-function titleStep({state, setState} : WihFlowComponent<OneTimeEvent>){
+function titleStep({state, setState} : WihFlowComponentProps<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Event Title</WihTitle>
@@ -74,7 +74,7 @@ function titleStep({state, setState} : WihFlowComponent<OneTimeEvent>){
     )
 }
 
-function dateStep({state, setState} : WihFlowComponent<OneTimeEvent>){
+function dateStep({state, setState} : WihFlowComponentProps<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Event Date & Time</WihTitle>
@@ -103,7 +103,7 @@ function dateStep({state, setState} : WihFlowComponent<OneTimeEvent>){
     )
 }
 
-function dinnerTimeStep({state, setState} : WihFlowComponent<OneTimeEvent>){
+function dinnerTimeStep({state, setState} : WihFlowComponentProps<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
@@ -116,7 +116,7 @@ function dinnerTimeStep({state, setState} : WihFlowComponent<OneTimeEvent>){
     )
 }
 
-function summaryStep({state} : WihFlowComponent<OneTimeEvent>){
+function summaryStep({state} : WihFlowComponentProps<OneTimeEvent>){
     return (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
