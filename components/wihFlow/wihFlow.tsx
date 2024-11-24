@@ -5,17 +5,15 @@ import { WihTitle } from "@/components/WihText";
 export interface WihFlowComponentProps<T> {
     state: T;
     setState: (changes: T) => void;
-    IsInvalid: boolean;
+    isInvalid: boolean;
 }
 
-export type WihFlowComponentType<T> = ComponentType<WihFlowComponent<T>>;
+export type WihFlowComponentType<T> = ComponentType<WihFlowComponentProps<T>>;
 
 export interface WihFlowStep<T> {
     component: WihFlowComponentType<T>;
     validate: (state: T) => boolean;
 }
-
-export type WihFlowComponent<T> = ComponentType<WihFlowComponentProps<T>>;
 
 
 export type WihFlowParam<T> = {
@@ -67,7 +65,7 @@ export function WihFlow<T extends object>({
 
     const CurrentComponent = currentStep.component;
     const element = CurrentComponent
-        ? <CurrentComponent state={state} setState={onStateChange} IsInvalid={!isValid} />
+        ? <CurrentComponent state={state} setState={onStateChange} isInvalid={!isValid} />
         : null;
 
     if (!element) {

@@ -1,4 +1,4 @@
-import { WihFlow, WihFlowComponentProps } from "@/components/wihFlow/wihFlow";
+import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
 import { WihText, WihTitle } from "@/components/WihText";
 import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
@@ -10,13 +10,6 @@ import { WihTextInput } from "@/components/input/WihInput";
 import { WihDateInput, WihTimeInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
 import { OneTimeEvent, OneTimeEventDto } from "@/constants/WihTypes";
-
-const components = [
-    titleStep,
-    dateStep,
-    dinnerTimeStep,
-    summaryStep
-];
 
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
@@ -62,19 +55,22 @@ export default function OneTimeEventFlow() {
     return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
-function titleStep({ state, setState }: WihFlowComponentProps<OneTimeEvent>) {
-    return (
+const titleStep : WihFlowStep<OneTimeEvent> = {
+    validate: (state: OneTimeEvent) => !!state.Title, /* TODO: check conditions for Title like max and min length */
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Event Title</WihTitle>
             <WihTextInput
                 value={state.Title}
-                onChangeText={(title) => setState({ Title: title })} />
+                onChangeText={(title) => setState({Title: title})}/>
+            {isInvalid && <WihText style={{color: "red"}}>Title must be between 5 - 10 characters</WihText> }
         </WihView>
     )
 }
 
-function dateStep({ state, setState }: WihFlowComponentProps<OneTimeEvent>) {
-    return (
+const dateStep : WihFlowStep<OneTimeEvent> = {
+    validate: (state: OneTimeEvent) => !!state.Date && !!state.StateTime && !!state.EndTime,
+    component: ({ state, setState }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Event Date & Time</WihTitle>
 
@@ -82,44 +78,53 @@ function dateStep({ state, setState }: WihFlowComponentProps<OneTimeEvent>) {
                 <WihText>Date:</WihText>
                 <WihDateInput
                     value={state.Date}
-                    onChange={(date) => setState({ Date: date })} />
+                    onChange={(date) => setState({Date: date})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>Start:</WihText>
                 <WihTimeInput
                     value={state.StateTime}
-                    onChange={(time) => setState({ StateTime: time })} />
+                    onChange={(time) => setState({StateTime: time})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>End:</WihText>
                 <WihTimeInput
                     value={state.EndTime}
-                    onChange={(time) => setState({ EndTime: time })} />
+                    onChange={(time) => setState({EndTime: time})}/>
             </WihView>
         </WihView>
     )
 }
 
-function dinnerTimeStep({ state, setState }: WihFlowComponentProps<OneTimeEvent>) {
-    return (
+const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
+    validate: (state: OneTimeEvent) => !!state.DinnerTime && state.PresenceType !== null,
+    component: ({ state, setState }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
             {/* TODO: Single Choice for PresenceType. But you can only select a time if you have selected "Late" */}
             <WihTimeInput
                 value={state.DinnerTime ?? undefined}
-                onChange={(time) => setState({ DinnerTime: time })}
-                disabled={state.PresenceType !== "Late"} />
+                onChange={(time) => setState({DinnerTime: time})}
+                disabled={state.PresenceType !== "Late"}/>
         </WihView>
     )
 }
 
-function summaryStep({ state }: WihFlowComponentProps<OneTimeEvent>) {
-    return (
+const summaryStep : WihFlowStep<OneTimeEvent> = {
+    validate: (_: OneTimeEvent) => true,
+    component: ({ state }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
         </WihView>
-    );
+    )
 }
+
+const components : Array<WihFlowStep<OneTimeEvent>> = [
+    titleStep,
+    dateStep,
+    dinnerTimeStep,
+    summaryStep
+];
