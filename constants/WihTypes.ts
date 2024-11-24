@@ -24,3 +24,21 @@ export type Tokens = {
     jwtToken: string | null;
     refreshToken: string | null;
 }
+
+export interface OneTimeEvent {
+    Title?: string;
+    Date?: Date;
+    StateTime?: Date;
+    EndTime?: Date;
+    PresenceType?: "Unknown" | "Late" | "NotPresent";
+    DinnerTime?: Date | null;
+}
+
+export interface OneTimeEventDto {
+    Title: string;
+    Date: string;
+    StateTime: string;
+    EndTime: string;
+    PresenceType: "Unknown" | "Default" | "Late" | "NotPresent";
+    DinnerTime: string | null;
+}

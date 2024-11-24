@@ -1,13 +1,14 @@
 import {Text} from "react-native";
 import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
-import {useState} from "react";
+import React, {useState} from "react";
 
-export interface WihDateInputProps {
+export interface WihDateTimeInputProps {
     value?: Date;
     onChange: (date: Date | undefined) => void;
+    disabled?: boolean;
 }
 
-export const WihDateInput = ({value, onChange}: WihDateInputProps) => {
+export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInputProps) => {
     const [show, setShow] = useState<boolean>(false);
 
     const onDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
@@ -20,11 +21,15 @@ export const WihDateInput = ({value, onChange}: WihDateInputProps) => {
         setShow(true);
     };
 
+    if(disabled){
+        return <Text style={{color: "grey"}}>dd-MM-yyyy</Text>
+    }
+
     const date = value ?? new Date(Date.now());
 
     return(
         <>
-            <Text onPress={showPicker}>selected: {date.toLocaleDateString()}</Text>
+            <Text onPress={showPicker}>{date.toLocaleDateString()}</Text>
             {show && (
                 <DateTimePicker
                     value={date}
@@ -37,7 +42,7 @@ export const WihDateInput = ({value, onChange}: WihDateInputProps) => {
     )
 }
 
-export const WihTimeInput = ({value, onChange}: WihDateInputProps) => {
+export const WihTimeInput = ({value, onChange, disabled = false}: WihDateTimeInputProps) => {
     const [show, setShow] = useState<boolean>(false);
 
     const onDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
@@ -50,11 +55,15 @@ export const WihTimeInput = ({value, onChange}: WihDateInputProps) => {
         setShow(true);
     };
 
+    if(disabled){
+        return <Text style={{color: "grey"}}>HH-mm</Text>
+    }
+
     const time = value ?? new Date(Date.now());
 
     return(
         <>
-            <Text onPress={showPicker}>selected: {time.toLocaleTimeString()}</Text>
+            <Text onPress={showPicker}>{time.toLocaleTimeString()}</Text>
             {show && (
                 <DateTimePicker
                     value={time}

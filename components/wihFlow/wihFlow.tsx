@@ -1,8 +1,8 @@
-import React, {ComponentType, useState} from "react";
-import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
-import { WihTitle} from "@/components/WihText";
+import React, { ComponentType, useState } from "react";
+import { WihFlowNavAction, WihFlowNavBar } from "@/components/wihFlow/WihFlowNavigation";
+import { WihTitle } from "@/components/WihText";
 
-export interface WihFlowComponent<T> {
+export interface WihFlowComponentProps<T> {
     state: T;
     setState: (changes: T) => void;
     IsInvalid: boolean;
@@ -15,6 +15,9 @@ export interface WihFlowStep<T> {
     validate: (state: T) => boolean;
 }
 
+export type WihFlowComponent<T> = ComponentType<WihFlowComponentProps<T>>;
+
+
 export type WihFlowParam<T> = {
     initValue?: T;
     onFinish: (state: T) => void;
@@ -23,27 +26,27 @@ export type WihFlowParam<T> = {
 }
 
 export function WihFlow<T extends object>({
-  initValue = {} as T,
-  onFinish,
-  onCancel,
-  steps
-} : WihFlowParam<T>) {
+    initValue = {} as T,
+    onFinish,
+    onCancel,
+    steps
+}: WihFlowParam<T>) {
     const [state, setState] = useState<T>(initValue);
     const [currentStepNumber, setStep] = useState<number>(0);
     const [isValid, setIsValid] = useState<boolean>(false);
 
     const currentStep = steps[currentStepNumber];
 
-    function onNavAction(action : WihFlowNavAction) {
+    function onNavAction(action: WihFlowNavAction) {
         setIsValid(currentStep.validate(state));
         switch (action) {
             case "Next":
-                if(isValid){
+                if (isValid) {
                     setStep(currentStepNumber + 1);
                 }
                 break;
             case "Finish":
-                if(isValid){
+                if (isValid) {
                     onFinish(state);
                 }
                 break;
@@ -58,16 +61,16 @@ export function WihFlow<T extends object>({
         }
     }
 
-    function onStateChange(changes: T){
-        setState({...state, ...changes});
+    function onStateChange(changes: T) {
+        setState({ ...state, ...changes });
     }
 
     const CurrentComponent = currentStep.component;
     const element = CurrentComponent
-        ?  <CurrentComponent state={state} setState={onStateChange} IsInvalid={!isValid} />
+        ? <CurrentComponent state={state} setState={onStateChange} IsInvalid={!isValid} />
         : null;
 
-    if(!element){
+    if (!element) {
         return <WihTitle>Oops, no more steps</WihTitle>
     }
 
