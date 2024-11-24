@@ -68,7 +68,7 @@ export default function OneTimeEventFlow() {
         callWihApi(body);
     }
 
-    return <WihFlow<OneTimeEvent> onFinish={onFinish} onCancel={onCancel} components={components} />
+    return <WihFlow<OneTimeEvent> onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
 function titleStep({state, setState} : WihFlowComponent<OneTimeEvent>){

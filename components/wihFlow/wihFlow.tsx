@@ -1,42 +1,58 @@
 import React, {ComponentType, useState} from "react";
 import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
-import {WihText, WihTitle} from "@/components/WihText";
-import Interceptors from "undici/types/interceptors";
-import retry = Interceptors.retry;
+import { WihTitle} from "@/components/WihText";
 
 export interface WihFlowComponent<T> {
     state: T;
     setState: (changes: T) => void;
+    IsInvalid: boolean;
+}
+
+export type WihFlowComponentType<T> = ComponentType<WihFlowComponent<T>>;
+
+export interface WihFlowStep<T> {
+    component: WihFlowComponentType<T>;
+    validate: (state: T) => boolean;
 }
 
 export type WihFlowParam<T> = {
     initValue?: T;
     onFinish: (state: T) => void;
     onCancel: () => void;
-    components: Array<ComponentType<WihFlowComponent<T>>>;
+    steps: Array<WihFlowStep<T>>;
 }
 
 export function WihFlow<T extends object>({
   initValue = {} as T,
   onFinish,
   onCancel,
-  components
+  steps
 } : WihFlowParam<T>) {
     const [state, setState] = useState<T>(initValue);
-    const [currentStep, setStep] = useState<number>(0);
+    const [currentStepNumber, setStep] = useState<number>(0);
+    const [isValid, setIsValid] = useState<boolean>(false);
+
+    const currentStep = steps[currentStepNumber];
 
     function onNavAction(action : WihFlowNavAction) {
+        setIsValid(currentStep.validate(state));
         switch (action) {
             case "Next":
-                setStep(currentStep + 1);
+                if(isValid){
+                    setStep(currentStepNumber + 1);
+                }
                 break;
             case "Finish":
-                onFinish(state);
+                if(isValid){
+                    onFinish(state);
+                }
                 break;
             case "Back":
-                setStep(currentStep - 1);
+                setIsValid(true);
+                setStep(currentStepNumber - 1);
                 break;
             case "Cancel":
+                setIsValid(true);
                 onCancel();
                 break;
         }
@@ -46,8 +62,10 @@ export function WihFlow<T extends object>({
         setState({...state, ...changes});
     }
 
-    const CurrentComponent = components[currentStep];
-    const element = CurrentComponent  ?  <CurrentComponent state={state} setState={onStateChange} /> : null;
+    const CurrentComponent = currentStep.component;
+    const element = CurrentComponent
+        ?  <CurrentComponent state={state} setState={onStateChange} IsInvalid={!isValid} />
+        : null;
 
     if(!element){
         return <WihTitle>Oops, no more steps</WihTitle>
@@ -55,8 +73,8 @@ export function WihFlow<T extends object>({
 
     return (
         <WihFlowNavBar
-            currentStep={currentStep}
-            lastStep={components.length - 1}
+            currentStep={currentStepNumber}
+            lastStep={steps.length - 1}
             onNavAction={onNavAction}
             children={element} />
     );
