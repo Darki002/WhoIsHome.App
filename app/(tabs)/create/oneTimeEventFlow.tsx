@@ -70,7 +70,7 @@ const titleStep : WihFlowStep<OneTimeEvent> = {
 
 const dateStep : WihFlowStep<OneTimeEvent> = {
     validate: (state: OneTimeEvent) => !!state.Date && !!state.StateTime && !!state.EndTime,
-    component: ({ state, setState }: WihFlowComponentProps<OneTimeEvent>) => (
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Event Date & Time</WihTitle>
 
@@ -80,6 +80,7 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
                     value={state.Date}
                     onChange={(date) => setState({Date: date})}/>
             </WihView>
+            {isInvalid && !state.Date && <WihText style={{color: "red"}}>Date is required</WihText> }
 
             <WihView flex="row">
                 <WihText>Start:</WihText>
@@ -87,6 +88,7 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
                     value={state.StateTime}
                     onChange={(time) => setState({StateTime: time})}/>
             </WihView>
+            {isInvalid && !state.StateTime && <WihText style={{color: "red"}}>StateTime is required</WihText> }
 
             <WihView flex="row">
                 <WihText>End:</WihText>
@@ -94,20 +96,23 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
                     value={state.EndTime}
                     onChange={(time) => setState({EndTime: time})}/>
             </WihView>
+            {isInvalid && !state.EndTime && <WihText style={{color: "red"}}>EndTime is required</WihText> }
         </WihView>
     )
 }
 
 const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
     validate: (state: OneTimeEvent) => !!state.DinnerTime && state.PresenceType !== null,
-    component: ({ state, setState }: WihFlowComponentProps<OneTimeEvent>) => (
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
             {/* TODO: Single Choice for PresenceType. But you can only select a time if you have selected "Late" */}
+            {isInvalid && state.PresenceType === null && !state.EndTime && <WihText style={{color: "red"}}>PresenceType is required</WihText> }
             <WihTimeInput
                 value={state.DinnerTime ?? undefined}
                 onChange={(time) => setState({DinnerTime: time})}
                 disabled={state.PresenceType !== "Late"}/>
+            {isInvalid && !state.DinnerTime && !state.EndTime && <WihText style={{color: "red"}}>DinnerTime is required</WihText> }
         </WihView>
     )
 }
