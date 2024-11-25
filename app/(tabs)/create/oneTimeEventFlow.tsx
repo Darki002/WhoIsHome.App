@@ -9,7 +9,8 @@ import Toast from "react-native-root-toast";
 import { WihTextInput } from "@/components/input/WihInput";
 import { WihDateInput, WihTimeInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
-import { OneTimeEvent, OneTimeEventDto } from "@/constants/WihTypes";
+import {OneTimeEvent, OneTimeEventDto, PresenceType, PresenceTypes} from "@/constants/WihTypes";
+import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
@@ -101,12 +102,23 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
     )
 }
 
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", display: "Unknown"},
+    {value: "Late", display: "Late"},
+    {value: "NotPresent", display: "NotPresent"}
+]
+
 const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
     validate: (state: OneTimeEvent) => !!state.DinnerTime && state.PresenceType !== null,
     component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
-            {/* TODO: Single Choice for PresenceType. But you can only select a time if you have selected "Late" */}
+            
+            <WihSingleChoice<PresenceType>
+                value={"Unknown"}
+                options={options}
+                onChange={(c : PresenceType | null) => setState({PresenceType: c ?? undefined})} />
+            
             {isInvalid && state.PresenceType === null && !state.EndTime && <WihText style={{color: "red"}}>PresenceType is required</WihText> }
             <WihTimeInput
                 value={state.DinnerTime ?? undefined}

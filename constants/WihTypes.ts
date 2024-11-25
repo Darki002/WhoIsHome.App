@@ -30,7 +30,7 @@ export interface OneTimeEvent {
     Date?: Date;
     StateTime?: Date;
     EndTime?: Date;
-    PresenceType?: "Unknown" | "Late" | "NotPresent";
+    PresenceType?: PresenceType;
     DinnerTime?: Date | null;
 }
 
@@ -39,6 +39,10 @@ export interface OneTimeEventDto {
     Date: string;
     StateTime: string;
     EndTime: string;
-    PresenceType: "Unknown" | "Default" | "Late" | "NotPresent";
+    PresenceType: PresenceType;
     DinnerTime: string | null;
 }
+
+export type PresenceType = "Unknown" | "Default" | "Late" | "NotPresent";
+
+export const PresenceTypes : Array<PresenceType> = ["Unknown", "Default", "Late", "NotPresent"];
