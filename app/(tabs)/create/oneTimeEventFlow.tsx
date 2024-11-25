@@ -9,7 +9,7 @@ import Toast from "react-native-root-toast";
 import { WihTextInput } from "@/components/input/WihInput";
 import { WihDateInput, WihTimeInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
-import {OneTimeEvent, OneTimeEventDto, PresenceType, PresenceTypes} from "@/constants/WihTypes";
+import {OneTimeEvent, OneTimeEventDto, PresenceType} from "@/constants/WihTypes";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 
 const defaultOneTimeEvent: OneTimeEvent = {
