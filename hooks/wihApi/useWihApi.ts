@@ -14,7 +14,7 @@ export default function useWihApi<T>({endpoint, method, version = 1, body} : Wih
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens : Tokens | null) {
+    function onNewTokens(tokens : Tokens | undefined) {
         if(tokens){
             onNewSession(tokens);
         }

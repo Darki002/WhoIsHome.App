@@ -9,19 +9,20 @@ import Toast from "react-native-root-toast";
 import { WihTextInput } from "@/components/input/WihInput";
 import { WihDateInput, WihTimeInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
-import {OneTimeEvent, OneTimeEventDto, PresenceType} from "@/constants/WihTypes";
+import {PresenceType, RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 
-const defaultOneTimeEvent: OneTimeEvent = {
+const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
-    Date: new Date(),
+    FirstOccurance: undefined,
+    LastOccurance: undefined,
     StateTime: new Date(),
     EndTime: new Date(),
     PresenceType: "Unknown",
     DinnerTime: null,
 };
 
-export default function OneTimeEventFlow() {
+export default function RepeatedEventFlow() {
     const router = useRouter();
 
     const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
@@ -37,15 +38,16 @@ export default function OneTimeEventFlow() {
     }, []);
 
     const callWihApi = useWihApiCallable({
-        endpoint: "OneTimeEvent",
+        endpoint: "RepeatedEvent",
         method: "POST",
         onResponse
     });
 
-    const onFinish = (state: OneTimeEvent) => {
-        const body: OneTimeEventDto = {
+    const onFinish = (state: RepeatedEvent) => {
+        const body: RepeatedEventDto = {
             Title: state.Title!,
-            Date: formatDate(state.Date!),
+            FirstOccurance: formatDate(state.FirstOccurance!),
+            LastOccurance: formatDate(state.LastOccurance!),
             StateTime: formatTime(state.StateTime!),
             EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
@@ -53,12 +55,12 @@ export default function OneTimeEventFlow() {
         }
         callWihApi(body);
     }
-    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
+    return <WihFlow<RepeatedEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
-const titleStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.Title, /* TODO: check conditions for Title like max and min length */
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
+const titleStep : WihFlowStep<RepeatedEvent> = {
+    validate: (state: RepeatedEvent) => !!state.Title, /* TODO: check conditions for Title like max and min length */
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Event Title</WihTitle>
             <WihTextInput
@@ -69,19 +71,27 @@ const titleStep : WihFlowStep<OneTimeEvent> = {
     )
 }
 
-const dateStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.Date && !!state.StateTime && !!state.EndTime,
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
+const dateStep : WihFlowStep<RepeatedEvent> = {
+    validate: (state: RepeatedEvent) => !!state.FirstOccurance && !!state.LastOccurance && !!state.StateTime && !!state.EndTime,
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Event Date & Time</WihTitle>
 
             <WihView flex="row">
-                <WihText>Date:</WihText>
+                <WihText>First Occurance:</WihText>
                 <WihDateInput
-                    value={state.Date}
-                    onChange={(date) => setState({Date: date})}/>
+                    value={state.FirstOccurance}
+                    onChange={(date) => setState({FirstOccurance: date})}/>
             </WihView>
-            {isInvalid && !state.Date && <WihText style={{color: "red"}}>Date is required</WihText> }
+            {isInvalid && !state.FirstOccurance && <WihText style={{color: "red"}}>FirstOccurance is required</WihText> }
+
+            <WihView flex="row">
+                <WihText>Last Occurance:</WihText>
+                <WihDateInput
+                    value={state.LastOccurance}
+                    onChange={(date) => setState({LastOccurance: date})}/>
+            </WihView>
+            {isInvalid && !state.LastOccurance && <WihText style={{color: "red"}}>LastOccurance is required</WihText> }
 
             <WihView flex="row">
                 <WihText>Start:</WihText>
@@ -108,17 +118,17 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", display: "NotPresent"}
 ]
 
-const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.DinnerTime && state.PresenceType !== null,
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
+const dinnerTimeStep : WihFlowStep<RepeatedEvent> = {
+    validate: (state: RepeatedEvent) => !!state.DinnerTime && state.PresenceType !== null,
+    component: ({ state, setState, isInvalid }: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
-            
+
             <WihSingleChoice<PresenceType>
                 value={"Unknown"}
                 options={options}
                 onChange={(c : PresenceType | null) => setState({PresenceType: c ?? undefined})} />
-            
+
             {isInvalid && state.PresenceType === null && !state.EndTime && <WihText style={{color: "red"}}>PresenceType is required</WihText> }
             <WihTimeInput
                 value={state.DinnerTime ?? undefined}
@@ -129,9 +139,9 @@ const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
     )
 }
 
-const summaryStep : WihFlowStep<OneTimeEvent> = {
-    validate: (_: OneTimeEvent) => true,
-    component: ({ state }: WihFlowComponentProps<OneTimeEvent>) => (
+const summaryStep : WihFlowStep<RepeatedEvent> = {
+    validate: (_: RepeatedEvent) => true,
+    component: ({ state }: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
@@ -139,7 +149,7 @@ const summaryStep : WihFlowStep<OneTimeEvent> = {
     )
 }
 
-const components : Array<WihFlowStep<OneTimeEvent>> = [
+const components : Array<WihFlowStep<RepeatedEvent>> = [
     titleStep,
     dateStep,
     dinnerTimeStep,

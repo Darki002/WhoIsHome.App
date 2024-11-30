@@ -43,6 +43,26 @@ export interface OneTimeEventDto {
     DinnerTime: string | null;
 }
 
+export interface RepeatedEvent {
+    Title?: string;
+    FirstOccurance?: Date;
+    LastOccurance?: Date;
+    StateTime?: Date;
+    EndTime?: Date;
+    PresenceType?: PresenceType;
+    DinnerTime?: Date | null;
+}
+
+export interface RepeatedEventDto {
+    Title?: string;
+    FirstOccurance?: string;
+    LastOccurance?: string;
+    StateTime?: string;
+    EndTime?: string;
+    PresenceType?: PresenceType;
+    DinnerTime?: string | null;
+}
+
 export type PresenceType = "Unknown" | "Default" | "Late" | "NotPresent";
 
 export const PresenceTypes : Array<PresenceType> = ["Unknown", "Default", "Late", "NotPresent"];

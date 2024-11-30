@@ -34,7 +34,7 @@ const register = () => {
             password
         }
 
-        const response = await wihFetch<string>({endpoint: "/Auth/Register", method: "POST", body });
+        const response = await wihFetch<string>({endpoint: "Auth/Register", method: "POST", body });
         if (response.hasError) {
             setError(response.error!);
             return;
