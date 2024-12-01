@@ -45,8 +45,8 @@ export interface OneTimeEventDto {
 
 export interface RepeatedEvent {
     Title?: string;
-    FirstOccurance?: Date;
-    LastOccurance?: Date;
+    FirstOccurrence?: Date;
+    LastOccurrence?: Date;
     StateTime?: Date;
     EndTime?: Date;
     PresenceType?: PresenceType;
@@ -55,8 +55,8 @@ export interface RepeatedEvent {
 
 export interface RepeatedEventDto {
     Title?: string;
-    FirstOccurance?: string;
-    LastOccurance?: string;
+    FirstOccurrence?: string;
+    LastOccurrence?: string;
     StateTime?: string;
     EndTime?: string;
     PresenceType?: PresenceType;

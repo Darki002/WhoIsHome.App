@@ -14,8 +14,8 @@ import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
-    FirstOccurance: undefined,
-    LastOccurance: undefined,
+    FirstOccurrence: undefined,
+    LastOccurrence: undefined,
     StateTime: new Date(),
     EndTime: new Date(),
     PresenceType: "Unknown",
@@ -46,8 +46,8 @@ export default function RepeatedEventFlow() {
     const onFinish = (state: RepeatedEvent) => {
         const body: RepeatedEventDto = {
             Title: state.Title!,
-            FirstOccurance: formatDate(state.FirstOccurance!),
-            LastOccurance: formatDate(state.LastOccurance!),
+            FirstOccurrence: formatDate(state.FirstOccurrence!),
+            LastOccurrence: formatDate(state.LastOccurrence!),
             StateTime: formatTime(state.StateTime!),
             EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
@@ -72,7 +72,7 @@ const titleStep : WihFlowStep<RepeatedEvent> = {
 }
 
 const dateStep : WihFlowStep<RepeatedEvent> = {
-    validate: (state: RepeatedEvent) => !!state.FirstOccurance && !!state.LastOccurance && !!state.StateTime && !!state.EndTime,
+    validate: (state: RepeatedEvent) => !!state.FirstOccurrence && !!state.LastOccurrence && !!state.StateTime && !!state.EndTime,
     component: ({ state, setState, isInvalid }: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Event Date & Time</WihTitle>
@@ -80,18 +80,18 @@ const dateStep : WihFlowStep<RepeatedEvent> = {
             <WihView flex="row">
                 <WihText>First Occurance:</WihText>
                 <WihDateInput
-                    value={state.FirstOccurance}
-                    onChange={(date) => setState({FirstOccurance: date})}/>
+                    value={state.FirstOccurrence}
+                    onChange={(date) => setState({FirstOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.FirstOccurance && <WihText style={{color: "red"}}>FirstOccurance is required</WihText> }
+            {isInvalid && !state.FirstOccurrence && <WihText style={{color: "red"}}>FirstOccurance is required</WihText> }
 
             <WihView flex="row">
                 <WihText>Last Occurance:</WihText>
                 <WihDateInput
-                    value={state.LastOccurance}
-                    onChange={(date) => setState({LastOccurance: date})}/>
+                    value={state.LastOccurrence}
+                    onChange={(date) => setState({LastOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.LastOccurance && <WihText style={{color: "red"}}>LastOccurance is required</WihText> }
+            {isInvalid && !state.LastOccurrence && <WihText style={{color: "red"}}>LastOccurance is required</WihText> }
 
             <WihView flex="row">
                 <WihText>Start:</WihText>
@@ -145,6 +145,11 @@ const summaryStep : WihFlowStep<RepeatedEvent> = {
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
+            <WihText>First: {state.FirstOccurrence?.toLocaleDateString()}</WihText>
+            <WihText>Last: {state.LastOccurrence?.toLocaleDateString()}</WihText>
+            <WihText>Time: {state.StateTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+            <WihText>PresenceType: {state.PresenceType}</WihText>
+            <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
         </WihView>
     )
 }

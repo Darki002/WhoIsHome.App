@@ -135,6 +135,10 @@ const summaryStep : WihFlowStep<OneTimeEvent> = {
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
+            <WihText>Date: {state.Date?.toLocaleDateString()}</WihText>
+            <WihText>Time: {state.StateTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+            <WihText>PresenceType: {state.PresenceType}</WihText>
+            <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
         </WihView>
     )
 }
