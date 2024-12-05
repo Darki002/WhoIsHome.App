@@ -11,7 +11,7 @@ const Index = () => {
             <WihText>Hello Create!</WihText>
 
             <WihButton onPress={() => router.push("/(tabs)/create/oneTimeEventFlow")} >One Time</WihButton>
-            <WihButton onPress={() => router.push("")} >Repeated</WihButton> {/* TODO: Route to correct flow */}
+            <WihButton onPress={() => router.push("/(tabs)/create/repeatedEventFlow")} >Repeated</WihButton>
         </WihView >
     );
 }
