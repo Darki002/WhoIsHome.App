@@ -1,17 +1,14 @@
 import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
 import { WihText, WihTitle } from "@/components/WihText";
-import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import WihView from "@/components/WihView";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import { WihResponse } from "@/components/api/WihApi";
-import Toast from "react-native-root-toast";
 import { WihDateInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
 import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes";
-import TitleStep from "@/components/createSteps/TitleStep";
-import DinnerTimeStep from "@/components/createSteps/DinnerTimeStep";
-import {DateStepBase, DateValidationBase} from "@/components/createSteps/DateStepBase";
+import TitleStep from "@/components/createFlow/TitleStep";
+import DinnerTimeStep from "@/components/createFlow/DinnerTimeStep";
+import {DateStepBase, DateValidationBase} from "@/components/createFlow/DateStepBase";
+import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -24,25 +21,7 @@ const defaultOneTimeEvent: RepeatedEvent = {
 };
 
 export default function RepeatedEventFlow() {
-    const router = useRouter();
-
-    const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
-
-    const onResponse = useCallback((response: WihResponse | null) => {
-        if (!response || response.hasError) {
-            console.error(response?.error ?? "Unknown Error");
-            Toast.show('Failed to create Event', {
-                duration: Toast.durations.SHORT,
-            });
-        }
-        router.replace("/(tabs)");
-    }, []);
-
-    const callWihApi = useWihApiCallable({
-        endpoint: "RepeatedEvent",
-        method: "POST",
-        onResponse
-    });
+    const [callWihApi, onCancel] = useCreateFlowCallbacks("RepeatedEvent");
 
     const onFinish = useCallback((state: RepeatedEvent) => {
         const body: RepeatedEventDto = {
