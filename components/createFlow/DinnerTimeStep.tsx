@@ -13,7 +13,7 @@ const options : Array<WihOption<PresenceType>> = [
 ]
 
 const DinnerTimeStep : WihFlowStep<EventBase> = {
-    validate: (state: EventBase) => !!state.DinnerTime && state.PresenceType !== null,
+    validate: (state: EventBase) => !!state.DinnerTime && state.PresenceType !== null && state.DinnerTime > state.EndTime!,
     component: ({ state, setState, isInvalid }: WihFlowComponentProps<EventBase>) => (
         <WihView center="full">
             <WihTitle>Dinner Time?</WihTitle>
