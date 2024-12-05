@@ -5,6 +5,7 @@ export default function Layout() {
         <Stack>
             <Stack.Screen name="index" options={{headerShown: false}} />
             <Stack.Screen name="oneTimeEventFlow" options={{headerShown: false}} />
+            <Stack.Screen name="repeatedEventFlow" options={{headerShown: false}} />
         </Stack>
     );
 }
