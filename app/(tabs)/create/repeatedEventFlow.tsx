@@ -43,7 +43,7 @@ export default function RepeatedEventFlow() {
         onResponse
     });
 
-    const onFinish = (state: RepeatedEvent) => {
+    const onFinish = useCallback((state: RepeatedEvent) => {
         const body: RepeatedEventDto = {
             Title: state.Title!,
             FirstOccurrence: formatDate(state.FirstOccurrence!),
@@ -54,7 +54,8 @@ export default function RepeatedEventFlow() {
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }
         callWihApi(body);
-    }
+    }, [callWihApi]);
+
     return <WihFlow<RepeatedEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 

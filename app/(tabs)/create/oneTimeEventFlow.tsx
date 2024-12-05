@@ -42,7 +42,7 @@ export default function OneTimeEventFlow() {
         onResponse
     });
 
-    const onFinish = (state: OneTimeEvent) => {
+    const onFinish = useCallback((state: OneTimeEvent) => {
         const body: OneTimeEventDto = {
             Title: state.Title!,
             Date: formatDate(state.Date!),
@@ -52,7 +52,8 @@ export default function OneTimeEventFlow() {
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }
         callWihApi(body);
-    }
+    }, [callWihApi]);
+
     return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
