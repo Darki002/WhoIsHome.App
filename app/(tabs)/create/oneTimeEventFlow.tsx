@@ -6,11 +6,12 @@ import WihView from "@/components/WihView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import { WihResponse } from "@/components/api/WihApi";
 import Toast from "react-native-root-toast";
-import { WihTextInput } from "@/components/input/WihInput";
-import { WihDateInput, WihTimeInput } from "@/components/input/WihDateTimeInput";
+import { WihDateInput } from "@/components/input/WihDateTimeInput";
 import { formatDate, formatTime } from "@/components/helper/datetimehelper";
-import {OneTimeEvent, OneTimeEventDto, PresenceType} from "@/constants/WihTypes";
-import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
+import {OneTimeEvent, OneTimeEventDto} from "@/constants/WihTypes";
+import TitleStep from "@/components/createSteps/TitleStep";
+import DinnerTimeStep from "@/components/createSteps/DinnerTimeStep";
+import {DateStepBase, DateValidationBase} from "@/components/createSteps/DateStepBase";
 
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
@@ -26,7 +27,7 @@ export default function OneTimeEventFlow() {
 
     const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
 
-    const onResponse = useCallback((response: WihResponse<{}> | null) => {
+    const onResponse = useCallback((response: WihResponse | null) => {
         if (!response || response.hasError) {
             console.error(response?.error ?? "Unknown Error");
             Toast.show('Failed to create Event', {
@@ -57,25 +58,10 @@ export default function OneTimeEventFlow() {
     return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
 }
 
-const titleStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.Title, /* TODO: check conditions for Title like max and min length */
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
-        <WihView center="full">
-            <WihTitle>Event Title</WihTitle>
-            <WihTextInput
-                value={state.Title}
-                onChangeText={(title) => setState({Title: title})}/>
-            {isInvalid && <WihText style={{color: "red"}}>Title must be between 5 - 10 characters</WihText> }
-        </WihView>
-    )
-}
-
 const dateStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.Date && !!state.StateTime && !!state.EndTime,
+    validate: (state: OneTimeEvent) => !!state.Date && DateValidationBase(state),
     component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
-        <WihView center="full">
-            <WihTitle>Event Date & Time</WihTitle>
-
+        <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
             <WihView flex="row">
                 <WihText>Date:</WihText>
                 <WihDateInput
@@ -83,50 +69,7 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
                     onChange={(date) => setState({Date: date})}/>
             </WihView>
             {isInvalid && !state.Date && <WihText style={{color: "red"}}>Date is required</WihText> }
-
-            <WihView flex="row">
-                <WihText>Start:</WihText>
-                <WihTimeInput
-                    value={state.StateTime}
-                    onChange={(time) => setState({StateTime: time})}/>
-            </WihView>
-            {isInvalid && !state.StateTime && <WihText style={{color: "red"}}>StateTime is required</WihText> }
-
-            <WihView flex="row">
-                <WihText>End:</WihText>
-                <WihTimeInput
-                    value={state.EndTime}
-                    onChange={(time) => setState({EndTime: time})}/>
-            </WihView>
-            {isInvalid && !state.EndTime && <WihText style={{color: "red"}}>EndTime is required</WihText> }
-        </WihView>
-    )
-}
-
-const options : Array<WihOption<PresenceType>> = [
-    {value: "Unknown", display: "Unknown"},
-    {value: "Late", display: "Late"},
-    {value: "NotPresent", display: "NotPresent"}
-]
-
-const dinnerTimeStep : WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.DinnerTime && state.PresenceType !== null,
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
-        <WihView center="full">
-            <WihTitle>Dinner Time?</WihTitle>
-            
-            <WihSingleChoice<PresenceType>
-                value={"Unknown"}
-                options={options}
-                onChange={(c : PresenceType | null) => setState({PresenceType: c ?? undefined})} />
-            
-            {isInvalid && state.PresenceType === null && !state.EndTime && <WihText style={{color: "red"}}>PresenceType is required</WihText> }
-            <WihTimeInput
-                value={state.DinnerTime ?? undefined}
-                onChange={(time) => setState({DinnerTime: time})}
-                disabled={state.PresenceType !== "Late"}/>
-            {isInvalid && !state.DinnerTime && !state.EndTime && <WihText style={{color: "red"}}>DinnerTime is required</WihText> }
-        </WihView>
+        </DateStepBase>
     )
 }
 
@@ -145,8 +88,8 @@ const summaryStep : WihFlowStep<OneTimeEvent> = {
 }
 
 const components : Array<WihFlowStep<OneTimeEvent>> = [
-    titleStep,
+    TitleStep,
     dateStep,
-    dinnerTimeStep,
+    DinnerTimeStep,
     summaryStep
 ];

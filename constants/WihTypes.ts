@@ -25,13 +25,16 @@ export type Tokens = {
     refreshToken: string | null;
 }
 
-export interface OneTimeEvent {
+export interface EventBase {
     Title?: string;
-    Date?: Date;
     StateTime?: Date;
     EndTime?: Date;
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
+}
+
+export interface OneTimeEvent extends EventBase {
+    Date?: Date;
 }
 
 export interface OneTimeEventDto {
@@ -43,14 +46,9 @@ export interface OneTimeEventDto {
     DinnerTime: string | null;
 }
 
-export interface RepeatedEvent {
-    Title?: string;
+export interface RepeatedEvent extends EventBase {
     FirstOccurrence?: Date;
     LastOccurrence?: Date;
-    StateTime?: Date;
-    EndTime?: Date;
-    PresenceType?: PresenceType;
-    DinnerTime?: Date | null;
 }
 
 export interface RepeatedEventDto {

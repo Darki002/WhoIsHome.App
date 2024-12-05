@@ -9,7 +9,7 @@ export interface WihFetchProps {
     onNewTokens?: (newTokens: Tokens | undefined) => void;
 }
 
-export interface WihResponse<T> {
+export interface WihResponse<T = {}> {
     status: number;
     hasError: boolean;
     error: string | null;
