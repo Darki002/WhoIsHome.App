@@ -49,7 +49,7 @@ const dateStep : WihFlowStep<RepeatedEvent> = {
                     value={state.FirstOccurrence}
                     onChange={(date) => setState({FirstOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.FirstOccurrence && <WihText style={{color: "red"}}>FirstOccurance is required</WihText> }
+            {isInvalid && !state.FirstOccurrence && <WihText style={{color: "red"}}>FirstOccurrence is required</WihText> }
 
             <WihView flex="row">
                 <WihText>Last Occurrence:</WihText>
@@ -57,7 +57,7 @@ const dateStep : WihFlowStep<RepeatedEvent> = {
                     value={state.LastOccurrence}
                     onChange={(date) => setState({LastOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.LastOccurrence && <WihText style={{color: "red"}}>LastOccurance is required</WihText> }
+            {isInvalid && !state.LastOccurrence && <WihText style={{color: "red"}}>LastOccurrence is required</WihText> }
         </DateStepBase>
     )
 }
