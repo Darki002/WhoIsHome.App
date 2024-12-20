@@ -50,10 +50,12 @@ function WihFlowNavEnd({onNavAction, children}: {onNavAction: (action: WihFlowNa
 
 function StepLayout({children, content} : {children : ReactNode, content : ReactNode}){
     return (
-        <WihView center="full" flex="column" gap={15}>
-            {content}
-            <WihView flex="row" gap={15}>
-                {children}
+        <WihView center="full">
+            <WihView flex="column" style={{alignItems: "center"}} gap={15}>
+                {content}
+                <WihView flex="row" gap={15}>
+                    {children}
+                </WihView>
             </WihView>
         </WihView>
     )

@@ -37,7 +37,7 @@ export function WihFlow<T extends object>({
 
     function onNavAction(action: WihFlowNavAction) {
         console.log(action);
-        setIsValid(currentStep.validate(state));
+        setIsValid(currentStep.validate(state)); // TODO does not reset properly
         switch (action) {
             case "Next":
                 if (isValid) {
