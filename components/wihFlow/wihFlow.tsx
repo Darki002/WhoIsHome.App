@@ -31,11 +31,12 @@ export function WihFlow<T extends object>({
 }: WihFlowParam<T>) {
     const [state, setState] = useState<T>(initValue);
     const [currentStepNumber, setStep] = useState<number>(0);
-    const [isValid, setIsValid] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(false); // TODO always shows instantly an error
 
     const currentStep = steps[currentStepNumber];
 
     function onNavAction(action: WihFlowNavAction) {
+        console.log(action);
         setIsValid(currentStep.validate(state));
         switch (action) {
             case "Next":
