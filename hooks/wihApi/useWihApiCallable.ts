@@ -10,11 +10,16 @@ export interface WihApiProps<T> {
     version?: number;
 }
 
-export default function useWihApiCallable<T = {}>({endpoint, onResponse, method, version = 1} : WihApiProps<T>) : (body : any) => void {
+export default function useWihApiCallable<T = {}>({
+                                                      endpoint,
+                                                      onResponse,
+                                                      method,
+                                                      version = 1
+                                                  }: WihApiProps<T>): (body: any) => void {
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens : Tokens | undefined) {
-        if(tokens){
+    function onNewTokens(tokens: Tokens | undefined) {
+        if (tokens) {
             onNewSession(tokens);
         }
     }

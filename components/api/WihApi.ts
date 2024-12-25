@@ -16,7 +16,14 @@ export interface WihResponse<T = {}> {
     response?: T;
 }
 
-export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody>> => {
+export const wihFetch = async <TBody>({
+                                          endpoint,
+                                          method = "GET",
+                                          body,
+                                          tokens,
+                                          version = 1,
+                                          onNewTokens
+                                      }: WihFetchProps): Promise<WihResponse<TBody>> => {
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
     if (tokens && response.hasError && response.status === 401) {
@@ -46,7 +53,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
     headers.append("Content-Type", "application/json");
     headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
 
-    if(tokens){
+    if (tokens) {
         headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
     }
 
@@ -61,8 +68,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
         });
 
         return await handleResponse(response);
-    }
-    catch (error: any) {
+    } catch (error: any) {
         console.error(`Request failed: ${error.message}`);
         return ({
             status: 0,
@@ -89,8 +95,7 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
         });
 
         return await handleResponse<Tokens>(response);
-    }
-    catch (error: any) {
+    } catch (error: any) {
         console.error(`Request failed: ${error.message}`);
         return ({
             status: 0,
@@ -131,6 +136,6 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     }
 }
 
-function getUri(endpoint: string, version: number = 1) : string {
+function getUri(endpoint: string, version: number = 1): string {
     return `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
 }

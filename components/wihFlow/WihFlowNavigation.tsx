@@ -12,43 +12,52 @@ export interface WihFlowNavigationProps {
 }
 
 export function WihFlowNavBar({currentStep, lastStep, onNavAction, children}: WihFlowNavigationProps) {
-    if(currentStep == 0){
-        return <WihFlowNavStart onNavAction={onNavAction} children={children} />;
+    if (currentStep == 0) {
+        return <WihFlowNavStart onNavAction={onNavAction} children={children}/>;
     }
-    if(currentStep == lastStep){
-        return <WihFlowNavEnd onNavAction={onNavAction} children={children} />;
+    if (currentStep == lastStep) {
+        return <WihFlowNavEnd onNavAction={onNavAction} children={children}/>;
     }
-    return <WihFlowNav onNavAction={onNavAction} children={children} />;
+    return <WihFlowNav onNavAction={onNavAction} children={children}/>;
 }
 
-function WihFlowNavStart({onNavAction, children}: {onNavAction: (action: WihFlowNavAction) => void, children?: ReactNode}) {
+function WihFlowNavStart({onNavAction, children}: {
+    onNavAction: (action: WihFlowNavAction) => void,
+    children?: ReactNode
+}) {
     return (
         <StepLayout content={children}>
-                <WihButton onPress={() => onNavAction("Cancel")}>Cancel</WihButton>
-                <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
+            <WihButton onPress={() => onNavAction("Cancel")}>Cancel</WihButton>
+            <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
         </StepLayout>
     )
 }
 
-function WihFlowNav({onNavAction, children}: {onNavAction: (action: WihFlowNavAction) => void, children?: ReactNode}) {
+function WihFlowNav({onNavAction, children}: {
+    onNavAction: (action: WihFlowNavAction) => void,
+    children?: ReactNode
+}) {
     return (
         <StepLayout content={children}>
-                <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
-                <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
+            <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
+            <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
         </StepLayout>
     )
 }
 
-function WihFlowNavEnd({onNavAction, children}: {onNavAction: (action: WihFlowNavAction) => void, children?: ReactNode}) {
+function WihFlowNavEnd({onNavAction, children}: {
+    onNavAction: (action: WihFlowNavAction) => void,
+    children?: ReactNode
+}) {
     return (
         <StepLayout content={children}>
-                <WihButton onPress={() => onNavAction("Back")} >Back</WihButton>
-                <WihButton onPress={() => onNavAction("Finish")} >Finish</WihButton>
+            <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
+            <WihButton onPress={() => onNavAction("Finish")}>Finish</WihButton>
         </StepLayout>
     )
 }
 
-function StepLayout({children, content} : {children : ReactNode, content : ReactNode}){
+function StepLayout({children, content}: { children: ReactNode, content: ReactNode }) {
     return (
         <WihView center="full">
             <WihView flex="column" style={{alignItems: "center"}} gap={15}>

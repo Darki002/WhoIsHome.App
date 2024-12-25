@@ -11,18 +11,25 @@ export interface WihApiIntervalProps {
     body?: any;
 }
 
-export default function useWihApiInterval<T>({time, endpoint, method, version = 1, body} : WihApiIntervalProps) : WihResponse<T | null> | null {
+export default function useWihApiInterval<T>({
+                                                 time,
+                                                 endpoint,
+                                                 method,
+                                                 version = 1,
+                                                 body
+                                             }: WihApiIntervalProps): WihResponse<T | null> | null {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens : Tokens | null) {
-        if(tokens){
+    function onNewTokens(tokens: Tokens | null) {
+        if (tokens) {
             onNewSession(tokens);
         }
     }
 
     useEffect(() => {
-        if(!session) return () => {};
+        if (!session) return () => {
+        };
 
         wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
             .then(e => setResponse(e));

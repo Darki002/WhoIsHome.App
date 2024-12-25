@@ -15,7 +15,7 @@ const register = () => {
     const {signIn} = useSession();
 
     async function onRegister(email: string, password: string, userName: string) {
-        if(!userName) {
+        if (!userName) {
             setError("UserName is missing!");
             return;
         }
@@ -34,7 +34,7 @@ const register = () => {
             password
         }
 
-        const response = await wihFetch<string>({endpoint: "Auth/Register", method: "POST", body });
+        const response = await wihFetch<string>({endpoint: "Auth/Register", method: "POST", body});
         if (response.hasError) {
             setError(response.error!);
             return;

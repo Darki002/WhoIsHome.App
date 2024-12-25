@@ -1,4 +1,4 @@
-import { WihText } from "@/components/WihText";
+import {WihText} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {WihButton} from "@/components/WihButton";
 import {useRouter} from "expo-router";
@@ -10,9 +10,9 @@ const Index = () => {
         <WihView center="full">
             <WihText>Hello Create!</WihText>
 
-            <WihButton onPress={() => router.push("/(tabs)/create/oneTimeEventFlow")} >One Time</WihButton>
-            <WihButton onPress={() => router.push("/(tabs)/create/repeatedEventFlow")} >Repeated</WihButton>
-        </WihView >
+            <WihButton onPress={() => router.push("/(tabs)/create/oneTimeEventFlow")}>One Time</WihButton>
+            <WihButton onPress={() => router.push("/(tabs)/create/repeatedEventFlow")}>Repeated</WihButton>
+        </WihView>
     );
 }
 
