@@ -38,7 +38,7 @@ const Profile = () => {
 
     if (!response || !user) {
         return (
-            <>
+            <WihView>
                 <WihView style={[viewStyle, styles.view]}>
                     <WihAvatar name="" size={dim.scale * 14} style={avatarStyle}/>
                     <WihText style={[styles.text, textStyle]}>Loading...</WihText>
@@ -49,7 +49,7 @@ const Profile = () => {
                     <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
                     <WihText>Loading...</WihText>
                 </WihView>
-            </>
+            </WihView>
         )
     }
 
