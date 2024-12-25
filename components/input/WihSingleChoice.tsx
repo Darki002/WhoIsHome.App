@@ -13,18 +13,18 @@ export interface WihSingleChoiceProps<T> {
     onChange: (value: T | null) => void;
 }
 
-export function WihSingleChoice<T>({value, options, onChange} : WihSingleChoiceProps<T>) {
+export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoiceProps<T>) {
     const backgroundColor = useThemeColor('background');
     return (
         <View style={{backgroundColor, flex: 2}}>
             {options.map((o, i) =>
-                    <OptionButton
-                        key={i}
-                        value={o.value}
-                        display={o.display}
-                        isSelected={o.value == value}
-                        onChange={onChange} />
-                )}
+                <OptionButton
+                    key={i}
+                    value={o.value}
+                    display={o.display}
+                    isSelected={o.value == value}
+                    onChange={onChange}/>
+            )}
         </View>
     );
 }
@@ -36,7 +36,7 @@ interface OptionButtonProps<T> {
     onChange: (value: T | null) => void;
 }
 
-function OptionButton<T>({value, display, isSelected, onChange} :OptionButtonProps<T>){
+function OptionButton<T>({value, display, isSelected, onChange}: OptionButtonProps<T>) {
     const primary = useThemeColor('primary');
     const secondary = useThemeColor('secondary');
 

@@ -1,9 +1,9 @@
 import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
-import { WihText, WihTitle } from "@/components/WihText";
-import React, { useCallback } from "react";
+import {WihText, WihTitle} from "@/components/WihText";
+import React, {useCallback} from "react";
 import WihView from "@/components/WihView";
-import { WihDateInput } from "@/components/input/WihDateTimeInput";
-import { formatDate, formatTime } from "@/components/helper/datetimehelper";
+import {WihDateInput} from "@/components/input/WihDateTimeInput";
+import {formatDate, formatTime} from "@/components/helper/datetimehelper";
 import {OneTimeEvent, OneTimeEventDto} from "@/constants/WihTypes";
 import TitleStep from "@/components/createFlow/TitleStep";
 import DinnerTimeStep from "@/components/createFlow/DinnerTimeStep";
@@ -34,12 +34,13 @@ export default function OneTimeEventFlow() {
         callWihApi(body);
     }, [callWihApi]);
 
-    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
+    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel}
+                                  steps={components}/>
 }
 
-const dateStep : WihFlowStep<OneTimeEvent> = {
+const dateStep: WihFlowStep<OneTimeEvent> = {
     validate: (state: OneTimeEvent) => !!state.Date && DateValidationBase(state),
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<OneTimeEvent>) => (
+    component: ({state, setState, isInvalid}: WihFlowComponentProps<OneTimeEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
             <WihView flex="row">
                 <WihText>Date:</WihText>
@@ -47,14 +48,14 @@ const dateStep : WihFlowStep<OneTimeEvent> = {
                     value={state.Date}
                     onChange={(date) => setState({Date: date})}/>
             </WihView>
-            {isInvalid && !state.Date && <WihText style={{color: "red"}}>Date is required</WihText> }
+            {isInvalid && !state.Date && <WihText style={{color: "red"}}>Date is required</WihText>}
         </DateStepBase>
     )
 }
 
-const summaryStep : WihFlowStep<OneTimeEvent> = {
+const summaryStep: WihFlowStep<OneTimeEvent> = {
     validate: (_: OneTimeEvent) => true,
-    component: ({ state }: WihFlowComponentProps<OneTimeEvent>) => (
+    component: ({state}: WihFlowComponentProps<OneTimeEvent>) => (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
@@ -66,7 +67,7 @@ const summaryStep : WihFlowStep<OneTimeEvent> = {
     )
 }
 
-const components : Array<WihFlowStep<OneTimeEvent>> = [
+const components: Array<WihFlowStep<OneTimeEvent>> = [
     TitleStep,
     dateStep,
     DinnerTimeStep,

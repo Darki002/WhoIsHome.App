@@ -1,6 +1,6 @@
-import React, { ComponentType, useState } from "react";
-import { WihFlowNavAction, WihFlowNavBar } from "@/components/wihFlow/WihFlowNavigation";
-import { WihTitle } from "@/components/WihText";
+import React, {ComponentType, useState} from "react";
+import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
+import {WihTitle} from "@/components/WihText";
 
 export interface WihFlowComponentProps<T> {
     state: T;
@@ -24,11 +24,11 @@ export type WihFlowParam<T> = {
 }
 
 export function WihFlow<T extends object>({
-    initValue = {} as T,
-    onFinish,
-    onCancel,
-    steps
-}: WihFlowParam<T>) {
+                                              initValue = {} as T,
+                                              onFinish,
+                                              onCancel,
+                                              steps
+                                          }: WihFlowParam<T>) {
     const [state, setState] = useState<T>(initValue);
     const [currentStepNumber, setStep] = useState<number>(0);
     const [isValid, setIsValid] = useState<boolean>(false); // TODO always shows instantly an error
@@ -61,12 +61,12 @@ export function WihFlow<T extends object>({
     }
 
     function onStateChange(changes: T) {
-        setState({ ...state, ...changes });
+        setState({...state, ...changes});
     }
 
     const CurrentComponent = currentStep.component;
     const element = CurrentComponent
-        ? <CurrentComponent state={state} setState={onStateChange} isInvalid={!isValid} />
+        ? <CurrentComponent state={state} setState={onStateChange} isInvalid={!isValid}/>
         : null;
 
     if (!element) {
@@ -78,6 +78,6 @@ export function WihFlow<T extends object>({
             currentStep={currentStepNumber}
             lastStep={steps.length - 1}
             onNavAction={onNavAction}
-            children={element} />
+            children={element}/>
     );
 }

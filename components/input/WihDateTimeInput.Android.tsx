@@ -1,7 +1,6 @@
-import {Text, TextStyle} from "react-native";
+import {Text} from "react-native";
 import {DateTimePickerAndroid, DateTimePickerEvent} from "@react-native-community/datetimepicker";
 import React from "react";
-import * as diagnostics_channel from "node:diagnostics_channel";
 
 export interface WihDateTimeInputProps {
     value?: Date;
@@ -10,18 +9,18 @@ export interface WihDateTimeInputProps {
 }
 
 export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInputProps) => {
-    const onDateChange= (_ : DateTimePickerEvent, newDate : Date | undefined) => {
+    const onDateChange = (_: DateTimePickerEvent, newDate: Date | undefined) => {
         onChange(newDate)
     }
 
-    if(disabled){
+    if (disabled) {
         return <Text style={{color: "grey"}}>dd-MM-yyyy</Text>
     }
 
     const date = value ?? new Date(Date.now());
 
     const show = () => {
-        if(disabled) return;
+        if (disabled) return;
 
         DateTimePickerAndroid.open({
             value: date,
@@ -35,11 +34,11 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInp
 }
 
 export const WihTimeInput = ({value, onChange, disabled = false}: WihDateTimeInputProps) => {
-    const onDateChange= (_ : DateTimePickerEvent, newDate : Date | undefined) => {
+    const onDateChange = (_: DateTimePickerEvent, newDate: Date | undefined) => {
         onChange(newDate)
     }
 
-    if(disabled){
+    if (disabled) {
         return <Text style={{color: "grey"}}>HH-mm</Text>
     }
 

@@ -1,9 +1,9 @@
 import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
-import { WihText, WihTitle } from "@/components/WihText";
-import React, { useCallback } from "react";
+import {WihText, WihTitle} from "@/components/WihText";
+import React, {useCallback} from "react";
 import WihView from "@/components/WihView";
-import { WihDateInput } from "@/components/input/WihDateTimeInput";
-import { formatDate, formatTime } from "@/components/helper/datetimehelper";
+import {WihDateInput} from "@/components/input/WihDateTimeInput";
+import {formatDate, formatTime} from "@/components/helper/datetimehelper";
 import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes";
 import TitleStep from "@/components/createFlow/TitleStep";
 import DinnerTimeStep from "@/components/createFlow/DinnerTimeStep";
@@ -36,12 +36,13 @@ export default function RepeatedEventFlow() {
         callWihApi(body);
     }, [callWihApi]);
 
-    return <WihFlow<RepeatedEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel} steps={components} />
+    return <WihFlow<RepeatedEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel}
+                                   steps={components}/>
 }
 
-const dateStep : WihFlowStep<RepeatedEvent> = {
+const dateStep: WihFlowStep<RepeatedEvent> = {
     validate: (state: RepeatedEvent) => !!state.FirstOccurrence && !!state.LastOccurrence && state.FirstOccurrence < state.LastOccurrence && DateValidationBase(state),
-    component: ({ state, setState, isInvalid }: WihFlowComponentProps<RepeatedEvent>) => (
+    component: ({state, setState, isInvalid}: WihFlowComponentProps<RepeatedEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
             <WihView flex="row">
                 <WihText>First Occurrence:</WihText>
@@ -49,7 +50,8 @@ const dateStep : WihFlowStep<RepeatedEvent> = {
                     value={state.FirstOccurrence}
                     onChange={(date) => setState({FirstOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.FirstOccurrence && <WihText style={{color: "red"}}>FirstOccurrence is required</WihText> }
+            {isInvalid && !state.FirstOccurrence &&
+                <WihText style={{color: "red"}}>FirstOccurrence is required</WihText>}
 
             <WihView flex="row">
                 <WihText>Last Occurrence:</WihText>
@@ -57,14 +59,14 @@ const dateStep : WihFlowStep<RepeatedEvent> = {
                     value={state.LastOccurrence}
                     onChange={(date) => setState({LastOccurrence: date})}/>
             </WihView>
-            {isInvalid && !state.LastOccurrence && <WihText style={{color: "red"}}>LastOccurrence is required</WihText> }
+            {isInvalid && !state.LastOccurrence && <WihText style={{color: "red"}}>LastOccurrence is required</WihText>}
         </DateStepBase>
     )
 }
 
-const summaryStep : WihFlowStep<RepeatedEvent> = {
+const summaryStep: WihFlowStep<RepeatedEvent> = {
     validate: (_: RepeatedEvent) => true,
-    component: ({ state }: WihFlowComponentProps<RepeatedEvent>) => (
+    component: ({state}: WihFlowComponentProps<RepeatedEvent>) => (
         <WihView center="full">
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
@@ -77,7 +79,7 @@ const summaryStep : WihFlowStep<RepeatedEvent> = {
     )
 }
 
-const components : Array<WihFlowStep<RepeatedEvent>> = [
+const components: Array<WihFlowStep<RepeatedEvent>> = [
     TitleStep,
     dateStep,
     DinnerTimeStep,
