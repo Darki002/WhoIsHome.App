@@ -19,9 +19,9 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
             <WihTitle>Dinner Time?</WihTitle>
 
             <WihSingleChoice<PresenceType>
-                value={"Unknown"}
+                value={state.PresenceType}
                 options={options}
-                onChange={(c: PresenceType | null) => setState({PresenceType: c ?? undefined})}/>
+                onChange={(c: PresenceType | undefined) => setState({PresenceType: c})}/>
 
             {isInvalid && state.PresenceType === null && !state.EndTime &&
                 <WihText style={{color: "red"}}>PresenceType is required</WihText>}

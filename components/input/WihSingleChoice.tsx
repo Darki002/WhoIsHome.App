@@ -3,14 +3,14 @@ import {useThemeColor} from "@/hooks/useThemeColor";
 import {WihButton} from "@/components/WihButton";
 
 export type WihOption<T> = {
-    value: T | null;
+    value?: T;
     display: string;
 }
 
 export interface WihSingleChoiceProps<T> {
-    value: T | null;
+    value?: T;
     options: Array<WihOption<T>>;
-    onChange: (value: T | null) => void;
+    onChange: (value: T | undefined) => void;
 }
 
 export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoiceProps<T>) {
@@ -22,7 +22,7 @@ export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoicePr
                     key={i}
                     value={o.value}
                     display={o.display}
-                    isSelected={o.value == value}
+                    isSelected={o.value === value}
                     onChange={onChange}/>
             )}
         </View>
@@ -30,10 +30,10 @@ export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoicePr
 }
 
 interface OptionButtonProps<T> {
-    value: T | null;
+    value?: T;
     display: string;
     isSelected: boolean;
-    onChange: (value: T | null) => void;
+    onChange: (value: T | undefined) => void;
 }
 
 function OptionButton<T>({value, display, isSelected, onChange}: OptionButtonProps<T>) {

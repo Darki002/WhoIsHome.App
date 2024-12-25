@@ -57,7 +57,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
         headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
     }
 
-    console.info(`Fetch for ${uri}`)
+    console.info(`${method} on ${uri}`)
 
     try {
         const response = await fetch(uri, {
@@ -119,6 +119,7 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     }
 
     console.warn(`Request with error Status "${response.statusText}" - ${response.status}`);
+    console.warn(await response.json());
 
     switch (response.status) {
         case 401:
