@@ -17,8 +17,9 @@ export function WihSingleChoice<T>({value, options, onChange} : WihSingleChoiceP
     const backgroundColor = useThemeColor('background');
     return (
         <View style={{backgroundColor, flex: 2}}>
-            {options.map(o =>
+            {options.map((o, i) =>
                     <OptionButton
+                        key={i}
                         value={o.value}
                         display={o.display}
                         isSelected={o.value == value}
