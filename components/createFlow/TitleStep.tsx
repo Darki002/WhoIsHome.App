@@ -12,6 +12,7 @@ const TitleStep : WihFlowStep<EventBase> = {
             <WihTitle>Event Title</WihTitle>
             <WihTextInput
                 value={state.Title}
+                placeholder="Title"
                 onChangeText={(title) => setState({Title: title})}/>
             {isInvalid && <WihText style={{color: "red"}}>Title must be between 1 - 50 characters</WihText> }
         </WihView>

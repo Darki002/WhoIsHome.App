@@ -1,12 +1,11 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import {Text, TextInput, TextInputProps, TextStyle} from "react-native";
+import {TextInput, TextInputProps, TextStyle} from "react-native";
 import React from "react";
-import {DateTimePickerAndroid, DateTimePickerEvent} from '@react-native-community/datetimepicker';
 
-export const WihTextInput = ({ value, onChangeText, style, ...rest }: TextInputProps) => {
+export const WihTextInput = ({ value, placeholder, onChangeText, style, ...rest }: TextInputProps) => {
     const color = useThemeColor("text");
     const borderColor = useThemeColor("border");
-    return <TextInput inputMode="text" value={value} onChangeText={onChangeText} style={[{ color, borderColor }, style]} {...rest} />
+    return <TextInput inputMode="text" value={value} placeholder={placeholder} onChangeText={onChangeText} style={[{ color, borderColor }, style]} {...rest} />
 }
 
 export interface WihDateInputProps {
