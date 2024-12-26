@@ -9,30 +9,64 @@ import React from "react";
 const options: Array<WihOption<PresenceType>> = [
     {value: "Unknown", display: "Unknown"},
     {value: "Late", display: "Late"},
-    {value: "NotPresent", display: "NotPresent"}
+    {value: "NotPresent", display: "Not Present"}
 ]
 
 const DinnerTimeStep: WihFlowStep<EventBase> = {
-    validate: (state: EventBase) => !!state.DinnerTime && state.PresenceType !== null && state.DinnerTime > state.EndTime!,
-    component: ({state, setState, isInvalid}: WihFlowComponentProps<EventBase>) => (
-        <WihView center="full">
-            <WihTitle>Dinner Time?</WihTitle>
+    validate: validateDinnerTimeStep,
+    component: ({state, setState, isInvalid}: WihFlowComponentProps<EventBase>) => {
 
-            <WihSingleChoice<PresenceType>
-                value={state.PresenceType}
-                options={options}
-                onChange={(c: PresenceType | undefined) => setState({PresenceType: c})}/>
+        const onTimeChange = (time: Date | undefined) => {
+            const value = state.PresenceType === "Late" ? time : null;
+            setState({DinnerTime: value});
+        }
 
-            {isInvalid && state.PresenceType === null && !state.EndTime &&
-                <WihText style={{color: "red"}}>PresenceType is required</WihText>}
-            <WihTimeInput
-                value={state.DinnerTime ?? undefined}
-                onChange={(time) => setState({DinnerTime: time})}
-                disabled={state.PresenceType !== "Late"}/>
-            {isInvalid && !state.DinnerTime && !state.EndTime &&
-                <WihText style={{color: "red"}}>DinnerTime is required</WihText>}
-        </WihView>
-    )
+        const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
+            setState({PresenceType: presenceType});
+            if(presenceType !== "Late"){
+                setState({DinnerTime: null});
+            }
+        }
+
+        return (
+            <WihView center="full">
+                <WihTitle>Dinner Time?</WihTitle>
+
+                <WihSingleChoice<PresenceType>
+                    value={state.PresenceType}
+                    options={options}
+                    onChange={onPresenceTypeChange}/>
+
+                {isInvalid && state.PresenceType === null && !state.EndTime &&
+                    <WihText style={{color: "red"}}>PresenceType is required</WihText>}
+                <WihTimeInput
+                    value={state.DinnerTime ?? undefined}
+                    onChange={onTimeChange}
+                    disabled={state.PresenceType !== "Late"}/>
+                {isInvalid && !state.DinnerTime && !state.EndTime &&
+                    <WihText style={{color: "red"}}>DinnerTime is required</WihText>}
+            </WihView>
+        )
+    }
+}
+
+function validateDinnerTimeStep(state: EventBase) : boolean{
+    if(state.PresenceType === null){
+        return false;
+    }
+    switch (state.PresenceType){
+        case null:
+            return false;
+        case "Unknown":
+            return !state.DinnerTime;
+        case "NotPresent":
+            return !state.DinnerTime;
+        case "Late":
+            if(!state.DinnerTime) return false;
+            return state.DinnerTime > state.EndTime!;
+        default:
+            return false;
+    }
 }
 
 export default DinnerTimeStep;
