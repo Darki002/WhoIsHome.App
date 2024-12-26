@@ -23,7 +23,7 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
 
         const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
             setState({PresenceType: presenceType});
-            if(presenceType !== "Late"){
+            if (presenceType !== "Late") {
                 setState({DinnerTime: null});
             }
         }
@@ -50,11 +50,11 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
     }
 }
 
-function validateDinnerTimeStep(state: EventBase) : boolean{
-    if(state.PresenceType === null){
+function validateDinnerTimeStep(state: EventBase): boolean {
+    if (state.PresenceType === null) {
         return false;
     }
-    switch (state.PresenceType){
+    switch (state.PresenceType) {
         case null:
             return false;
         case "Unknown":
@@ -62,7 +62,7 @@ function validateDinnerTimeStep(state: EventBase) : boolean{
         case "NotPresent":
             return !state.DinnerTime;
         case "Late":
-            if(!state.DinnerTime) return false;
+            if (!state.DinnerTime) return false;
             return state.DinnerTime > state.EndTime!;
         default:
             return false;
