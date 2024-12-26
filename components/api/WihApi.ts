@@ -118,8 +118,8 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
         });
     }
 
-    console.warn(`Request with error Status "${response.statusText}" - ${response.status}`);
-    console.warn(await response.json());
+    const message = await response.json();
+    console.warn(`Request with error Status "${response.statusText}" - ${response.status} | Message: ${message}`);
 
     switch (response.status) {
         case 401:
