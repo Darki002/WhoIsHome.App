@@ -4,11 +4,13 @@ export type User = {
     email: string;
 }
 
+export type EventType = "OneTime" | "Repeated";
+
 export type WihEvent = {
     id: number;
     title: string;
     date: Date;
-    startTime: Date ;
+    startTime: Date;
     endTime: Date;
     eventType: string;
 }
@@ -34,7 +36,7 @@ export interface EventBase {
 }
 
 export interface OneTimeEvent extends EventBase {
-    Date?: Date;
+    Date?: Date
 }
 
 export interface OneTimeEventDto {
