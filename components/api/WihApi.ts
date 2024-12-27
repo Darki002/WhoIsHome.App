@@ -106,7 +106,6 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
 }
 
 async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
-
     if (response.status === 200) {
 
         const body = await response.json();
@@ -118,7 +117,7 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
         });
     }
 
-    const message = await response.json();
+    const message = await response.text();
     console.warn(`Request with error Status "${response.statusText}" - ${response.status} | Message: ${message}`);
 
     switch (response.status) {

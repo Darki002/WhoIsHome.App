@@ -15,7 +15,7 @@ export default function useWihApiFocus<T>({endpoint, method, version = 1, body}:
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens: Tokens | null) {
+    function onNewTokens(tokens: Tokens | undefined) {
         if (tokens) {
             onNewSession(tokens);
         }

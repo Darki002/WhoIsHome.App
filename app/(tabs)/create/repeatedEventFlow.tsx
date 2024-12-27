@@ -14,7 +14,7 @@ const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
     FirstOccurrence: undefined,
     LastOccurrence: undefined,
-    StateTime: new Date(),
+    StartTime: new Date(),
     EndTime: new Date(),
     PresenceType: "Unknown",
     DinnerTime: null,
@@ -28,7 +28,7 @@ export default function RepeatedEventFlow() {
             Title: state.Title!,
             FirstOccurrence: formatDate(state.FirstOccurrence!),
             LastOccurrence: formatDate(state.LastOccurrence!),
-            StateTime: formatTime(state.StateTime!),
+            StartTime: formatTime(state.StartTime!),
             EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
@@ -72,7 +72,7 @@ const summaryStep: WihFlowStep<RepeatedEvent> = {
             <WihText>Title: {state.Title}</WihText>
             <WihText>First: {state.FirstOccurrence?.toLocaleDateString()}</WihText>
             <WihText>Last: {state.LastOccurrence?.toLocaleDateString()}</WihText>
-            <WihText>Time: {state.StateTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+            <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
             <WihText>PresenceType: {state.PresenceType}</WihText>
             <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
         </WihView>

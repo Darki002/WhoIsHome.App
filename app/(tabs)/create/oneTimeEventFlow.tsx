@@ -13,7 +13,7 @@ import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
     Date: new Date(),
-    StateTime: new Date(),
+    StartTime: new Date(),
     EndTime: new Date(),
     PresenceType: "Unknown",
     DinnerTime: null,
@@ -26,7 +26,7 @@ export default function OneTimeEventFlow() {
         const body: OneTimeEventDto = {
             Title: state.Title!,
             Date: formatDate(state.Date!),
-            StateTime: formatTime(state.StateTime!),
+            StartTime: formatTime(state.StartTime!),
             EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
@@ -60,7 +60,7 @@ const summaryStep: WihFlowStep<OneTimeEvent> = {
             <WihTitle>Summary</WihTitle>
             <WihText>Title: {state.Title}</WihText>
             <WihText>Date: {state.Date?.toLocaleDateString()}</WihText>
-            <WihText>Time: {state.StateTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+            <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
             <WihText>PresenceType: {state.PresenceType}</WihText>
             <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
         </WihView>

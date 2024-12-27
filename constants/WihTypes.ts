@@ -8,7 +8,7 @@ export type WihEvent = {
     id: number;
     title: string;
     date: Date;
-    startTime: Date;
+    startTime: Date ;
     endTime: Date;
     eventType: string;
 }
@@ -27,7 +27,7 @@ export type Tokens = {
 
 export interface EventBase {
     Title?: string;
-    StateTime?: Date;
+    StartTime?: Date;
     EndTime?: Date;
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
@@ -40,7 +40,7 @@ export interface OneTimeEvent extends EventBase {
 export interface OneTimeEventDto {
     Title: string;
     Date: string;
-    StateTime: string;
+    StartTime: string;
     EndTime: string;
     PresenceType: PresenceType;
     DinnerTime: string | null;
@@ -55,7 +55,7 @@ export interface RepeatedEventDto {
     Title?: string;
     FirstOccurrence?: string;
     LastOccurrence?: string;
-    StateTime?: string;
+    StartTime?: string;
     EndTime?: string;
     PresenceType?: PresenceType;
     DinnerTime?: string | null;

@@ -21,7 +21,7 @@ export default function useWihApiInterval<T>({
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens: Tokens | null) {
+    function onNewTokens(tokens: Tokens | undefined) {
         if (tokens) {
             onNewSession(tokens);
         }
