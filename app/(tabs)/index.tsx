@@ -1,6 +1,6 @@
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import useWihApiInterval from "@/hooks/useWihApiInterval";
+import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import {Pressable} from "react-native";
 import {router} from "expo-router";
 
@@ -22,7 +22,7 @@ export default function Index() {
         endpoint: "DailyOverview"
     });
 
-    if(!response){
+    if (!response) {
         return (
             <WihView center="full">
                 <WihTitle>Loading...</WihTitle>
@@ -30,7 +30,7 @@ export default function Index() {
         )
     }
 
-    if(response.hasError) {
+    if (response.hasError) {
         return (
             <WihView center="full">
                 <WihTitle>Oops, unexpected Error!</WihTitle>
@@ -38,16 +38,16 @@ export default function Index() {
         )
     }
 
-  return (
-    <WihView center="horizontal">
-        <WihTitle style={{fontSize: 25}}>Welcome!</WihTitle>
-        {response.response!.map((o, i) => DailyOverview(o, i))}
-    </WihView >
-  );
+    return (
+        <WihView center="horizontal">
+            <WihTitle style={{fontSize: 25}}>Welcome!</WihTitle>
+            {response.response!.map((o, i) => DailyOverview(o, i))}
+        </WihView>
+    );
 }
 
-function DailyOverview(overview : DailyOverview, key : number) {
-    return(
+function DailyOverview(overview: DailyOverview, key: number) {
+    return (
         <Pressable onPress={() => router.push(`/user/${overview.user.id}`)} key={key}>
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>

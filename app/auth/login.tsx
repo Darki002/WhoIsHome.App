@@ -1,18 +1,18 @@
-import { LoginInfos, useSession } from "@/components/auth/context";
-import { WihEmailInput, WihPasswordInput } from "@/components/login/WihInput";
-import { WihButton } from "@/components/WihButton";
-import { WihText, WihTitle } from "@/components/WihText";
+import {LoginInfos, useSession} from "@/components/auth/context";
+import {WihEmailInput, WihPasswordInput} from "@/components/input/WihInput";
+import {WihButton} from "@/components/WihButton";
+import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import React, {useState} from "react";
-import { StyleSheet } from "react-native";
+import {StyleSheet} from "react-native";
 
 const Login = () => {
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
     const [error, setError] = useState<string>("");
-    const { signIn } = useSession();
+    const {signIn} = useSession();
 
-    async function onLogIn({ email, password }: LoginInfos) {
+    async function onLogIn({email, password}: LoginInfos) {
         if (!email) {
             setError("Email is missing!");
             return;
@@ -22,7 +22,7 @@ const Login = () => {
             return;
         }
 
-        const error = await signIn({ email, password });
+        const error = await signIn({email, password});
         if (error) {
             setError(error);
         }
@@ -45,9 +45,9 @@ const Login = () => {
                 autoCompleteType="current"
             />
 
-            { error ? <WihText style={{ color: "red" }}>{error}</WihText> : null }
+            {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onLogIn({ email, password })}>Login</WihButton>
+            <WihButton onPress={async () => onLogIn({email, password})}>Login</WihButton>
         </WihView>
     )
 }

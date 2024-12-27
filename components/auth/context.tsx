@@ -1,6 +1,6 @@
-import { useContext, createContext, type PropsWithChildren } from 'react';
-import { useStorageState } from './useStorageState';
-import { wihFetch } from '../api/WihApi';
+import {createContext, type PropsWithChildren, useContext} from 'react';
+import {useStorageState} from './useStorageState';
+import {wihFetch} from '../api/WihApi';
 import {Tokens} from "@/constants/WihTypes";
 
 export type LoginInfos = {
@@ -9,9 +9,9 @@ export type LoginInfos = {
 }
 
 const AuthContext = createContext<{
-    signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
+    signIn: ({email, password}: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    onNewSession: (tokens : Tokens) => void;
+    onNewSession: (tokens: Tokens) => void;
     session: Tokens | null;
     isLoading: boolean;
 }>({
@@ -34,7 +34,7 @@ export function useSession() {
     return value;
 }
 
-export function SessionProvider({ children }: PropsWithChildren) {
+export function SessionProvider({children}: PropsWithChildren) {
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
@@ -43,11 +43,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
     return (
         <AuthContext.Provider
             value={{
-                signIn: async ({ email, password }) => {
+                signIn: async ({email, password}) => {
                     if (!email || !password)
                         return "Missing Login Information";
 
-                    const response = await wihFetch<Tokens>({ endpoint: "Auth/Login", method: "POST", body: { email, password } });
+                    const response = await wihFetch<Tokens>({
+                        endpoint: "Auth/Login",
+                        method: "POST",
+                        body: {email, password}
+                    });
                     if (response.hasError) {
                         return response.error;
                     }
@@ -63,10 +67,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     setSession(tokens.jwtToken);
                     setRefreshToken(tokens.refreshToken)
                 },
-                session: session && refreshToken ?  { jwtToken: session, refreshToken: refreshToken } : null,
+                session: session && refreshToken ? {jwtToken: session, refreshToken: refreshToken} : null,
                 isLoading: isLoading,
             }}>
             {children}
-        </AuthContext.Provider >
+        </AuthContext.Provider>
     );
 }

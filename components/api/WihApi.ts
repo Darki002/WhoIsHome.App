@@ -1,32 +1,41 @@
 import {Tokens} from "@/constants/WihTypes";
 
-export type KeyValuePair = { [key: string]: string };
-
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE";
     tokens?: Tokens;
     version?: number;
-    body?: KeyValuePair;
-    onNewTokens?: (newTokens: Tokens | null) => void;
+    body?: any;
+    onNewTokens?: (newTokens: Tokens | undefined) => void;
 }
 
-export interface WihResponse<T> {
+export interface WihResponse<T = {}> {
     status: number;
     hasError: boolean;
     error: string | null;
-    response: T;
+    response?: T;
 }
 
-export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, version = 1, onNewTokens }: WihFetchProps): Promise<WihResponse<TBody | null>> => {
+export const wihFetch = async <TBody>({
+                                          endpoint,
+                                          method = "GET",
+                                          body,
+                                          tokens,
+                                          version = 1,
+                                          onNewTokens
+                                      }: WihFetchProps): Promise<WihResponse<TBody>> => {
     let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
 
     if (tokens && response.hasError && response.status === 401) {
         const newTokens = await refreshJwtToken(tokens.refreshToken!);
 
         if (newTokens.hasError) {
-            onNewTokens ? onNewTokens(null) : null;
-            return newTokens as WihResponse<null>;
+            onNewTokens ? onNewTokens(undefined) : null;
+            return ({
+                status: newTokens.status,
+                hasError: true,
+                error: newTokens.error
+            });
         }
 
         onNewTokens ? onNewTokens(newTokens.response) : null;
@@ -37,18 +46,18 @@ export const wihFetch = async <TBody>({ endpoint, method = "GET", body, tokens, 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T | null>> {
+async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T>> {
     const uri = getUri(endpoint, version);
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
 
-    if(tokens){
+    if (tokens) {
         headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
     }
 
-    console.info(`Fetch for ${uri}`)
+    console.info(`${method} on ${uri}`)
 
     try {
         const response = await fetch(uri, {
@@ -59,19 +68,17 @@ async function authFetch<T>(endpoint: string, method: string, body: KeyValuePair
         });
 
         return await handleResponse(response);
-    }
-    catch (error: any) {
+    } catch (error: any) {
         console.error(`Request failed: ${error.message}`);
         return ({
             status: 0,
             hasError: true,
-            error: error.message,
-            response: null
+            error: error.message
         });
     }
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens | null>> {
+async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens>> {
     const uri = getUri("Auth/Refresh");
 
     const headers = new Headers();
@@ -88,20 +95,17 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
         });
 
         return await handleResponse<Tokens>(response);
-    }
-    catch (error: any) {
+    } catch (error: any) {
         console.error(`Request failed: ${error.message}`);
         return ({
             status: 0,
             hasError: true,
-            error: error.message,
-            response: null
+            error: error.message
         });
     }
 }
 
-async function handleResponse<T>(response: Response): Promise<WihResponse<T | null>> {
-
+async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     if (response.status === 200) {
 
         const body = await response.json();
@@ -113,26 +117,25 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T | nu
         });
     }
 
-    console.warn(`Request with error Status "${response.statusText}" - ${response.status}`);
+    const message = await response.text();
+    console.warn(`Request with error Status "${response.statusText}" - ${response.status} | Message: ${message}`);
 
     switch (response.status) {
         case 401:
             return ({
                 status: response.status,
                 hasError: true,
-                error: response.statusText,
-                response: null
+                error: response.statusText
             });
         default:
             return ({
                 status: response.status,
                 hasError: true,
-                error: response.statusText,
-                response: null
+                error: response.statusText
             });
     }
 }
 
-function getUri(endpoint: string, version: number = 1) : string {
+function getUri(endpoint: string, version: number = 1): string {
     return `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
 }

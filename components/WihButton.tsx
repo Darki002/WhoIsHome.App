@@ -9,7 +9,7 @@ type WihButtonProps = {
     style?: object;
 };
 
-export const WihButton = ({ children, onPress, style }: WihButtonProps) => {
+export const WihButton = ({children, onPress, style}: WihButtonProps) => {
     const color = useThemeColor("primary");
     return (
         <Pressable onPress={onPress} style={[{backgroundColor: color}, styles.button, style]}>
