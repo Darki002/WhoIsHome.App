@@ -35,7 +35,15 @@ export interface EventBase {
     DinnerTime?: Date | null;
 }
 
+export interface EventModelBase extends EventBase{
+    UserId: number;
+}
+
 export interface OneTimeEvent extends EventBase {
+    Date?: Date
+}
+
+export interface OneTimeEventModel extends EventModelBase {
     Date?: Date
 }
 
@@ -49,6 +57,11 @@ export interface OneTimeEventDto {
 }
 
 export interface RepeatedEvent extends EventBase {
+    FirstOccurrence?: Date;
+    LastOccurrence?: Date;
+}
+
+export interface RepeatedEventModel extends EventModelBase {
     FirstOccurrence?: Date;
     LastOccurrence?: Date;
 }

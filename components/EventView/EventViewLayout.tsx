@@ -1,18 +1,20 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect} from "react";
-import {EventBase} from "@/constants/WihTypes";
+import {EventModelBase} from "@/constants/WihTypes";
 import {WihResponse} from "@/components/api/WihApi";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/WihButton";
+import {usePermission} from "@/hooks/usePermission";
 
 interface EventViewLayoutProps {
-    response: WihResponse<EventBase | null> | null;
+    response: WihResponse<EventModelBase | null> | null;
     onEdit: () => void;
 }
 
 export default function EventViewLayout({response, onEdit, children}: PropsWithChildren<EventViewLayoutProps>) {
     const navigation = useNavigation();
+    const permissionCheck = usePermission();
 
     useEffect(() => {
         if (!response) {
@@ -42,9 +44,14 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
         <WihView>
             {children}
 
-            <WihView flex="row">
-                <WihButton onPress={onEdit} >Edit</WihButton>
-            </WihView>
+            {
+                permissionCheck(response.response?.UserId) ? (
+                    <WihView flex="row">
+                        <WihButton onPress={onEdit}>Edit</WihButton>
+                    </WihView>
+                ) : <></>
+            }
+
         </WihView>
     )
 }

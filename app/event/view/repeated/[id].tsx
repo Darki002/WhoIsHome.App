@@ -1,4 +1,4 @@
-import {RepeatedEvent} from "@/constants/WihTypes";
+import {RepeatedEventModel} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams} from "expo-router";
@@ -7,7 +7,7 @@ import EventViewLayout from "@/components/EventView/EventViewLayout";
 
 function RepeatedEventView() {
     const {id} = useLocalSearchParams<{ id: string }>();
-    const response = useWihApiFocus<RepeatedEvent>({
+    const response = useWihApiFocus<RepeatedEventModel>({
         endpoint: `RepeatedEvent/${id}`,
         method: "GET"
     });

@@ -1,4 +1,4 @@
-import {OneTimeEvent} from "@/constants/WihTypes";
+import {OneTimeEventModel} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams} from "expo-router";
@@ -7,7 +7,7 @@ import EventViewLayout from "@/components/EventView/EventViewLayout";
 
 function OneTimeEventView() {
     const {id} = useLocalSearchParams<{ id: string }>();
-    const response = useWihApiFocus<OneTimeEvent>({
+    const response = useWihApiFocus<OneTimeEventModel>({
         endpoint: `OneTimeEvent/${id}`,
         method: "GET"
     });
