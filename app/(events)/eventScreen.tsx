@@ -12,7 +12,7 @@ type EventRouteParams = {
 };
 
 interface EventScreenProps {
-    route: RouteProp<{ EventScreen: EventRouteParams }, 'EventScreen'>;
+    route: RouteProp<{ eventScreen: EventRouteParams }, 'eventScreen'>;
 }
 
 export type EventComponent ={

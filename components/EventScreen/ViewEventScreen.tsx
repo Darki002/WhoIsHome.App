@@ -1,7 +1,7 @@
 import {OneTimeEvent, RepeatedEvent} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
-import {EventComponent} from "@/app/(events)/event";
+import {EventComponent} from "@/app/(events)/eventScreen";
 import useWihEventApi from "@/components/EventScreen/useWihEventApi";
 
 export const eventViewComponentMap : EventComponent = {

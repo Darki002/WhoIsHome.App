@@ -5,9 +5,9 @@ import WihView from "@/components/WihView";
 import {WihDateInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/components/helper/datetimehelper";
 import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes";
-import TitleStep from "@/components/createFlow/TitleStep";
-import DinnerTimeStep from "@/components/createFlow/DinnerTimeStep";
-import {DateStepBase, DateValidationBase} from "@/components/createFlow/DateStepBase";
+import TitleStep from "@/components/CreateFlow/TitleStep";
+import DinnerTimeStep from "@/components/CreateFlow/DinnerTimeStep";
+import {DateStepBase, DateValidationBase} from "@/components/CreateFlow/DateStepBase";
 import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 
 const defaultOneTimeEvent: RepeatedEvent = {
