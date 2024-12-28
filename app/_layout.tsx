@@ -9,6 +9,7 @@ import {Platform, useColorScheme} from 'react-native';
 import {ThemeProvider} from '@react-navigation/native';
 import {DarkTheme, LightTheme} from '@/constants/Colors';
 import {SessionProvider} from '@/components/auth/context';
+import WihView from "@/components/WihView";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,7 +41,7 @@ const RootLayout = () => {
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
                 <Stack screenOptions={screenOptions}>
                     <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-                    <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown"}}/>
+                    <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown", headerStyle: { backgroundColor: backgroundColor }}}/>
                     <Stack.Screen name="auth" options={{headerShown: false}}/>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
