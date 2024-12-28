@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {wihFetch, WihResponse} from "@/components/api/WihApi";
+import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";
 

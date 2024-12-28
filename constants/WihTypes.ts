@@ -4,7 +4,7 @@ export type User = {
     email: string;
 }
 
-export type EventType = "OneTime" | "Repeated";
+export type EventType = "oneTime" | "repeated";
 
 export type WihEvent = {
     id: number;
@@ -12,7 +12,7 @@ export type WihEvent = {
     date: Date;
     startTime: Date;
     endTime: Date;
-    eventType: string;
+    eventType: EventType;
 }
 
 export type UserOverview = {

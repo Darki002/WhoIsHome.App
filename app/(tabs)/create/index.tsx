@@ -1,6 +1,6 @@
 import {WihText} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 import {useRouter} from "expo-router";
 
 const Index = () => {

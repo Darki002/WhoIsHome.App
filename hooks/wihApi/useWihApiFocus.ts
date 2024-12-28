@@ -1,4 +1,4 @@
-import {wihFetch, WihResponse} from "@/components/api/WihApi";
+import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useCallback, useState} from "react";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes";

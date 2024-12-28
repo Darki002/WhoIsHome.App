@@ -3,7 +3,7 @@ import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
-import EventViewLayout from "@/components/EventView/EventViewLayout";
+import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {useCallback} from "react";
 
 export default function RepeatedEventView() {

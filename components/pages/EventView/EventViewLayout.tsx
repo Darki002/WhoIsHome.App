@@ -1,10 +1,10 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect} from "react";
 import {EventModelBase} from "@/constants/WihTypes";
-import {WihResponse} from "@/components/api/WihApi";
+import {WihResponse} from "@/helper/WihApi";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
 
 interface EventViewLayoutProps {

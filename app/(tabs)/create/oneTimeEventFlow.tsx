@@ -3,11 +3,11 @@ import {WihText, WihTitle} from "@/components/WihText";
 import React, {useCallback} from "react";
 import WihView from "@/components/WihView";
 import {WihDateInput} from "@/components/input/WihDateTimeInput";
-import {formatDate, formatTime} from "@/components/helper/datetimehelper";
+import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {OneTimeEvent, OneTimeEventDto} from "@/constants/WihTypes";
-import TitleStep from "@/components/CreateFlow/TitleStep";
-import DinnerTimeStep from "@/components/CreateFlow/DinnerTimeStep";
-import {DateStepBase, DateValidationBase} from "@/components/CreateFlow/DateStepBase";
+import TitleStep from "@/components/pages/CreateFlow/TitleStep";
+import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
+import {DateStepBase, DateValidationBase} from "@/components/pages/CreateFlow/DateStepBase";
 import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 
 const defaultOneTimeEvent: OneTimeEvent = {

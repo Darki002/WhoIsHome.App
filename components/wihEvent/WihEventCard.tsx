@@ -3,7 +3,7 @@ import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {useThemeColor} from "@/hooks/useThemeColor";
 import {WihEvent} from "@/constants/WihTypes";
-import {timeStringToDate} from "@/components/helper/datetimehelper";
+import {timeStringToDate} from "@/helper/datetimehelper";
 import {useRouter} from "expo-router";
 import {useCallback} from "react";
 
@@ -21,8 +21,8 @@ export default function WihEventCard({event}: { event: WihEvent }) {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        router.push(`/event/view/repeated/${event.id}`);
-    }, [event.id]);
+        router.push(`/event/view/${event.eventType}/${event.id}`);
+    }, [event.id, event.eventType]);
 
     const date = new Date(event.date);
     const startTime = timeStringToDate(event.startTime);

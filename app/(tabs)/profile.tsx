@@ -1,6 +1,6 @@
 import {useSession} from "@/components/auth/context";
 import {WihAvatar} from "@/components/WihAvatar";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {Dimensions, StyleSheet, ViewStyle} from 'react-native';

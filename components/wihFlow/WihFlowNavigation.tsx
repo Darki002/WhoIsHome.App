@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import WihView from "@/components/WihView";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 
 export type WihFlowNavAction = "Next" | "Back" | "Cancel" | "Finish";
 
