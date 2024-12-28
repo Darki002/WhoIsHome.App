@@ -1,22 +1,24 @@
 import {OneTimeEventModel} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
-import {useLocalSearchParams} from "expo-router";
+import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/EventView/EventViewLayout";
+import {useCallback} from "react";
 
-function OneTimeEventView() {
+export default function OneTimeEventView() {
+    const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
     const response = useWihApiFocus<OneTimeEventModel>({
         endpoint: `OneTimeEvent/${id}`,
         method: "GET"
     });
 
+    const onEdit = () => useCallback(() => {
+        router.push(`/event/edit/oneTime/${id}`);
+    }, [id]);
+
     const event = response?.response!;
-
-    const onEdit = () => {
-
-    }
 
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
