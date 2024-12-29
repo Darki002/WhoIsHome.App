@@ -2,11 +2,12 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/wihApi/useWihApi";
-import {User, UserOverview} from "@/constants/WihTypes";
+import {UserOverview} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
+import {User} from "@/constants/WihTypes/User";
 
 export default function UserView() {
     const {id} = useLocalSearchParams<{ id: string }>();
@@ -55,6 +56,7 @@ export default function UserView() {
     }
 
     const overview = response.response;
+    console.log(overview);
     return (
         <WihView center="horizontal">
             <WihTitle>{user.response!.userName}'s Events</WihTitle>

@@ -3,13 +3,14 @@ import {StyleSheet} from 'react-native';
 
 import WihView from '@/components/WihView';
 import WihLink from '@/components/WihLink';
+import {WihText} from "@/components/WihText";
 
 export default function NotFoundScreen() {
     return (
         <>
             <Stack.Screen options={{title: 'Oops!'}}/>
             <WihView style={styles.container}>
-                <WihView>This screen doesn't exist.</WihView>
+                <WihText>This screen doesn't exist.</WihText>
                 <WihLink href="/(tabs)" style={styles.link}>
                     Go to home screen!
                 </WihLink>

@@ -1,10 +1,10 @@
-import {RepeatedEventModel} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {useCallback} from "react";
+import {RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 
 export default function RepeatedEventView() {
     const router = useRouter();
@@ -23,16 +23,16 @@ export default function RepeatedEventView() {
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
             <WihView>
-                <WihText>Title: {event.Title}</WihText>
+                <WihText>Title: {event.title}</WihText>
 
-                <WihText>First Occurrence: {event.FirstOccurrence?.toLocaleDateString()}</WihText>
-                <WihText>Last Occurrence: {event.LastOccurrence?.toLocaleDateString()}</WihText>
+                <WihText>First Occurrence: {event.firstOccurrence?.toLocaleDateString()}</WihText>
+                <WihText>Last Occurrence: {event.lastOccurrence?.toLocaleDateString()}</WihText>
 
-                <WihText>Start Time: {event.StartTime?.toLocaleTimeString()}</WihText>
-                <WihText>End Time: {event.EndTime?.toLocaleTimeString()}</WihText>
+                <WihText>Start Time: {event.startTime?.toLocaleTimeString()}</WihText>
+                <WihText>End Time: {event.endTime?.toLocaleTimeString()}</WihText>
 
-                <WihText>Presence Type: {event.PresenceType}</WihText>
-                <WihText>Dinner Time: {event.DinnerTime?.toLocaleTimeString()}</WihText>
+                <WihText>Presence Type: {event.presenceType}</WihText>
+                <WihText>Dinner Time: {event.dinnerTime?.toLocaleTimeString()}</WihText>
             </WihView>
         </EventViewLayout>
     )

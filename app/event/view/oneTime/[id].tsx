@@ -1,10 +1,9 @@
-import {OneTimeEventModel} from "@/constants/WihTypes";
-import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {useCallback} from "react";
+import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 
 export default function OneTimeEventView() {
     const router = useRouter();
@@ -14,25 +13,28 @@ export default function OneTimeEventView() {
         method: "GET"
     });
 
-    const onEdit = () => useCallback(() => {
+    const onEdit = useCallback(() => {
         router.push(`/event/edit/oneTime/${id}`);
     }, [id]);
 
-    const event = response?.response!;
+    const event = response?.response;
+    console.log(event);
+
+    if(!event){
+        return null;
+    }
 
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
-            <WihView>
-                <WihText>Title: {event.Title}</WihText>
+            <WihText>Title: {event.title ?? "Unknown"}</WihText>
 
-                <WihText>Date: {event.Date?.toLocaleDateString()}</WihText>
+            <WihText>Date: {event.date?.toLocaleDateString() ?? "N/A"}</WihText>
 
-                <WihText>Start Time: {event.StartTime?.toLocaleTimeString()}</WihText>
-                <WihText>End Time: {event.EndTime?.toLocaleTimeString()}</WihText>
+            <WihText>Start Time: {event.startTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihText>End Time: {event.endTime?.toLocaleTimeString() ?? "N/A"}</WihText>
 
-                <WihText>Presence Type: {event.PresenceType}</WihText>
-                <WihText>Dinner Time: {event.DinnerTime?.toLocaleTimeString()}</WihText>
-            </WihView>
+            <WihText>Presence Type: {event.presenceType ?? "Missing"}</WihText>
+            <WihText>Dinner Time: {event.dinnerTime?.toLocaleTimeString() ?? "N/A"}</WihText>
         </EventViewLayout>
     )
 }

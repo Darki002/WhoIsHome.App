@@ -5,10 +5,11 @@ import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
 import {Redirect} from "expo-router";
-import {User, UserOverview} from "@/constants/WihTypes";
+import {UserOverview} from "@/constants/WihTypes/WihTypes";
 import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
+import {User} from "@/constants/WihTypes/User";
 
 const TIME = 5 * 60 * 1000;
 

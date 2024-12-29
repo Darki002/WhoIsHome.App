@@ -1,7 +1,8 @@
 import {useCallback, useEffect, useState} from "react";
-import {Tokens, User} from "@/constants/WihTypes";
 import {useSession} from "@/components/auth/context";
 import {wihFetch} from "@/helper/WihApi";
+import {Tokens} from "@/constants/WihTypes/Auth";
+import {User} from "@/constants/WihTypes/User";
 
 export function usePermission(){
     const [userId, setUserId] = useState<number | null>();

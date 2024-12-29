@@ -2,10 +2,10 @@ import {Pressable, StyleSheet} from "react-native";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {useThemeColor} from "@/hooks/useThemeColor";
-import {WihEvent} from "@/constants/WihTypes";
 import {timeStringToDate} from "@/helper/datetimehelper";
 import {useRouter} from "expo-router";
 import {useCallback} from "react";
+import {WihEvent} from "@/constants/WihTypes/Event/BaseTypes";
 
 export interface WihEventCardProps {
     id: number;
@@ -21,7 +21,8 @@ export default function WihEventCard({event}: { event: WihEvent }) {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        router.push(`/event/view/${event.eventType}/${event.id}`);
+        const eventType = event.eventType === "OneTimeEvent" ? "oneTime" : "repeated";
+        router.push(`/event/view/${eventType}/${event.id}`);
     }, [event.id, event.eventType]);
 
     const date = new Date(event.date);

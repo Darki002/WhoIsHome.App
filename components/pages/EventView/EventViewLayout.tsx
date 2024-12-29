@@ -1,11 +1,11 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect} from "react";
-import {EventModelBase} from "@/constants/WihTypes";
 import {WihResponse} from "@/helper/WihApi";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
+import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 
 interface EventViewLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -25,7 +25,7 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
             navigation.setOptions({title: "Error"});
             return;
         }
-        navigation.setOptions({title: response.response?.Title});
+        navigation.setOptions({ title: response.response?.title ?? "Untitled Event" });
     }, [response]);
 
     if (!response) {
@@ -41,15 +41,15 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
     }
 
     return (
-        <WihView>
+        <WihView center="full">
             {children}
 
             {
-                permissionCheck(response.response?.UserId) ? (
+                permissionCheck(response.response?.userId) ? (
                     <WihView flex="row">
                         <WihButton onPress={onEdit}>Edit</WihButton>
                     </WihView>
-                ) : <></>
+                ) : null
             }
 
         </WihView>

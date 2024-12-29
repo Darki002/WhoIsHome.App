@@ -1,9 +1,9 @@
 import {WihFlowComponentProps} from "@/components/wihFlow/wihFlow";
-import {EventBase} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihTimeInput} from "@/components/input/WihDateTimeInput";
 import React, {PropsWithChildren} from "react";
+import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 
 export function DateValidationBase(state: EventBase): boolean {
     return state.StartTime !== undefined && state.EndTime !== undefined && state.StartTime <= state.EndTime;

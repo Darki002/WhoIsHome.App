@@ -1,8 +1,3 @@
-import {OneTimeEvent} from "@/constants/WihTypes";
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
-import {useLocalSearchParams} from "expo-router";
-
 function OneTimeEventView(){
     return null;
     // const {id} = useLocalSearchParams<{ id: string }>();

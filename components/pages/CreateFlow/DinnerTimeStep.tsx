@@ -1,10 +1,11 @@
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
-import {EventBase, PresenceType} from "@/constants/WihTypes";
 import {WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihTimeInput} from "@/components/input/WihDateTimeInput";
 import React from "react";
+import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
+import {PresenceType} from "@/constants/WihTypes/PresenceType";
 
 const options: Array<WihOption<PresenceType>> = [
     {value: "Unknown", display: "Unknown"},

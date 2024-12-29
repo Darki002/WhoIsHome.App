@@ -1,8 +1,3 @@
-import {RepeatedEvent} from "@/constants/WihTypes";
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
-import {useLocalSearchParams} from "expo-router";
-
 function RepeatedEventView(){
     return null;
     // const {id} = useLocalSearchParams<{ id: string }>();

@@ -1,9 +1,9 @@
 import {WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
-import {EventBase} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihTextInput} from "@/components/input/WihInput";
 import React from "react";
+import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 
 const TitleStep: WihFlowStep<EventBase> = {
     validate: (state: EventBase) => !!state.Title && state.Title.length >= 1 && state.Title.length < 50,

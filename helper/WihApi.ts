@@ -1,4 +1,4 @@
-import {Tokens} from "@/constants/WihTypes";
+import {Tokens} from "@/constants/WihTypes/Auth";
 
 export interface WihFetchProps {
     endpoint: string;
