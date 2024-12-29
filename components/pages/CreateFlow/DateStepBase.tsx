@@ -6,7 +6,7 @@ import {WihTimeInput} from "@/components/input/WihDateTimeInput";
 import React, {PropsWithChildren} from "react";
 
 export function DateValidationBase(state: EventBase): boolean {
-    return !!state.StartTime && !!state.EndTime && state.StartTime < state.EndTime;
+    return state.StartTime !== undefined && state.EndTime !== undefined && state.StartTime <= state.EndTime;
 }
 
 export const DateStepBase = ({

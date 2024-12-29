@@ -58,7 +58,6 @@ function validateDinnerTimeStep(state: EventBase): boolean {
         case null:
             return false;
         case "Unknown":
-            return !state.DinnerTime;
         case "NotPresent":
             return !state.DinnerTime;
         case "Late":

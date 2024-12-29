@@ -41,7 +41,7 @@ export default function RepeatedEventFlow() {
 }
 
 const dateStep: WihFlowStep<RepeatedEvent> = {
-    validate: (state: RepeatedEvent) => !!state.FirstOccurrence && !!state.LastOccurrence && state.FirstOccurrence < state.LastOccurrence && DateValidationBase(state),
+    validate: (state: RepeatedEvent) => state.FirstOccurrence !== undefined && state.LastOccurrence !== undefined && state.FirstOccurrence <= state.LastOccurrence && DateValidationBase(state),
     component: ({state, setState, isInvalid}: WihFlowComponentProps<RepeatedEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
             <WihView flex="row">

@@ -39,7 +39,7 @@ export default function OneTimeEventFlow() {
 }
 
 const dateStep: WihFlowStep<OneTimeEvent> = {
-    validate: (state: OneTimeEvent) => !!state.Date && DateValidationBase(state),
+    validate: (state: OneTimeEvent) => state.Date !== undefined && DateValidationBase(state),
     component: ({state, setState, isInvalid}: WihFlowComponentProps<OneTimeEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
             <WihView flex="row">
