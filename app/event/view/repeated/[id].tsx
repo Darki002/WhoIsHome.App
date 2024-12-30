@@ -1,4 +1,3 @@
-import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
@@ -14,26 +13,28 @@ export default function RepeatedEventView() {
         method: "GET"
     });
 
-    const onEdit = () => useCallback(() => {
+    const onEdit = useCallback(() => {
         router.push(`/event/edit/repeated/${id}`);
     }, [id]);
 
-    const event = response?.response!;
+    const event = response?.response;
+
+    if (!event) {
+        return null;
+    }
 
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
-            <WihView>
-                <WihText>Title: {event.title}</WihText>
+            <WihText>Title: {event.title ?? "Unknown"}</WihText>
 
-                <WihText>First Occurrence: {event.firstOccurrence?.toLocaleDateString()}</WihText>
-                <WihText>Last Occurrence: {event.lastOccurrence?.toLocaleDateString()}</WihText>
+            <WihText>First Occurrence: {event.firstOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+            <WihText>Last Occurrence: {event.lastOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
 
-                <WihText>Start Time: {event.startTime?.toLocaleTimeString()}</WihText>
-                <WihText>End Time: {event.endTime?.toLocaleTimeString()}</WihText>
+            <WihText>Start Time: {event.startTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihText>End Time: {event.endTime?.toLocaleTimeString() ?? "N/A"}</WihText>
 
-                <WihText>Presence Type: {event.presenceType}</WihText>
-                <WihText>Dinner Time: {event.dinnerTime?.toLocaleTimeString()}</WihText>
-            </WihView>
+            <WihText>Presence Type: {event.presenceType ?? "Missing"}</WihText>
+            <WihText>Dinner Time: {event.dinnerTime?.toLocaleTimeString() ?? "N/A"}</WihText>
         </EventViewLayout>
     )
 }

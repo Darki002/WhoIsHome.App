@@ -13,17 +13,8 @@ const TabIconProps = {
 }
 
 const TabsLayout = () => {
-    const {session, isLoading} = useSession();
     const tint = useThemeColor("tint");
     const backgroundColor = useThemeColor('background');
-
-    if (isLoading) {
-        return <WihTitle>Loading...</WihTitle>
-    }
-
-    if (!session || !session.jwtToken || !session.refreshToken) {
-        return <Redirect href="../auth/login"/>;
-    }
 
     return (
         <Tabs

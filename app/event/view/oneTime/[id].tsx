@@ -18,7 +18,6 @@ export default function OneTimeEventView() {
     }, [id]);
 
     const event = response?.response;
-    console.log(event);
 
     if(!event){
         return null;

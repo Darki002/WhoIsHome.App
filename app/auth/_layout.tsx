@@ -13,7 +13,7 @@ const TabIconProps = {
 }
 
 const AuthLayout = () => {
-    const {session, isLoading} = useSession();
+    const {session, isSessionLoading} = useSession();
     const tint = useThemeColor("tint");
     const router = useRouter();
     const backgroundColor = useThemeColor('background');
@@ -24,7 +24,7 @@ const AuthLayout = () => {
         }
     }, [session]);
 
-    if (isLoading) {
+    if (isSessionLoading) {
         return <WihTitle>Loading...</WihTitle>
     }
 
