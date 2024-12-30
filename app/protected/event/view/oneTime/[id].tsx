@@ -14,7 +14,7 @@ export default function OneTimeEventView() {
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/event/edit/oneTime/${id}`);
+        router.push(`/protected/event/edit/oneTime/${id}`);
     }, [id]);
 
     const event = response?.response;

@@ -20,7 +20,7 @@ const AuthLayout = () => {
 
     useEffect(() => {
         if (session && session.jwtToken && session.refreshToken) {
-            router.replace("/");
+            router.replace("/protected");
         }
     }, [session]);
 

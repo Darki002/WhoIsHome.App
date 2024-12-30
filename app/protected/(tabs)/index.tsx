@@ -48,7 +48,7 @@ export default function Index() {
 
 function DailyOverview(overview: DailyOverview, key: number) {
     return (
-        <Pressable onPress={() => router.push(`/user/${overview.user.id}`)} key={key}>
+        <Pressable onPress={() => router.push(`/protected/user/${overview.user.id}`)} key={key}>
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>
                 <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText>

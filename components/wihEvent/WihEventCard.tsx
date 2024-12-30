@@ -22,7 +22,7 @@ export default function WihEventCard({event}: { event: WihEvent }) {
 
     const onEventPress = useCallback(() => {
         const eventType = event.eventType === "OneTimeEvent" ? "oneTime" : "repeated";
-        router.push(`/event/view/${eventType}/${event.id}`);
+        router.push(`/protected/event/view/${eventType}/${event.id}`);
     }, [event.id, event.eventType]);
 
     const date = new Date(event.date);

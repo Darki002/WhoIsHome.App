@@ -10,8 +10,8 @@ const Index = () => {
         <WihView center="full">
             <WihText>Hello Create!</WihText>
 
-            <WihButton onPress={() => router.push("/(tabs)/create/oneTimeEventFlow")}>One Time</WihButton>
-            <WihButton onPress={() => router.push("/(tabs)/create/repeatedEventFlow")}>Repeated</WihButton>
+            <WihButton onPress={() => router.push("/protected/(tabs)/create/oneTimeEventFlow")}>One Time</WihButton>
+            <WihButton onPress={() => router.push("/protected/(tabs)/create/repeatedEventFlow")}>Repeated</WihButton>
         </WihView>
     );
 }

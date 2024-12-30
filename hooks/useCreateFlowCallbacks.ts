@@ -7,7 +7,7 @@ import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 export default function useCreateFlowCallbacks(endpoint: string): [(body: any) => void, () => void] {
     const router = useRouter();
 
-    const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
+    const onCancel = useCallback(() => router.replace("/protected/(tabs)/create"), []);
 
     const onResponse = useCallback((response: WihResponse | null) => {
         if (!response || response.hasError) {
@@ -16,7 +16,7 @@ export default function useCreateFlowCallbacks(endpoint: string): [(body: any) =
                 duration: Toast.durations.SHORT,
             });
         }
-        router.replace("/(tabs)");
+        router.replace("//protected/(tabs)");
     }, []);
 
     const callWihApi = useWihApiCallable({

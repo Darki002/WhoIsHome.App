@@ -14,7 +14,7 @@ export default function RepeatedEventView() {
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/event/edit/repeated/${id}`);
+        router.push(`/protected/event/edit/repeated/${id}`);
     }, [id]);
 
     const event = response?.response;

@@ -11,7 +11,7 @@ export default function NotFoundScreen() {
             <Stack.Screen options={{title: 'Oops!'}}/>
             <WihView style={styles.container}>
                 <WihText>This screen doesn't exist.</WihText>
-                <WihLink href="/(tabs)" style={styles.link}>
+                <WihLink href="/protected/(tabs)" style={styles.link}>
                     Go to home screen!
                 </WihLink>
             </WihView>
