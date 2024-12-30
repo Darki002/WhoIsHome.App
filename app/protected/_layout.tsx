@@ -1,19 +1,25 @@
-import {Stack, useRouter, useSegments} from 'expo-router';
+import {Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/auth/context';
+import {useEffect} from "react";
+import {Tokens} from "@/constants/WihTypes/Auth";
 
 const ProtectedLayout = () => {
     const router = useRouter();
-    const segments = useSegments();
     const {session, isSessionLoading} = useSession();
+
+    useEffect(() => {
+        if (!isSessionLoading && isInvalidSession(session)) {
+            router.replace("/auth/login");
+        }
+    }, [session, isSessionLoading]);
 
     if (isSessionLoading) {
         return null;
     }
 
-    const isAuthPath = segments[0] === "auth";
-    if (!isAuthPath && (!session || !session.jwtToken || !session.refreshToken)) {
-        router.replace("/auth/login");
+    if(isInvalidSession(session)){
+        return null;
     }
 
     return (
@@ -23,6 +29,10 @@ const ProtectedLayout = () => {
             <Stack.Screen name="event" options={{headerShown: false}}/>
         </Stack>
     );
+}
+
+function isInvalidSession(session: Tokens | null) : boolean {
+    return !session || !session.jwtToken || !session.refreshToken;
 }
 
 export default ProtectedLayout;

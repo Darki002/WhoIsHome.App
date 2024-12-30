@@ -1,4 +1,4 @@
-function RepeatedEventView(){
+export default function RepeatedEventView(){
     return null;
     // const {id} = useLocalSearchParams<{ id: string }>();
     // const response = useWihEventApi<RepeatedEvent>({id: id, type: "repeated"});

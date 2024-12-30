@@ -1,4 +1,4 @@
-function OneTimeEventView(){
+export default function OneTimeEventView(){
     return null;
     // const {id} = useLocalSearchParams<{ id: string }>();
     // const response = useWihEventApi<OneTimeEvent>({id: id, type: "oneTime"});
