@@ -25,7 +25,7 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
             navigation.setOptions({title: "Error"});
             return;
         }
-        navigation.setOptions({ title: response.response?.title ?? "Untitled Event" });
+        navigation.setOptions({title: response.response?.title ?? "Untitled Event"});
     }, [response]);
 
     if (!response) {
@@ -51,7 +51,6 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
                     </WihView>
                 ) : null
             }
-
         </WihView>
     )
 }

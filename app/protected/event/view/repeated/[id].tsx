@@ -3,7 +3,7 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {useCallback} from "react";
-import {RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
+import {RepeatedEvent, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 
 export default function RepeatedEventView() {
     const router = useRouter();
@@ -17,24 +17,24 @@ export default function RepeatedEventView() {
         router.push(`/protected/event/edit/repeated/${id}`);
     }, [id]);
 
-    const event = response?.response;
-
-    if (!event) {
+    if (!response?.response) {
         return null;
     }
 
+    const event = new RepeatedEvent(response?.response);
+
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
-            <WihText>Title: {event.title ?? "Unknown"}</WihText>
+            <WihText>Title: {event.Title ?? "Unknown"}</WihText>
 
-            <WihText>First Occurrence: {event.firstOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
-            <WihText>Last Occurrence: {event.lastOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+            <WihText>First Occurrence: {event.FirstOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+            <WihText>Last Occurrence: {event.LastOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
 
-            <WihText>Start Time: {event.startTime?.toLocaleTimeString() ?? "N/A"}</WihText>
-            <WihText>End Time: {event.endTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihText>Start Time: {event.StartTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihText>End Time: {event.EndTime?.toLocaleTimeString() ?? "N/A"}</WihText>
 
-            <WihText>Presence Type: {event.presenceType ?? "Missing"}</WihText>
-            <WihText>Dinner Time: {event.dinnerTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihText>Presence Type: {event.PresenceType ?? "Missing"}</WihText>
+            <WihText>Dinner Time: {event.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
         </EventViewLayout>
     )
 }

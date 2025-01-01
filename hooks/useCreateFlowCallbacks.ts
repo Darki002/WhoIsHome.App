@@ -16,7 +16,7 @@ export default function useCreateFlowCallbacks(endpoint: string): [(body: any) =
                 duration: Toast.durations.SHORT,
             });
         }
-        router.replace("//protected/(tabs)");
+        router.replace("/protected/(tabs)");
     }, []);
 
     const callWihApi = useWihApiCallable({
