@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihInput";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
-import {wihFetch} from "@/components/api/WihApi";
+import {wihFetch} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
 
 const register = () => {

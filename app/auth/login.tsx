@@ -1,6 +1,6 @@
 import {LoginInfos, useSession} from "@/components/auth/context";
 import {WihEmailInput, WihPasswordInput} from "@/components/input/WihInput";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import React, {useState} from "react";

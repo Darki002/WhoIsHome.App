@@ -1,7 +1,7 @@
 import {useThemeColor} from "@/hooks/useThemeColor";
-import {IonIcon, MateriaIcon} from '@/components/WihIcon';
-import {useRouter, Tabs} from "expo-router";
-import React, {useEffect} from "react";
+import {IonIcon, MateriaIcon, MaterialCommunityIcon} from '@/components/WihIcon';
+import {Redirect, Tabs} from "expo-router";
+import React from "react";
 import {useSession} from "@/components/auth/context";
 import {WihTitle} from "@/components/WihText";
 
@@ -12,50 +12,48 @@ const TabIconProps = {
     }
 }
 
-const AuthLayout = () => {
-    const {session, isSessionLoading} = useSession();
+const TabsLayout = () => {
     const tint = useThemeColor("tint");
-    const router = useRouter();
     const backgroundColor = useThemeColor('background');
-
-    useEffect(() => {
-        if (session && session.jwtToken && session.refreshToken) {
-            router.replace("/protected/(tabs)");
-        }
-    }, [session]);
-
-    if (isSessionLoading) {
-        return <WihTitle>Loading...</WihTitle>
-    }
 
     return (
         <Tabs
             screenOptions={{
                 tabBarActiveTintColor: tint,
                 headerShown: false,
-                tabBarStyle: {backgroundColor: backgroundColor}
+                tabBarStyle: { backgroundColor: backgroundColor }
             }}>
             <Tabs.Screen
-                name="login"
+                name="index"
                 options={{
-                    title: "Login",
+                    title: "Home",
                     tabBarIcon: ({color, focused}) => (
                         <IonIcon name={focused ? 'home' : 'home-outline'} color={color} {...TabIconProps} />
                     )
                 }}
             />
             <Tabs.Screen
-                name="register"
+                name="create"
                 options={{
-                    title: "Register",
+                    title: "Create",
                     tabBarIcon: ({color, focused}) => (
                         <MateriaIcon name={focused ? 'add-circle' : 'add-circle-outline'}
                                      color={color} {...TabIconProps} />
                     )
                 }}
             />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({color, focused}) => (
+                        <MaterialCommunityIcon name={focused ? 'account-circle' : 'account-circle-outline'}
+                                               color={color} {...TabIconProps} />
+                    ),
+                }}
+            />
         </Tabs>
     );
 }
 
-export default AuthLayout;
+export default TabsLayout;

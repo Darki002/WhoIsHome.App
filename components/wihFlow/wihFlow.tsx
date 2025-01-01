@@ -35,16 +35,21 @@ export function WihFlow<T extends object>({
 
     const currentStep = steps[currentStepNumber];
 
+    function onStateChange(changes: Partial<T>) {
+        setState((prev) => ({...prev, ...changes}));
+    }
+
     function onNavAction(action: WihFlowNavAction) {
-        setIsValid(currentStep.validate(state));
+        const result = currentStep.validate(state);
+        setIsValid(result);
         switch (action) {
             case "Next":
-                if (isValid) {
+                if (result) {
                     setStep(currentStepNumber + 1);
                 }
                 break;
             case "Finish":
-                if (isValid) {
+                if (result) {
                     onFinish(state);
                 }
                 break;
@@ -57,10 +62,6 @@ export function WihFlow<T extends object>({
                 onCancel();
                 break;
         }
-    }
-
-    function onStateChange(changes: T) {
-        setState({...state, ...changes});
     }
 
     const CurrentComponent = currentStep.component;

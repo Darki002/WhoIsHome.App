@@ -1,6 +1,6 @@
 import {View} from "react-native";
 import {useThemeColor} from "@/hooks/useThemeColor";
-import {WihButton} from "@/components/WihButton";
+import {WihButton} from "@/components/input/WihButton";
 
 export type WihOption<T> = {
     value?: T;

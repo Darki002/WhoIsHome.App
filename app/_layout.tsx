@@ -16,6 +16,7 @@ SplashScreen.preventAutoHideAsync();
 const RootLayout = () => {
     const backgroundColor = useThemeColor("background");
     const colorScheme = useColorScheme();
+
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
     });
@@ -39,8 +40,7 @@ const RootLayout = () => {
         <SessionProvider>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
                 <Stack screenOptions={screenOptions}>
-                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-                    <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown"}}/>
+                    <Stack.Screen name="protected" options={{headerShown: false}}/>
                     <Stack.Screen name="auth" options={{headerShown: false}}/>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
