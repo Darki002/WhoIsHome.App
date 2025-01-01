@@ -1,20 +1,17 @@
-import {useRouter} from "expo-router";
 import {useSession} from "@/components/auth/context";
-import {useEffect} from "react";
+import {Redirect} from "expo-router";
+import {isInvalidSession} from "@/helper/sessionHelper";
 
 export default function Index() {
-    const router = useRouter();
     const { session, isSessionLoading } = useSession();
 
-    useEffect(() => {
-        if (isSessionLoading) return;
+    if(isSessionLoading) {
+        return null;
+    }
 
-        if (session) {
-            router.replace("/protected");
-        } else {
-            router.replace("/auth/login");
-        }
-    }, [session, isSessionLoading]);
+    if(isInvalidSession(session)){
+        return <Redirect href="/auth/login" />
+    }
 
-    return null;
+    return <Redirect href="/protected/(tabs)" />
 }

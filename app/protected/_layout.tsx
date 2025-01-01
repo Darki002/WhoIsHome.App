@@ -2,7 +2,7 @@ import {Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/auth/context';
 import {useEffect} from "react";
-import {Tokens} from "@/constants/WihTypes/Auth";
+import {isInvalidSession} from "@/helper/sessionHelper";
 
 const ProtectedLayout = () => {
     const router = useRouter();
@@ -29,10 +29,6 @@ const ProtectedLayout = () => {
             <Stack.Screen name="event" options={{headerShown: false}}/>
         </Stack>
     );
-}
-
-function isInvalidSession(session: Tokens | null) : boolean {
-    return !session || !session.jwtToken || !session.refreshToken;
 }
 
 export default ProtectedLayout;
