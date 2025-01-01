@@ -5,7 +5,7 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 
 export interface WihApiProps<T> {
     endpoint: string;
-    method: "GET" | "POST" | "DELETE";
+    method: "GET" | "POST" | "DELETE" | "PATCH";
     onResponse: (response: WihResponse<T> | null) => void;
     version?: number;
 }

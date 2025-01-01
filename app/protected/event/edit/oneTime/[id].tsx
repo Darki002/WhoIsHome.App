@@ -4,6 +4,8 @@ import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTim
 import {WihText} from "@/components/WihText";
 import React, {useCallback} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
+import {WihResponse} from "@/helper/WihApi";
+import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 
 export default function OneTimeEventView(){
     const router = useRouter();
@@ -11,6 +13,21 @@ export default function OneTimeEventView(){
     const response = useWihApiFocus<OneTimeEventModel>({
         endpoint: `OneTimeEvent/${id}`,
         method: "GET"
+    });
+
+    const onResponse = (body: WihResponse | null) => {
+        // TODO: route to view or show error
+        if(body?.hasError){
+            return;
+        }
+
+        router.replace(`/protected/event/view/oneTime/${id}`);
+    }
+
+    const callWihApi = useWihApiCallable({
+        endpoint: `OneTimeEvent/${id}`,
+        method: "PATCH",
+        onResponse
     });
 
     if (!response?.response) {
@@ -23,6 +40,7 @@ export default function OneTimeEventView(){
 
     const onUpdate = useCallback(() => {
         // TODO: send updated to API
+        callWihApi({});
     }, []);
 
     const event = new OneTimeEvent(response?.response);

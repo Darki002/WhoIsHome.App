@@ -2,7 +2,7 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 
 export interface WihFetchProps {
     endpoint: string;
-    method: "GET" | "POST" | "DELETE";
+    method: "GET" | "POST" | "DELETE" | "PATCH";
     tokens?: Tokens;
     version?: number;
     body?: any;
