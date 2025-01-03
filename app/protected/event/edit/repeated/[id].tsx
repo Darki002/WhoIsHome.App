@@ -40,13 +40,13 @@ export default function RepeatedEventView(){
         setState((prev) => ({...prev, ...update}));
     }
 
-    if (!response?.response) {
-        return null;
-    }
-
     const onCancel = useCallback(() => {
         router.push(`/protected/event/view/repeated/${id}`);
     }, [id]);
+
+    if (!response?.response) {
+        return null;
+    }
 
     const onUpdate = () => {
         const body : RepeatedEventDto = {

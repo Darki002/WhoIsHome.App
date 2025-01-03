@@ -40,13 +40,13 @@ export default function OneTimeEventView(){
         setState((prev) => ({...prev, ...update}));
     }
 
-    if (!response?.response) {
-        return null;
-    }
-
     const onCancel = useCallback(() => {
         router.push(`/protected/event/view/oneTime/${id}`);
     }, [id]);
+
+    if (!response?.response) {
+        return null;
+    }
 
     const onUpdate = () => {
         const body : OneTimeEventDto = {
