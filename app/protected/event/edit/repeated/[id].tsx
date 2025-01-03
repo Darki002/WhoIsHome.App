@@ -10,6 +10,7 @@ import WihView from "@/components/WihView";
 import {WihTextInput} from "@/components/input/WihInput";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
+import Toast from "react-native-root-toast";
 
 export default function RepeatedEventView(){
     const router = useRouter();
@@ -21,12 +22,18 @@ export default function RepeatedEventView(){
 
     const [state, setState] = useState<RepeatedEvent>(new RepeatedEvent());
 
-    const onResponse = (body: WihResponse | null) => {
-        // TODO: route to view or show error
-        if(body?.hasError){
+    const onResponse = (res: WihResponse | null) => {
+        if(!res || res?.hasError){
+            console.error(res?.error ?? "Unknown Error");
+            Toast.show('Failed to update Event', {
+                duration: Toast.durations.SHORT,
+            });
             return;
         }
 
+        Toast.show('Event updated', {
+            duration: Toast.durations.SHORT,
+        });
         router.replace(`/protected/event/view/repeated/${id}`);
     }
 

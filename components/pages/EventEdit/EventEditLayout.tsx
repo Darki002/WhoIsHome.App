@@ -56,7 +56,7 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
             {
                 <WihView flex="row">
                     <WihButton onPress={onCancel}>Cancel</WihButton>
-                    <WihButton onPress={onUpdatedChecked}>Update</WihButton>
+                    <WihButton onPress={onUpdatedChecked}>Save</WihButton>
                 </WihView>
             }
         </WihView>
