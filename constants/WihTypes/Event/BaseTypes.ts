@@ -36,7 +36,12 @@ export class EventBase {
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
 
-    constructor(eventModelBase: EventModelBase) {
+    constructor(eventModelBase?: EventModelBase) {
+
+        if(!eventModelBase){
+            return;
+        }
+
         this.Title = eventModelBase.title;
         this.PresenceType = eventModelBase.presenceType;
 

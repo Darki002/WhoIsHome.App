@@ -1,11 +1,15 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
-import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
+import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import {WihText} from "@/components/WihText";
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihResponse} from "@/helper/WihApi";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
+import {formatDate, formatTime} from "@/helper/datetimehelper";
+import {WihTextInput} from "@/components/input/WihInput";
+import WihView from "@/components/WihView";
+import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 
 export default function OneTimeEventView(){
     const router = useRouter();
@@ -14,6 +18,8 @@ export default function OneTimeEventView(){
         endpoint: `OneTimeEvent/${id}`,
         method: "GET"
     });
+
+    const [state, setState] = useState<OneTimeEvent>(new OneTimeEvent());
 
     const onResponse = (body: WihResponse | null) => {
         // TODO: route to view or show error
@@ -24,11 +30,15 @@ export default function OneTimeEventView(){
         router.replace(`/protected/event/view/oneTime/${id}`);
     }
 
-    const callWihApi = useWihApiCallable({
+    const callWihApi = useWihApiCallable<OneTimeEventDto>({
         endpoint: `OneTimeEvent/${id}`,
         method: "PATCH",
         onResponse
     });
+
+    const updateState = (update: Partial<OneTimeEvent>) => {
+        setState((prev) => ({...prev, ...update}));
+    }
 
     if (!response?.response) {
         return null;
@@ -38,24 +48,48 @@ export default function OneTimeEventView(){
         router.push(`/protected/event/view/oneTime/${id}`);
     }, [id]);
 
-    const onUpdate = useCallback(() => {
-        // TODO: send updated to API
-        callWihApi({});
-    }, []);
+    const onUpdate = () => {
+        const body : OneTimeEventDto = {
+            Title: state.Title!,
+            Date: formatDate(state.Date!),
+            StartTime: formatTime(state.StartTime!),
+            EndTime: formatTime(state.EndTime!),
+            PresenceType: state.PresenceType!,
+            DinnerTime: formatTime(state.DinnerTime!)
+        }
+        callWihApi(body);
+    };
 
     const event = new OneTimeEvent(response?.response);
 
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
-            <WihText>Title: {event.Title ?? "Unknown"}</WihText>
+            <WihView flex="row">
+                <WihText>Title:</WihText>
+                <WihTextInput value={state.Title} placeholder="Titel" onChangeText={t => updateState({Title: t})}></WihTextInput>
+            </WihView>
 
-            <WihText>Date: {event.Date?.toLocaleDateString() ?? "N/A"}</WihText>
+            <WihView flex="row">
+                <WihText>Date:</WihText>
+                <WihDateInput value={state.Date} onChange={d => updateState({Date: d})}></WihDateInput>
+            </WihView>
 
-            <WihText>Start Time: {event.StartTime?.toLocaleTimeString() ?? "N/A"}</WihText>
-            <WihText>End Time: {event.EndTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihView flex="row">
+                <WihText>Start Time:</WihText>
+                <WihTimeInput value={state.StartTime} onChange={st => updateState({StartTime: st})}></WihTimeInput>
+            </WihView>
+
+            <WihView flex="row">
+                <WihText>End Time:</WihText>
+                <WihTimeInput value={state.EndTime} onChange={et => updateState({EndTime: et})}></WihTimeInput>
+            </WihView>
 
             <WihText>Presence Type: {event.PresenceType ?? "Missing"}</WihText>
-            <WihText>Dinner Time: {event.DinnerTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+
+            <WihView flex="row">
+                <WihText>Dinner Time:</WihText>
+                <WihDateInput value={state.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihDateInput>
+            </WihView>
         </EventEditLayout>
     )
 }

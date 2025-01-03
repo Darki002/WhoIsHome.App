@@ -15,8 +15,13 @@ export class RepeatedEvent extends EventBase {
     FirstOccurrence?: Date;
     LastOccurrence?: Date;
 
-    constructor(repeatedEventModel : RepeatedEventModel) {
+    constructor(repeatedEventModel?: RepeatedEventModel) {
         super(repeatedEventModel);
+
+        if(!repeatedEventModel){
+            return;
+        }
+
         this.FirstOccurrence = dateStringToDate(repeatedEventModel.firstOccurrence);
         this.LastOccurrence = dateStringToDate(repeatedEventModel.lastOccurrence);
     }

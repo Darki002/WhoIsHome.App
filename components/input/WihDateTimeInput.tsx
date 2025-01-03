@@ -3,7 +3,7 @@ import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datet
 import React, {useState} from "react";
 
 export interface WihDateTimeInputProps {
-    value?: Date;
+    value?: Date | null;
     onChange: (date: Date | undefined) => void;
     disabled?: boolean;
 }
@@ -22,7 +22,12 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInp
     };
 
     if (disabled) {
-        return <Text style={{color: "grey"}}>dd-MM-yyyy</Text>
+        const displayValue = value?.toLocaleDateString() ?? "dd-MM-yyyy";
+        return <Text style={{color: "grey"}}>{displayValue}</Text>
+    }
+
+    if(value === null){
+        return <Text>dd-MM-yyyy</Text>
     }
 
     const date = value ?? new Date(Date.now());

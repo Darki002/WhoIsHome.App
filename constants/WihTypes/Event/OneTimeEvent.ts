@@ -12,8 +12,13 @@ export interface OneTimeEventDto extends EventDtoBase{
 export class OneTimeEvent extends EventBase {
     Date?: Date;
 
-    constructor(oneTimeEventModel : OneTimeEventModel) {
+    constructor(oneTimeEventModel?: OneTimeEventModel) {
         super(oneTimeEventModel);
+
+        if(!oneTimeEventModel){
+            return;
+        }
+
         this.Date = dateStringToDate(oneTimeEventModel.date);
     }
 }
