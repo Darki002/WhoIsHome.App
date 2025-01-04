@@ -1,0 +1,7 @@
+{
+  "Login": "Anmelden",
+  "Errors": {
+    "MissingEmail": "Email ist erforderlich!",
+    "MissingPassword": "Password is erforderlich!"
+  }
+}

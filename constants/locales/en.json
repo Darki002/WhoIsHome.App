@@ -1,0 +1,7 @@
+{
+  "Login": "Sign In",
+  "Errors": {
+    "MissingEmail": "Email is required!",
+    "MissingPassword": "Password is required!"
+  }
+}
