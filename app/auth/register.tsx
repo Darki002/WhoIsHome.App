@@ -40,7 +40,7 @@ const register = () => {
             return;
         }
 
-        const error = await signIn({email, password});
+        const error = await signIn({email: baseUri, password: apikey});
         if (error) {
             setError(error);
         }

@@ -22,7 +22,7 @@ const Login = () => {
             return;
         }
 
-        const error = await signIn({email, password});
+        const error = await signIn({email: baseUri, password: apikey});
         if (error) {
             setError(error);
         }
@@ -47,7 +47,7 @@ const Login = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onLogIn({email, password})}>Login</WihButton>
+            <WihButton onPress={async () => onLogIn({email: baseUri, password: apikey})}>Login</WihButton>
         </WihView>
     )
 }

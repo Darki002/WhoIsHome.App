@@ -86,7 +86,6 @@ async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens
     headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
     headers.append("RefreshToken", refreshToken);
 
-
     try {
         const response = await fetch(uri, {
             method: "POST",

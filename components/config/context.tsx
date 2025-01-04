@@ -7,11 +7,11 @@ export interface ApiConfig {
 }
 
 const ApiContext = createContext<{
-    setConfig: (config: ApiConfig) => void;
+    setConfig: (config: ApiConfig) => Promise<string | null>;
     config: ApiConfig | null;
     isLoading: boolean;
 }>({
-    setConfig: () => null,
+    setConfig: async () => null,
     config: null,
     isLoading: false
 });
@@ -36,11 +36,14 @@ export function ApiConfigProvider({ children }: PropsWithChildren){
     return(
         <ApiContext.Provider
         value={{
-            setConfig: (config: ApiConfig) =>  {
+            setConfig: async (config: ApiConfig) =>  {
                 if (!config.baseUri || !config.apikey) return "Invalid Configuration";
 
                 setBaseUri(config.baseUri);
                 setApikey(config.apikey);
+
+                const result = await checkConfig({apikey, baseUri});
+                return result ? null : "Config did not work";
             },
             config: baseUri && apikey ? {baseUri, apikey} : null,
             isLoading
@@ -48,4 +51,23 @@ export function ApiConfigProvider({ children }: PropsWithChildren){
             {children}
         </ApiContext.Provider>
     )
+}
+
+async function checkConfig({apikey, baseUri} : ApiConfig) : Promise<boolean> {
+    const headers = new Headers();
+    headers.append("X-API-KEY", apikey!);
+
+    try{
+        const response = await fetch(`${baseUri}/HealthCheck`, {
+            method: "GET",
+            headers: headers,
+            mode: "cors",
+        });
+
+        return response.ok;
+    }
+    catch (e : any) {
+        console.log(`Error while checking config: ${e.message}`)
+        return false;
+    }
 }
