@@ -10,13 +10,15 @@ export type WihOption<T> = {
 export interface WihSingleChoiceProps<T> {
     value?: T;
     options: Array<WihOption<T>>;
+    columnLength?: number;
     onChange: (value: T | undefined) => void;
 }
 
-export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoiceProps<T>) {
+export function WihSingleChoice<T>({value, options, columnLength, onChange}: WihSingleChoiceProps<T>) {
     const backgroundColor = useThemeColor('background');
+
     return (
-        <View style={{backgroundColor, flex: 2}}>
+        <View style={{backgroundColor, gridTemplateColumns: `repeat(${columnLength ?? options.length}), 1fr`}}>
             {options.map((o, i) =>
                 <OptionButton
                     key={i}

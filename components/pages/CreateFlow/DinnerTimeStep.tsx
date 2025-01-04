@@ -36,6 +36,7 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
                 <WihSingleChoice<PresenceType>
                     value={state.PresenceType}
                     options={options}
+                    columnLength={1}
                     onChange={onPresenceTypeChange}/>
 
                 {isInvalid && state.PresenceType === null && !state.EndTime &&

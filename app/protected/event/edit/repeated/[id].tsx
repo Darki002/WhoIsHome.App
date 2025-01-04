@@ -11,6 +11,14 @@ import {WihTextInput} from "@/components/input/WihInput";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import Toast from "react-native-root-toast";
+import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
+import {PresenceType} from "@/constants/WihTypes/PresenceType";
+
+const options: Array<WihOption<PresenceType>> = [
+    {value: "Unknown", display: "Unknown"},
+    {value: "Late", display: "Late"},
+    {value: "NotPresent", display: "Not Present"}
+]
 
 export default function RepeatedEventView() {
     const router = useRouter();
@@ -29,7 +37,7 @@ export default function RepeatedEventView() {
         setEvent(repeatedEvent);
     }, [response]);
 
-    const updateState = (update: Partial<RepeatedEvent>) => {
+    const updateEvent = (update: Partial<RepeatedEvent>) => {
         setEvent((prev) => ({...prev, ...update}));
     }
 
@@ -76,41 +84,61 @@ export default function RepeatedEventView() {
         return null;
     }
 
+    const onDinnerTimeChange = (time: Date | undefined) => {
+        const value = event.PresenceType === "Late" ? time : null;
+        updateEvent({DinnerTime: value});
+    }
+
+    const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
+        updateEvent({PresenceType: presenceType});
+        if (presenceType !== "Late") {
+            updateEvent({DinnerTime: null});
+        }
+    }
+
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
             <WihView flex="row">
                 <WihText>Title:</WihText>
-                <WihTextInput value={event.Title} placeholder="Titel"
-                              onChangeText={t => updateState({Title: t})}></WihTextInput>
+                <WihTextInput
+                    value={event.Title}
+                    placeholder="Titel"
+                    onChangeText={t => updateEvent({Title: t})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>First Occurrence:</WihText>
                 <WihDateInput value={event.FirstOccurrence}
-                              onChange={d => updateState({FirstOccurrence: d})}></WihDateInput>
+                              onChange={d => updateEvent({FirstOccurrence: d})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>Last Occurrence:</WihText>
                 <WihDateInput value={event.LastOccurrence}
-                              onChange={d => updateState({LastOccurrence: d})}></WihDateInput>
+                              onChange={d => updateEvent({LastOccurrence: d})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>Start Time:</WihText>
-                <WihTimeInput value={event.StartTime} onChange={st => updateState({StartTime: st})}></WihTimeInput>
+                <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}/>
             </WihView>
 
             <WihView flex="row">
                 <WihText>End Time:</WihText>
-                <WihTimeInput value={event.EndTime} onChange={et => updateState({EndTime: et})}></WihTimeInput>
+                <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}/>
             </WihView>
 
-            <WihText>Presence Type: {event.PresenceType ?? "Missing"}</WihText>
+            <WihView flex="row">
+                <WihText>Presence Type:</WihText>
+                <WihSingleChoice value={event.PresenceType} options={options} onChange={onPresenceTypeChange}/>
+            </WihView>
 
             <WihView flex="row">
                 <WihText>Dinner Time:</WihText>
-                <WihTimeInput value={event.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihTimeInput>
+                <WihTimeInput
+                    value={event.DinnerTime}
+                    disabled={event.PresenceType !== "Late"}
+                    onChange={onDinnerTimeChange}/>
             </WihView>
         </EventEditLayout>
     )
