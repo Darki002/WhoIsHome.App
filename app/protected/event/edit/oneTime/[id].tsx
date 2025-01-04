@@ -20,7 +20,7 @@ const options: Array<WihOption<PresenceType>> = [
     {value: "NotPresent", display: "Not Present"}
 ]
 
-export default function OneTimeEventView(){
+export default function OneTimeEventView() {
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
     const response = useWihApiFocus<OneTimeEventModel>({
@@ -30,7 +30,7 @@ export default function OneTimeEventView(){
 
     const [event, setEvent] = useState<OneTimeEvent | null>(new OneTimeEvent());
     useEffect(() => {
-        if(!response || !response.response || response.hasError){
+        if (!response || !response.response || response.hasError) {
             return;
         }
         const event = new OneTimeEvent(response?.response);
@@ -42,7 +42,7 @@ export default function OneTimeEventView(){
     }, []);
 
     const onResponse = useCallback((res: WihResponse | null) => {
-        if(!res || res?.hasError){
+        if (!res || res?.hasError) {
             console.error(res?.error ?? "Unknown Error");
             Toast.show('Failed to update Event', {
                 duration: Toast.durations.SHORT,
@@ -67,8 +67,8 @@ export default function OneTimeEventView(){
     }, [id]);
 
     const onUpdate = useCallback(() => {
-        if(!event) return;
-        const body : OneTimeEventDto = {
+        if (!event) return;
+        const body: OneTimeEventDto = {
             Title: event.Title!,
             Date: formatDate(event.Date!),
             StartTime: formatTime(event.StartTime!),
@@ -99,7 +99,8 @@ export default function OneTimeEventView(){
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
             <WihView flex="row">
                 <WihText>Title:</WihText>
-                <WihTextInput value={event.Title} placeholder="Titel" onChangeText={t => updateEvent({Title: t})}></WihTextInput>
+                <WihTextInput value={event.Title} placeholder="Titel"
+                              onChangeText={t => updateEvent({Title: t})}></WihTextInput>
             </WihView>
 
             <WihView flex="row">
@@ -119,7 +120,11 @@ export default function OneTimeEventView(){
 
             <WihView flex="row">
                 <WihText>Presence Type:</WihText>
-                <WihSingleChoice value={event.PresenceType} options={options} onChange={onPresenceTypeChange}/>
+                <WihSingleChoice
+                    value={event.PresenceType}
+                    options={options}
+                    direction="row"
+                    onChange={onPresenceTypeChange}/>
             </WihView>
 
             <WihView flex="row">

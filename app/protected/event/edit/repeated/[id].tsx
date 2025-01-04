@@ -130,7 +130,11 @@ export default function RepeatedEventView() {
 
             <WihView flex="row">
                 <WihText>Presence Type:</WihText>
-                <WihSingleChoice value={event.PresenceType} options={options} onChange={onPresenceTypeChange}/>
+                <WihSingleChoice
+                    value={event.PresenceType}
+                    options={options}
+                    direction="row"
+                    onChange={onPresenceTypeChange}/>
             </WihView>
 
             <WihView flex="row">

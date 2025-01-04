@@ -65,18 +65,19 @@ export const WihTimeInput = ({value, onChange, disabled = false}: WihDateTimeInp
         return <Text style={{color: "grey"}}>{displayValue}</Text>
     }
 
-    if(value === null){
-        return <Text>HH-mm</Text>
+    let time = value;
+    if(!value){
+        const now = new Date();
+        now.setHours(18, 0, 0);
+        time = now;
     }
-
-    const time = value ?? new Date(Date.now());
 
     return (
         <>
-            <Text onPress={showPicker}>{time.toLocaleTimeString()}</Text>
+            <Text onPress={showPicker}>{time!.toLocaleTimeString()}</Text>
             {show && (
                 <DateTimePicker
-                    value={time}
+                    value={time!}
                     mode="time"
                     is24Hour={true}
                     onChange={onDateChange}
