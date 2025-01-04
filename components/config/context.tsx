@@ -27,37 +27,48 @@ export function useApiConfig() {
     return value;
 }
 
-export function ApiConfigProvider({ children }: PropsWithChildren){
+export function ApiConfigProvider({children}: PropsWithChildren) {
     const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
     const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
 
     const isLoading = isLoadingBaseUri || isLoadingApikey;
 
-    return(
+    let config: ApiConfig | null;
+
+    if (process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "true") {
+        config = {
+            baseUri: process.env.EXPO_PUBLIC_API_BASE_URI ?? null,
+            apikey: process.env.EXPO_PUBLIC_API_KEY ?? null
+        }
+    } else {
+        config = baseUri && apikey ? {baseUri, apikey} : null
+    }
+
+    return (
         <ApiContext.Provider
-        value={{
-            setConfig: async (config: ApiConfig) =>  {
-                if (!config.baseUri || !config.apikey) return "Invalid Configuration";
+            value={{
+                setConfig: async (config: ApiConfig) => {
+                    if (!config.baseUri || !config.apikey) return "Invalid Configuration";
 
-                setBaseUri(config.baseUri);
-                setApikey(config.apikey);
+                    setBaseUri(config.baseUri);
+                    setApikey(config.apikey);
 
-                const result = await checkConfig({apikey, baseUri});
-                return result ? null : "Config did not work";
-            },
-            config: baseUri && apikey ? {baseUri, apikey} : null,
-            isLoading
-        }}>
+                    const result = await checkConfig({apikey, baseUri});
+                    return result ? null : "Config did not work";
+                },
+                config: config,
+                isLoading
+            }}>
             {children}
         </ApiContext.Provider>
     )
 }
 
-async function checkConfig({apikey, baseUri} : ApiConfig) : Promise<boolean> {
+async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
     const headers = new Headers();
     headers.append("X-API-KEY", apikey!);
 
-    try{
+    try {
         const response = await fetch(`${baseUri}/api/v1/HealthCheck`, {
             method: "GET",
             headers: headers,
@@ -65,8 +76,7 @@ async function checkConfig({apikey, baseUri} : ApiConfig) : Promise<boolean> {
         });
 
         return response.ok;
-    }
-    catch (e : any) {
+    } catch (e: any) {
         console.log(`Error while checking config: ${e.message}`)
         return false;
     }
