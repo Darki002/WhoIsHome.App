@@ -1,15 +1,16 @@
 import {useFonts} from 'expo-font';
-import {Redirect, Stack} from 'expo-router';
+import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
-
+import i18n from "@/helper/i18n"
 import {useThemeColor} from '@/hooks/useThemeColor';
 import {Platform, useColorScheme} from 'react-native';
 import {ThemeProvider} from '@react-navigation/native';
 import {DarkTheme, LightTheme} from '@/constants/Colors';
 import {SessionProvider} from '@/components/auth/context';
 import {ApiConfigProvider, useApiConfig} from "@/components/config/context";
+import {I18nextProvider} from "react-i18next";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,18 +40,20 @@ const RootLayout = () => {
     };
 
     return (
-        <SessionProvider>
-            <ApiConfigProvider>
-                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
-                    <Stack screenOptions={screenOptions}>
-                        <Stack.Screen name="protected" options={{headerShown: false}}/>
-                        <Stack.Screen name="auth" options={{headerShown: false}}/>
-                        <Stack.Screen name="config" options={{headerShown: false}}/>
-                        <Stack.Screen name="+not-found"/>
-                    </Stack>
-                </ThemeProvider>
-            </ApiConfigProvider>
-        </SessionProvider>
+        <I18nextProvider i18n={i18n}>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
+                <ApiConfigProvider>
+                    <SessionProvider>
+                        <Stack screenOptions={screenOptions}>
+                            <Stack.Screen name="protected" options={{headerShown: false}}/>
+                            <Stack.Screen name="auth" options={{headerShown: false}}/>
+                            <Stack.Screen name="config" options={{headerShown: false}}/>
+                            <Stack.Screen name="+not-found"/>
+                        </Stack>
+                    </SessionProvider>
+                </ApiConfigProvider>
+            </ThemeProvider>
+        </I18nextProvider>
     );
 }
 
