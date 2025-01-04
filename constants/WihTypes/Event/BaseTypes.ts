@@ -47,6 +47,6 @@ export class EventBase {
 
         this.StartTime = timeStringToDate(eventModelBase.startTime);
         this.EndTime = timeStringToDate(eventModelBase.endTime);
-        this.DinnerTime = timeStringToDate(eventModelBase.dinnerTime ?? undefined);
+        this.DinnerTime = eventModelBase.dinnerTime ? timeStringToDate(eventModelBase.dinnerTime) : null;
     }
 }

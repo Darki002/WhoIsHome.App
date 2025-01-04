@@ -101,7 +101,7 @@ export default function OneTimeEventView(){
 
             <WihView flex="row">
                 <WihText>Dinner Time:</WihText>
-                <WihDateInput value={event.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihDateInput>
+                <WihTimeInput value={event.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihTimeInput>
             </WihView>
         </EventEditLayout>
     )
