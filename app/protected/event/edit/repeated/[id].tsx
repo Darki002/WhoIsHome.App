@@ -67,7 +67,7 @@ export default function RepeatedEventView() {
             StartTime: formatTime(event.StartTime!),
             EndTime: formatTime(event.EndTime!),
             PresenceType: event.PresenceType!,
-            DinnerTime: formatTime(event.DinnerTime!)
+            DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
         callWihApi(body);
     }, [event]);
