@@ -3,7 +3,7 @@ import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datet
 import React, {useState} from "react";
 
 export interface WihDateTimeInputProps {
-    value?: Date;
+    value?: Date | null;
     onChange: (date: Date | undefined) => void;
     disabled?: boolean;
 }
@@ -21,13 +21,18 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInp
         setShow(true);
     };
 
-    if(disabled){
-        return <Text style={{color: "grey"}}>dd-MM-yyyy</Text>
+    if (disabled) {
+        const displayValue = value?.toLocaleDateString() ?? "dd-MM-yyyy";
+        return <Text style={{color: "grey"}}>{displayValue}</Text>
+    }
+
+    if(value === null){
+        return <Text>dd-MM-yyyy</Text>
     }
 
     const date = value ?? new Date(Date.now());
 
-    return(
+    return (
         <>
             <Text onPress={showPicker}>{date.toLocaleDateString()}</Text>
             {show && (
@@ -55,18 +60,24 @@ export const WihTimeInput = ({value, onChange, disabled = false}: WihDateTimeInp
         setShow(true);
     };
 
-    if(disabled){
-        return <Text style={{color: "grey"}}>HH-mm</Text>
+    if (disabled) {
+        const displayValue = value?.toLocaleTimeString() ?? "HH-mm";
+        return <Text style={{color: "grey"}}>{displayValue}</Text>
     }
 
-    const time = value ?? new Date(Date.now());
+    let time = value;
+    if(!value){
+        const now = new Date();
+        now.setHours(18, 0, 0);
+        time = now;
+    }
 
-    return(
+    return (
         <>
-            <Text onPress={showPicker}>{time.toLocaleTimeString()}</Text>
+            <Text onPress={showPicker}>{time!.toLocaleTimeString()}</Text>
             {show && (
                 <DateTimePicker
-                    value={time}
+                    value={time!}
                     mode="time"
                     is24Hour={true}
                     onChange={onDateChange}

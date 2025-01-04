@@ -1,7 +1,7 @@
-import { useContext, createContext, type PropsWithChildren } from 'react';
-import { useStorageState } from './useStorageState';
-import { wihFetch } from '../api/WihApi';
-import {Tokens} from "@/constants/WihTypes";
+import {createContext, type PropsWithChildren, useContext} from 'react';
+import {useStorageState} from './useStorageState';
+import {wihFetch} from '@/helper/WihApi';
+import {Tokens} from "@/constants/WihTypes/Auth";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -9,17 +9,17 @@ export type LoginInfos = {
 }
 
 const AuthContext = createContext<{
-    signIn: ({ email, password }: LoginInfos) => Promise<string | null>;
+    signIn: ({email, password}: LoginInfos) => Promise<string | null>;
     signOut: () => void;
-    onNewSession: (tokens : Tokens) => void;
+    onNewSession: (tokens: Tokens) => void;
     session: Tokens | null;
-    isLoading: boolean;
+    isSessionLoading: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
     onNewSession: _ => null,
     session: null,
-    isLoading: false,
+    isSessionLoading: false,
 });
 
 // This hook can be used to access the user info.
@@ -34,7 +34,7 @@ export function useSession() {
     return value;
 }
 
-export function SessionProvider({ children }: PropsWithChildren) {
+export function SessionProvider({children}: PropsWithChildren) {
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
@@ -43,11 +43,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
     return (
         <AuthContext.Provider
             value={{
-                signIn: async ({ email, password }) => {
+                signIn: async ({email, password}) => {
                     if (!email || !password)
                         return "Missing Login Information";
 
-                    const response = await wihFetch<Tokens>({ endpoint: "Auth/Login", method: "POST", body: { email, password } });
+                    const response = await wihFetch<Tokens>({
+                        endpoint: "Auth/Login",
+                        method: "POST",
+                        body: {email, password}
+                    });
                     if (response.hasError) {
                         return response.error;
                     }
@@ -63,10 +67,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     setSession(tokens.jwtToken);
                     setRefreshToken(tokens.refreshToken)
                 },
-                session: session && refreshToken ?  { jwtToken: session, refreshToken: refreshToken } : null,
-                isLoading: isLoading,
+                session: session && refreshToken ? {jwtToken: session, refreshToken: refreshToken} : null,
+                isSessionLoading: isLoading,
             }}>
             {children}
-        </AuthContext.Provider >
+        </AuthContext.Provider>
     );
 }

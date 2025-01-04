@@ -1,29 +1,28 @@
-import {View, ViewStyle, type ViewProps} from 'react-native';
-
-import { useThemeColor } from '@/hooks/useThemeColor';
+import {View, type ViewProps, ViewStyle} from 'react-native';
+import {useThemeColor} from '@/hooks/useThemeColor';
 
 export type ThemedViewProps = ViewProps & {
-  center?: "full" | "horizontal" | "vertical";
-  flex?: "row" | "column";
-  gap?: number;
-  lightColor?: string;
-  darkColor?: string;
+    center?: "full" | "horizontal" | "vertical";
+    flex?: "row" | "column";
+    gap?: number;
+    lightColor?: string;
+    darkColor?: string;
 };
 
-const WihView = ({ style, center, gap, flex, lightColor, darkColor, ...otherProps }: ThemedViewProps) => {
-  const backgroundColor = useThemeColor('background', { light: lightColor, dark: darkColor });
+const WihView = ({style, center, gap, flex, lightColor, darkColor, ...otherProps}: ThemedViewProps) => {
+    const backgroundColor = useThemeColor('background', {light: lightColor, dark: darkColor});
 
-  const cStyle = center ? centerStyle[center] : {}
-  const fStyle = flex ? flexStyle[flex] : {}
-  const gStyle = gap ? {gap} : {};
+    const cStyle = center ? centerStyle[center] : {}
+    const fStyle = flex ? flexStyle[flex] : {}
+    const gStyle = gap ? {gap} : {};
 
-  return <View style={[{ backgroundColor }, cStyle, fStyle, gStyle, style]} {...otherProps} />;
+    return <View style={[{backgroundColor}, cStyle, fStyle, gStyle, style]} {...otherProps} />;
 }
 
 type CenterStyle = {
-  full: ViewStyle;
-  horizontal: ViewStyle;
-  vertical: ViewStyle;
+    full: ViewStyle;
+    horizontal: ViewStyle;
+    vertical: ViewStyle;
 }
 
 type FlexStyle = {
@@ -43,19 +42,19 @@ const flexStyle: FlexStyle = {
 }
 
 const centerStyle: CenterStyle = {
-  full: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  horizontal: {
-    flex: 1,
-    alignItems: "center"
-  },
-  vertical: {
-    flex: 1,
-    justifyContent: "center"
-  }
+    full: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    horizontal: {
+        flex: 1,
+        alignItems: "center"
+    },
+    vertical: {
+        flex: 1,
+        justifyContent: "center"
+    }
 }
 
 export default WihView;

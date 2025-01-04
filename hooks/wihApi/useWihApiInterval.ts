@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {wihFetch, WihResponse} from "@/components/api/WihApi";
+import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
-import {Tokens} from "@/constants/WihTypes";
+import {Tokens} from "@/constants/WihTypes/Auth";
 
 export interface WihApiIntervalProps {
     time: number;
@@ -11,18 +11,25 @@ export interface WihApiIntervalProps {
     body?: any;
 }
 
-export default function useWihApiInterval<T>({time, endpoint, method, version = 1, body} : WihApiIntervalProps) : WihResponse<T | null> | null {
+export default function useWihApiInterval<T>({
+                                                 time,
+                                                 endpoint,
+                                                 method,
+                                                 version = 1,
+                                                 body
+                                             }: WihApiIntervalProps): WihResponse<T | null> | null {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
-    function onNewTokens(tokens : Tokens | null) {
-        if(tokens){
+    function onNewTokens(tokens: Tokens | undefined) {
+        if (tokens) {
             onNewSession(tokens);
         }
     }
 
     useEffect(() => {
-        if(!session) return () => {};
+        if (!session) return () => {
+        };
 
         wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
             .then(e => setResponse(e));

@@ -1,13 +1,13 @@
 import {useRouter} from "expo-router";
 import {useCallback} from "react";
-import {WihResponse} from "@/components/api/WihApi";
+import {WihResponse} from "@/helper/WihApi";
 import Toast from "react-native-root-toast";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 
-export default function useCreateFlowCallbacks(endpoint: string): [(body: any) => void, () => void]{
+export default function useCreateFlowCallbacks(endpoint: string): [(body: any) => void, () => void] {
     const router = useRouter();
 
-    const onCancel = useCallback(() => router.replace("/(tabs)/create"), []);
+    const onCancel = useCallback(() => router.replace("/protected/(tabs)/create"), []);
 
     const onResponse = useCallback((response: WihResponse | null) => {
         if (!response || response.hasError) {
@@ -16,7 +16,7 @@ export default function useCreateFlowCallbacks(endpoint: string): [(body: any) =
                 duration: Toast.durations.SHORT,
             });
         }
-        router.replace("/(tabs)");
+        router.replace("/protected/(tabs)");
     }, []);
 
     const callWihApi = useWihApiCallable({

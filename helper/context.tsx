@@ -1,6 +1,10 @@
 import {createContext, type PropsWithChildren} from "react";
 import {useStorageState} from "@/components/auth/useStorageState";
-import {ApiConfig} from "@/constants/WihTypes";
+
+export interface ApiConfig {
+    baseUri: string | null;
+    apikey: string | null;
+}
 
 const ApiContext = createContext<{
     setConfig: (config: ApiConfig) => void;
