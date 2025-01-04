@@ -1,5 +1,4 @@
 import {View, type ViewProps, ViewStyle} from 'react-native';
-
 import {useThemeColor} from '@/hooks/useThemeColor';
 
 export type ThemedViewProps = ViewProps & {
@@ -27,19 +26,19 @@ type CenterStyle = {
 }
 
 type FlexStyle = {
-    row: ViewStyle;
-    column: ViewStyle;
+  row: ViewStyle;
+  column: ViewStyle;
 }
 
 const flexStyle: FlexStyle = {
-    row: {
-        display: "flex",
-        flexDirection: "row"
-    },
-    column: {
-        display: "flex",
-        flexDirection: "column"
-    }
+  row: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  column: {
+    display: "flex",
+    flexDirection: "column"
+  }
 }
 
 const centerStyle: CenterStyle = {

@@ -1,7 +1,7 @@
 import {useCallback} from "react";
-import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes/Auth";
+import {wihFetch, WihResponse} from "@/helper/WihApi";
 
 export interface WihApiProps<T> {
     endpoint: string;

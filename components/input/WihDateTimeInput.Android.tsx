@@ -21,7 +21,6 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateTimeInp
 
     const show = () => {
         if (disabled) return;
-
         DateTimePickerAndroid.open({
             value: date,
             onChange: onDateChange,

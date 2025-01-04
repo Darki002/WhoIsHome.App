@@ -58,9 +58,6 @@ const styles = StyleSheet.create({
     },
     password: {
         marginVertical: 20
-    },
-    login: {
-        marginTop: 15
     }
 });
 
