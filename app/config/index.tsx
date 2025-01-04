@@ -5,8 +5,10 @@ import {WihButton} from "@/components/input/WihButton";
 import React, {useState} from "react";
 import {ApiConfig, useApiConfig} from "@/components/config/context";
 import {StyleSheet} from "react-native";
+import {useRouter} from "expo-router";
 
 export default function Index() {
+    const router = useRouter();
     const [apikey, setApiKey] = useState<string>("");
     const [baseUri, setBaseUri] = useState<string>("");
     const [error, setError] = useState<string>("");
@@ -26,11 +28,14 @@ export default function Index() {
         if (error) {
             setError(error);
         }
+        else {
+            router.replace("/");
+        }
     }
 
     return (
         <WihView center="full">
-            <WihTitle>Login</WihTitle>
+            <WihTitle>App Configuration</WihTitle>
 
             <WihTextInput
                 value={baseUri}

@@ -17,7 +17,7 @@ SplashScreen.preventAutoHideAsync();
 const RootLayout = () => {
     const backgroundColor = useThemeColor("background");
     const colorScheme = useColorScheme();
-    const {config, isLoading} = useApiConfig();
+    const {isLoading} = useApiConfig();
 
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
@@ -33,10 +33,6 @@ const RootLayout = () => {
         return null;
     }
 
-    if(!config){
-        return <Redirect href="/config" />
-    }
-
     const isWeb = Platform.OS === "web";
     const screenOptions = {
         ...(isWeb ? {} : {contentStyle: {backgroundColor}})
@@ -49,6 +45,7 @@ const RootLayout = () => {
                     <Stack screenOptions={screenOptions}>
                         <Stack.Screen name="protected" options={{headerShown: false}}/>
                         <Stack.Screen name="auth" options={{headerShown: false}}/>
+                        <Stack.Screen name="config" options={{headerShown: false}}/>
                         <Stack.Screen name="+not-found"/>
                     </Stack>
                 </ThemeProvider>

@@ -1,24 +1,17 @@
-import {Stack, useRouter} from "expo-router";
-import React, {useEffect} from "react";
+import {Stack} from "expo-router";
+import React from "react";
 import {useApiConfig} from "@/components/config/context";
 import {WihTitle} from "@/components/WihText";
 
 export default function ConfigLayout() {
-    const router = useRouter();
-    const {config, isLoading} = useApiConfig();
-
-    useEffect(() => {
-        if (config && config.apikey && config.baseUri) {
-            router.replace("/");
-        }
-    }, [config]);
+    const {isLoading} = useApiConfig();
 
     if (isLoading) {
         return <WihTitle>Loading...</WihTitle>
     }
 
     return (
-        <Stack screenOptions={{headerShown: false}}>
+        <Stack screenOptions={{headerShown: false, title: "Test"}}>
             <Stack.Screen name="index"/>
         </Stack>
     )

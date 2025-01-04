@@ -1,5 +1,6 @@
-import {createContext, type PropsWithChildren, useContext} from "react";
+import {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
 import {useStorageState} from "@/hooks/useStorageState";
+import {useRouter} from "expo-router";
 
 export interface ApiConfig {
     baseUri: string | null;
@@ -20,7 +21,7 @@ export function useApiConfig() {
     const value = useContext(ApiContext);
     if (process.env.NODE_ENV !== 'production') {
         if (!value) {
-            throw new Error('useSession must be wrapped in a <SessionProvider />');
+            throw new Error('useSession must be wrapped in a <ApiConfigProvider />');
         }
     }
 
@@ -28,21 +29,19 @@ export function useApiConfig() {
 }
 
 export function ApiConfigProvider({children}: PropsWithChildren) {
+    const router = useRouter();
     const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
     const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
 
     const isLoading = isLoadingBaseUri || isLoadingApikey;
 
-    let config: ApiConfig | null;
+    useEnvConfigs(isLoading, setBaseUri, setApikey);
 
-    if (process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "true") {
-        config = {
-            baseUri: process.env.EXPO_PUBLIC_API_BASE_URI ?? null,
-            apikey: process.env.EXPO_PUBLIC_API_KEY ?? null
+    useEffect(() => {
+        if (!isLoading && (!baseUri || !apikey)) {
+            router.replace("/config");
         }
-    } else {
-        config = baseUri && apikey ? {baseUri, apikey} : null
-    }
+    }, [isLoading, baseUri, apikey, router]);
 
     return (
         <ApiContext.Provider
@@ -53,10 +52,10 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
                     setBaseUri(config.baseUri);
                     setApikey(config.apikey);
 
-                    const result = await checkConfig({apikey, baseUri});
+                    const result = await checkConfig(config);
                     return result ? null : "Config did not work";
                 },
-                config: config,
+                config: {baseUri, apikey},
                 isLoading
             }}>
             {children}
@@ -80,4 +79,29 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
         console.log(`Error while checking config: ${e.message}`)
         return false;
     }
+}
+
+function useEnvConfigs(isLoading: boolean, setBaseUri: (value: (string | null)) => void, setApikey: (value: (string | null)) => void){
+    const [isApplied, setIsApplied] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(isApplied || isLoading) return;
+
+        if (process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "true") {
+            console.info("Applying ENV configurations");
+            const envBaseUri = process.env.EXPO_PUBLIC_API_BASE_URI ?? null;
+            const envApiKey = process.env.EXPO_PUBLIC_API_KEY ?? null;
+
+            if (envBaseUri) setBaseUri(envBaseUri);
+            if (envApiKey) setApikey(envApiKey);
+        }
+
+        if (process.env.EXPO_PUBLIC_CLEAR_CONFIG === "true") {
+            console.info("Clear API config from Storage");
+            setBaseUri(null);
+            setApikey(null);
+        }
+
+        setIsApplied(true);
+    }, [setBaseUri, setApikey, isLoading]);
 }
