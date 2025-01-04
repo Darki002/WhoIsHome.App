@@ -27,7 +27,7 @@ export default function WihEventCard({event}: { event: WihEvent }) {
 
     const date = new Date(event.date);
     const startTime = timeStringToDate(event.startTime)!;
-    const endTime = timeStringToDate(event.startTime)!;
+    const endTime = timeStringToDate(event.endTime)!;
 
     return (
         <Pressable onPress={onEventPress}>

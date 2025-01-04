@@ -5,7 +5,7 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 
 export interface WihApiProps<T> {
     endpoint: string;
-    method: "GET" | "POST" | "DELETE";
+    method: "GET" | "POST" | "DELETE" | "PATCH";
     onResponse: (response: WihResponse<T> | null) => void;
     version?: number;
 }
@@ -15,7 +15,7 @@ export default function useWihApiCallable<T = {}>({
                                                       onResponse,
                                                       method,
                                                       version = 1
-                                                  }: WihApiProps<T>): (body: any) => void {
+                                                  }: WihApiProps<T>): (body: T) => void {
     const {session, onNewSession} = useSession();
 
     function onNewTokens(tokens: Tokens | undefined) {
@@ -24,7 +24,7 @@ export default function useWihApiCallable<T = {}>({
         }
     }
 
-    return useCallback((body: any) => {
+    return useCallback((body: T) => {
         if (!session) return;
 
         wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})

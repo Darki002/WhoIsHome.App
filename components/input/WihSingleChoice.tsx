@@ -1,4 +1,4 @@
-import {View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {useThemeColor} from "@/hooks/useThemeColor";
 import {WihButton} from "@/components/input/WihButton";
 
@@ -10,13 +10,16 @@ export type WihOption<T> = {
 export interface WihSingleChoiceProps<T> {
     value?: T;
     options: Array<WihOption<T>>;
+    direction?: "row" | "column";
     onChange: (value: T | undefined) => void;
 }
 
-export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoiceProps<T>) {
+export function WihSingleChoice<T>({value, options, direction, onChange}: WihSingleChoiceProps<T>) {
     const backgroundColor = useThemeColor('background');
+    const flex = styles[direction ?? "column"];
+
     return (
-        <View style={{backgroundColor, flex: 2}}>
+        <View style={[{backgroundColor}, flex]}>
             {options.map((o, i) =>
                 <OptionButton
                     key={i}
@@ -28,6 +31,17 @@ export function WihSingleChoice<T>({value, options, onChange}: WihSingleChoicePr
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    row: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    column: {
+        display: "flex",
+        flexDirection: "column"
+    }
+})
 
 interface OptionButtonProps<T> {
     value?: T;

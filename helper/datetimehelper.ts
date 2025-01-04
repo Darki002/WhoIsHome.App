@@ -28,9 +28,5 @@ export const dateStringToDate = (dateString?: string | Date) : Date | undefined 
     if(dateString instanceof Date){
         return dateString;
     }
-
-    const date = new Date();
-    const [day, month, year] = dateString.split(".").map(Number);
-    date.setUTCFullYear(year, month, day);
-    return date;
+    return  new Date(dateString);
 }

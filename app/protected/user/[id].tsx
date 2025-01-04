@@ -56,7 +56,6 @@ export default function UserView() {
     }
 
     const overview = response.response;
-    console.log(overview);
     return (
         <WihView center="horizontal">
             <WihTitle>{user.response!.userName}'s Events</WihTitle>

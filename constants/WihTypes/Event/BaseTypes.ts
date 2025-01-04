@@ -36,12 +36,17 @@ export class EventBase {
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
 
-    constructor(eventModelBase: EventModelBase) {
+    constructor(eventModelBase?: EventModelBase) {
+
+        if(!eventModelBase){
+            return;
+        }
+
         this.Title = eventModelBase.title;
         this.PresenceType = eventModelBase.presenceType;
 
         this.StartTime = timeStringToDate(eventModelBase.startTime);
         this.EndTime = timeStringToDate(eventModelBase.endTime);
-        this.DinnerTime = timeStringToDate(eventModelBase.dinnerTime ?? undefined);
+        this.DinnerTime = eventModelBase.dinnerTime ? timeStringToDate(eventModelBase.dinnerTime) : null;
     }
 }
