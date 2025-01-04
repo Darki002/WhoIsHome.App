@@ -1,8 +1,12 @@
 const Labels = {
+    oneTimeEvent: "OneTimeEvent",
+    repeatedEvent: "RepeatedEvent",
     titles: {
         login: "Titles.Login",
         register: "Titles.Register",
-        appConfig: "Titles.AppConfig"
+        appConfig: "Titles.AppConfig",
+        eventCreator: "Titles.EventCreator",
+        summary: "Titles.Summary"
     },
     actions: {
         login: "Actions.Login",
@@ -20,6 +24,6 @@ const Labels = {
         missingBaseUri: "Errors.MissingBaseUri",
         missingApiKey: "Errors.MissingApiKey"
     }
-}
+} as const;
 
 export default Labels;

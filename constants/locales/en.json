@@ -1,8 +1,12 @@
 {
+  "OneTimeEvent": "single event",
+  "RepeatedEvent": "repeated event",
   "Titles": {
     "Login": "Sign In",
     "Register": "Register",
-    "AppConfig": "App Configuration"
+    "AppConfig": "App Configuration",
+    "EventCreator": "Event Creator",
+    "Summary": "Summary"
   },
   "Actions": {
     "Login": "Sign In",

@@ -1,8 +1,12 @@
 {
+  "OneTimeEvent": "Einmaliges Event",
+  "RepeatedEvent": "Wiederholendes Event",
   "Titles": {
     "Login": "Anmelden",
     "Register": "Registrieren",
-    "AppConfig": "App Configuration"
+    "AppConfig": "App Configuration",
+    "EventCreator": "Event Erstellung",
+    "Summary": "Zusammenfassung"
   },
   "Actions": {
     "Login": "Anmelden",

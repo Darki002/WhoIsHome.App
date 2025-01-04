@@ -9,6 +9,9 @@ import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
 import {DateStepBase, DateValidationBase} from "@/components/pages/CreateFlow/DateStepBase";
 import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 import {OneTimeEvent, OneTimeEventDto} from "@/constants/WihTypes/Event/OneTimeEvent";
+import {Endpoints} from "@/constants/endpoints";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
@@ -20,7 +23,7 @@ const defaultOneTimeEvent: OneTimeEvent = {
 };
 
 export default function OneTimeEventFlow() {
-    const [callWihApi, onCancel] = useCreateFlowCallbacks("OneTimeEvent");
+    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.oneTimeEvent);
 
     const onFinish = useCallback((state: OneTimeEvent) => {
         const body: OneTimeEventDto = {
@@ -55,16 +58,19 @@ const dateStep: WihFlowStep<OneTimeEvent> = {
 
 const summaryStep: WihFlowStep<OneTimeEvent> = {
     validate: (_: OneTimeEvent) => true,
-    component: ({state}: WihFlowComponentProps<OneTimeEvent>) => (
-        <WihView center="full">
-            <WihTitle>Summary</WihTitle>
-            <WihText>Title: {state.Title}</WihText>
-            <WihText>Date: {state.Date?.toLocaleDateString()}</WihText>
-            <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
-            <WihText>PresenceType: {state.PresenceType}</WihText>
-            <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
-        </WihView>
-    )
+    component: ({state}: WihFlowComponentProps<OneTimeEvent>) => {
+        const {t} = useTranslation();
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.titles.summary)}</WihTitle>
+                <WihText>Title: {state.Title}</WihText>
+                <WihText>Date: {state.Date?.toLocaleDateString()}</WihText>
+                <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+                <WihText>PresenceType: {state.PresenceType}</WihText>
+                <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
+            </WihView>
+        )
+    }
 }
 
 const components: Array<WihFlowStep<OneTimeEvent>> = [
