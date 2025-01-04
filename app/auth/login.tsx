@@ -22,7 +22,7 @@ const Login = () => {
             return;
         }
 
-        const error = await signIn({email: baseUri, password: apikey});
+        const error = await signIn({email, password});
         if (error) {
             setError(error);
         }
@@ -47,7 +47,7 @@ const Login = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onLogIn({email: baseUri, password: apikey})}>Login</WihButton>
+            <WihButton onPress={async () => onLogIn({email, password})}>Login</WihButton>
         </WihView>
     )
 }
@@ -58,9 +58,6 @@ const styles = StyleSheet.create({
     },
     password: {
         marginVertical: 20
-    },
-    login: {
-        marginTop: 15
     }
 });
 

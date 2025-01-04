@@ -29,7 +29,7 @@ export function useApiConfig() {
 
 export function ApiConfigProvider({ children }: PropsWithChildren){
     const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
-    const [[isLoadingApikey, apikey], setApikey] = useStorageState('baseUri');
+    const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
 
     const isLoading = isLoadingBaseUri || isLoadingApikey;
 

@@ -6,19 +6,19 @@ import React, {useState} from "react";
 import {ApiConfig, useApiConfig} from "@/components/config/context";
 import {StyleSheet} from "react-native";
 
-export default function Index(){
-    const [apikey, onChangeEmail] = useState<string>("");
-    const [baseUri, onChangePassword] = useState<string>("");
+export default function Index() {
+    const [apikey, setApiKey] = useState<string>("");
+    const [baseUri, setBaseUri] = useState<string>("");
     const [error, setError] = useState<string>("");
     const {setConfig} = useApiConfig();
 
     async function onSubmit({apikey, baseUri}: ApiConfig) {
-        if (!apikey) {
-            setError("Email is missing!");
+        if (!baseUri) {
+            setError("Base Url is missing!");
             return;
         }
-        if (!baseUri) {
-            setError("Password is missing!");
+        if (!apikey) {
+            setError("Api Key is missing!");
             return;
         }
 
@@ -34,19 +34,19 @@ export default function Index(){
 
             <WihTextInput
                 value={baseUri}
-                onChangeText={onChangeEmail}
+                onChangeText={setBaseUri}
                 style={styles.baseUri}
-                autoFocus
-            />
+                placeholder="Base Url"
+                autoFocus/>
             <WihTextInput
                 value={apikey}
-                onChangeText={onChangePassword}
+                onChangeText={setApiKey}
                 style={styles.apikey}
-            />
+                placeholder="API Key"/>
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onSubmit({apikey, baseUri})}>Login</WihButton>
+            <WihButton onPress={async () => onSubmit({apikey, baseUri})}>Submit</WihButton>
         </WihView>
     )
 }
@@ -57,8 +57,5 @@ const styles = StyleSheet.create({
     },
     apikey: {
         marginVertical: 20
-    },
-    login: {
-        marginTop: 15
     }
 });
