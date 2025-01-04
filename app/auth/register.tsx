@@ -52,7 +52,7 @@ const register = () => {
 
     return (
         <WihView center="full">
-            <WihTitle>{t(Labels.register)}</WihTitle>
+            <WihTitle>{t(Labels.titles.register)}</WihTitle>
 
             <WihUsernameInput
                 value={userName}
@@ -74,7 +74,7 @@ const register = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onRegister(email, password, userName)}>{t(Labels.register)}</WihButton>
+            <WihButton onPress={async () => onRegister(email, password, userName)}>{t(Labels.actions.register)}</WihButton>
         </WihView>
     )
 }

@@ -1,9 +1,23 @@
 {
-  "Login": "Sign In",
-  "Register": "Register",
+  "Titles": {
+    "Login": "Sign In",
+    "Register": "Register",
+    "AppConfig": "App Configuration"
+  },
+  "Actions": {
+    "Login": "Sign In",
+    "Register": "Register",
+    "Save": "Save"
+  },
+  "Placeholders": {
+    "BaseUri": "URL",
+    "ApiKey": "API Key"
+  },
   "Errors": {
     "MissingEmail": "Email is required!",
     "MissingPassword": "Password is required!",
-    "MissingUsername": "username is required!"
+    "MissingUsername": "Username is required!",
+    "MissingBaseUri": "Base Url is required!",
+    "MissingApiKey": "Api Key is required!"
   }
 }

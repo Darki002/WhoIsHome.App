@@ -33,7 +33,7 @@ const Login = () => {
 
     return (
         <WihView center="full">
-            <WihTitle>{t(Labels.login)}</WihTitle>
+            <WihTitle>{t(Labels.titles.login)}</WihTitle>
 
             <WihEmailInput
                 value={email}
@@ -50,7 +50,7 @@ const Login = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onLogIn({email, password})}>{t(Labels.login)}</WihButton>
+            <WihButton onPress={async () => onLogIn({email, password})}>{t(Labels.actions.login)}</WihButton>
         </WihView>
     )
 }

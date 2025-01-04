@@ -6,22 +6,27 @@ import React, {useState} from "react";
 import {ApiConfig, useApiConfig} from "@/components/config/context";
 import {Dimensions, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 export default function Index() {
+    const {t} = useTranslation();
     const windowDimensions = Dimensions.get('window');
     const router = useRouter();
+
     const [apikey, setApiKey] = useState<string>("");
     const [baseUri, setBaseUri] = useState<string>("");
-    const [error, setError] = useState<string>("");
     const {setConfig} = useApiConfig();
+
+    const [error, setError] = useState<string>("");
 
     async function onSubmit({apikey, baseUri}: ApiConfig) {
         if (!baseUri) {
-            setError("Base Url is missing!");
+            setError(t(Labels.errors.missingBaseUri));
             return;
         }
         if (!apikey) {
-            setError("Api Key is missing!");
+            setError(t(Labels.errors.missingApiKey));
             return;
         }
 
@@ -36,23 +41,23 @@ export default function Index() {
 
     return (
         <WihView center="full">
-            <WihTitle>App Configuration</WihTitle>
+            <WihTitle>{t(Labels.titles.appConfig)}</WihTitle>
 
             <WihTextInput
                 value={baseUri}
                 onChangeText={setBaseUri}
                 style={styles.baseUri}
-                placeholder="Base Url"
+                placeholder={t(Labels.placeholders.baseUri)}
                 autoFocus/>
             <WihTextInput
                 value={apikey}
                 onChangeText={setApiKey}
                 style={[styles.apikey, {maxWidth: windowDimensions.width * 0.9}]}
-                placeholder="API Key"/>
+                placeholder={t(Labels.placeholders.apikey)}/>
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onSubmit({apikey, baseUri})}>Submit</WihButton>
+            <WihButton onPress={async () => onSubmit({apikey, baseUri})}>{t(Labels.actions.save)}</WihButton>
         </WihView>
     )
 }
