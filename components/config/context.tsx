@@ -58,7 +58,7 @@ async function checkConfig({apikey, baseUri} : ApiConfig) : Promise<boolean> {
     headers.append("X-API-KEY", apikey!);
 
     try{
-        const response = await fetch(`${baseUri}/HealthCheck`, {
+        const response = await fetch(`${baseUri}/api/v1/HealthCheck`, {
             method: "GET",
             headers: headers,
             mode: "cors",
