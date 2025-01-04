@@ -1,5 +1,5 @@
-import {createContext, type PropsWithChildren} from "react";
-import {useStorageState} from "@/components/auth/useStorageState";
+import {createContext, type PropsWithChildren, useContext} from "react";
+import {useStorageState} from "@/hooks/useStorageState";
 
 export interface ApiConfig {
     baseUri: string | null;
@@ -15,6 +15,17 @@ const ApiContext = createContext<{
     config: null,
     isLoading: false
 });
+
+export function useApiConfig() {
+    const value = useContext(ApiContext);
+    if (process.env.NODE_ENV !== 'production') {
+        if (!value) {
+            throw new Error('useSession must be wrapped in a <SessionProvider />');
+        }
+    }
+
+    return value;
+}
 
 export function ApiConfigProvider({ children }: PropsWithChildren){
     const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');

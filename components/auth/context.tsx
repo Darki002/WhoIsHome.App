@@ -1,5 +1,5 @@
 import {createContext, type PropsWithChildren, useContext} from 'react';
-import {useStorageState} from './useStorageState';
+import {useStorageState} from '@/hooks/useStorageState';
 import {wihFetch} from '@/helper/WihApi';
 import {Tokens} from "@/constants/WihTypes/Auth";
 

@@ -1,17 +1,23 @@
 import {useSession} from "@/components/auth/context";
 import {Redirect} from "expo-router";
 import {isInvalidSession} from "@/helper/sessionHelper";
+import {useApiConfig} from "@/components/config/context";
 
 export default function Index() {
-    const { session, isSessionLoading } = useSession();
+    const {config, isLoading} = useApiConfig();
+    const {session, isSessionLoading} = useSession();
 
-    if(isSessionLoading) {
+    if (isSessionLoading || isLoading) {
         return null;
     }
 
-    if(isInvalidSession(session)){
-        return <Redirect href="/auth/login" />
+    if(!config || !config.apikey || !config.baseUri){
+        return <Redirect href="/config"/>
     }
 
-    return <Redirect href="/protected/(tabs)" />
+    if (isInvalidSession(session)) {
+        return <Redirect href="/auth/login"/>
+    }
+
+    return <Redirect href="/protected/(tabs)"/>
 }
