@@ -4,10 +4,11 @@ import {WihTextInput} from "@/components/input/WihInput";
 import {WihButton} from "@/components/input/WihButton";
 import React, {useState} from "react";
 import {ApiConfig, useApiConfig} from "@/components/config/context";
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
 
 export default function Index() {
+    const windowDimensions = Dimensions.get('window');
     const router = useRouter();
     const [apikey, setApiKey] = useState<string>("");
     const [baseUri, setBaseUri] = useState<string>("");
@@ -46,7 +47,7 @@ export default function Index() {
             <WihTextInput
                 value={apikey}
                 onChangeText={setApiKey}
-                style={styles.apikey}
+                style={[styles.apikey, {width: windowDimensions.width * 0.9}]}
                 placeholder="API Key"/>
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     apikey: {
-        marginVertical: 20
+        marginVertical: 20,
+        height: 40
     }
 });
