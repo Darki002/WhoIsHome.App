@@ -47,7 +47,7 @@ export default function Index() {
             <WihTextInput
                 value={apikey}
                 onChangeText={setApiKey}
-                style={[styles.apikey, {width: windowDimensions.width * 0.9}]}
+                style={[styles.apikey, {maxWidth: windowDimensions.width * 0.9}]}
                 placeholder="API Key"/>
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
