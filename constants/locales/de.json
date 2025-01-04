@@ -1,7 +1,9 @@
 {
   "Login": "Anmelden",
+  "Register": "Registrieren",
   "Errors": {
     "MissingEmail": "Email ist erforderlich!",
-    "MissingPassword": "Password is erforderlich!"
+    "MissingPassword": "Password ist erforderlich!",
+    "MissingUsername": "Benutzername ist erforderlich!"
   }
 }

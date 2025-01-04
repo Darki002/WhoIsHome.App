@@ -1,7 +1,9 @@
 {
   "Login": "Sign In",
+  "Register": "Register",
   "Errors": {
     "MissingEmail": "Email is required!",
-    "MissingPassword": "Password is required!"
+    "MissingPassword": "Password is required!",
+    "MissingUsername": "username is required!"
   }
 }

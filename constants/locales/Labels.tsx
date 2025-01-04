@@ -1,8 +1,10 @@
 const Labels = {
     login: "Login",
+    register: "Register",
     errors:{
         missingEmail: "Errors.MissingEmail",
-        missingPassword: "Errors.MissingPassword"
+        missingPassword: "Errors.MissingPassword",
+        missingUsername: "Errors.MissingUsername"
     }
 }
 
