@@ -45,7 +45,7 @@ export default function OneTimeEventView(){
         Toast.show('Event updated', {
             duration: Toast.durations.SHORT,
         });
-        router.replace(`/protected/event/view/oneTime/${id}`);
+        router.back();
     }, [id]);
 
     const callWihApi = useWihApiCallable<OneTimeEventDto>({
@@ -66,7 +66,7 @@ export default function OneTimeEventView(){
             StartTime: formatTime(event.StartTime!),
             EndTime: formatTime(event.EndTime!),
             PresenceType: event.PresenceType!,
-            DinnerTime: formatTime(event.DinnerTime!)
+            DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
         callWihApi(body);
     }, [event]);

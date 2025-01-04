@@ -61,7 +61,12 @@ export const WihTimeInput = ({value, onChange, disabled = false}: WihDateTimeInp
     };
 
     if (disabled) {
-        return <Text style={{color: "grey"}}>HH-mm</Text>
+        const displayValue = value?.toLocaleTimeString() ?? "HH-mm";
+        return <Text style={{color: "grey"}}>{displayValue}</Text>
+    }
+
+    if(value === null){
+        return <Text>HH-mm</Text>
     }
 
     const time = value ?? new Date(Date.now());
