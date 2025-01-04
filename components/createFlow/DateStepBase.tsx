@@ -1,12 +1,12 @@
 import {WihFlowComponentProps} from "@/components/wihFlow/wihFlow";
-import {EventBase} from "@/constants/WihTypes";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihTimeInput} from "@/components/input/WihDateTimeInput";
 import React, {PropsWithChildren} from "react";
+import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 
 export function DateValidationBase(state: EventBase) : boolean{
-    return !!state.StateTime && !!state.EndTime && state.StateTime < state.EndTime;
+    return !!state.StartTime && !!state.EndTime && state.StartTime < state.EndTime;
 }
 
 export const DateStepBase = ({ state, setState, isInvalid, children }: PropsWithChildren<WihFlowComponentProps<EventBase>>) => (
@@ -18,10 +18,10 @@ export const DateStepBase = ({ state, setState, isInvalid, children }: PropsWith
             <WihView flex="row">
                 <WihText>Start:</WihText>
                 <WihTimeInput
-                    value={state.StateTime}
-                    onChange={(time) => setState({StateTime: time})}/>
+                    value={state.StartTime}
+                    onChange={(time) => setState({StartTime: time})}/>
             </WihView>
-            {isInvalid && !state.StateTime && <WihText style={{color: "red"}}>StateTime is required</WihText> }
+            {isInvalid && !state.StartTime && <WihText style={{color: "red"}}>StateTime is required</WihText> }
 
             <WihView flex="row">
                 <WihText>End:</WihText>
