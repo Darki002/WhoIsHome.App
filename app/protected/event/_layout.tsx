@@ -6,22 +6,22 @@ export default function EventLayout() {
 
     return (
         <Stack>
-            <Stack.Screen name="event/view/oneTime/[id]" options={{
+            <Stack.Screen name="view/oneTime/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: backgroundColor}
             }}/>
-            <Stack.Screen name="event/view/repeated/[id]" options={{
+            <Stack.Screen name="view/repeated/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: backgroundColor}
             }}/>
-            <Stack.Screen name="event/edit/oneTime/[id]" options={{
+            <Stack.Screen name="edit/oneTime/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: backgroundColor}
             }}/>
-            <Stack.Screen name="event/edit/repeated/[id]" options={{
+            <Stack.Screen name="edit/repeated/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: backgroundColor}

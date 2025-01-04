@@ -2,7 +2,7 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import {WihText} from "@/components/WihText";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihResponse} from "@/helper/WihApi";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
@@ -20,9 +20,20 @@ export default function OneTimeEventView(){
         method: "GET"
     });
 
-    const [state, setState] = useState<OneTimeEvent>(new OneTimeEvent());
+    const [event, setEvent] = useState<OneTimeEvent | null>(new OneTimeEvent());
+    useEffect(() => {
+        if(!response || !response.response || response.hasError){
+            return;
+        }
+        const event = new OneTimeEvent(response?.response);
+        setEvent(event);
+    }, [response]);
 
-    const onResponse = (res: WihResponse | null) => {
+    const updateState = useCallback((update: Partial<OneTimeEvent>) => {
+        setEvent((prev) => ({...prev, ...update}));
+    }, []);
+
+    const onResponse = useCallback((res: WihResponse | null) => {
         if(!res || res?.hasError){
             console.error(res?.error ?? "Unknown Error");
             Toast.show('Failed to update Event', {
@@ -35,7 +46,7 @@ export default function OneTimeEventView(){
             duration: Toast.durations.SHORT,
         });
         router.replace(`/protected/event/view/oneTime/${id}`);
-    }
+    }, [id]);
 
     const callWihApi = useWihApiCallable<OneTimeEventDto>({
         endpoint: `OneTimeEvent/${id}`,
@@ -43,59 +54,54 @@ export default function OneTimeEventView(){
         onResponse
     });
 
-    const updateState = (update: Partial<OneTimeEvent>) => {
-        setState((prev) => ({...prev, ...update}));
-    }
-
     const onCancel = useCallback(() => {
-        router.push(`/protected/event/view/oneTime/${id}`);
+        router.back();
     }, [id]);
 
-    if (!response?.response) {
-        return null;
-    }
-
-    const onUpdate = () => {
+    const onUpdate = useCallback(() => {
+        if(!event) return;
         const body : OneTimeEventDto = {
-            Title: state.Title!,
-            Date: formatDate(state.Date!),
-            StartTime: formatTime(state.StartTime!),
-            EndTime: formatTime(state.EndTime!),
-            PresenceType: state.PresenceType!,
-            DinnerTime: formatTime(state.DinnerTime!)
+            Title: event.Title!,
+            Date: formatDate(event.Date!),
+            StartTime: formatTime(event.StartTime!),
+            EndTime: formatTime(event.EndTime!),
+            PresenceType: event.PresenceType!,
+            DinnerTime: formatTime(event.DinnerTime!)
         }
         callWihApi(body);
-    };
+    }, [event]);
 
-    const event = new OneTimeEvent(response?.response);
+    if (!event) {
+        return null;
+    }
 
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
             <WihView flex="row">
                 <WihText>Title:</WihText>
-                <WihTextInput value={state.Title} placeholder="Titel" onChangeText={t => updateState({Title: t})}></WihTextInput>
+                <WihTextInput value={event.Title} placeholder="Titel" onChangeText={t => updateState({Title: t})}></WihTextInput>
             </WihView>
 
             <WihView flex="row">
                 <WihText>Date:</WihText>
-                <WihDateInput value={state.Date} onChange={d => updateState({Date: d})}></WihDateInput>
+                <WihDateInput value={event.Date} onChange={d => updateState({Date: d})}></WihDateInput>
             </WihView>
 
             <WihView flex="row">
                 <WihText>Start Time:</WihText>
-                <WihTimeInput value={state.StartTime} onChange={st => updateState({StartTime: st})}></WihTimeInput>
+                <WihTimeInput value={event.StartTime} onChange={st => updateState({StartTime: st})}></WihTimeInput>
             </WihView>
 
             <WihView flex="row">
                 <WihText>End Time:</WihText>
-                <WihTimeInput value={state.EndTime} onChange={et => updateState({EndTime: et})}></WihTimeInput>
+                <WihTimeInput value={event.EndTime} onChange={et => updateState({EndTime: et})}></WihTimeInput>
             </WihView>
 
             <WihText>Presence Type: {event.PresenceType ?? "Missing"}</WihText>
 
             <WihView flex="row">
                 <WihText>Dinner Time:</WihText>
-                <WihDateInput value={state.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihDateInput>
+                <WihDateInput value={event.DinnerTime} onChange={d => updateState({DinnerTime: d})}></WihDateInput>
             </WihView>
         </EventEditLayout>
     )
