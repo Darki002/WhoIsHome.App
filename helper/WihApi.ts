@@ -1,4 +1,5 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
+import {Endpoints} from "@/constants/endpoints";
 
 export interface WihFetchProps {
     endpoint: string;
@@ -79,7 +80,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
 }
 
 async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens>> {
-    const uri = getUri("Auth/Refresh");
+    const uri = getUri(Endpoints.auth.refresh);
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");

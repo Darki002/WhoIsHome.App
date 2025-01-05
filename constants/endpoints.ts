@@ -1,6 +1,8 @@
 export const Endpoints = {
     auth: {
-        register: "Auth/Register"
+        register: "Auth/Register",
+        login: "Auth/Login",
+        refresh: "Auth/Refresh"
     },
     user: {
         me: "User/Me",

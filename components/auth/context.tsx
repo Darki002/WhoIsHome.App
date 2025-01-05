@@ -2,6 +2,7 @@ import {createContext, type PropsWithChildren, useContext} from 'react';
 import {useStorageState} from '@/hooks/useStorageState';
 import {wihFetch} from '@/helper/WihApi';
 import {Tokens} from "@/constants/WihTypes/Auth";
+import {Endpoints} from "@/constants/endpoints";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -48,7 +49,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                         return "Missing Login Information";
 
                     const response = await wihFetch<Tokens>({
-                        endpoint: "Auth/Login",
+                        endpoint: Endpoints.auth.login,
                         method: "POST",
                         body: {email, password}
                     });
