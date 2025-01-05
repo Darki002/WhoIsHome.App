@@ -23,7 +23,12 @@ const Labels = {
         login: "Actions.Login",
         logout: "Actions.Logout",
         register: "Actions.Register",
-        save: "Actions.Save"
+        save: "Actions.Save",
+        cancel: "Actions.Cancel",
+        edit: "Actions.Edit",
+        next: "Actions.Next",
+        back: "Actions.Back",
+        finish: "Actions.Finish"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
@@ -39,7 +44,8 @@ const Labels = {
         }
     },
     headers: {
-      unknown: "Headers.Unknown"
+        unknown: "Headers.Unknown",
+        editing: "Headers.Editing"
     },
     errors: {
         header: "Errors.Header",

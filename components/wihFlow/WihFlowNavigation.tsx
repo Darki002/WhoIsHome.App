@@ -1,6 +1,8 @@
 import {ReactNode} from "react";
 import WihView from "@/components/WihView";
 import {WihButton} from "@/components/input/WihButton";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 export type WihFlowNavAction = "Next" | "Back" | "Cancel" | "Finish";
 
@@ -25,10 +27,11 @@ function WihFlowNavStart({onNavAction, children}: {
     onNavAction: (action: WihFlowNavAction) => void,
     children?: ReactNode
 }) {
+    const {t} = useTranslation();
     return (
         <StepLayout content={children}>
-            <WihButton onPress={() => onNavAction("Cancel")}>Cancel</WihButton>
-            <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
+            <WihButton onPress={() => onNavAction("Cancel")}>{t(Labels.actions.cancel)}</WihButton>
+            <WihButton onPress={() => onNavAction("Next")}>{t(Labels.actions.next)}</WihButton>
         </StepLayout>
     )
 }
@@ -37,10 +40,11 @@ function WihFlowNav({onNavAction, children}: {
     onNavAction: (action: WihFlowNavAction) => void,
     children?: ReactNode
 }) {
+    const {t} = useTranslation();
     return (
         <StepLayout content={children}>
-            <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
-            <WihButton onPress={() => onNavAction("Next")}>Next</WihButton>
+            <WihButton onPress={() => onNavAction("Back")}>{t(Labels.actions.back)}</WihButton>
+            <WihButton onPress={() => onNavAction("Next")}>{t(Labels.actions.next)}</WihButton>
         </StepLayout>
     )
 }
@@ -49,10 +53,11 @@ function WihFlowNavEnd({onNavAction, children}: {
     onNavAction: (action: WihFlowNavAction) => void,
     children?: ReactNode
 }) {
+    const {t} = useTranslation();
     return (
         <StepLayout content={children}>
-            <WihButton onPress={() => onNavAction("Back")}>Back</WihButton>
-            <WihButton onPress={() => onNavAction("Finish")}>Finish</WihButton>
+            <WihButton onPress={() => onNavAction("Back")}>{t(Labels.actions.back)}</WihButton>
+            <WihButton onPress={() => onNavAction("Finish")}>{t(Labels.actions.finish)}</WihButton>
         </StepLayout>
     )
 }

@@ -1,5 +1,5 @@
 import {useThemeColor} from "@/hooks/useThemeColor";
-import {IonIcon, MateriaIcon} from '@/components/WihIcon';
+import {IonIcon, MaterialIcon} from '@/components/WihIcon';
 import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
 import {useSession} from "@/components/auth/context";
@@ -49,8 +49,8 @@ const AuthLayout = () => {
                 options={{
                     title: "Register",
                     tabBarIcon: ({color, focused}) => (
-                        <MateriaIcon name={focused ? 'add-circle' : 'add-circle-outline'}
-                                     color={color} {...TabIconProps} />
+                        <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
+                                      color={color} {...TabIconProps} />
                     )
                 }}
             />

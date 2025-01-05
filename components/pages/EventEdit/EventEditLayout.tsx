@@ -6,6 +6,8 @@ import {usePermission} from "@/hooks/usePermission";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 interface EventEditLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -14,6 +16,7 @@ interface EventEditLayoutProps {
 }
 
 export default function EventEditLayout({response, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
+    const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
 
@@ -26,15 +29,15 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
 
     useEffect(() => {
         if (!response) {
-            navigation.setOptions({title: "Loading..."});
+            navigation.setOptions({title: t(Labels.headers.unknown)});
             return;
         }
         if (response.hasError) {
-            navigation.setOptions({title: "Error"});
+            navigation.setOptions({title: t(Labels.errors.header)});
             return;
         }
-        const title = response.response?.title ?? "Untitled Event";
-        navigation.setOptions({title: `Edit: ${title}`});
+        const title = response.response?.title ?? t(Labels.errors.header);
+        navigation.setOptions({title: `${t(Labels.headers.editing)}: ${title}`});
     }, [response]);
 
     if (!response) {
@@ -44,7 +47,7 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
     if (response.hasError) {
         return (
             <WihView center="full">
-                <WihText>Oops ERROR!!!</WihText>
+                <WihText>{t(Labels.errors.generic)}</WihText>
             </WihView>
         )
     }
@@ -55,8 +58,8 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
 
             {
                 <WihView flex="row">
-                    <WihButton onPress={onCancel}>Cancel</WihButton>
-                    <WihButton onPress={onUpdatedChecked}>Save</WihButton>
+                    <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
+                    <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
                 </WihView>
             }
         </WihView>

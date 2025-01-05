@@ -23,7 +23,12 @@
     "Login": "Anmelden",
     "Logout": "Abmelden",
     "Register": "Registrieren",
-    "Save": "Speichern"
+    "Save": "Speichern",
+    "Cancel": "Abbrechen",
+    "Edit": "Bearbeiten",
+    "Next": "Weiter",
+    "Back": "Zurück",
+    "Finish": "Beenden"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -39,7 +44,8 @@
     }
   },
   "Headers": {
-    "Unknown": "Unbekannt"
+    "Unknown": "Unbekannt",
+    "Editing": "Editieren"
   },
   "Errors": {
     "Header": "Fehler",

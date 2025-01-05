@@ -6,6 +6,8 @@ import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
 import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 interface EventViewLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -13,6 +15,7 @@ interface EventViewLayoutProps {
 }
 
 export default function EventViewLayout({response, onEdit, children}: PropsWithChildren<EventViewLayoutProps>) {
+    const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
 
@@ -35,7 +38,7 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
     if (response.hasError) {
         return (
             <WihView center="full">
-                <WihText>Oops ERROR!!!</WihText>
+                <WihText>{t(Labels.errors.generic)}</WihText>
             </WihView>
         )
     }
@@ -47,7 +50,7 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
             {
                 permissionCheck(response.response?.userId) ? (
                     <WihView flex="row">
-                        <WihButton onPress={onEdit}>Edit</WihButton>
+                        <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
                     </WihView>
                 ) : null
             }
