@@ -4,12 +4,13 @@ import React, {useCallback} from "react";
 import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import {WihText} from "@/components/WihText";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
+import {Endpoints} from "@/constants/endpoints";
 
 export default function OneTimeEventView() {
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
     const response = useWihApiFocus<OneTimeEventModel>({
-        endpoint: `OneTimeEvent/${id}`,
+        endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET"
     });
 
@@ -24,6 +25,7 @@ export default function OneTimeEventView() {
 
     const event = new OneTimeEvent(response?.response);
 
+    // TODO: translate when making it pretty
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
             <WihText>Title: {event.Title ?? "Unknown"}</WihText>
