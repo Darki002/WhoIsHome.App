@@ -38,7 +38,11 @@
       "UpdateEvent" : "Update Failed"
     }
   },
+  "Headers": {
+    "Unknown": "Unknown"
+  },
   "Errors": {
+    "Header": "Error",
     "Generic": "Oops, an unexpected Error occurred!",
     "MissingEmail": "Email is required!",
     "MissingPassword": "Password is required!",

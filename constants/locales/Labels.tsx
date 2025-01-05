@@ -38,7 +38,11 @@ const Labels = {
             updateEvent: "Toast.Error.UpdateEvent"
         }
     },
+    headers: {
+      unknown: "Headers.Unknown"
+    },
     errors: {
+        header: "Errors.Header",
         generic: "Errors.Generic",
         missingEmail: "Errors.MissingEmail",
         missingPassword: "Errors.MissingPassword",

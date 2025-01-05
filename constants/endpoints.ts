@@ -3,7 +3,8 @@ export const Endpoints = {
         register: "Auth/Register"
     },
     user: {
-        me: "User/Me"
+        me: "User/Me",
+        withId: (id: number | string) => `User/${id}`
     },
     oneTimeEvent: {
         url: "OneTimeEvent",
@@ -14,5 +15,8 @@ export const Endpoints = {
         withId: (id: number | string) => `${Endpoints.repeatedEvent.url}/${id}`
     },
     dailyOverview: "DailyOverview",
-    userOverview: "UserOverview"
+    userOverview: {
+        url: "UserOverview",
+        withId: (id: number | string) => `${Endpoints.userOverview.url}/${id}`
+    }
 } as const;

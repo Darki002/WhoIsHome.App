@@ -38,7 +38,11 @@
       "UpdateEvent" : "Aktualisierung fehlgeschlagen"
     }
   },
+  "Headers": {
+    "Unknown": "Unbekannt"
+  },
   "Errors": {
+    "Header": "Fehler",
     "Generic": "Ups, ein unerwarteter Fehler ist aufgetreten!",
     "MissingEmail": "Email ist erforderlich!",
     "MissingPassword": "Password ist erforderlich!",
