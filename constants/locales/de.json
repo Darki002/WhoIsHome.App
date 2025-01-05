@@ -9,8 +9,14 @@
     "EventCreator": "Event Erstellung",
     "Summary": "Zusammenfassung"
   },
+  "SubTitles": {
+    "Today": "Heute",
+    "ThisWeek": "Diese Woche",
+    "Other": "Andere"
+  },
   "Actions": {
     "Login": "Anmelden",
+    "Logout": "Abmelden",
     "Register": "Registrieren",
     "Save": "Speichern"
   },

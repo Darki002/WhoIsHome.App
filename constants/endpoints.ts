@@ -2,9 +2,13 @@ export const Endpoints = {
     auth: {
         register: "Auth/Register"
     },
+    user: {
+        me: "User/Me"
+    },
     oneTimeEvent: "OneTimeEvent",
     repeatedEvent: "RepeatedEvent",
-    dailyOverview: "DailyOverview"
+    dailyOverview: "DailyOverview",
+    userOverview: "UserOverview"
 } as const;
 
 type EndpointValues<T> = T extends object

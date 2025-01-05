@@ -9,8 +9,14 @@
     "EventCreator": "Event Creator",
     "Summary": "Summary"
   },
+  "SubTitles": {
+    "Today": "Today",
+    "ThisWeek": "This Week",
+    "Other": "Other"
+  },
   "Actions": {
     "Login": "Sign In",
+    "Logout": "Log Out",
     "Register": "Register",
     "Save": "Save"
   },

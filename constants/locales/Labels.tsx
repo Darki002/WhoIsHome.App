@@ -9,8 +9,14 @@ const Labels = {
         eventCreator: "Titles.EventCreator",
         summary: "Titles.Summary"
     },
+    subTitles: {
+        today: "SubTitles.Today",
+        thisWeek: "SubTitles.ThisWeek",
+        other: "SubTitles.Other"
+    },
     actions: {
         login: "Actions.Login",
+        logout: "Actions.Logout",
         register: "Actions.Register",
         save: "Actions.Save"
     },
