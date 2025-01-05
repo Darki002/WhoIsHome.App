@@ -19,6 +19,13 @@ const Labels = {
         thisWeek: "SubTitles.ThisWeek",
         other: "SubTitles.Other"
     },
+    tabs: {
+        home: "Tabs.Home",
+        create: "Tabs.Create",
+        profile: "Tabs.Profile",
+        login: "Tabs.Login",
+        register: "Tabs.Register",
+    },
     actions: {
         login: "Actions.Login",
         logout: "Actions.Logout",

@@ -19,6 +19,13 @@
     "ThisWeek": "Diese Woche",
     "Other": "Andere"
   },
+  "Tabs": {
+    "Home": "Home",
+    "Create": "Erstellen",
+    "Profile": "Profil",
+    "Login": "Anmelden",
+    "Register": "Registrieren"
+  },
   "Actions": {
     "Login": "Anmelden",
     "Logout": "Abmelden",

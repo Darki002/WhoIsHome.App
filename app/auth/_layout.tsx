@@ -4,6 +4,8 @@ import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
 import {useSession} from "@/components/auth/context";
 import {WihTitle} from "@/components/WihText";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 const TabIconProps = {
     size: 28,
@@ -13,6 +15,7 @@ const TabIconProps = {
 }
 
 const AuthLayout = () => {
+    const {t} = useTranslation();
     const {session, isSessionLoading} = useSession();
     const tint = useThemeColor("tint");
     const router = useRouter();
@@ -38,7 +41,7 @@ const AuthLayout = () => {
             <Tabs.Screen
                 name="login"
                 options={{
-                    title: "Login",
+                    title: t(Labels.tabs.login),
                     tabBarIcon: ({color, focused}) => (
                         <IonIcon name={focused ? 'home' : 'home-outline'} color={color} {...TabIconProps} />
                     )
@@ -47,7 +50,7 @@ const AuthLayout = () => {
             <Tabs.Screen
                 name="register"
                 options={{
-                    title: "Register",
+                    title: t(Labels.tabs.register),
                     tabBarIcon: ({color, focused}) => (
                         <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
                                       color={color} {...TabIconProps} />
