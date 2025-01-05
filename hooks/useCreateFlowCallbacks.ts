@@ -3,9 +3,8 @@ import {useCallback} from "react";
 import {WihResponse} from "@/helper/WihApi";
 import Toast from "react-native-root-toast";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import {EndpointProp} from "@/constants/endpoints";
 
-export default function useCreateFlowCallbacks(endpoint: EndpointProp): [(body: any) => void, () => void] {
+export default function useCreateFlowCallbacks(endpoint: string): [(body: any) => void, () => void] {
     const router = useRouter();
 
     const onCancel = useCallback(() => router.replace("/protected/(tabs)/create"), []);

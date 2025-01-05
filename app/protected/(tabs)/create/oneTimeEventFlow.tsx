@@ -23,7 +23,7 @@ const defaultOneTimeEvent: OneTimeEvent = {
 };
 
 export default function OneTimeEventFlow() {
-    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.oneTimeEvent);
+    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.oneTimeEvent.url);
 
     const onFinish = useCallback((state: OneTimeEvent) => {
         const body: OneTimeEventDto = {

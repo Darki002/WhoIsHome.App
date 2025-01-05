@@ -1,6 +1,11 @@
 const Labels = {
     oneTimeEvent: "OneTimeEvent",
     repeatedEvent: "RepeatedEvent",
+    presenceType: {
+        unknown: "PresenceType.Unknown",
+        late: "PresenceType.Late",
+        notPresent: "PresenceType.NotPresent"
+    },
     titles: {
         welcome: "Titles.Welcome",
         login: "Titles.Login",
@@ -22,9 +27,18 @@ const Labels = {
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
-        apikey: "Placeholders.ApiKey"
+        apikey: "Placeholders.ApiKey",
+        title: "Placeholders.Title"
     },
-    errors:{
+    toast: {
+        success: {
+            updateEvent: "Toast.Success.UpdateEvent"
+        },
+        error: {
+            updateEvent: "Toast.Error.UpdateEvent"
+        }
+    },
+    errors: {
         generic: "Errors.Generic",
         missingEmail: "Errors.MissingEmail",
         missingPassword: "Errors.MissingPassword",

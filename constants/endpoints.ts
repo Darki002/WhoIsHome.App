@@ -5,14 +5,14 @@ export const Endpoints = {
     user: {
         me: "User/Me"
     },
-    oneTimeEvent: "OneTimeEvent",
-    repeatedEvent: "RepeatedEvent",
+    oneTimeEvent: {
+        url: "OneTimeEvent",
+        withId: (id: number | string) => `${Endpoints.oneTimeEvent.url}/${id}`
+    },
+    repeatedEvent: {
+        url: "RepeatedEvent",
+        withId: (id: number | string) => `${Endpoints.repeatedEvent.url}/${id}`
+    },
     dailyOverview: "DailyOverview",
     userOverview: "UserOverview"
 } as const;
-
-type EndpointValues<T> = T extends object
-    ? { [K in keyof T]: EndpointValues<T[K]> }[keyof T]
-    : T;
-
-export type EndpointProp = EndpointValues<typeof Endpoints>;

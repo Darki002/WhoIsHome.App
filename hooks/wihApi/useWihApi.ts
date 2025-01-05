@@ -2,10 +2,9 @@ import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useEffect, useState} from "react";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {EndpointProp} from "@/constants/endpoints";
 
 export interface WihApiProps {
-    endpoint: EndpointProp;
+    endpoint: string;
     method: "GET" | "POST" | "DELETE";
     version?: number;
     body?: any;

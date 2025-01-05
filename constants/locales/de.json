@@ -1,6 +1,11 @@
 {
   "OneTimeEvent": "Einmaliges Event",
   "RepeatedEvent": "Wiederholendes Event",
+  "PresenceType": {
+    "Unknown": "Unbekannt",
+    "Late": "Spät",
+    "NotPresent": "Nicht Anwesend"
+  },
   "Titles": {
     "Welcome": "Willkommen",
     "Login": "Anmelden",
@@ -22,7 +27,16 @@
   },
   "Placeholders": {
     "BaseUri": "URL",
-    "ApiKey": "API Schlüssel"
+    "ApiKey": "API Schlüssel",
+    "Title": "Titel"
+  },
+  "Toast": {
+    "Success": {
+      "UpdateEvent" : "Event wurde aktualisiert"
+    },
+    "Error" : {
+      "UpdateEvent" : "Aktualisierung fehlgeschlagen"
+    }
   },
   "Errors": {
     "Generic": "Ups, ein unerwarteter Fehler ist aufgetreten!",

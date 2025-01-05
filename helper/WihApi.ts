@@ -1,8 +1,7 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {EndpointProp} from "@/constants/endpoints";
 
 export interface WihFetchProps {
-    endpoint: EndpointProp;
+    endpoint: string;
     method: "GET" | "POST" | "DELETE" | "PATCH";
     tokens?: Tokens;
     version?: number;

@@ -2,11 +2,10 @@ import {useEffect, useState} from "react";
 import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {EndpointProp} from "@/constants/endpoints";
 
 export interface WihApiIntervalProps {
     time: number;
-    endpoint: EndpointProp;
+    endpoint: string;
     method: "GET" | "POST" | "DELETE";
     version?: number;
     body?: any;
