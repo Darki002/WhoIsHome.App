@@ -4,10 +4,10 @@ import {isInvalidSession} from "@/helper/sessionHelper";
 import {useApiConfig} from "@/components/config/context";
 
 export default function Index() {
-    const {config, isLoading} = useApiConfig();
+    const {config, isApiConfigLoading} = useApiConfig();
     const {session, isSessionLoading} = useSession();
 
-    if (isSessionLoading || isLoading) {
+    if (isSessionLoading || isApiConfigLoading) {
         return null;
     }
 

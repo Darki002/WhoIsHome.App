@@ -3,6 +3,7 @@ import {useStorageState} from '@/hooks/useStorageState';
 import {wihFetch} from '@/helper/WihApi';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
+import {useApiConfig} from "@/components/config/context";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -36,10 +37,11 @@ export function useSession() {
 }
 
 export function SessionProvider({children}: PropsWithChildren) {
+    const {config, isApiConfigLoading} = useApiConfig();
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
-    const isLoading = isLoadingSession || isLoadingRefreshToken;
+    const isLoading = isLoadingSession || isLoadingRefreshToken || isApiConfigLoading;
 
     return (
         <AuthContext.Provider
@@ -51,6 +53,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     const response = await wihFetch<Tokens>({
                         endpoint: Endpoints.auth.login,
                         method: "POST",
+                        config: config!,
                         body: {email, password}
                     });
                     if (response.hasError) {

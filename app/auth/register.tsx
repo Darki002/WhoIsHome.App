@@ -9,9 +9,11 @@ import {useSession} from "@/components/auth/context";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
+import {useApiConfig} from "@/components/config/context";
 
 const register = () => {
     const { t } = useTranslation();
+    const {config} = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
@@ -38,7 +40,7 @@ const register = () => {
             password
         }
 
-        const response = await wihFetch<string>({endpoint: Endpoints.auth.register, method: "POST", body});
+        const response = await wihFetch<string>({endpoint: Endpoints.auth.register, config: config!, method: "POST", body});
         if (response.hasError) {
             setError(response.error!);
             return;

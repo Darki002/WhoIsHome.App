@@ -12,6 +12,7 @@ import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes/Event/Repeat
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {Endpoints} from "@/constants/endpoints";
+import {useApiConfig} from "@/components/config/context";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -24,7 +25,7 @@ const defaultOneTimeEvent: RepeatedEvent = {
 };
 
 export default function RepeatedEventFlow() {
-    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.repeatedEvent);
+    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.repeatedEvent.url);
 
     const onFinish = useCallback((state: RepeatedEvent) => {
         const body: RepeatedEventDto = {

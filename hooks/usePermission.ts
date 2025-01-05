@@ -3,8 +3,10 @@ import {useSession} from "@/components/auth/context";
 import {wihFetch} from "@/helper/WihApi";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {User} from "@/constants/WihTypes/User";
+import {useApiConfig} from "@/components/config/context";
 
 export function usePermission(){
+    const {config} = useApiConfig();
     const [userId, setUserId] = useState<number | null>();
     const {session, onNewSession} = useSession();
 
@@ -21,6 +23,7 @@ export function usePermission(){
             endpoint: "User/Me",
             method: "GET",
             tokens: session,
+            config: config!,
             onNewTokens})
             .then(e => setUserId(e.response?.id));
     }, [session]);

@@ -18,7 +18,7 @@ SplashScreen.preventAutoHideAsync();
 const RootLayout = () => {
     const backgroundColor = useThemeColor("background");
     const colorScheme = useColorScheme();
-    const {isLoading} = useApiConfig();
+    const {isApiConfigLoading} = useApiConfig();
 
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
@@ -30,7 +30,7 @@ const RootLayout = () => {
         }
     }, [loaded]);
 
-    if (!loaded || isLoading) {
+    if (!loaded || isApiConfigLoading) {
         return null;
     }
 
