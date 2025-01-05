@@ -45,14 +45,14 @@ export default function Index() {
     return (
         <WihView center="horizontal">
             <WihTitle style={{fontSize: 25}}>{t(Labels.titles.welcome)}!</WihTitle>
-            {response.response!.map((o, i) => DailyOverview(o, i))}
+            {response.response!.map((o, i) => <DailyOverview key={i} overview={o} />)}
         </WihView>
     );
 }
 
-function DailyOverview(overview: DailyOverview, key: number) {
+function DailyOverview({overview}: {overview: DailyOverview}) {
     return (
-        <Pressable onPress={() => router.push(`/protected/user/${overview.user.id}`)} key={key}>
+        <Pressable onPress={() => router.push(`/protected/user/${overview.user.id}`)}>
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>
                 <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText> // TODO: Translate or with symbol
