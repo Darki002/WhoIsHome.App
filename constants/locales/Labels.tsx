@@ -2,6 +2,7 @@ const Labels = {
     oneTimeEvent: "OneTimeEvent",
     repeatedEvent: "RepeatedEvent",
     titles: {
+        welcome: "Titles.Welcome",
         login: "Titles.Login",
         register: "Titles.Register",
         appConfig: "Titles.AppConfig",
@@ -18,6 +19,7 @@ const Labels = {
         apikey: "Placeholders.ApiKey"
     },
     errors:{
+        generic: "Errors.Generic",
         missingEmail: "Errors.MissingEmail",
         missingPassword: "Errors.MissingPassword",
         missingUsername: "Errors.MissingUsername",

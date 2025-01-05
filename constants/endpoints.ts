@@ -3,7 +3,8 @@ export const Endpoints = {
         register: "Auth/Register"
     },
     oneTimeEvent: "OneTimeEvent",
-    repeatedEvent: "RepeatedEvent"
+    repeatedEvent: "RepeatedEvent",
+    dailyOverview: "DailyOverview"
 } as const;
 
 type EndpointValues<T> = T extends object

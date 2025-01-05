@@ -2,6 +2,7 @@
   "OneTimeEvent": "Einmaliges Event",
   "RepeatedEvent": "Wiederholendes Event",
   "Titles": {
+    "Welcome": "Willkommen",
     "Login": "Anmelden",
     "Register": "Registrieren",
     "AppConfig": "App Configuration",
@@ -18,6 +19,7 @@
     "ApiKey": "API Schlüssel"
   },
   "Errors": {
+    "Generic": "Ups, ein unerwarteter Fehler ist aufgetreten!",
     "MissingEmail": "Email ist erforderlich!",
     "MissingPassword": "Password ist erforderlich!",
     "MissingUsername": "Benutzername ist erforderlich!",
