@@ -51,7 +51,6 @@ export default function Index() {
 }
 
 function DailyOverview(overview: DailyOverview, key: number) {
-    const {t} = useTranslation();
     return (
         <Pressable onPress={() => router.push(`/protected/user/${overview.user.id}`)} key={key}>
             <WihView center="horizontal">
