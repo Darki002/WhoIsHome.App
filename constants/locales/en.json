@@ -1,0 +1,66 @@
+{
+  "OneTimeEvent": "single event",
+  "RepeatedEvent": "repeated event",
+  "PresenceType": {
+    "Unknown": "Unknown",
+    "Late": "Late",
+    "NotPresent": "Not Present"
+  },
+  "Titles": {
+    "Welcome": "Welcome",
+    "Login": "Sign In",
+    "Register": "Register",
+    "AppConfig": "App Configuration",
+    "EventCreator": "Event Creator",
+    "Summary": "Summary"
+  },
+  "SubTitles": {
+    "Today": "Today",
+    "ThisWeek": "This Week",
+    "Other": "Other"
+  },
+  "Tabs": {
+    "Home": "Home",
+    "Create": "Create",
+    "Profile": "Profile",
+    "Login": "Sign In",
+    "Register": "Register"
+  },
+  "Actions": {
+    "Login": "Sign In",
+    "Logout": "Log Out",
+    "Register": "Register",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Edit": "Edit",
+    "Next": "Next",
+    "Back": "Back",
+    "Finish": "Finish"
+  },
+  "Placeholders": {
+    "BaseUri": "URL",
+    "ApiKey": "API Key",
+    "Title": "Title"
+  },
+  "Toast": {
+    "Success": {
+      "UpdateEvent" : "Event updated"
+    },
+    "Error" : {
+      "UpdateEvent" : "Update Failed"
+    }
+  },
+  "Headers": {
+    "Unknown": "Unknown",
+    "Editing": "Editing"
+  },
+  "Errors": {
+    "Header": "Error",
+    "Generic": "Oops, an unexpected Error occurred!",
+    "MissingEmail": "Email is required!",
+    "MissingPassword": "Password is required!",
+    "MissingUsername": "Username is required!",
+    "MissingBaseUri": "Base Url is required!",
+    "MissingApiKey": "Api Key is required!"
+  }
+}

@@ -5,8 +5,11 @@ import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import React, {useState} from "react";
 import {StyleSheet} from "react-native";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 const Login = () => {
+    const { t } = useTranslation();
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
     const [error, setError] = useState<string>("");
@@ -14,11 +17,11 @@ const Login = () => {
 
     async function onLogIn({email, password}: LoginInfos) {
         if (!email) {
-            setError("Email is missing!");
+            setError(t(Labels.errors.missingEmail));
             return;
         }
         if (!password) {
-            setError("Password is missing!");
+            setError(t(Labels.errors.missingPassword));
             return;
         }
 
@@ -30,7 +33,7 @@ const Login = () => {
 
     return (
         <WihView center="full">
-            <WihTitle>Login</WihTitle>
+            <WihTitle>{t(Labels.titles.login)}</WihTitle>
 
             <WihEmailInput
                 value={email}
@@ -47,7 +50,7 @@ const Login = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onLogIn({email, password})}>Login</WihButton>
+            <WihButton onPress={async () => onLogIn({email, password})}>{t(Labels.actions.login)}</WihButton>
         </WihView>
     )
 }

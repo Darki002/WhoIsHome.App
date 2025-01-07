@@ -10,7 +10,7 @@ export interface AwesomeIconProps extends IconProps<ComponentProps<typeof FontAw
 }
 
 export const AwesomeIcon = ({style, color, ...rest}: AwesomeIconProps) => {
-    const tintColor = useTinitColor(color);
+    const tintColor = useIconColor(color);
     return <FontAwesome style={[{color: tintColor}, style]} {...rest} />
 }
 
@@ -18,15 +18,15 @@ export interface IoniconsProps extends IconProps<ComponentProps<typeof Ionicons>
 }
 
 export const IonIcon = ({style, color, ...rest}: IoniconsProps) => {
-    const tintColor = useTinitColor(color);
+    const tintColor = useIconColor(color);
     return <Ionicons style={[{color: tintColor}, style]} {...rest} />;
 }
 
-export interface MateriaIconProps extends IconProps<ComponentProps<typeof MaterialIcons>["name"]> {
+export interface MaterialIconProps extends IconProps<ComponentProps<typeof MaterialIcons>["name"]> {
 }
 
-export const MateriaIcon = ({style, color, ...rest}: MateriaIconProps) => {
-    const tintColor = useTinitColor(color);
+export const MaterialIcon = ({style, color, ...rest}: MaterialIconProps) => {
+    const tintColor = useIconColor(color);
     return <MaterialIcons style={[{color: tintColor}, style]} {...rest} />
 }
 
@@ -34,11 +34,11 @@ export interface MaterialCommunityIconProps extends IconProps<ComponentProps<typ
 }
 
 export const MaterialCommunityIcon = ({style, color, ...rest}: MaterialCommunityIconProps) => {
-    const tintColor = useTinitColor(color);
+    const tintColor = useIconColor(color);
     return <MaterialCommunityIcons style={[{color: tintColor}, style]} {...rest} />
 }
 
-function useTinitColor(color: string | OpaqueColorValue | undefined): string | OpaqueColorValue {
+function useIconColor(color: string | OpaqueColorValue | undefined): string | OpaqueColorValue {
     if (color) {
         return color;
     }

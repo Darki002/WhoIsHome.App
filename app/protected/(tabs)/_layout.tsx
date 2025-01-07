@@ -1,9 +1,11 @@
 import {useThemeColor} from "@/hooks/useThemeColor";
-import {IonIcon, MateriaIcon, MaterialCommunityIcon} from '@/components/WihIcon';
+import {IonIcon, MaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
 import {Redirect, Tabs} from "expo-router";
 import React from "react";
 import {useSession} from "@/components/auth/context";
 import {WihTitle} from "@/components/WihText";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 const TabIconProps = {
     size: 28,
@@ -13,6 +15,7 @@ const TabIconProps = {
 }
 
 const TabsLayout = () => {
+    const {t} = useTranslation();
     const tint = useThemeColor("tint");
     const backgroundColor = useThemeColor('background');
 
@@ -26,7 +29,7 @@ const TabsLayout = () => {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: "Home",
+                    title: t(Labels.tabs.home),
                     tabBarIcon: ({color, focused}) => (
                         <IonIcon name={focused ? 'home' : 'home-outline'} color={color} {...TabIconProps} />
                     )
@@ -35,17 +38,17 @@ const TabsLayout = () => {
             <Tabs.Screen
                 name="create"
                 options={{
-                    title: "Create",
+                    title: t(Labels.tabs.create),
                     tabBarIcon: ({color, focused}) => (
-                        <MateriaIcon name={focused ? 'add-circle' : 'add-circle-outline'}
-                                     color={color} {...TabIconProps} />
+                        <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
+                                      color={color} {...TabIconProps} />
                     )
                 }}
             />
             <Tabs.Screen
                 name="profile"
                 options={{
-                    title: 'Profile',
+                    title: t(Labels.tabs.profile),
                     tabBarIcon: ({color, focused}) => (
                         <MaterialCommunityIcon name={focused ? 'account-circle' : 'account-circle-outline'}
                                                color={color} {...TabIconProps} />

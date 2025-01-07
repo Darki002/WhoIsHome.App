@@ -1,9 +1,12 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
+import {Endpoints} from "@/constants/endpoints";
+import {ApiConfig} from "@/components/config/context";
 
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE" | "PATCH";
     tokens?: Tokens;
+    config: ApiConfig;
     version?: number;
     body?: any;
     onNewTokens?: (newTokens: Tokens | undefined) => void;
@@ -21,13 +24,14 @@ export const wihFetch = async <TBody>({
                                           method = "GET",
                                           body,
                                           tokens,
+                                          config,
                                           version = 1,
                                           onNewTokens
                                       }: WihFetchProps): Promise<WihResponse<TBody>> => {
-    let response = await authFetch<TBody>(endpoint, method, body, tokens, version);
+    let response = await authFetch<TBody>(endpoint, method, body, tokens, config, version);
 
     if (tokens && response.hasError && response.status === 401) {
-        const newTokens = await refreshJwtToken(tokens.refreshToken!);
+        const newTokens = await refreshJwtToken(tokens.refreshToken!, config);
 
         if (newTokens.hasError) {
             onNewTokens ? onNewTokens(undefined) : null;
@@ -39,19 +43,19 @@ export const wihFetch = async <TBody>({
         }
 
         onNewTokens ? onNewTokens(newTokens.response) : null;
-        response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, version);
+        response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, config, version);
         return response;
     }
 
     return response;
 }
 
-async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, version: number): Promise<WihResponse<T>> {
-    const uri = getUri(endpoint, version);
+async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, config: ApiConfig, version: number): Promise<WihResponse<T>> {
+    const uri = getUri(config.baseUri!, endpoint, version);
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
+    headers.append("X-API-KEY", config.apikey!);
 
     if (tokens) {
         headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
@@ -78,12 +82,12 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
     }
 }
 
-async function refreshJwtToken(refreshToken: string): Promise<WihResponse<Tokens>> {
-    const uri = getUri("Auth/Refresh");
+async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise<WihResponse<Tokens>> {
+    const uri = getUri(config.baseUri!, Endpoints.auth.refresh);
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    headers.append("X-API-KEY", process.env.EXPO_PUBLIC_API_KEY!);
+    headers.append("X-API-KEY", config.apikey!);
     headers.append("RefreshToken", refreshToken);
 
     try {
@@ -135,6 +139,6 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     }
 }
 
-function getUri(endpoint: string, version: number = 1): string {
-    return `${process.env.EXPO_PUBLIC_API_BASE_URI}/api/v${version}/${endpoint}`;
+function getUri(baseUrl : string, endpoint: string, version: number = 1): string {
+    return `${baseUrl}/api/v${version}/${endpoint}`;
 }

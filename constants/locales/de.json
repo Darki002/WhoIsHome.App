@@ -1,0 +1,66 @@
+{
+  "OneTimeEvent": "Einmaliges Event",
+  "RepeatedEvent": "Wiederholendes Event",
+  "PresenceType": {
+    "Unknown": "Unbekannt",
+    "Late": "Spät",
+    "NotPresent": "Nicht Anwesend"
+  },
+  "Titles": {
+    "Welcome": "Willkommen",
+    "Login": "Anmelden",
+    "Register": "Registrieren",
+    "AppConfig": "App Configuration",
+    "EventCreator": "Event Erstellung",
+    "Summary": "Zusammenfassung"
+  },
+  "SubTitles": {
+    "Today": "Heute",
+    "ThisWeek": "Diese Woche",
+    "Other": "Andere"
+  },
+  "Tabs": {
+    "Home": "Home",
+    "Create": "Erstellen",
+    "Profile": "Profil",
+    "Login": "Anmelden",
+    "Register": "Registrieren"
+  },
+  "Actions": {
+    "Login": "Anmelden",
+    "Logout": "Abmelden",
+    "Register": "Registrieren",
+    "Save": "Speichern",
+    "Cancel": "Abbrechen",
+    "Edit": "Bearbeiten",
+    "Next": "Weiter",
+    "Back": "Zurück",
+    "Finish": "Beenden"
+  },
+  "Placeholders": {
+    "BaseUri": "URL",
+    "ApiKey": "API Schlüssel",
+    "Title": "Titel"
+  },
+  "Toast": {
+    "Success": {
+      "UpdateEvent" : "Event wurde aktualisiert"
+    },
+    "Error" : {
+      "UpdateEvent" : "Aktualisierung fehlgeschlagen"
+    }
+  },
+  "Headers": {
+    "Unknown": "Unbekannt",
+    "Editing": "Editieren"
+  },
+  "Errors": {
+    "Header": "Fehler",
+    "Generic": "Ups, ein unerwarteter Fehler ist aufgetreten!",
+    "MissingEmail": "Email ist erforderlich!",
+    "MissingPassword": "Password ist erforderlich!",
+    "MissingUsername": "Benutzername ist erforderlich!",
+    "MissingBaseUri": "Base Url ist erforderlich!",
+    "MissingApiKey": "Api Key ist erforderlich!"
+  }
+}

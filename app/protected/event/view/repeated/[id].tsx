@@ -4,12 +4,13 @@ import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {useCallback} from "react";
 import {RepeatedEvent, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
+import {Endpoints} from "@/constants/endpoints";
 
 export default function RepeatedEventView() {
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
     const response = useWihApiFocus<RepeatedEventModel>({
-        endpoint: `RepeatedEvent/${id}`,
+        endpoint: Endpoints.repeatedEvent.withId(id),
         method: "GET"
     });
 
@@ -23,6 +24,7 @@ export default function RepeatedEventView() {
 
     const event = new RepeatedEvent(response?.response);
 
+    // TODO: translate when making it pretty
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
             <WihText>Title: {event.Title ?? "Unknown"}</WihText>

@@ -10,11 +10,11 @@ export interface ApiConfig {
 const ApiContext = createContext<{
     setConfig: (config: ApiConfig) => Promise<string | null>;
     config: ApiConfig | null;
-    isLoading: boolean;
+    isApiConfigLoading: boolean;
 }>({
     setConfig: async () => null,
     config: null,
-    isLoading: false
+    isApiConfigLoading: false
 });
 
 export function useApiConfig() {
@@ -56,7 +56,7 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
                     return result ? null : "Config did not work";
                 },
                 config: {baseUri, apikey},
-                isLoading
+                isApiConfigLoading: isLoading
             }}>
             {children}
         </ApiContext.Provider>

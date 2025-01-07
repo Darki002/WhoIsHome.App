@@ -4,9 +4,9 @@ import {useApiConfig} from "@/components/config/context";
 import {WihTitle} from "@/components/WihText";
 
 export default function ConfigLayout() {
-    const {isLoading} = useApiConfig();
+    const {isApiConfigLoading} = useApiConfig();
 
-    if (isLoading) {
+    if (isApiConfigLoading) {
         return <WihTitle>Loading...</WihTitle>
     }
 

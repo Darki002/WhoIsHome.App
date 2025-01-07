@@ -8,26 +8,30 @@ import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {User} from "@/constants/WihTypes/User";
+import {Endpoints} from "@/constants/endpoints";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 export default function UserView() {
+    const {t} = useTranslation();
     const {id} = useLocalSearchParams<{ id: string }>();
     const navigation = useNavigation();
     const user = useWihApi<User | null>({
-        endpoint: `User/${id}`,
+        endpoint: Endpoints.user.withId(id),
         method: "GET",
     });
     const response = useWihApiFocus<UserOverview>({
-        endpoint: `UserOverview/${id}`,
+        endpoint: Endpoints.userOverview.withId(id),
         method: "GET"
     });
 
     useEffect(() => {
         if (!user) {
-            navigation.setOptions({title: "Loading..."});
+            navigation.setOptions({title: t(Labels.headers.unknown)});
             return;
         }
         if (user.hasError) {
-            navigation.setOptions({title: "Error"});
+            navigation.setOptions({title: t(Labels.errors.header)});
             return;
         }
         navigation.setOptions({title: user.response?.userName});
@@ -38,19 +42,19 @@ export default function UserView() {
     }
 
     if (response.hasError) {
+        console.log(response.error);
         return (
             <WihView center="full">
-                <WihText>Oops, Error occurred, while trying to get user {id}.</WihText>
-                <WihText>{response.error}</WihText>
+                <WihText>{t(Labels.errors.generic)}</WihText>
             </WihView>
         )
     }
 
     if (user.hasError) {
+        console.log(user.error);
         return (
             <WihView center="full">
-                <WihText>Oops, Error occurred, while trying to get user {id}.</WihText>
-                <WihText>{user.error}</WihText>
+                <WihText>{t(Labels.errors.generic)}</WihText>
             </WihView>
         )
     }
@@ -58,11 +62,11 @@ export default function UserView() {
     const overview = response.response;
     return (
         <WihView center="horizontal">
-            <WihTitle>{user.response!.userName}'s Events</WihTitle>
+            <WihTitle>{user.response!.userName}</WihTitle>
 
-            <WihEventList events={overview?.today} title="Today"/>
-            <WihEventList events={overview?.thisWeek} title="This Week"/>
-            <WihEventList events={overview?.futureEvents} title="Other"/>
+            <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
+            <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
+            <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
         </WihView>
     )
 }

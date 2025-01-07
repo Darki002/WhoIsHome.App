@@ -6,8 +6,14 @@ import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
 import {wihFetch} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
+import Labels from "@/constants/locales/Labels";
+import {useTranslation} from "react-i18next";
+import {Endpoints} from "@/constants/endpoints";
+import {useApiConfig} from "@/components/config/context";
 
 const register = () => {
+    const { t } = useTranslation();
+    const {config} = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
@@ -16,15 +22,15 @@ const register = () => {
 
     async function onRegister(email: string, password: string, userName: string) {
         if (!userName) {
-            setError("UserName is missing!");
+            setError(t(Labels.errors.missingUsername));
             return;
         }
         if (!email) {
-            setError("Email is missing!");
+            setError(t(Labels.errors.missingEmail));
             return;
         }
         if (!password) {
-            setError("Password is missing!");
+            setError(t(Labels.errors.missingPassword));
             return;
         }
 
@@ -34,13 +40,13 @@ const register = () => {
             password
         }
 
-        const response = await wihFetch<string>({endpoint: "Auth/Register", method: "POST", body});
+        const response = await wihFetch<string>({endpoint: Endpoints.auth.register, config: config!, method: "POST", body});
         if (response.hasError) {
             setError(response.error!);
             return;
         }
 
-        const error = await signIn({email: baseUri, password: apikey});
+        const error = await signIn({email, password});
         if (error) {
             setError(error);
         }
@@ -48,7 +54,7 @@ const register = () => {
 
     return (
         <WihView center="full">
-            <WihTitle>Register</WihTitle>
+            <WihTitle>{t(Labels.titles.register)}</WihTitle>
 
             <WihUsernameInput
                 value={userName}
@@ -70,7 +76,7 @@ const register = () => {
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onRegister(email, password, userName)}>Register</WihButton>
+            <WihButton onPress={async () => onRegister(email, password, userName)}>{t(Labels.actions.register)}</WihButton>
         </WihView>
     )
 }

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useSession} from "@/components/auth/context";
 import {Tokens} from "@/constants/WihTypes/Auth";
+import {useApiConfig} from "@/components/config/context";
 
 export interface WihApiIntervalProps {
     time: number;
@@ -18,6 +19,7 @@ export default function useWihApiInterval<T>({
                                                  version = 1,
                                                  body
                                              }: WihApiIntervalProps): WihResponse<T | null> | null {
+    const {config} = useApiConfig();
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const {session, onNewSession} = useSession();
 
@@ -31,12 +33,12 @@ export default function useWihApiInterval<T>({
         if (!session) return () => {
         };
 
-        wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
+        wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
             .then(e => setResponse(e));
 
         // Refresh every other Minute
         const id = setInterval(() => {
-            wihFetch<T>({endpoint, method, version, body, tokens: session, onNewTokens})
+            wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
                 .then(e => setResponse(e));
         }, time);
         return () => clearInterval(id);

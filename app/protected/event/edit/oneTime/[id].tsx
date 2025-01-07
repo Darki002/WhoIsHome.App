@@ -4,27 +4,31 @@ import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihT
 import {WihText} from "@/components/WihText";
 import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
-import {WihResponse} from "@/helper/WihApi";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihTextInput} from "@/components/input/WihInput";
 import WihView from "@/components/WihView";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
-import Toast from "react-native-root-toast";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
-
-const options: Array<WihOption<PresenceType>> = [
-    {value: "Unknown", display: "Unknown"},
-    {value: "Late", display: "Late"},
-    {value: "NotPresent", display: "Not Present"}
-]
+import {Endpoints} from "@/constants/endpoints";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
+import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
 
 export default function OneTimeEventView() {
+    const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    const options : Array<WihOption<PresenceType>> = [
+        {value: "Unknown", display: t(Labels.presenceType.unknown)},
+        {value: "Late", display: t(Labels.presenceType.late)},
+        {value: "NotPresent", display: t(Labels.presenceType.notPresent)}
+    ];
+
     const response = useWihApiFocus<OneTimeEventModel>({
-        endpoint: `OneTimeEvent/${id}`,
+        endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET"
     });
 
@@ -41,23 +45,9 @@ export default function OneTimeEventView() {
         setEvent((prev) => ({...prev, ...update}));
     }, []);
 
-    const onResponse = useCallback((res: WihResponse | null) => {
-        if (!res || res?.hasError) {
-            console.error(res?.error ?? "Unknown Error");
-            Toast.show('Failed to update Event', {
-                duration: Toast.durations.SHORT,
-            });
-            return;
-        }
-
-        Toast.show('Event updated', {
-            duration: Toast.durations.SHORT,
-        });
-        router.back();
-    }, [id]);
-
+    const onResponse = useOnResponse(id);
     const callWihApi = useWihApiCallable<OneTimeEventDto>({
-        endpoint: `OneTimeEvent/${id}`,
+        endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "PATCH",
         onResponse
     });
@@ -79,7 +69,7 @@ export default function OneTimeEventView() {
         callWihApi(body);
     }, [event]);
 
-    if (!event) {
+    if(!event) {
         return null;
     }
 
@@ -95,11 +85,12 @@ export default function OneTimeEventView() {
         }
     }
 
+    // TODO: don't forget to translate when making it pretty
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
             <WihView flex="row">
                 <WihText>Title:</WihText>
-                <WihTextInput value={event.Title} placeholder="Titel"
+                <WihTextInput value={event.Title} placeholder={t(Labels.placeholders.title)}
                               onChangeText={t => updateEvent({Title: t})}></WihTextInput>
             </WihView>
 

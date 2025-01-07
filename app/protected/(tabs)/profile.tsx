@@ -10,25 +10,29 @@ import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {User} from "@/constants/WihTypes/User";
+import {Endpoints} from "@/constants/endpoints";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 const TIME = 5 * 60 * 1000;
 
 const Profile = () => {
+    const {t} = useTranslation();
     const {signOut} = useSession();
     const user = useWihApi<User | null>({
-        endpoint: "User/Me",
+        endpoint: Endpoints.user.me,
         method: "GET",
     });
     const response = useWihApiInterval<UserOverview | null>({
         time: TIME,
-        endpoint: "UserOverview",
+        endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
 
     const dim = Dimensions.get("screen");
     const viewStyle: ViewStyle = {
-        marginLeft: dim.width / 12,
-        marginTop: dim.height / 16
+        paddingLeft: dim.width / 12,
+        paddingTop: dim.height / 16
     }
     const avatarStyle = {
         marginRight: dim.width / 20
@@ -43,8 +47,7 @@ const Profile = () => {
                 <WihView style={[viewStyle, styles.view]}>
                     <WihAvatar name="" size={dim.scale * 14} style={avatarStyle}/>
                     <WihText style={[styles.text, textStyle]}>Loading...</WihText>
-                    <WihButton onPress={() => {
-                    }}>Logout</WihButton>
+                    <WihButton onPress={() => {}}>{t(Labels.actions.logout)}</WihButton>
                 </WihView>
                 <WihView center="horizontal">
                     <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
@@ -55,19 +58,13 @@ const Profile = () => {
     }
 
     if (user.hasError) {
-        if (user.status == 401) {
-            return <Redirect href="/auth/login"/>
-        }
         console.error(user.error);
-        return <WihTitle>Oops, Error occurred: {user.error}</WihTitle>
+        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
     }
 
     if (response.hasError) {
-        if (response.status == 401) {
-            return <Redirect href="/auth/login"/>
-        }
         console.error(response.error);
-        return <WihTitle>Oops, Error occurred: {response.error}</WihTitle>
+        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
     }
 
     const overview = response.response;
@@ -77,13 +74,13 @@ const Profile = () => {
             <WihView style={[viewStyle, styles.view]}>
                 <WihAvatar name={userName} size={dim.scale * 14} style={avatarStyle}/>
                 <WihText style={[styles.text, textStyle]}>{userName}</WihText>
-                <WihButton onPress={() => signOut()}>Logout</WihButton>
+                <WihButton onPress={() => signOut()}>{t(Labels.actions.logout)}</WihButton>
             </WihView>
             <WihView center="horizontal">
                 <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                <WihEventList events={overview?.today} title="Today"/>
-                <WihEventList events={overview?.thisWeek} title="This Week"/>
-                <WihEventList events={overview?.futureEvents} title="Other"/>
+                <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
+                <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
+                <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
             </WihView>
         </>
     );
@@ -99,5 +96,4 @@ const styles = StyleSheet.create({
     }
 })
 
-// noinspection JSUnusedGlobalSymbols
 export default Profile;

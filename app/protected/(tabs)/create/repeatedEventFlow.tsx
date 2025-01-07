@@ -9,6 +9,10 @@ import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
 import {DateStepBase, DateValidationBase} from "@/components/pages/CreateFlow/DateStepBase";
 import useCreateFlowCallbacks from "@/hooks/useCreateFlowCallbacks";
 import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes/Event/RepeatedEvent";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
+import {Endpoints} from "@/constants/endpoints";
+import {useApiConfig} from "@/components/config/context";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -21,7 +25,7 @@ const defaultOneTimeEvent: RepeatedEvent = {
 };
 
 export default function RepeatedEventFlow() {
-    const [callWihApi, onCancel] = useCreateFlowCallbacks("RepeatedEvent");
+    const [callWihApi, onCancel] = useCreateFlowCallbacks(Endpoints.repeatedEvent.url);
 
     const onFinish = useCallback((state: RepeatedEvent) => {
         const body: RepeatedEventDto = {
@@ -66,17 +70,20 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
 
 const summaryStep: WihFlowStep<RepeatedEvent> = {
     validate: (_: RepeatedEvent) => true,
-    component: ({state}: WihFlowComponentProps<RepeatedEvent>) => (
-        <WihView center="full">
-            <WihTitle>Summary</WihTitle>
-            <WihText>Title: {state.Title}</WihText>
-            <WihText>First: {state.FirstOccurrence?.toLocaleDateString()}</WihText>
-            <WihText>Last: {state.LastOccurrence?.toLocaleDateString()}</WihText>
-            <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
-            <WihText>PresenceType: {state.PresenceType}</WihText>
-            <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
-        </WihView>
-    )
+    component: ({state}: WihFlowComponentProps<RepeatedEvent>) => {
+        const {t} = useTranslation();
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.titles.summary)}</WihTitle>
+                <WihText>Title: {state.Title}</WihText>
+                <WihText>First: {state.FirstOccurrence?.toLocaleDateString()}</WihText>
+                <WihText>Last: {state.LastOccurrence?.toLocaleDateString()}</WihText>
+                <WihText>Time: {state.StartTime?.toLocaleTimeString()} - {state.EndTime?.toLocaleTimeString()}</WihText>
+                <WihText>PresenceType: {state.PresenceType}</WihText>
+                <WihText>Dinner Time: {state.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
+            </WihView>
+        )
+    }
 }
 
 const components: Array<WihFlowStep<RepeatedEvent>> = [
