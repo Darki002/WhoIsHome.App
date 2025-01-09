@@ -1,6 +1,6 @@
 import {StyleSheet, View} from "react-native";
-import {useThemeColor} from "@/hooks/useThemeColor";
 import {WihButton} from "@/components/input/WihButton";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export type WihOption<T> = {
     value?: T;
@@ -15,11 +15,11 @@ export interface WihSingleChoiceProps<T> {
 }
 
 export function WihSingleChoice<T>({value, options, direction, onChange}: WihSingleChoiceProps<T>) {
-    const backgroundColor = useThemeColor('background');
+    const theme = useWihTheme();
     const flex = styles[direction ?? "column"];
 
     return (
-        <View style={[{backgroundColor}, flex]}>
+        <View style={[{backgroundColor: theme.background}, flex]}>
             {options.map((o, i) =>
                 <OptionButton
                     key={i}
@@ -51,10 +51,9 @@ interface OptionButtonProps<T> {
 }
 
 function OptionButton<T>({value, display, isSelected, onChange}: OptionButtonProps<T>) {
-    const primary = useThemeColor('primary');
-    const secondary = useThemeColor('secondary');
+    const theme = useWihTheme();
 
-    const backgroundColor = isSelected ? primary : secondary;
+    const backgroundColor = isSelected ? theme.primary : theme.secondary;
 
     return (
         <WihButton onPress={() => onChange(value)} style={{backgroundColor}}>{display}</WihButton>

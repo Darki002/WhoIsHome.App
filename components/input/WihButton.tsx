@@ -1,7 +1,6 @@
-import {Pressable, StyleSheet} from "react-native";
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {WihText} from "@/components/WihText";
+import {Pressable, StyleSheet, Text, ViewStyle} from "react-native";
 import {ReactNode} from "react";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 type WihButtonProps = {
     children: ReactNode;
@@ -10,10 +9,15 @@ type WihButtonProps = {
 };
 
 export const WihButton = ({children, onPress, style}: WihButtonProps) => {
-    const color = useThemeColor("primary");
+    const theme = useWihTheme();
+
+    const buttonStyle: ViewStyle = {
+        backgroundColor: theme.background
+    }
+
     return (
-        <Pressable onPress={onPress} style={[{backgroundColor: color}, styles.button, style]}>
-            <WihText>{children}</WihText>
+        <Pressable onPress={onPress} style={[buttonStyle, styles.button, style]}>
+            {children}
         </Pressable>
     )
 }

@@ -1,30 +1,30 @@
 import {Stack} from "expo-router";
-import {useThemeColor} from "@/hooks/useThemeColor";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export default function EventLayout() {
-    const backgroundColor = useThemeColor("background");
+    const theme = useWihTheme();
 
     return (
         <Stack>
             <Stack.Screen name="view/oneTime/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
-                headerStyle: {backgroundColor: backgroundColor}
+                headerStyle: {backgroundColor: theme.background}
             }}/>
             <Stack.Screen name="view/repeated/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
-                headerStyle: {backgroundColor: backgroundColor}
+                headerStyle: {backgroundColor: theme.background}
             }}/>
             <Stack.Screen name="edit/oneTime/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
-                headerStyle: {backgroundColor: backgroundColor}
+                headerStyle: {backgroundColor: theme.background}
             }}/>
             <Stack.Screen name="edit/repeated/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
-                headerStyle: {backgroundColor: backgroundColor}
+                headerStyle: {backgroundColor: theme.background}
             }}/>
         </Stack>
     )

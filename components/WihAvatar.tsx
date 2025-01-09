@@ -1,22 +1,18 @@
 import {WihText} from "./WihText";
 import WihView from "./WihView";
-import {useThemeColor} from "@/hooks/useThemeColor";
 import {StyleSheet, ViewStyle} from 'react-native';
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export interface AvatarProps {
     name: string;
     size?: number;
-    backgroundColor?: string;
-    textColor?: string;
     style?: ViewStyle;
 }
 
-export const WihAvatar = ({name, size, backgroundColor, textColor, style}: AvatarProps) => {
+export const WihAvatar = ({name, size, style}: AvatarProps) => {
+    const theme = useWihTheme();
 
     const avatarSize = size ?? 40;
-    const background = useThemeColor("primary", {light: backgroundColor, dark: backgroundColor});
-    const text = useThemeColor("text", {light: textColor, dark: textColor});
-
     const letter = name.length > 0 ? name[0].toUpperCase() : "";
 
     return (
@@ -24,11 +20,11 @@ export const WihAvatar = ({name, size, backgroundColor, textColor, style}: Avata
             height: avatarSize,
             width: avatarSize,
             borderRadius: avatarSize / 2,
-            backgroundColor: background,
+            backgroundColor: theme.primary,
         }, styles.avatar, style]}>
             <WihText style={[styles.letter, {
                 fontSize: avatarSize / 2,
-                color: text,
+                color: theme.text,
                 fontFamily: "Roboto"
             }]}>{letter}</WihText>
         </WihView>

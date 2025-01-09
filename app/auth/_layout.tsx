@@ -1,4 +1,3 @@
-import {useThemeColor} from "@/hooks/useThemeColor";
 import {IonIcon, MaterialIcon} from '@/components/WihIcon';
 import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
@@ -6,6 +5,7 @@ import {useSession} from "@/components/auth/context";
 import {WihTitle} from "@/components/WihText";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 const TabIconProps = {
     size: 28,
@@ -17,9 +17,8 @@ const TabIconProps = {
 const AuthLayout = () => {
     const {t} = useTranslation();
     const {session, isSessionLoading} = useSession();
-    const tint = useThemeColor("tint");
+    const theme = useWihTheme();
     const router = useRouter();
-    const backgroundColor = useThemeColor('background');
 
     useEffect(() => {
         if (session && session.jwtToken && session.refreshToken) {
@@ -34,9 +33,9 @@ const AuthLayout = () => {
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: tint,
+                tabBarActiveTintColor: theme.tint,
                 headerShown: false,
-                tabBarStyle: {backgroundColor: backgroundColor}
+                tabBarStyle: {backgroundColor: theme.background}
             }}>
             <Tabs.Screen
                 name="login"

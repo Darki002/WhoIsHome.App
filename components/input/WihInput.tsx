@@ -1,12 +1,16 @@
-import {useThemeColor} from "@/hooks/useThemeColor";
 import {TextInput, TextInputProps, TextStyle} from "react-native";
 import React from "react";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export const WihTextInput = ({value, placeholder, onChangeText, style, ...rest}: TextInputProps) => {
-    const color = useThemeColor("text");
-    const borderColor = useThemeColor("border");
+    const theme = useWihTheme();
+    const inputStyle = {
+        color: theme.text,
+        borderColor: theme.border
+    };
+
     return <TextInput inputMode="text" value={value} placeholder={placeholder} onChangeText={onChangeText}
-                      style={[{color, borderColor}, style]} {...rest} />
+                      style={[inputStyle, style]} {...rest} />
 }
 
 export interface WihDateInputProps {
@@ -16,17 +20,25 @@ export interface WihDateInputProps {
 }
 
 export const WihUsernameInput = ({value, onChangeText, style, ...rest}: TextInputProps) => {
-    const color = useThemeColor("text");
-    const borderColor = useThemeColor("border");
+    const theme = useWihTheme();
+    const inputStyle = {
+        color: theme.text,
+        borderColor: theme.border
+    };
+
     return <TextInput inputMode="text" value={value} onChangeText={onChangeText} autoComplete="username"
-                      placeholder="UserName" style={[{color, borderColor}, style]} {...rest} />
+                      placeholder="UserName" style={[inputStyle, style]} {...rest} />
 }
 
 export const WihEmailInput = ({value, onChangeText, style, ...rest}: TextInputProps) => {
-    const color = useThemeColor("text");
-    const borderColor = useThemeColor("border");
+    const theme = useWihTheme();
+    const inputStyle = {
+        color: theme.text,
+        borderColor: theme.border
+    };
+
     return <TextInput inputMode="email" value={value} onChangeText={onChangeText} autoComplete="email"
-                      placeholder="Email" style={[{color, borderColor}, style]} {...rest} />
+                      placeholder="Email" style={[inputStyle, style]} {...rest} />
 }
 
 export type WihPasswordInputProps = TextInputProps & {
@@ -34,8 +46,11 @@ export type WihPasswordInputProps = TextInputProps & {
 }
 
 export const WihPasswordInput = ({autoCompleteType, value, onChangeText, style, ...rest}: WihPasswordInputProps) => {
-    const color = useThemeColor("text");
-    const borderColor = useThemeColor("border");
+    const theme = useWihTheme();
+    const inputStyle = {
+        color: theme.text,
+        borderColor: theme.border
+    };
 
     let type: TextInputProps["autoComplete"];
     switch (autoCompleteType) {
@@ -51,5 +66,5 @@ export const WihPasswordInput = ({autoCompleteType, value, onChangeText, style, 
     }
 
     return <TextInput inputMode="text" value={value} onChangeText={onChangeText} autoComplete={type}
-                      placeholder="Password" secureTextEntry style={[{color, borderColor}, style]} {...rest} />
+                      placeholder="Password" secureTextEntry style={[inputStyle, style]} {...rest} />
 }

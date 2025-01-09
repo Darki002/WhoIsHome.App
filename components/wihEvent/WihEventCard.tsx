@@ -1,11 +1,11 @@
 import {Pressable, StyleSheet} from "react-native";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {useThemeColor} from "@/hooks/useThemeColor";
 import {timeStringToDate} from "@/helper/datetimehelper";
 import {useRouter} from "expo-router";
 import {useCallback} from "react";
 import {WihEvent} from "@/constants/WihTypes/Event/BaseTypes";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export interface WihEventCardProps {
     id: number;
@@ -17,7 +17,7 @@ export interface WihEventCardProps {
 }
 
 export default function WihEventCard({event}: { event: WihEvent }) {
-    const borderColor = useThemeColor("border");
+    const theme = useWihTheme();
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
@@ -31,7 +31,7 @@ export default function WihEventCard({event}: { event: WihEvent }) {
 
     return (
         <Pressable onPress={onEventPress}>
-            <WihView style={[{borderColor}, styles.card]}>
+            <WihView style={[{borderColor: theme.border}, styles.card]}>
                 <WihTitle>{event.title}</WihTitle>
                 <WihText>Date: {date.toLocaleDateString()}</WihText>
                 <WihText>Time: {startTime.toLocaleTimeString()}-{endTime.toLocaleTimeString()}</WihText>
