@@ -4,17 +4,19 @@ import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
+import {useThemeColor} from '@/hooks/useThemeColor';
 import {Platform, useColorScheme} from 'react-native';
-import {theme} from '@/constants/Colors';
+import {ThemeProvider} from '@react-navigation/native';
+import {DarkTheme, LightTheme} from '@/constants/Colors';
 import {SessionProvider} from '@/components/auth/context';
 import {ApiConfigProvider, useApiConfig} from "@/components/config/context";
 import {I18nextProvider} from "react-i18next";
-import {ThemeProvider} from "@rneui/themed";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+    const backgroundColor = useThemeColor("background");
     const colorScheme = useColorScheme();
     const {isApiConfigLoading} = useApiConfig();
 
@@ -34,18 +36,12 @@ const RootLayout = () => {
 
     const isWeb = Platform.OS === "web";
     const screenOptions = {
-        ...(isWeb ? {} : {
-            contentStyle: {
-                backgroundColor: colorScheme === "dark"
-                    ? theme.darkColors?.background
-                    : theme.lightColors?.background
-            }
-        })
+        ...(isWeb ? {} : {contentStyle: {backgroundColor}})
     };
 
     return (
         <I18nextProvider i18n={i18n}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
                 <ApiConfigProvider>
                     <SessionProvider>
                         <Stack screenOptions={screenOptions}>
