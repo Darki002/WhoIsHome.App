@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
-import {Platform, useColorScheme} from 'react-native';
+import {useColorScheme} from 'react-native';
 import {SessionProvider} from '@/components/auth/context';
 import {ApiConfigProvider, useApiConfig} from "@/components/config/context";
 import {I18nextProvider} from "react-i18next";
