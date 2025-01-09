@@ -1,5 +1,3 @@
-import {Theme} from "@react-navigation/native";
-
 const primary = "#9055A2";
 const secondary = "#D499B9";
 
@@ -17,33 +15,14 @@ const dark = {
     icon: "#9BA1A6",
 }
 
-export const LightTheme: Theme = {
-    dark: false,
-    colors: {
+export const Colors = {
+    light: {
         primary: primary,
         background: light.background,
         card: light.background,
         text: light.text,
         border: light.border,
-        notification: light.background
-    }
-}
-
-export const DarkTheme: Theme = {
-    dark: true,
-    colors: {
-        primary: primary,
-        background: dark.background,
-        card: dark.background,
-        text: dark.text,
-        border: dark.border,
-        notification: dark.background
-    }
-}
-
-export const Colors = {
-    light: {
-        ...LightTheme.colors,
+        notification: light.background,
         secondary: secondary,
         tint: primary,
         icon: light.icon,
@@ -51,7 +30,12 @@ export const Colors = {
         tabIconSelected: primary,
     },
     dark: {
-        ...DarkTheme.colors,
+        primary: primary,
+        background: dark.background,
+        card: dark.background,
+        text: dark.text,
+        border: dark.border,
+        notification: dark.background,
         secondary: secondary,
         tint: primary,
         icon: dark.icon,
@@ -59,3 +43,5 @@ export const Colors = {
         tabIconSelected: primary,
     },
 };
+
+export type ColorsType = typeof Colors.light;
