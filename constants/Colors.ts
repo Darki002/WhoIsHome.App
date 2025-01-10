@@ -2,7 +2,8 @@ const primary = "#9055A2";
 const secondary = "#D499B9";
 
 const light = {
-    text: "#11181C",
+    text: "#000000",
+    textInverse: "#fff",
     background: "#fff",
     border: "#454545",
     icon: "#687076",
@@ -24,7 +25,8 @@ const light = {
 };
 
 const dark = {
-    text: "#ECEDEE",
+    text: "#fff",
+    textInverse: "#000",
     background: "#151718",
     border: "#b5b5b5",
     icon: "#9BA1A6",
