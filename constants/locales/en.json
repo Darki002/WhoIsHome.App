@@ -14,7 +14,7 @@
     "EventCreator": "Event Creator",
     "Summary": "Summary"
   },
-  "SubTitles": {
+  "Sections": {
     "Today": "Today",
     "ThisWeek": "This Week",
     "Other": "Other"

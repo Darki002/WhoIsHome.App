@@ -13,7 +13,6 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
-import {WihEvent} from "@/constants/WihTypes/Event/WihEvent";
 
 const TIME = 5 * 60 * 1000;
 
@@ -45,7 +44,7 @@ const Profile = () => {
     if (!response || !user) {
         return (
             <WihView center="full">
-                <WihLoading />
+                <WihLoading/>
             </WihView>
         )
     }
@@ -60,33 +59,82 @@ const Profile = () => {
         return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
     }
 
-    const overview = new UserOverview(response.response);
+    const userOverview = new UserOverview(response.response);
     const userName = user.response?.userName ?? "";
     return (
-        <>
-            <WihView style={[viewStyle, styles.view]}>
-                <WihAvatar name={userName} size={dim.scale * 14} style={avatarStyle}/>
-                <WihText style={[styles.text, textStyle]}>{userName}</WihText>
-                <WihButton onPress={() => signOut()}>{t(Labels.actions.logout)}</WihButton>
+        <WihView style={styles.container}>
+            <WihView style={styles.profileHeader}>
+                <WihView style={styles.userInfo}>
+                    <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
+                    <WihText style={styles.userName}>{userName}</WihText>
+                </WihView>
+                <WihButton onPress={signOut}>
+                    {t(Labels.actions.logout)}
+                </WihButton>
             </WihView>
-            <WihView center="horizontal">
-                <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                <WihEventList events={overview?.Today}/>
-                <WihEventList events={overview?.ThisWeek}/>
-                <WihEventList events={overview?.FutureEvents}/>
+
+            {/* Event Lists */}
+            <WihView style={styles.eventLists}>
+                {/* Today */}
+                {userOverview.Today.length > 0 && (
+                    <WihView style={styles.eventSection}>
+                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.today)}</WihTitle>
+                        <WihEventList events={userOverview.Today}/>
+                    </WihView>
+                )}
+
+                {/* This Week */}
+                {userOverview.ThisWeek.length > 0 && (
+                    <WihView style={styles.eventSection}>
+                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.thisWeek)}</WihTitle>
+                        <WihEventList events={userOverview.ThisWeek}/>
+                    </WihView>
+                )}
+
+                {/* Future Events */}
+                {userOverview.FutureEvents.length > 0 && (
+                    <WihView style={styles.eventSection}>
+                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.other)}</WihTitle>
+                        <WihEventList events={userOverview.FutureEvents}/>
+                    </WihView>
+                )}
             </WihView>
-        </>
+        </WihView>
     );
 }
 
 const styles = StyleSheet.create({
-    view: {
-        flexDirection: "row",
-        alignItems: "center"
+    container: {
+        flex: 1,
+        padding: 20,
     },
-    text: {
+    profileHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 20,
+        paddingHorizontal: 10
+    },
+    avatar: {
+        marginRight: 10
+    },
+    userInfo: {
+        flex: 1,
+        flexDirection: "row"
+    },
+    userName: {
+        textAlignVertical: "center",
+        fontSize: 18,
         fontWeight: "bold"
-    }
-})
+    },
+    eventLists: {
+        flex: 1
+    },
+    eventSection: {
+        marginBottom: 20
+    },
+    sectionTitle: {
+        marginBottom: 10
+    },
+});
 
 export default Profile;

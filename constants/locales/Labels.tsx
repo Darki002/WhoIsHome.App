@@ -14,10 +14,10 @@ const Labels = {
         eventCreator: "Titles.EventCreator",
         summary: "Titles.Summary"
     },
-    subTitles: {
-        today: "SubTitles.Today",
-        thisWeek: "SubTitles.ThisWeek",
-        other: "SubTitles.Other"
+    sections: {
+        today: "Sections.Today",
+        thisWeek: "Sections.ThisWeek",
+        other: "Sections.Other"
     },
     tabs: {
         home: "Tabs.Home",
