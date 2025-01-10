@@ -3,7 +3,7 @@ import {timeStringToDate} from "@/helper/datetimehelper";
 
 export type EventType = "OneTimeEvent" | "RepeatedEvent";
 
-export type WihEvent = {
+export interface WihEvent {
     id: number;
     title: string;
     date: Date | string;
