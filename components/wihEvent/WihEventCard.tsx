@@ -47,8 +47,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                     <WihText style={styles.title}>{event.Title}</WihText>
                     <WihText>{event.Date?.toLocaleDateString()}</WihText>
                     <WihText>
-                        {timeDisplayString(event.StartTime)} -{" "}
-                        {timeDisplayString(event.EndTime)}
+                        {timeDisplayString(event.StartTime)} - {timeDisplayString(event.EndTime)}
                     </WihText>
                 </WihView>
             </WihView>
