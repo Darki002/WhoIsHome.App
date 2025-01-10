@@ -1,10 +1,9 @@
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
+import {ActivityIndicator} from "react-native";
+import {useWihTheme} from "@/components/WihThemeProvider";
 
 export default function WihLoading() {
+    const theme = useWihTheme();
     return (
-        <WihView center="full">
-            <WihText>Loading...</WihText>
-        </WihView>
+        <ActivityIndicator size="large" color={theme.primary} />
     )
 }

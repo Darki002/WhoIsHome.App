@@ -6,6 +6,7 @@ import {router} from "expo-router";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
+import WihLoading from "@/components/WihLoading";
 
 const TIME = 5 * 60 * 1000;
 
@@ -29,7 +30,7 @@ export default function Index() {
     if (!response) {
         return (
             <WihView center="full">
-                <WihTitle>Loading...</WihTitle>
+                <WihLoading />
             </WihView>
         )
     }

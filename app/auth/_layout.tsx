@@ -6,6 +6,7 @@ import {WihTitle} from "@/components/WihText";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/WihThemeProvider";
+import WihLoading from "@/components/WihLoading";
 
 const TabIconProps = {
     size: 28,
@@ -27,7 +28,7 @@ const AuthLayout = () => {
     }, [session]);
 
     if (isSessionLoading) {
-        return <WihTitle>Loading...</WihTitle>
+        return <WihLoading />
     }
 
     return (

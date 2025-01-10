@@ -13,6 +13,7 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import WihLoading from "@/components/WihLoading";
 
 const TIME = 5 * 60 * 1000;
 
@@ -43,16 +44,8 @@ const Profile = () => {
 
     if (!response || !user) {
         return (
-            <WihView>
-                <WihView style={[viewStyle, styles.view]}>
-                    <WihAvatar name="" size={dim.scale * 14} style={avatarStyle}/>
-                    <WihText style={[styles.text, textStyle]}>Loading...</WihText>
-                    <WihButton onPress={() => {}}>{t(Labels.actions.logout)}</WihButton>
-                </WihView>
-                <WihView center="horizontal">
-                    <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                    <WihText>Loading...</WihText>
-                </WihView>
+            <WihView center="full">
+                <WihLoading />
             </WihView>
         )
     }
