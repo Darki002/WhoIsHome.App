@@ -71,9 +71,9 @@ const Profile = () => {
             </WihView>
             <WihView center="horizontal">
                 <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                <WihEventList events={overview?.Today} title={t(Labels.subTitles.today)}/>
-                <WihEventList events={overview?.ThisWeek} title={t(Labels.subTitles.thisWeek)}/>
-                <WihEventList events={overview?.FutureEvents} title={t(Labels.subTitles.other)}/>
+                <WihEventList events={overview?.Today}/>
+                <WihEventList events={overview?.ThisWeek}/>
+                <WihEventList events={overview?.FutureEvents}/>
             </WihView>
         </>
     );

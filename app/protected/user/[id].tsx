@@ -64,9 +64,9 @@ export default function UserView() {
         <WihView center="horizontal">
             <WihTitle>{user.response!.userName}</WihTitle>
 
-            <WihEventList events={overview?.Today} title={t(Labels.subTitles.today)}/>
-            <WihEventList events={overview?.ThisWeek} title={t(Labels.subTitles.thisWeek)}/>
-            <WihEventList events={overview?.FutureEvents} title={t(Labels.subTitles.other)}/>
+            <WihEventList events={overview?.Today}/>
+            <WihEventList events={overview?.ThisWeek}/>
+            <WihEventList events={overview?.FutureEvents}/>
         </WihView>
     )
 }
