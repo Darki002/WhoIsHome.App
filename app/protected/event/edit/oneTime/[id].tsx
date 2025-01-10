@@ -6,7 +6,6 @@ import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
-import {WihTextInput} from "@/components/input/WihInput";
 import WihView from "@/components/WihView";
 import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
@@ -15,6 +14,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
+import {WihTextInput} from "@/components/input/WihTextInput";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();

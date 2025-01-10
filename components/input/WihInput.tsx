@@ -2,17 +2,6 @@ import {TextInput, TextInputProps, TextStyle} from "react-native";
 import React from "react";
 import {useWihTheme} from "@/components/WihThemeProvider";
 
-export const WihTextInput = ({value, placeholder, onChangeText, style, ...rest}: TextInputProps) => {
-    const theme = useWihTheme();
-    const inputStyle = {
-        color: theme.text,
-        borderColor: theme.border
-    };
-
-    return <TextInput inputMode="text" value={value} placeholder={placeholder} onChangeText={onChangeText}
-                      style={[inputStyle, style]} {...rest} />
-}
-
 export interface WihDateInputProps {
     value?: Date;
     onChangeDate: (date: Date | undefined) => void;

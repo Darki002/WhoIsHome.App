@@ -3,6 +3,7 @@ const secondary = "#D499B9";
 
 const light = {
     text: "#000000",
+    placeholder: '#8A8A8A',
     textInverse: "#fff",
     background: "#fff",
     border: "#454545",
@@ -27,6 +28,7 @@ const light = {
 
 const dark = {
     text: "#fff",
+    placeholder: '#555555',
     textInverse: "#000",
     background: "#151718",
     border: "#b5b5b5",
