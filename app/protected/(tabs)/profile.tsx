@@ -13,6 +13,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
+import {WihEvent} from "@/constants/WihTypes/Event/WihEvent";
 
 const TIME = 5 * 60 * 1000;
 

@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/wihApi/useWihApi";
-import {UserOverviewDto} from "@/constants/WihTypes/WihTypes";
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
@@ -50,7 +50,7 @@ export default function UserView() {
         )
     }
 
-    if (user.hasError) {
+    if (user.hasError || !response.response) {
         console.log(user.error);
         return (
             <WihView center="full">
@@ -59,14 +59,14 @@ export default function UserView() {
         )
     }
 
-    const overview = response.response;
+    const overview = new UserOverview(response.response);
     return (
         <WihView center="horizontal">
             <WihTitle>{user.response!.userName}</WihTitle>
 
-            <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
-            <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
-            <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
+            <WihEventList events={overview?.Today} title={t(Labels.subTitles.today)}/>
+            <WihEventList events={overview?.ThisWeek} title={t(Labels.subTitles.thisWeek)}/>
+            <WihEventList events={overview?.FutureEvents} title={t(Labels.subTitles.other)}/>
         </WihView>
     )
 }

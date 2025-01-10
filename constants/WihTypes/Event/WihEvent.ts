@@ -1,4 +1,4 @@
-import {timeStringToDate} from "@/helper/datetimehelper";
+import {dateStringToDate, timeStringToDate} from "@/helper/datetimehelper";
 
 export type EventType = "OneTimeEvent" | "RepeatedEvent";
 
@@ -25,6 +25,6 @@ export class WihEvent {
         this.EventType = wihEventDto.eventType;
         this.StartTime = timeStringToDate(wihEventDto.startTime);
         this.EndTime = timeStringToDate(wihEventDto.endTime);
-        this.Date = timeStringToDate(wihEventDto.date);
+        this.Date = dateStringToDate(wihEventDto.date);
     }
 }
