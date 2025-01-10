@@ -17,7 +17,7 @@ export const WihButton = ({children, onPress, style}: WihButtonProps) => {
 
     return (
         <Pressable onPress={onPress} style={[buttonStyle, styles.button, style]}>
-            {children}
+            <Text>{children}</Text>
         </Pressable>
     )
 }

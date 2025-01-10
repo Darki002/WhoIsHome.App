@@ -1,17 +1,6 @@
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {timeStringToDate} from "@/helper/datetimehelper";
 
-export type EventType = "OneTimeEvent" | "RepeatedEvent";
-
-export interface WihEvent {
-    id: number;
-    title: string;
-    date: Date | string;
-    startTime: Date | string;
-    endTime: Date | string;
-    eventType: EventType;
-}
-
 export interface EventModelBase {
     title?: string;
     startTime?: Date | string;

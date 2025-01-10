@@ -1,6 +1,6 @@
 import {WihText, WihTitle} from "@/components/WihText";
 import WihEventCard from "@/components/wihEvent/WihEventCard";
-import {WihEvent} from "@/constants/WihTypes/Event/BaseTypes";
+import {WihEvent} from "@/constants/WihTypes/Event/WihEvent";
 
 export type WihEventListProps = {
     events: WihEvent[] | null | undefined;

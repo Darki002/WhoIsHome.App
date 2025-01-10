@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/wihApi/useWihApi";
-import {UserOverview} from "@/constants/WihTypes/WihTypes";
+import {UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
@@ -20,7 +20,7 @@ export default function UserView() {
         endpoint: Endpoints.user.withId(id),
         method: "GET",
     });
-    const response = useWihApiFocus<UserOverview>({
+    const response = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.withId(id),
         method: "GET"
     });

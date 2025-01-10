@@ -3,9 +3,10 @@ import { Pressable, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import {useWihTheme} from "@/components/WihThemeProvider";
 import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
+import {WihText} from "@/components/WihText";
 import {useRouter} from "expo-router";
-import {EventType, WihEvent} from "@/constants/WihTypes/Event/BaseTypes";
+import {EventType, WihEvent} from "@/constants/WihTypes/Event/WihEvent";
+import {timeDisplayString} from "@/helper/datetimehelper";
 
 interface EventCardProps {
     event: WihEvent;
@@ -16,9 +17,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        const eventType = event.eventType === "OneTimeEvent" ? "oneTime" : "repeated";
-        router.push(`/protected/event/view/${eventType}/${event.id}`);
-    }, [event.id, event.eventType]);
+        const eventType = event.EventType === "OneTimeEvent" ? "oneTime" : "repeated";
+        router.push(`/protected/event/view/${eventType}/${event.Id}`);
+    }, [event.Id, event.EventType]);
 
     const renderIcon = (eventType: EventType) => {
         switch (eventType) {
@@ -41,13 +42,13 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             onPress={() => onEventPress()}
         >
             <WihView style={styles.content} gap={10}>
-                <WihView style={styles.iconContainer}>{renderIcon(event.eventType)}</WihView>
+                <WihView style={styles.iconContainer}>{renderIcon(event.EventType)}</WihView>
                 <WihView style={styles.textContainer}>
-                    <WihTitle>{event.title}</WihTitle>
-                    <WihText>{new Date(event.date).toLocaleDateString()}</WihText>
+                    <WihText style={styles.title}>{event.Title}</WihText>
+                    <WihText>{event.Date?.toLocaleDateString()}</WihText>
                     <WihText>
-                        {new Date(event.startTime).toLocaleTimeString()} -{" "}
-                        {new Date(event.endTime).toLocaleTimeString()}
+                        {timeDisplayString(event.StartTime)} -{" "}
+                        {timeDisplayString(event.EndTime)}
                     </WihText>
                 </WihView>
             </WihView>
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     content: {
+        display:"flex",
         flexDirection: "row",
         alignItems: "center",
     },
@@ -75,8 +77,12 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     textContainer: {
-        flex: 1,
+        display: "flex",
+        alignContent: "center"
     },
+    title: {
+        fontSize: 20
+    }
 });
 
 export default EventCard;

@@ -4,8 +4,7 @@ import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
-import {Redirect} from "expo-router";
-import {UserOverview} from "@/constants/WihTypes/WihTypes";
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
@@ -24,7 +23,7 @@ const Profile = () => {
         endpoint: Endpoints.user.me,
         method: "GET",
     });
-    const response = useWihApiInterval<UserOverview | null>({
+    const response = useWihApiInterval<UserOverviewDto | null>({
         time: TIME,
         endpoint: Endpoints.userOverview.url,
         method: "GET",
@@ -55,12 +54,12 @@ const Profile = () => {
         return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
     }
 
-    if (response.hasError) {
+    if (response.hasError || !response.response) {
         console.error(response.error);
         return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
     }
 
-    const overview = response.response;
+    const overview = new UserOverview(response.response);
     const userName = user.response?.userName ?? "";
     return (
         <>
@@ -71,9 +70,9 @@ const Profile = () => {
             </WihView>
             <WihView center="horizontal">
                 <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
-                <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
-                <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
+                <WihEventList events={overview?.Today} title={t(Labels.subTitles.today)}/>
+                <WihEventList events={overview?.ThisWeek} title={t(Labels.subTitles.thisWeek)}/>
+                <WihEventList events={overview?.FutureEvents} title={t(Labels.subTitles.other)}/>
             </WihView>
         </>
     );
