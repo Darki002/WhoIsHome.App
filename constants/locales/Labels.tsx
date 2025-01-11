@@ -67,6 +67,9 @@ const Labels = {
         missingUsername: "Errors.MissingUsername",
         missingBaseUri: "Errors.MissingBaseUri",
         missingApiKey: "Errors.MissingApiKey"
+    },
+    other: {
+        unknownTime: "Other.UnknownTime"
     }
 } as const;
 

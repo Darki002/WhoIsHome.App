@@ -67,5 +67,8 @@
     "MissingUsername": "Username is required!",
     "MissingBaseUri": "Base Url is required!",
     "MissingApiKey": "Api Key is required!"
+  },
+  "Other": {
+    "UnknownTime": "Unknown"
   }
 }
