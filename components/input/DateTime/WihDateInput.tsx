@@ -23,15 +23,6 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateInputPr
         onChange(currentDate);
     };
 
-    if (disabled) {
-        const displayValue = value?.toLocaleDateString() ?? "dd-MM-yyyy";
-        return <Text style={{color: "grey"}}>{displayValue}</Text>
-    }
-
-    if(value === null){
-        return <Text>dd-MM-yyyy</Text>
-    }
-
     const formattedDate = value ? value.toLocaleDateString() : t(Labels.placeholders.selectDate);
     const date = value ? value : new Date();
 
