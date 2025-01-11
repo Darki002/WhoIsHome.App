@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import DateTimePicker, {DateTimePickerEvent} from "@react-native-community/datetimepicker";
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 import {WihText} from "@/components/WihText";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";

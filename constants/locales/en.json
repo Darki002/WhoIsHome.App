@@ -44,7 +44,8 @@
     "UserName": "username",
     "Email": "email",
     "Password": "password",
-    "SelectDate": "Select a date"
+    "SelectDate": "Select a date",
+    "SelectTime": "Select a time"
   },
   "Toast": {
     "Success": {
