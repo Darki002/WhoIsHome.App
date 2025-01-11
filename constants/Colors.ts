@@ -3,9 +3,11 @@ const secondary = "#D499B9";
 
 const light = {
     text: "#000000",
+    textDisabled: "#a0a0a0",
     placeholder: '#8A8A8A',
     textInverse: "#fff",
     background: "#fff",
+    backgroundDisabled: "#f0f0f0",
     border: "#454545",
     icon: "#687076",
     buttonBackground: primary,
@@ -28,9 +30,11 @@ const light = {
 
 const dark = {
     text: "#fff",
+    textDisabled: "#6c6c6c",
     placeholder: '#555555',
     textInverse: "#000",
     background: "#151718",
+    backgroundDisabled: "#3a3a3a",
     border: "#b5b5b5",
     icon: "#9BA1A6",
     buttonBackground: primary,
