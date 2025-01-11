@@ -1,5 +1,5 @@
 import {Link, LinkProps} from 'expo-router';
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {TextStyle} from "react-native";
 
 const WihLink = ({style, children, href}: LinkProps) => {

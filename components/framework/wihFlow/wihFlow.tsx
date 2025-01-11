@@ -1,5 +1,5 @@
 import React, {ComponentType, useState} from "react";
-import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
+import {WihFlowNavAction, WihFlowNavBar} from "@/components/framework/wihFlow/WihFlowNavigation";
 import {WihTitle} from "@/components/WihText";
 
 export interface WihFlowComponentProps<T> {

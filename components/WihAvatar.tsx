@@ -1,7 +1,7 @@
 import {WihText} from "./WihText";
 import WihView from "./WihView";
 import {StyleSheet, ViewStyle} from 'react-native';
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export interface AvatarProps {
     name: string;

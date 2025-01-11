@@ -2,7 +2,7 @@ import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
 import React, {useState} from "react";
-import {ApiConfig, useApiConfig} from "@/components/config/context";
+import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {Dimensions, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";

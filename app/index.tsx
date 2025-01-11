@@ -1,7 +1,7 @@
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {Redirect} from "expo-router";
 import {isInvalidSession} from "@/helper/sessionHelper";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 export default function Index() {
     const {config, isApiConfigLoading} = useApiConfig();

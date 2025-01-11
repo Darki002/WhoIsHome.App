@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import { TextInput, StyleSheet, ViewStyle, TextStyle, TextInputProps } from 'react-native';
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 type WihTextInputProps = TextInputProps & {
     style?: ViewStyle | ViewStyle[];

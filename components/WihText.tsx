@@ -1,5 +1,5 @@
 import {Text, TextProps, TextStyle} from "react-native";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export const WihText = ({children, style, ...rest}: TextProps) => {
     const theme = useWihTheme();

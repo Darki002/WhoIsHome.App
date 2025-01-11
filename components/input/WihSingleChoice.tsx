@@ -1,5 +1,5 @@
 import {StyleSheet, TouchableOpacity} from "react-native";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 

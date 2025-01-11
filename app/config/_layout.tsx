@@ -1,6 +1,6 @@
 import {Stack} from "expo-router";
 import React from "react";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {WihTitle} from "@/components/WihText";
 import WihLoading from "@/components/WihLoading";
 

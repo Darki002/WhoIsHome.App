@@ -13,7 +13,7 @@ Used like the View form React Native, but it already adds the background color b
 and provides a few basic features.
 
 Here the code behind the WihView
-```typescript
+```typescript jsx
 const WihView = ({style, center, gap, flex, lightColor, darkColor, ...otherProps}: ThemedViewProps) => {
     const theme = useWihTheme();
 
@@ -51,7 +51,7 @@ const flexStyle: FlexStyle = {
 
 Displays Text and applies the theme.
 
-```typescript
+```typescript jsx
 export const WihText = ({children, style, ...rest}: TextProps) => {
     const theme = useWihTheme();
 
@@ -67,7 +67,7 @@ Displays Text as a title and applies the theme
 
 *Note: is not perfectly styled yet*
 
-```typescript
+```typescript jsx
 export const WihTitle = ({children, style, ...rest}: TextProps) => {
     const theme = useWihTheme();
 
@@ -99,7 +99,7 @@ To use those ask which one you need or just don't use a WihIcon Component and do
 
 Currently only able to display a simple Avatar with the first letter of the username.
 
-```typescript
+```typescript jsx
 export const WihAvatar = ({name, size, style}: AvatarProps) => {
     const theme = useWihTheme();
 
@@ -133,8 +133,51 @@ const styles = StyleSheet.create({
 });
 ```
 
+# WihButton
+
+Pretty much just a normal Pressable form react but with style
+
+```typescript jsx
+type WihButtonProps = {
+    children: ReactNode;
+    onPress: () => void;
+    disabled?: boolean;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
+};
+
+export const WihButton: FC<WihButtonProps> = ({children, onPress, disabled = false, style, textStyle}) => {
+    const theme = useWihTheme();
+
+    return (
+        <Pressable
+            onPress={onPress}
+            disabled={disabled}
+            style={({ pressed }) => [
+                styles.button,
+                { backgroundColor: disabled ? theme.disabled : theme.primary },
+                pressed && !disabled && { backgroundColor: theme.primary },
+                style
+            ]}
+        >
+            <Text style={[styles.text, { color: theme.buttonText }, textStyle]}>
+                {children}
+            </Text>
+        </Pressable>
+    );
+};
+```
+
 # WihInput
 
-This is also more of a collection of different Inputs to use, 
-but they are not finished yet, 
-but you can ask me for them to use theme already if you want.
+This is also more of a collection of different Inputs to use. Ask me for more details about those inputs if you need them.
+But more or less they are very predictable on how they are build.
+
+Input Types:
+- Text
+- Password
+- Email
+- Username
+- Date
+- Time
+- SingleChoice

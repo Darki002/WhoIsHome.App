@@ -1,4 +1,4 @@
-import {LoginInfos, useSession} from "@/components/auth/context";
+import {LoginInfos, useSession} from "@/components/appContexts/AuthContext";
 import {WihEmailInput, WihPasswordInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";

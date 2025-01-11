@@ -1,7 +1,7 @@
 import { WihText } from "@/components/WihText";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { DateTimePickerAndroid, DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export interface WihDateInputProps {
     value?: Date | null;
