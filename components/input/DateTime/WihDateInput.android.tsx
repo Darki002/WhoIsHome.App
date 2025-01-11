@@ -22,11 +22,12 @@ export const WihDateInput = ({ value, onChange, disabled = false }: WihDateInput
             value: value ?? new Date(),
             onChange: onDateChange,
             mode: "date",
-            is24Hour: true,
+            is24Hour: true
         });
     };
 
     const formattedDate = value ? value.toLocaleDateString() : "Select a date";
+    console.log("android");
 
     return (
         <TouchableOpacity

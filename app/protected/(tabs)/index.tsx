@@ -56,7 +56,7 @@ function DailyOverview({overview}: {overview: DailyOverview}) {
         <Pressable onPress={() => router.push(`/protected/user/${overview.user.id}`)}>
             <WihView center="horizontal">
                 <WihTitle>{overview.user.username}</WihTitle>
-                <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText> {/* TODO: Translate or with symbol */}
+                <WihText>Is at home: {overview.isAtHome ? "yes" : "no"}</WihText>
                 {overview.dinnerTime ? <WihText>{overview.dinnerTime}</WihText> : undefined}
             </WihView>
         </Pressable>

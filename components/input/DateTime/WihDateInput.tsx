@@ -20,6 +20,7 @@ export const WihDateInput = ({value, onChange, disabled = false}: WihDateInputPr
     const showPicker = () => {
         setShow(true);
     };
+    console.log("other");
 
     if (disabled) {
         const displayValue = value?.toLocaleDateString() ?? "dd-MM-yyyy";
