@@ -1,5 +1,5 @@
 import {View, type ViewProps, ViewStyle} from 'react-native';
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export type ThemedViewProps = ViewProps & {
     center?: "full" | "horizontal" | "vertical";

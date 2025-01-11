@@ -4,7 +4,7 @@ import {type ComponentProps} from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons';
 import {OpaqueColorValue} from 'react-native';
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export interface AwesomeIconProps extends IconProps<ComponentProps<typeof FontAwesome>["name"]> {
 }

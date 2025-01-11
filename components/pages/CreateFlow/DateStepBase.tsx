@@ -1,4 +1,4 @@
-import {WihFlowComponentProps} from "@/components/wihFlow/wihFlow";
+import {WihFlowComponentProps} from "@/components/framework/wihFlow/wihFlow";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";

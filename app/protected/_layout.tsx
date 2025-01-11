@@ -1,6 +1,6 @@
 import {Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
-import {useSession} from '@/components/auth/context';
+import {useSession} from '@/components/appContexts/AuthContext';
 import {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
 

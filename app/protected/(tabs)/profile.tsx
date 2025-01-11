@@ -1,4 +1,4 @@
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";

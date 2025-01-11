@@ -5,11 +5,11 @@ import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/in
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
 import {wihFetch} from "@/helper/WihApi";
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 const register = () => {
     const {t} = useTranslation();

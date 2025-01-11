@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {useRouter} from "expo-router";

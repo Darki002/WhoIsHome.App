@@ -1,11 +1,11 @@
 import {IonIcon, MaterialIcon} from '@/components/WihIcon';
 import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {WihTitle} from "@/components/WihText";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihLoading from "@/components/WihLoading";
 
 const TabIconProps = {

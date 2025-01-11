@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
 import {FC, ReactNode} from "react";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 type WihButtonProps = {
     children: ReactNode;

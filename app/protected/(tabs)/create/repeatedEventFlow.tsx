@@ -1,4 +1,4 @@
-import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/wihFlow";
+import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/framework/wihFlow/wihFlow";
 import {WihText, WihTitle} from "@/components/WihText";
 import React, {useCallback} from "react";
 import WihView from "@/components/WihView";

@@ -5,10 +5,10 @@ import {useEffect} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
-import {SessionProvider} from '@/components/auth/context';
-import {ApiConfigProvider, useApiConfig} from "@/components/config/context";
+import {SessionProvider} from '@/components/appContexts/AuthContext';
+import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {I18nextProvider} from "react-i18next";
-import {WihThemeProvider} from "@/components/WihThemeProvider";
+import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

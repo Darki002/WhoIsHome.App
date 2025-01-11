@@ -3,7 +3,7 @@ import {Tabs} from "expo-router";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const TabIconProps = {
     size: 28,

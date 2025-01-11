@@ -1,5 +1,5 @@
 import {Stack} from "expo-router";
-import {useWihTheme} from "@/components/WihThemeProvider";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export default function EventLayout() {
     const theme = useWihTheme();
