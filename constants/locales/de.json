@@ -43,7 +43,8 @@
     "Title": "Titel",
     "UserName": "Benutzername",
     "Email": "Email",
-    "Password": "Passwort"
+    "Password": "Passwort",
+    "SelectDate": "Datum wählen"
   },
   "Toast": {
     "Success": {

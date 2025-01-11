@@ -43,7 +43,8 @@
     "Title": "Title",
     "UserName": "username",
     "Email": "email",
-    "Password": "password"
+    "Password": "password",
+    "SelectDate": "Select a date"
   },
   "Toast": {
     "Success": {

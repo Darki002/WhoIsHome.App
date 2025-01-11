@@ -43,7 +43,8 @@ const Labels = {
         title: "Placeholders.Title",
         userName: "Placeholders.UserName",
         email: "Placeholders.Email",
-        password: "Placeholders.Password"
+        password: "Placeholders.Password",
+        selectDate: "Placeholders.SelectDate"
     },
     toast: {
         success: {
