@@ -4,7 +4,6 @@ import {useWihTheme} from "@/components/WihThemeProvider";
 
 type WihTextInputProps = TextInputProps & {
     style?: ViewStyle | ViewStyle[];
-    inputStyle?: TextStyle | TextStyle[];
 };
 
 export const WihTextInput: FC<WihTextInputProps> = ({
@@ -12,7 +11,6 @@ export const WihTextInput: FC<WihTextInputProps> = ({
                                                               placeholder,
                                                               onChangeText,
                                                               style,
-                                                              inputStyle,
                                                               ...rest
                                                           }) => {
     const theme = useWihTheme();
@@ -20,6 +18,7 @@ export const WihTextInput: FC<WihTextInputProps> = ({
 
     return (
         <TextInput
+            inputMode="text"
             value={value}
             placeholder={placeholder}
             placeholderTextColor={theme.placeholder}

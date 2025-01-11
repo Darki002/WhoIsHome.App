@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
-import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihInput";
+import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
 import {wihFetch} from "@/helper/WihApi";
@@ -12,7 +12,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useApiConfig} from "@/components/config/context";
 
 const register = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const {config} = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
@@ -21,6 +21,7 @@ const register = () => {
     const {signIn} = useSession();
 
     async function onRegister(email: string, password: string, userName: string) {
+        const {t} = useTranslation();
         if (!userName) {
             setError(t(Labels.errors.missingUsername));
             return;
@@ -40,7 +41,12 @@ const register = () => {
             password
         }
 
-        const response = await wihFetch<string>({endpoint: Endpoints.auth.register, config: config!, method: "POST", body});
+        const response = await wihFetch<string>({
+            endpoint: Endpoints.auth.register,
+            config: config!,
+            method: "POST",
+            body
+        });
         if (response.hasError) {
             setError(response.error!);
             return;
@@ -58,25 +64,24 @@ const register = () => {
 
             <WihUsernameInput
                 value={userName}
-                onChangeText={onChangeUserName}
-                style={styles.userName}
-                autoFocus
-            />
+                onChangeValue={onChangeUserName}
+                autoComplete="new"/>
+
             <WihEmailInput
                 value={email}
-                onChangeText={onChangeEmail}
-                style={styles.email}
-            />
+                onChangeValue={onChangeEmail}
+                style={styles.email}/>
+
             <WihPasswordInput
                 value={password}
-                onChangeText={onChangePassword}
+                onChangeValue={onChangePassword}
                 style={styles.password}
-                autoCompleteType="current"
-            />
+                autoComplete="new"/>
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}
 
-            <WihButton onPress={async () => onRegister(email, password, userName)}>{t(Labels.actions.register)}</WihButton>
+            <WihButton
+                onPress={async () => onRegister(email, password, userName)}>{t(Labels.actions.register)}</WihButton>
         </WihView>
     )
 }

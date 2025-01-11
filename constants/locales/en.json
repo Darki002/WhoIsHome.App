@@ -40,7 +40,10 @@
   "Placeholders": {
     "BaseUri": "URL",
     "ApiKey": "API Key",
-    "Title": "Title"
+    "Title": "Title",
+    "UserName": "username",
+    "Email": "email",
+    "Password": "password"
   },
   "Toast": {
     "Success": {

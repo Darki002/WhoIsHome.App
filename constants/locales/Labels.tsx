@@ -40,7 +40,10 @@ const Labels = {
     placeholders: {
         baseUri: "Placeholders.BaseUri",
         apikey: "Placeholders.ApiKey",
-        title: "Placeholders.Title"
+        title: "Placeholders.Title",
+        userName: "Placeholders.UserName",
+        email: "Placeholders.Email",
+        password: "Placeholders.Password"
     },
     toast: {
         success: {
