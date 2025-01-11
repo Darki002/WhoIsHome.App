@@ -1,7 +1,7 @@
 import {useFonts} from 'expo-font';
 import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
@@ -10,6 +10,8 @@ import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigCo
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
+import WihView from "@/components/WihView";
+import WihLoading from "@/components/WihLoading";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,7 +31,11 @@ const RootLayout = () => {
     }, [loaded]);
 
     if (!loaded || isApiConfigLoading) {
-        return null;
+        return (
+            <WihView center="full">
+                <WihLoading/>
+            </WihView>
+        );
     }
 
     const screenOptions = {

@@ -1,8 +1,10 @@
-import {Stack, useRouter} from 'expo-router';
+import {Redirect, Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/appContexts/AuthContext';
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
+import WihView from "@/components/WihView";
+import WihLoading from "@/components/WihLoading";
 
 const ProtectedLayout = () => {
     const router = useRouter();
@@ -15,11 +17,15 @@ const ProtectedLayout = () => {
     }, [session, isSessionLoading]);
 
     if (isSessionLoading) {
-        return null;
+        return (
+            <WihView center="full">
+                <WihLoading/>
+            </WihView>
+        );
     }
 
     if(isInvalidSession(session)){
-        return null;
+        return <Redirect href="/auth/login" />
     }
 
     return (
