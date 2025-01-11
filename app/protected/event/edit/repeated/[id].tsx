@@ -6,7 +6,6 @@ import {WihText} from "@/components/WihText";
 import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import WihView from "@/components/WihView";
-import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
@@ -15,6 +14,8 @@ import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
 import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
+import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();

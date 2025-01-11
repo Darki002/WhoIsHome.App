@@ -2,7 +2,7 @@ import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/wihFlow/
 import {WihText, WihTitle} from "@/components/WihText";
 import React, {useCallback} from "react";
 import WihView from "@/components/WihView";
-import {WihDateInput} from "@/components/input/WihDateTimeInput";
+import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import TitleStep from "@/components/pages/CreateFlow/TitleStep";
 import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
@@ -12,7 +12,6 @@ import {RepeatedEvent, RepeatedEventDto} from "@/constants/WihTypes/Event/Repeat
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {Endpoints} from "@/constants/endpoints";
-import {useApiConfig} from "@/components/config/context";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",

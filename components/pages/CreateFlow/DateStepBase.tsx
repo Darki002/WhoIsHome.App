@@ -1,7 +1,7 @@
 import {WihFlowComponentProps} from "@/components/wihFlow/wihFlow";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
-import {WihTimeInput} from "@/components/input/WihDateTimeInput";
+import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 import React, {PropsWithChildren} from "react";
 import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 
