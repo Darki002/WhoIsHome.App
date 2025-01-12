@@ -68,8 +68,8 @@ const Labels = {
         missingBaseUri: "Errors.MissingBaseUri",
         missingApiKey: "Errors.MissingApiKey"
     },
-    other: {
-        unknownTime: "Other.UnknownTime"
+    dailyOverviewCard: {
+        unknownTime: "DailyOverviewCard.UnknownTime"
     }
 } as const;
 

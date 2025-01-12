@@ -68,7 +68,7 @@
     "MissingBaseUri": "Base Url ist erforderlich!",
     "MissingApiKey": "Api Key ist erforderlich!"
   },
-  "Other": {
+  "DailyOverviewCard": {
     "UnknownTime": "Unbekannt"
   }
 }

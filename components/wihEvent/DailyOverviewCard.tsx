@@ -8,13 +8,13 @@ import {MaterialIcons} from "@expo/vector-icons";
 import React from "react";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
+import {timeDisplayString} from "@/helper/datetimehelper";
 
 export interface DailyOverviewProps {
     overview: DailyOverview;
 }
 
 export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
-    const {t} = useTranslation();
     const theme = useWihTheme();
     const router = useRouter();
 
@@ -22,18 +22,18 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
         router.push(`/protected/user/${overview.User.id}`)
     }
 
-    const renderIcon = (isAtHome : boolean) => {
+    const renderIcon = (isAtHome: boolean) => {
         return isAtHome
-            ? <MaterialIcons name="check-circle" size={24} color="#ff0000" />
-            : <MaterialIcons name="cancel" size={24} color="#00ff00" />;
+            ? <MaterialIcons name="check-circle" size={24} color="#00ff00"/>
+            : <MaterialIcons name="cancel" size={24} color="#ff0000"/>;
     };
 
     return (
         <Pressable
-            style={({ pressed }) => [
+            style={({pressed}) => [
                 styles.card,
-                { backgroundColor: pressed ? theme.primary : theme.background },
-                { borderColor: theme.primary },
+                {backgroundColor: pressed ? theme.primary : theme.background},
+                {borderColor: theme.primary},
             ]}
             onPress={() => onOverviewPress()}
         >
@@ -41,16 +41,28 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
                 <WihView style={styles.iconContainer}>{renderIcon(overview.IsAtHome)}</WihView>
                 <WihView style={styles.textContainer}>
                     <WihText style={styles.title}>{overview.User.username}</WihText>
-                    {
-                        overview.IsAtHome ? (
-                            <WihText>
-                                {overview.DinnerTime?.toLocaleDateString() ?? t(Labels.other.unknownTime)}
-                            </WihText>
-                        ) : null
-                    }
+                    <DinnerTimeCard dinnerTime={overview.DinnerTime} isAtHome={overview.IsAtHome}/>
                 </WihView>
             </WihView>
         </Pressable>
+    );
+}
+
+const DinnerTimeCard = ({dinnerTime, isAtHome}: { dinnerTime: Date | null, isAtHome: boolean }) => {
+    const theme = useWihTheme();
+    const {t} = useTranslation();
+
+    if (!isAtHome) return null;
+
+    const displayText = !dinnerTime
+        ? t(Labels.dailyOverviewCard.unknownTime)
+        : timeDisplayString(dinnerTime);
+
+    return (
+        <WihView style={styles.dinnerTimeContainer} gap={5}>
+            <MaterialIcons name="schedule" size={18} color={theme.primary}/>
+            <WihText>{displayText}</WihText>
+        </WihView>
     );
 }
 
@@ -60,14 +72,14 @@ const styles = StyleSheet.create({
         padding: 15,
         borderWidth: 1,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
         marginVertical: 10,
     },
     content: {
-        display:"flex",
+        display: "flex",
         flexDirection: "row",
         alignItems: "center",
     },
@@ -76,9 +88,15 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         display: "flex",
-        alignContent: "center"
+        alignContent: "center",
+        gap: 3
     },
     title: {
         fontSize: 20
+    },
+    dinnerTimeContainer: {
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "row"
     }
 });

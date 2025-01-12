@@ -16,8 +16,8 @@ import Labels from "@/constants/locales/Labels";
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
     Date: new Date(),
-    StartTime: new Date(),
-    EndTime: new Date(),
+    StartTime: undefined,
+    EndTime: undefined,
     PresenceType: "Unknown",
     DinnerTime: null,
 };
@@ -34,7 +34,7 @@ export default function OneTimeEventFlow() {
             PresenceType: state.PresenceType!,
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }
-        callWihApi(body); // TODO: creates event 2 times...
+        callWihApi(body);
     }, [callWihApi]);
 
     return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel}

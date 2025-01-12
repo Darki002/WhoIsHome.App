@@ -30,16 +30,6 @@ const Profile = () => {
     });
 
     const dim = Dimensions.get("screen");
-    const viewStyle: ViewStyle = {
-        paddingLeft: dim.width / 12,
-        paddingTop: dim.height / 16
-    }
-    const avatarStyle = {
-        marginRight: dim.width / 20
-    }
-    const textStyle = {
-        fontSize: dim.fontScale * 24
-    }
 
     if (!response || !user) {
         return (
