@@ -7,6 +7,7 @@ import {Endpoints} from "@/constants/endpoints";
 import WihLoading from "@/components/WihLoading";
 import {DailyOverviewCard} from "@/components/wihEvent/DailyOverviewCard";
 import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
+import {StyleSheet} from "react-native";
 
 const TIME = 5 * 60 * 1000;
 
@@ -37,9 +38,20 @@ export default function Index() {
     const overviews = response.response.map(r => new DailyOverview(r));
 
     return (
-        <WihView center="horizontal">
-            <WihTitle style={{fontSize: 25}}>{t(Labels.titles.welcome)}!</WihTitle>
+        <WihView  style={styles.container}>
+            <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
             {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
         </WihView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20
+    },
+    title: {
+        fontSize: 25,
+        marginBottom: 20
+    }
+})

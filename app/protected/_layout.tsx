@@ -1,4 +1,4 @@
-import {Redirect, Stack, useRouter} from 'expo-router';
+import {Redirect, Stack, useNavigation, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/appContexts/AuthContext';
 import React, {useEffect} from "react";
@@ -25,7 +25,9 @@ const ProtectedLayout = () => {
     }
 
     if(isInvalidSession(session)){
-        return <Redirect href="/auth/login" />
+        router.dismissAll();
+        router.replace("/auth/login");
+        return null;
     }
 
     return (

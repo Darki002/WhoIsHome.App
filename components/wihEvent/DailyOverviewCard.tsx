@@ -24,8 +24,8 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
 
     const renderIcon = (isAtHome: boolean) => {
         return isAtHome
-            ? <MaterialIcons name="check-circle" size={24} color="#00ff00"/>
-            : <MaterialIcons name="cancel" size={24} color="#ff0000"/>;
+            ? <MaterialIcons name="check-circle" size={24} color="#2b802b"/>
+            : <MaterialIcons name="cancel" size={24} color="#913737"/>;
     };
 
     return (
