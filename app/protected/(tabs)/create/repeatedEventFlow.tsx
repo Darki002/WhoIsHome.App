@@ -17,8 +17,8 @@ const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
     FirstOccurrence: undefined,
     LastOccurrence: undefined,
-    StartTime: new Date(),
-    EndTime: new Date(),
+    StartTime: undefined,
+    EndTime: undefined,
     PresenceType: "Unknown",
     DinnerTime: null,
 };
