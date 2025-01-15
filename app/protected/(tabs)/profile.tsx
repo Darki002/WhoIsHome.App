@@ -3,7 +3,7 @@ import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";

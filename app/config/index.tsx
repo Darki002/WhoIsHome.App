@@ -47,8 +47,8 @@ export default function Index() {
                 value={baseUri}
                 onChangeText={setBaseUri}
                 style={styles.baseUri}
-                placeholder={t(Labels.placeholders.baseUri)}
-                autoFocus/>
+                placeholder={t(Labels.placeholders.baseUri)}/>
+
             <WihTextInput
                 value={apikey}
                 onChangeText={setApiKey}
