@@ -1,5 +1,7 @@
 # Wih Components
 
+*NOTE: used from AI conversations*
+
 This document gives you the basic information of my Components. 
 The code provided should give you enough to be able to understand on how to use this component.
 
