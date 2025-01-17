@@ -35,13 +35,15 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
 
     const isLoading = isLoadingBaseUri || isLoadingApikey;
 
-    useEnvConfigs(isLoading, setBaseUri, setApikey);
-
     useEffect(() => {
         if (!isLoading && (!baseUri || !apikey)) {
             router.replace("/config");
         }
     }, [isLoading, baseUri, apikey, router]);
+
+    const {isUsingEnvConfig, envConfig} = useEnvConfigs();
+
+    const config = isUsingEnvConfig ? envConfig : {baseUri, apikey};
 
     return (
         <ApiContext.Provider
@@ -55,7 +57,7 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
                     const result = await checkConfig(config);
                     return result ? null : "Config did not work";
                 },
-                config: {baseUri, apikey},
+                config: config,
                 isApiConfigLoading: isLoading
             }}>
             {children}
@@ -81,27 +83,26 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
     }
 }
 
-function useEnvConfigs(isLoading: boolean, setBaseUri: (value: (string | null)) => void, setApikey: (value: (string | null)) => void){
-    const [isApplied, setIsApplied] = useState<boolean>(false);
-
-    useEffect(() => {
-        if(isApplied || isLoading) return;
-
-        if (process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "true") {
-            console.info("Applying ENV configurations");
-            const envBaseUri = process.env.EXPO_PUBLIC_API_BASE_URI ?? null;
-            const envApiKey = process.env.EXPO_PUBLIC_API_KEY ?? null;
-
-            if (envBaseUri) setBaseUri(envBaseUri);
-            if (envApiKey) setApikey(envApiKey);
+function useEnvConfigs() : {isUsingEnvConfig: boolean, envConfig: ApiConfig | null}{
+    if(!__DEV__){
+        return {
+            isUsingEnvConfig: false,
+            envConfig: null
         }
+    }
 
-        if (process.env.EXPO_PUBLIC_CLEAR_CONFIG === "true") {
-            console.info("Clear API config from Storage");
-            setBaseUri(null);
-            setApikey(null);
+    if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "False") {
+        return {
+            isUsingEnvConfig: false,
+            envConfig: null
         }
+    }
 
-        setIsApplied(true);
-    }, [setBaseUri, setApikey, isLoading]);
+    return {
+        isUsingEnvConfig: true,
+        envConfig: {
+            baseUri: process.env.EXPO_PUBLIC_API_BASE_URI ?? null,
+            apikey: process.env.EXPO_PUBLIC_API_KEY ?? null
+        }
+    }
 }
