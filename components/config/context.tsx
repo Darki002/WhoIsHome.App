@@ -103,7 +103,7 @@ function useConfigs() : UseConfigHook {
         }
     }
 
-    if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "True") {
+    if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG?.toLocaleLowerCase() === "true") {
         return {
             isLoading: false,
             config: {
