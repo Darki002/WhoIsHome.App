@@ -1,13 +1,15 @@
+# Wih Components
+
 This document gives you the basic information of my Components. 
 The code provided should give you enough to be able to understand on how to use this component.
 
-# Theme 
+## Theme 
 
 Use the WihThemeProvider!
 The theme is defined in the Color.ts file with an object with all the colors that are currently in the theme.
 Might have to add more...
 
-# WihView
+## WihView
 
 Used like the View form React Native, but it already adds the background color based on the theme 
 and provides a few basic features.
@@ -47,7 +49,7 @@ const flexStyle: FlexStyle = {
 }
 ```
 
-# WihText
+## WihText
 
 Displays Text and applies the theme.
 
@@ -61,7 +63,7 @@ export const WihText = ({children, style, ...rest}: TextProps) => {
 }
 ```
 
-# WihTitle
+## WihTitle
 
 Displays Text as a title and applies the theme
 
@@ -84,7 +86,7 @@ export const WihTitle = ({children, style, ...rest}: TextProps) => {
 }
 ```
 
-# WihInput
+## WihInput
 
 This is more of a collection of different Inputs to use. Ask me for more details about those inputs if you need them.
 But more or less they are very predictable on how they are build.
@@ -109,7 +111,7 @@ This is also more a collection of components to access different Icon provided l
 
 To use those ask which one you need or just don't use a WihIcon Component and do it yourself.
 
-# WihButton
+## WihButton
 
 Pretty much just a normal Pressable form react but with style
 
@@ -144,7 +146,7 @@ export const WihButton: FC<WihButtonProps> = ({children, onPress, disabled = fal
 };
 ```
 
-# WihCollapsable
+## WihCollapsable
 
 Use to make a view collapsable. Having a title to open and close it and the child content that is displaied when open.
 
@@ -172,7 +174,7 @@ export function WihCollapsible({children, title, isDefaultOpen = true}: PropsWit
 }
 ```
 
-# WihAvatar
+## WihAvatar
 
 Currently only able to display a simple Avatar with the first letter of the username.
 
