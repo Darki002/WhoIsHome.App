@@ -76,7 +76,7 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
 
         return response.ok;
     } catch (e: any) {
-        console.log(`Error while checking config: ${e.message}`)
+        console.log(`Error while checking config: ${e.message}`);
         return false;
     }
 }
