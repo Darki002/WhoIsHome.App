@@ -3,7 +3,7 @@ import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
@@ -13,6 +13,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
+import {WihCollapsible} from "@/components/WihCollapsible";
 
 const TIME = 5 * 60 * 1000;
 
@@ -52,44 +53,52 @@ const Profile = () => {
     const userOverview = new UserOverview(response.response);
     const userName = user.response?.userName ?? "";
     return (
-        <WihView style={styles.container}>
-            <WihView style={styles.profileHeader}>
-                <WihView style={styles.userInfo}>
-                    <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
-                    <WihText style={styles.userName}>{userName}</WihText>
+        <ScrollView>
+            <WihView style={styles.container}>
+                <WihView style={styles.profileHeader}>
+                    <WihView style={styles.userInfo}>
+                        <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
+                        <WihText style={styles.userName}>{userName}</WihText>
+                    </WihView>
+                    <WihButton onPress={signOut}>
+                        {t(Labels.actions.logout)}
+                    </WihButton>
                 </WihView>
-                <WihButton onPress={signOut}>
-                    {t(Labels.actions.logout)}
-                </WihButton>
+
+                {/* Event Lists */}
+                <WihView style={styles.eventLists}>
+                    {/* Today */}
+                    {userOverview.Today.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.today)}
+                            isDefaultOpen={userOverview.Today.length < 5}
+                        >
+                            <WihEventList events={userOverview.Today}/>
+                        </WihCollapsible>
+                    )}
+
+                    {/* This Week */}
+                    {userOverview.ThisWeek.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.thisWeek)}
+                            isDefaultOpen={userOverview.ThisWeek.length < 5}
+                        >
+                            <WihEventList events={userOverview.ThisWeek}/>
+                        </WihCollapsible>
+                    )}
+
+                    {/* Future Events */}
+                    {userOverview.FutureEvents.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.other)}
+                            isDefaultOpen={userOverview.FutureEvents.length < 5}
+                        >
+                            <WihEventList events={userOverview.FutureEvents}/>
+                        </WihCollapsible>
+                    )}
+                </WihView>
             </WihView>
-
-            {/* Event Lists */}
-            <WihView style={styles.eventLists}>
-                {/* Today */}
-                {userOverview.Today.length > 0 && (
-                    <WihView style={styles.eventSection}>
-                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.today)}</WihTitle>
-                        <WihEventList events={userOverview.Today}/>
-                    </WihView>
-                )}
-
-                {/* This Week */}
-                {userOverview.ThisWeek.length > 0 && (
-                    <WihView style={styles.eventSection}>
-                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.thisWeek)}</WihTitle>
-                        <WihEventList events={userOverview.ThisWeek}/>
-                    </WihView>
-                )}
-
-                {/* Future Events */}
-                {userOverview.FutureEvents.length > 0 && (
-                    <WihView style={styles.eventSection}>
-                        <WihTitle style={styles.sectionTitle}>{t(Labels.sections.other)}</WihTitle>
-                        <WihEventList events={userOverview.FutureEvents}/>
-                    </WihView>
-                )}
-            </WihView>
-        </WihView>
+        </ScrollView>
     );
 }
 
