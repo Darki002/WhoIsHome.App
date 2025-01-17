@@ -84,9 +84,23 @@ export const WihTitle = ({children, style, ...rest}: TextProps) => {
 }
 ```
 
+# WihInput
+
+This is more of a collection of different Inputs to use. Ask me for more details about those inputs if you need them.
+But more or less they are very predictable on how they are build.
+
+Input Types:
+- Text
+- Password
+- Email
+- Username
+- Date
+- Time
+- SingleChoice
+
 # WihIcon
 
-This is NOT a single component, it's more a collection of components to access different Icon provided like:
+This is also more a collection of components to access different Icon provided like:
 
 - FontAwesome
 - Ionicons
@@ -94,6 +108,69 @@ This is NOT a single component, it's more a collection of components to access d
 - MaterialCommunityIcons
 
 To use those ask which one you need or just don't use a WihIcon Component and do it yourself.
+
+# WihButton
+
+Pretty much just a normal Pressable form react but with style
+
+```typescript jsx
+type WihButtonProps = {
+    children: ReactNode;
+    onPress: () => void;
+    disabled?: boolean;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
+};
+
+export const WihButton: FC<WihButtonProps> = ({children, onPress, disabled = false, style, textStyle}) => {
+    const theme = useWihTheme();
+
+    return (
+        <Pressable
+            onPress={onPress}
+            disabled={disabled}
+            style={({ pressed }) => [
+                styles.button,
+                { backgroundColor: disabled ? theme.disabled : theme.primary },
+                pressed && !disabled && { backgroundColor: theme.primary },
+                style
+            ]}
+        >
+            <Text style={[styles.text, { color: theme.buttonText }, textStyle]}>
+                {children}
+            </Text>
+        </Pressable>
+    );
+};
+```
+
+# WihCollapsable
+
+Use to make a view collapsable. Having a title to open and close it and the child content that is displaied when open.
+
+```typescript jsx
+export function WihCollapsible({children, title, isDefaultOpen = true}: PropsWithChildren & { title: string, isDefaultOpen?: boolean }) {
+    const [isOpen, setIsOpen] = useState(isDefaultOpen);
+    const theme = useWihTheme();
+
+    return (
+        <WihView>
+            <TouchableOpacity
+                style={[styles.heading, { backgroundColor: theme.background }]}
+                onPress={() => setIsOpen((value) => !value)}
+                activeOpacity={0.8}>
+                <Ionicons
+                    name={isOpen ? 'chevron-down' : 'chevron-forward-outline'}
+                    size={18}
+                    color={theme.icon}
+                />
+                <WihText style={styles.title}>{title}</WihText>
+            </TouchableOpacity>
+            {isOpen && <WihView style={styles.content}>{children}</WihView>}
+        </WihView>
+    );
+}
+```
 
 # WihAvatar
 
@@ -133,51 +210,3 @@ const styles = StyleSheet.create({
 });
 ```
 
-# WihButton
-
-Pretty much just a normal Pressable form react but with style
-
-```typescript jsx
-type WihButtonProps = {
-    children: ReactNode;
-    onPress: () => void;
-    disabled?: boolean;
-    style?: ViewStyle;
-    textStyle?: TextStyle;
-};
-
-export const WihButton: FC<WihButtonProps> = ({children, onPress, disabled = false, style, textStyle}) => {
-    const theme = useWihTheme();
-
-    return (
-        <Pressable
-            onPress={onPress}
-            disabled={disabled}
-            style={({ pressed }) => [
-                styles.button,
-                { backgroundColor: disabled ? theme.disabled : theme.primary },
-                pressed && !disabled && { backgroundColor: theme.primary },
-                style
-            ]}
-        >
-            <Text style={[styles.text, { color: theme.buttonText }, textStyle]}>
-                {children}
-            </Text>
-        </Pressable>
-    );
-};
-```
-
-# WihInput
-
-This is also more of a collection of different Inputs to use. Ask me for more details about those inputs if you need them.
-But more or less they are very predictable on how they are build.
-
-Input Types:
-- Text
-- Password
-- Email
-- Username
-- Date
-- Time
-- SingleChoice
