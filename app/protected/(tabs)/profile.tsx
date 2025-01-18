@@ -132,13 +132,7 @@ const styles = StyleSheet.create({
     },
     eventLists: {
         flex: 1
-    },
-    eventSection: {
-        marginBottom: 20
-    },
-    sectionTitle: {
-        marginBottom: 10
-    },
+    }
 });
 
 export default Profile;
