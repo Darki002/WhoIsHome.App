@@ -16,6 +16,7 @@ import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
 
 const TIME = 5 * 60 * 1000;
+const EVENT_COUNT_THRESHOLD = 4;
 
 const Profile = () => {
     const {t} = useTranslation();
@@ -53,52 +54,54 @@ const Profile = () => {
     const userOverview = new UserOverview(response.response);
     const userName = user.response?.userName ?? "";
     return (
-        <ScrollView>
-            <WihView style={styles.container}>
-                <WihView style={styles.profileHeader}>
-                    <WihView style={styles.userInfo}>
-                        <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
-                        <WihText style={styles.userName}>{userName}</WihText>
+        <WihView style={{flex: 1}}>
+            <ScrollView>
+                <WihView style={styles.container}>
+                    <WihView style={styles.profileHeader}>
+                        <WihView style={styles.userInfo}>
+                            <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
+                            <WihText style={styles.userName}>{userName}</WihText>
+                        </WihView>
+                        <WihButton onPress={signOut}>
+                            {t(Labels.actions.logout)}
+                        </WihButton>
                     </WihView>
-                    <WihButton onPress={signOut}>
-                        {t(Labels.actions.logout)}
-                    </WihButton>
+
+                    {/* Event Lists */}
+                    <WihView style={styles.eventLists}>
+                        {/* Today */}
+                        {userOverview.Today.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.today)}
+                                isDefaultOpen={userOverview.Today.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.Today}/>
+                            </WihCollapsible>
+                        )}
+
+                        {/* This Week */}
+                        {userOverview.ThisWeek.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.thisWeek)}
+                                isDefaultOpen={userOverview.ThisWeek.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.ThisWeek}/>
+                            </WihCollapsible>
+                        )}
+
+                        {/* Future Events */}
+                        {userOverview.FutureEvents.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.other)}
+                                isDefaultOpen={userOverview.FutureEvents.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.FutureEvents}/>
+                            </WihCollapsible>
+                        )}
+                    </WihView>
                 </WihView>
-
-                {/* Event Lists */}
-                <WihView style={styles.eventLists}>
-                    {/* Today */}
-                    {userOverview.Today.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.today)}
-                            isDefaultOpen={userOverview.Today.length < 5}
-                        >
-                            <WihEventList events={userOverview.Today}/>
-                        </WihCollapsible>
-                    )}
-
-                    {/* This Week */}
-                    {userOverview.ThisWeek.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.thisWeek)}
-                            isDefaultOpen={userOverview.ThisWeek.length < 5}
-                        >
-                            <WihEventList events={userOverview.ThisWeek}/>
-                        </WihCollapsible>
-                    )}
-
-                    {/* Future Events */}
-                    {userOverview.FutureEvents.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.other)}
-                            isDefaultOpen={userOverview.FutureEvents.length < 5}
-                        >
-                            <WihEventList events={userOverview.FutureEvents}/>
-                        </WihCollapsible>
-                    )}
-                </WihView>
-            </WihView>
-        </ScrollView>
+            </ScrollView>
+        </WihView>
     );
 }
 
