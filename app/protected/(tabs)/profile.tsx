@@ -14,12 +14,14 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const TIME = 5 * 60 * 1000;
 const EVENT_COUNT_THRESHOLD = 4;
 
 const Profile = () => {
     const {t} = useTranslation();
+    const theme = useWihTheme();
     const {signOut} = useSession();
     const user = useWihApi<User | null>({
         endpoint: Endpoints.user.me,
@@ -59,7 +61,7 @@ const Profile = () => {
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>
-                            <WihAvatar name={userName} size={dim.scale * 12} style={styles.avatar}/>
+                            <WihAvatar name={userName} size={dim.scale * 14} style={styles.avatar}/>
                             <WihText style={styles.userName}>{userName}</WihText>
                         </WihView>
                         <WihButton onPress={signOut}>
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     profileHeader: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 20,
+        marginBottom: 35,
         paddingHorizontal: 10
     },
     avatar: {
