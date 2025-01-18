@@ -92,6 +92,12 @@ function useConfigs() : UseConfigHook {
     const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
     const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
 
+    useEffect(() => {
+        if(__DEV__ && isEnvConfigActive()){
+            console.info("Use ENV Variable configs!");
+        }
+    }, []);
+
     if(!__DEV__){
         return {
             isLoading: isLoadingBaseUri || isLoadingApikey,
@@ -103,8 +109,7 @@ function useConfigs() : UseConfigHook {
         }
     }
 
-    if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG?.toLowerCase() === "true") {
-        console.info("Use ENV Variable configs!")
+    if(isEnvConfigActive()) {
         return {
             isLoading: false,
             config: {
@@ -122,4 +127,8 @@ function useConfigs() : UseConfigHook {
             setApikey
         }
     }
+}
+
+function isEnvConfigActive(){
+    return process.env.EXPO_PUBLIC_USE_ENV_CONFIG?.toLowerCase() === "true";
 }
