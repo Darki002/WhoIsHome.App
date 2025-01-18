@@ -1,4 +1,4 @@
-import {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
+import {createContext, type PropsWithChildren, useContext, useEffect} from "react";
 import {useStorageState} from "@/hooks/useStorageState";
 import {useRouter} from "expo-router";
 
@@ -30,32 +30,30 @@ export function useApiConfig() {
 
 export function ApiConfigProvider({children}: PropsWithChildren) {
     const router = useRouter();
-    const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
-    const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
-
-    const isLoading = isLoadingBaseUri || isLoadingApikey;
-
-    useEnvConfigs(isLoading, setBaseUri, setApikey);
+    const {isLoading, config, setConfig} = useConfigs();
 
     useEffect(() => {
-        if (!isLoading && (!baseUri || !apikey)) {
+        if (!isLoading && (!config?.baseUri || !config?.apikey)) {
             router.replace("/config");
+            return;
         }
-    }, [isLoading, baseUri, apikey, router]);
+    }, [isLoading, config, router]);
 
     return (
         <ApiContext.Provider
             value={{
                 setConfig: async (config: ApiConfig) => {
                     if (!config.baseUri || !config.apikey) return "Invalid Configuration";
+                    const isValid = await checkConfig(config);
+                    if(!isValid){
+                        return "Config did not work";
+                    }
 
-                    setBaseUri(config.baseUri);
-                    setApikey(config.apikey);
-
-                    const result = await checkConfig(config);
-                    return result ? null : "Config did not work";
+                    setConfig?.setBaseUri(config.baseUri);
+                    setConfig?.setApikey(config.apikey);
+                    return null;
                 },
-                config: {baseUri, apikey},
+                config: config,
                 isApiConfigLoading: isLoading
             }}>
             {children}
@@ -81,27 +79,47 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
     }
 }
 
-function useEnvConfigs(isLoading: boolean, setBaseUri: (value: (string | null)) => void, setApikey: (value: (string | null)) => void){
-    const [isApplied, setIsApplied] = useState<boolean>(false);
+interface UseConfigHook {
+    isLoading: boolean;
+    config: ApiConfig | null;
+    setConfig?: {
+        setApikey: (value: (string | null)) => void;
+        setBaseUri: (value: (string | null)) => void;
+    }
+}
 
-    useEffect(() => {
-        if(isApplied || isLoading) return;
+function useConfigs() : UseConfigHook {
+    const [[isLoadingBaseUri, baseUri], setBaseUri] = useStorageState('baseUri');
+    const [[isLoadingApikey, apikey], setApikey] = useStorageState('apikey');
 
-        if (process.env.EXPO_PUBLIC_USE_ENV_CONFIG === "true") {
-            console.info("Applying ENV configurations");
-            const envBaseUri = process.env.EXPO_PUBLIC_API_BASE_URI ?? null;
-            const envApiKey = process.env.EXPO_PUBLIC_API_KEY ?? null;
-
-            if (envBaseUri) setBaseUri(envBaseUri);
-            if (envApiKey) setApikey(envApiKey);
+    if(!__DEV__){
+        return {
+            isLoading: isLoadingBaseUri || isLoadingApikey,
+            config: {baseUri, apikey},
+            setConfig: {
+                setBaseUri,
+                setApikey
+            }
         }
+    }
 
-        if (process.env.EXPO_PUBLIC_CLEAR_CONFIG === "true") {
-            console.info("Clear API config from Storage");
-            setBaseUri(null);
-            setApikey(null);
+    if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG?.toLowerCase() === "true") {
+        console.info("Use ENV Variable configs!")
+        return {
+            isLoading: false,
+            config: {
+                baseUri: process.env.EXPO_PUBLIC_API_BASE_URI ?? null,
+                apikey: process.env.EXPO_PUBLIC_API_KEY ?? null
+            }
         }
+    }
 
-        setIsApplied(true);
-    }, [setBaseUri, setApikey, isLoading]);
+    return {
+        isLoading: isLoadingBaseUri || isLoadingApikey,
+        config: {baseUri, apikey},
+        setConfig: {
+            setBaseUri,
+            setApikey
+        }
+    }
 }
