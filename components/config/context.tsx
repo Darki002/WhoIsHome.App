@@ -104,6 +104,7 @@ function useConfigs() : UseConfigHook {
     }
 
     if(process.env.EXPO_PUBLIC_USE_ENV_CONFIG?.toLowerCase() === "true") {
+        console.info("Use ENV Variable configs!")
         return {
             isLoading: false,
             config: {
