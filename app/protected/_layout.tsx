@@ -5,9 +5,11 @@ import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
 import WihView from "@/components/WihView";
 import WihLoading from "@/components/WihLoading";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const ProtectedLayout = () => {
     const router = useRouter();
+    const theme = useWihTheme();
     const {session, isSessionLoading} = useSession();
 
     useEffect(() => {
@@ -30,10 +32,16 @@ const ProtectedLayout = () => {
         return null;
     }
 
+    const screenOptions = {
+        contentStyle: {
+            backgroundColor: theme.background
+        }
+    };
+
     return (
-        <Stack>
+        <Stack screenOptions={screenOptions}>
             <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-            <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown"}}/>
+            <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown", headerStyle: {backgroundColor: theme.background}, headerTintColor: theme.text}} />
             <Stack.Screen name="event" options={{headerShown: false}}/>
         </Stack>
     );
