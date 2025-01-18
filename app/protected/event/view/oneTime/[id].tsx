@@ -18,7 +18,6 @@ export default function OneTimeEventView() {
         router.push(`/protected/event/edit/oneTime/${id}`);
     }, [id]);
 
-
     if (!response?.response) {
         return null;
     }
