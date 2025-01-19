@@ -91,13 +91,10 @@ export default function RepeatedEventView() {
 
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
-            <WihView flex="row">
-                <WihText>Title:</WihText>
-                <WihTextInput
-                    value={event.Title}
-                    placeholder={t(Labels.placeholders.title)}
-                    onChangeText={t => updateEvent({Title: t})}/>
-            </WihView>
+            <WihTextInput
+                value={event.Title}
+                placeholder={t(Labels.placeholders.title)}
+                onChangeText={t => updateEvent({Title: t})}/>
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>

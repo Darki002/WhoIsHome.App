@@ -90,13 +90,15 @@ export default function OneTimeEventView() {
 
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
-            <WihView flex="row">
-                <WihText>Title:</WihText>
-                <WihTextInput
-                    value={event.Title}
-                    placeholder={t(Labels.placeholders.title)}
-                    onChangeText={t => updateEvent({Title: t})}/>
-            </WihView>
+            <WihTextInput
+                value={event.Title}
+                placeholder={t(Labels.placeholders.title)}
+                onChangeText={t => updateEvent({Title: t})}/>
+
+            <WihIconRow name="date-range" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
+                <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
+            </WihIconRow>
 
             <WihIconRow name="date-range" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
@@ -142,5 +144,8 @@ const styles = StyleSheet.create({
     },
     labels: {
         fontWeight: "bold"
+    },
+    titleInput: {
+
     }
 });
