@@ -6,7 +6,7 @@ import {WihText} from "@/components/WihText";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {Endpoints} from "@/constants/endpoints";
 import WihView from "@/components/WihView";
-import {dateStringToDate, formatDate, formatTime, timeDisplayString} from "@/helper/datetimehelper";
+import {timeDisplayString} from "@/helper/datetimehelper";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";

@@ -2,11 +2,18 @@ import {WihText} from "@/components/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
-import {useCallback} from "react";
+import React, {useCallback} from "react";
 import {RepeatedEvent, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import {Endpoints} from "@/constants/endpoints";
+import WihIconRow from "@/components/WihIconRow";
+import Labels from "@/constants/locales/Labels";
+import WihView from "@/components/WihView";
+import {timeDisplayString} from "@/helper/datetimehelper";
+import {StyleSheet} from "react-native";
+import {useTranslation} from "react-i18next";
 
 export default function RepeatedEventView() {
+    const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
     const response = useWihApiFocus<RepeatedEventModel>({
@@ -24,19 +31,49 @@ export default function RepeatedEventView() {
 
     const event = new RepeatedEvent(response?.response);
 
-    // TODO: translate when making it pretty
     return (
         <EventViewLayout response={response} onEdit={onEdit}>
-            <WihText>Title: {event.Title ?? "Unknown"}</WihText>
+            <WihIconRow name="date-range" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
+                    <WihText>{event.FirstOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.lastOccurrence)}: </WihText>
+                    <WihText>{event.LastOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+                </WihView>
+            </WihIconRow>
 
-            <WihText>First Occurrence: {event.FirstOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
-            <WihText>Last Occurrence: {event.LastOccurrence?.toLocaleDateString() ?? "N/A"}</WihText>
+            <WihIconRow name="timeline" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
+                    <WihText>{event.StartTime ? timeDisplayString(event.StartTime) : "N/A"}</WihText>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
+                    <WihText>{event.EndTime ? timeDisplayString(event.EndTime) : "N/A"}</WihText>
+                </WihView>
+            </WihIconRow>
 
-            <WihText>Start Time: {event.StartTime?.toLocaleTimeString() ?? "N/A"}</WihText>
-            <WihText>End Time: {event.EndTime?.toLocaleTimeString() ?? "N/A"}</WihText>
+            <WihIconRow name="home" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
+                <WihText>{event.PresenceType ?? "Missing"}</WihText>
+            </WihIconRow>
 
-            <WihText>Presence Type: {event.PresenceType ?? "Missing"}</WihText>
-            <WihText>Dinner Time: {event.DinnerTime?.toLocaleTimeString() ?? "-"}</WihText>
+            <WihIconRow name="schedule" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
+                <WihText>{event.DinnerTime ? timeDisplayString(event.DinnerTime) : "N/A"}</WihText>
+            </WihIconRow>
         </EventViewLayout>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    labels: {
+        fontWeight: "bold"
+    }
+});
