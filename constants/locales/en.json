@@ -19,6 +19,13 @@
     "ThisWeek": "This Week",
     "Other": "Other"
   },
+  "Labels": {
+    "Date": "Date",
+    "StartTime": "Start Time",
+    "EndTime": "End Time",
+    "PresenceType": "Presence",
+    "DinnerTime": "Arrival Time"
+  },
   "Tabs": {
     "Home": "Home",
     "Create": "Create",

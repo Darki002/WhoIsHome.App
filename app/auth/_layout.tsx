@@ -1,4 +1,4 @@
-import {IonIcon, MaterialIcon} from '@/components/WihIcon';
+import {IonIcon, WihMaterialIcon} from '@/components/WihIcon';
 import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
 import {useSession} from "@/components/appContexts/AuthContext";
@@ -52,8 +52,8 @@ const AuthLayout = () => {
                 options={{
                     title: t(Labels.tabs.register),
                     tabBarIcon: ({color, focused}) => (
-                        <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
-                                      color={color} {...TabIconProps} />
+                        <WihMaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
+                                         color={color} {...TabIconProps} />
                     )
                 }}
             />

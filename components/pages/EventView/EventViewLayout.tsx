@@ -8,6 +8,7 @@ import {usePermission} from "@/hooks/usePermission";
 import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {StyleSheet} from "react-native";
 
 interface EventViewLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -44,7 +45,7 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
     }
 
     return (
-        <WihView center="full">
+        <WihView style={styles.container}>
             {children}
 
             {
@@ -57,3 +58,14 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
         </WihView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        alignItems: "center",
+        justifyContent: "center"
+    }
+})

@@ -19,6 +19,13 @@ const Labels = {
         thisWeek: "Sections.ThisWeek",
         other: "Sections.Other"
     },
+    labels: {
+        date: "Labels.Date",
+        startTime: "Labels.StartTime",
+        endTime: "Labels.EndTime",
+        presenceType: "Labels.PresenceType",
+        dinnerTime: "Labels.DinnerTime"
+    },
     tabs: {
         home: "Tabs.Home",
         create: "Tabs.Create",

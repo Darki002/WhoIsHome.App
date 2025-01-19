@@ -19,6 +19,13 @@
     "ThisWeek": "Diese Woche",
     "Other": "Andere"
   },
+  "Labels": {
+    "Date": "Datum",
+    "StartTime": "Startzeit",
+    "EndTime": "Endzeit",
+    "PresenceType": "Anwesenheit",
+    "DinnerTime": "Ankunftszeit"
+  },
   "Tabs": {
     "Home": "Home",
     "Create": "Erstellen",

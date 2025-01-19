@@ -1,4 +1,4 @@
-import {IonIcon, MaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
+import {IonIcon, WihMaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
 import {Tabs} from "expo-router";
 import React from "react";
 import {useTranslation} from "react-i18next";
@@ -37,8 +37,8 @@ const TabsLayout = () => {
                 options={{
                     title: t(Labels.tabs.create),
                     tabBarIcon: ({color, focused}) => (
-                        <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
-                                      color={color} {...TabIconProps} />
+                        <WihMaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
+                                         color={color} {...TabIconProps} />
                     )
                 }}
             />
