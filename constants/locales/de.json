@@ -44,7 +44,8 @@
     "Edit": "Bearbeiten",
     "Next": "Weiter",
     "Back": "Zurück",
-    "Finish": "Beenden"
+    "Finish": "Beenden",
+    "Create": "Erstellen"
   },
   "Placeholders": {
     "BaseUri": "URL",

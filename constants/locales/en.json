@@ -44,7 +44,8 @@
     "Edit": "Edit",
     "Next": "Next",
     "Back": "Back",
-    "Finish": "Finish"
+    "Finish": "Finish",
+    "Create": "Create"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -79,5 +80,10 @@
   },
   "DailyOverviewCard": {
     "UnknownTime": "Unknown"
+  },
+  "Descriptions": {
+    "EventCreator": "Here you can create new events. Choose between an one-time and repeating event:",
+    "OneTimeEvent": "An event for a specific date.",
+    "RepeatedEvent": "An event that is on the first date and repeats every week until the last date."
   }
 }

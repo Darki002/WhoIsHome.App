@@ -44,7 +44,8 @@ const Labels = {
         edit: "Actions.Edit",
         next: "Actions.Next",
         back: "Actions.Back",
-        finish: "Actions.Finish"
+        finish: "Actions.Finish",
+        create: "Actions.Create"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
@@ -79,6 +80,11 @@ const Labels = {
     },
     dailyOverviewCard: {
         unknownTime: "DailyOverviewCard.UnknownTime"
+    },
+    descriptions: {
+        eventCreator: "Descriptions.EventCreator",
+        oneTimeEvent: "Descriptions.OneTimeEvent",
+        repeatedEvent: "Descriptions.RepeatedEvent"
     }
 } as const;
 
