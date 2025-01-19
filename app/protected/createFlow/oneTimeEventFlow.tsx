@@ -37,8 +37,11 @@ export default function OneTimeEventFlow() {
         callWihApi(body);
     }, [callWihApi]);
 
-    return <WihFlow<OneTimeEvent> initValue={defaultOneTimeEvent} onFinish={onFinish} onCancel={onCancel}
-                                  steps={components}/>
+    return <WihFlow<OneTimeEvent>
+        initValue={defaultOneTimeEvent}
+        onFinish={onFinish}
+        onCancel={onCancel}
+        steps={components}/>
 }
 
 const dateStep: WihFlowStep<OneTimeEvent> = {
