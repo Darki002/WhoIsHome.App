@@ -12,7 +12,11 @@ const Labels = {
         register: "Titles.Register",
         appConfig: "Titles.AppConfig",
         eventCreator: "Titles.EventCreator",
-        summary: "Titles.Summary"
+        summary: "Titles.Summary",
+        createFlow: {
+            titleStep: "Titles.CreateFlow.TitleStep"
+
+        }
     },
     sections: {
         today: "Sections.Today",
@@ -84,7 +88,11 @@ const Labels = {
     descriptions: {
         eventCreator: "Descriptions.EventCreator",
         oneTimeEvent: "Descriptions.OneTimeEvent",
-        repeatedEvent: "Descriptions.RepeatedEvent"
+        repeatedEvent: "Descriptions.RepeatedEvent",
+        createFlow: {
+            titleStep: "Descriptions.CreateFlow.TitleStep"
+
+        }
     }
 } as const;
 

@@ -19,16 +19,16 @@ import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/input/WihTextInput";
 
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
+    {value: "Late", displayTextLabel: Labels.presenceType.late},
+    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+];
+
 export default function OneTimeEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    const options : Array<WihOption<PresenceType>> = [
-        {value: "Unknown", display: t(Labels.presenceType.unknown)},
-        {value: "Late", display: t(Labels.presenceType.late)},
-        {value: "NotPresent", display: t(Labels.presenceType.notPresent)}
-    ];
 
     const response = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),

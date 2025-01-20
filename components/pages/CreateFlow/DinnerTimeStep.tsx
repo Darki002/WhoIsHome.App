@@ -6,12 +6,31 @@ import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 import React from "react";
 import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
+import Labels from "@/constants/locales/Labels";
 
-const options: Array<WihOption<PresenceType>> = [
-    {value: "Unknown", display: "Unknown"},
-    {value: "Late", display: "Late"},
-    {value: "NotPresent", display: "Not Present"}
-]
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
+    {value: "Late", displayTextLabel: Labels.presenceType.late},
+    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+];
+
+function validateDinnerTimeStep(state: EventBase): boolean {
+    if (state.PresenceType === null) {
+        return false;
+    }
+    switch (state.PresenceType) {
+        case null:
+            return false;
+        case "Unknown":
+        case "NotPresent":
+            return !state.DinnerTime;
+        case "Late":
+            if (!state.DinnerTime) return false;
+            return state.DinnerTime > state.EndTime!;
+        default:
+            return false;
+    }
+}
 
 const DinnerTimeStep: WihFlowStep<EventBase> = {
     validate: validateDinnerTimeStep,
@@ -49,24 +68,6 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
                     <WihText style={{color: "red"}}>DinnerTime is required</WihText>}
             </WihView>
         )
-    }
-}
-
-function validateDinnerTimeStep(state: EventBase): boolean {
-    if (state.PresenceType === null) {
-        return false;
-    }
-    switch (state.PresenceType) {
-        case null:
-            return false;
-        case "Unknown":
-        case "NotPresent":
-            return !state.DinnerTime;
-        case "Late":
-            if (!state.DinnerTime) return false;
-            return state.DinnerTime > state.EndTime!;
-        default:
-            return false;
     }
 }
 

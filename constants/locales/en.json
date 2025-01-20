@@ -12,7 +12,11 @@
     "Register": "Register",
     "AppConfig": "App Configuration",
     "EventCreator": "Event Creator",
-    "Summary": "Summary"
+    "Summary": "Summary",
+    "CreateFlow": {
+      "TitleStep": "Event Title"
+
+    }
   },
   "Sections": {
     "Today": "Today",
@@ -84,6 +88,9 @@
   "Descriptions": {
     "EventCreator": "Here you can create new events. Choose between an one-time and repeating event:",
     "OneTimeEvent": "An event for a specific date.",
-    "RepeatedEvent": "An event that is on the first date and repeats every week until the last date."
+    "RepeatedEvent": "An event that is on the first date and repeats every week until the last date.",
+    "CreateFlow": {
+      "TitleStep": "Give your new event a Title."
+    }
   }
 }

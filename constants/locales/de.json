@@ -12,7 +12,10 @@
     "Register": "Registrieren",
     "AppConfig": "App Configuration",
     "EventCreator": "Event Erstellung",
-    "Summary": "Zusammenfassung"
+    "Summary": "Zusammenfassung",
+    "CreateFlow": {
+      "TitleStep": "Name des Events"
+    }
   },
   "Sections": {
     "Today": "Heute",
@@ -80,5 +83,13 @@
   },
   "DailyOverviewCard": {
     "UnknownTime": "Unbekannt"
+  },
+  "Descriptions": {
+    "EventCreator": "Hier kannst du ein neues Event erstellen. Wähle zwischen einmaligen oder wiederholdenem Event:",
+    "OneTimeEvent": "Ein Event für ein sspezifisches Datum.",
+    "RepeatedEvent": "Ein Event das sich ab dem ersten Datum wöchentlich wiederhold bis zum Enddatum.",
+    "CreateFlow": {
+      "TitleStep": "Gib deinem Event einen Namen."
+    }
   }
 }

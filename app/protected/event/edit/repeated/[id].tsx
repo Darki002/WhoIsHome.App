@@ -19,16 +19,16 @@ import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
 
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
+    {value: "Late", displayTextLabel: Labels.presenceType.late},
+    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+];
+
 export default function RepeatedEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    const options : Array<WihOption<PresenceType>> = [
-        {value: "Unknown", display: t(Labels.presenceType.unknown)},
-        {value: "Late", display: t(Labels.presenceType.late)},
-        {value: "NotPresent", display: t(Labels.presenceType.notPresent)}
-    ];
 
     const response = useWihApiFocus<RepeatedEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),

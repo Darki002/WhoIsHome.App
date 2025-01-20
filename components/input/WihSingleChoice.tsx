@@ -2,10 +2,11 @@ import {StyleSheet, TouchableOpacity} from "react-native";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
+import {useTranslation} from "react-i18next";
 
 export type WihOption<T> = {
     value?: T;
-    display: string;
+    displayTextLabel: string;
 }
 
 export interface WihSingleChoiceProps<T> {
@@ -23,6 +24,7 @@ export function WihSingleChoice<T>({
                                        allowDeselect = true,
                                    }: WihSingleChoiceProps<T>) {
     const theme = useWihTheme();
+    const {t} = useTranslation();
 
     const handlePress = (optionValue: T | undefined) => {
         if (value === optionValue && allowDeselect) {
@@ -50,7 +52,7 @@ export function WihSingleChoice<T>({
                             color: value === option.value ? theme.textInverse : theme.text,
                         }}
                     >
-                        {option.display}
+                        {t(option.displayTextLabel)}
                     </WihText>
                 </TouchableOpacity>
             ))}
