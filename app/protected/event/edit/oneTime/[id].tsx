@@ -100,11 +100,6 @@ export default function OneTimeEventView() {
                 <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
             </WihIconRow>
 
-            <WihIconRow name="date-range" flexDirection="row">
-                <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
-                <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
-            </WihIconRow>
-
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>

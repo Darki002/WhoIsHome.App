@@ -20,6 +20,7 @@ export interface WihSingleChoiceProps<T> {
 export function WihSingleChoice<T>({
                                        value,
                                        options,
+                                       direction,
                                        onChange,
                                        allowDeselect = true,
                                    }: WihSingleChoiceProps<T>) {
@@ -35,7 +36,7 @@ export function WihSingleChoice<T>({
     };
 
     return (
-        <WihView style={styles.container}>
+        <WihView style={[styles.container, {flexDirection: direction}]}>
             {options.map((option, index) => (
                 <TouchableOpacity
                     key={index}
@@ -62,8 +63,7 @@ export function WihSingleChoice<T>({
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "column",
-        gap: 10,
+        gap: 10
     },
     option: {
         padding: 10,

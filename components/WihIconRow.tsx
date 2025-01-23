@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         display: "flex",
-        flexDirection: "row"
+        flexDirection: "row",
+        alignItems: "center"
     }
 });
 

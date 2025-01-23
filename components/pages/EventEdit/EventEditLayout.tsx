@@ -58,7 +58,7 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
             {children}
 
             {
-                <WihView flex="row">
+                <WihView style={styles.buttons}>
                     <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
                     <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
                 </WihView>
@@ -75,5 +75,10 @@ const styles = StyleSheet.create({
         gap: 20,
         alignItems: "center",
         justifyContent: "center"
+    },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 30
     }
 })
