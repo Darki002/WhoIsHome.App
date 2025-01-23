@@ -144,8 +144,5 @@ const styles = StyleSheet.create({
     },
     labels: {
         fontWeight: "bold"
-    },
-    titleInput: {
-
     }
 });
