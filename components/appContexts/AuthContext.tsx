@@ -47,7 +47,6 @@ export function SessionProvider({children}: PropsWithChildren) {
 
     useEffect(() => {
         if (!isLoading && (!session || !refreshToken)) {
-            router.dismissAll();
             router.replace("/auth/login");
             return;
         }

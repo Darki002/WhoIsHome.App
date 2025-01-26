@@ -34,7 +34,6 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
 
     useEffect(() => {
         if (!isLoading && (!config?.baseUri || !config?.apikey)) {
-            router.dismissAll();
             router.replace("/config");
             return;
         }

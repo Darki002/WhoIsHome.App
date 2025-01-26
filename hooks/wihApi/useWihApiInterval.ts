@@ -18,6 +18,9 @@ export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalPro
         const id = setInterval(() => {
             callApi(props.body).then(e => setResponse(e));
         }, time);
+
+        callApi(props.body).then(e => setResponse(e));
+
         return () => clearInterval(id);
     }, []);
 
