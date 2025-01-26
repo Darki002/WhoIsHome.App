@@ -14,21 +14,18 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
-import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {WihErrorView} from "@/components/WihErrorView";
 
-const TIME = 5 * 60 * 1000;
 const EVENT_COUNT_THRESHOLD = 4;
 
 const Profile = () => {
     const {t} = useTranslation();
-    const theme = useWihTheme();
     const {signOut} = useSession();
-    const user = useWihApi<User | null>({
+    const [user, userRefresh] = useWihApi<User | null>({
         endpoint: Endpoints.user.me,
         method: "GET",
     });
-    const response = useWihApiInterval<UserOverviewDto | null>({
-        time: TIME,
+    const [response, responseRefresh] = useWihApi<UserOverviewDto | null>({
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
@@ -45,20 +42,12 @@ const Profile = () => {
 
     if (user.hasError) {
         console.error(user.error);
-        return (
-            <WihView center="full">
-                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
-            </WihView>
-        )
+        return <WihErrorView response={user} refresh={userRefresh} />
     }
 
     if (response.hasError || !response.response) {
         console.error(response.error);
-        return (
-            <WihView center="full">
-                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
-            </WihView>
-        )
+        return <WihErrorView response={response} refresh={responseRefresh} />
     }
 
     const userOverview = new UserOverview(response.response);
