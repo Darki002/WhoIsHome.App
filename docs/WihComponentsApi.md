@@ -101,6 +101,7 @@ Input Types:
 - Date
 - Time
 - SingleChoice
+- Picker / Dropdown
 
 # WihIcon
 
