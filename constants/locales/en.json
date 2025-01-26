@@ -12,12 +12,26 @@
     "Register": "Register",
     "AppConfig": "App Configuration",
     "EventCreator": "Event Creator",
-    "Summary": "Summary"
+    "Summary": "Summary",
+    "CreateFlow": {
+      "TitleStep": "Event Title",
+      "DateStep": "Date and Time",
+      "DinnerTimeStep": "Presence at dinner"
+    }
   },
-  "SubTitles": {
+  "Sections": {
     "Today": "Today",
     "ThisWeek": "This Week",
     "Other": "Other"
+  },
+  "Labels": {
+    "Date": "Date",
+    "StartTime": "Start Time",
+    "EndTime": "End Time",
+    "PresenceType": "Presence",
+    "DinnerTime": "Arrival Time",
+    "FirstOccurrence": "Start Date",
+    "LastOccurrence": "End Date"
   },
   "Tabs": {
     "Home": "Home",
@@ -35,12 +49,19 @@
     "Edit": "Edit",
     "Next": "Next",
     "Back": "Back",
-    "Finish": "Finish"
+    "Finish": "Finish",
+    "Create": "Create"
   },
   "Placeholders": {
     "BaseUri": "URL",
     "ApiKey": "API Key",
-    "Title": "Title"
+    "Title": "Title",
+    "UserName": "username",
+    "Email": "email",
+    "Password": "password",
+    "SelectDate": "Select a date",
+    "SelectTime": "Select a time",
+    "Picker": "Select"
   },
   "Toast": {
     "Success": {
@@ -61,6 +82,27 @@
     "MissingPassword": "Password is required!",
     "MissingUsername": "Username is required!",
     "MissingBaseUri": "Base Url is required!",
-    "MissingApiKey": "Api Key is required!"
+    "MissingApiKey": "Api Key is required!",
+    "Validation": {
+      "Title": "Title must be between 1 - 50 characters",
+      "StartTime": "Starte time is required",
+      "EndTime": "End time is required",
+      "Date": "Date is required",
+      "PresenceType": "PresenceType is required",
+      "DinnerTime": "Dinner time is required",
+      "FirstOccurrence": "First occurrence is required",
+      "LastOccurrence": "Last occurrence is required"
+    }
+  },
+  "DailyOverviewCard": {
+    "UnknownTime": "Unknown"
+  },
+  "Descriptions": {
+    "EventCreator": "Here you can create new events. Choose between an one-time and repeating event:",
+    "OneTimeEvent": "An event for a specific date.",
+    "RepeatedEvent": "An event that is on the first date and repeats every week until the last date.",
+    "CreateFlow": {
+      "TitleStep": "Give your new event a Title.",
+    }
   }
 }

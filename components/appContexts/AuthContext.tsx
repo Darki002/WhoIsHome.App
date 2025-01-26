@@ -3,7 +3,7 @@ import {useStorageState} from '@/hooks/useStorageState';
 import {wihFetch} from '@/helper/WihApi';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 export type LoginInfos = {
     email: string | undefined;

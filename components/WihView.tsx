@@ -1,5 +1,5 @@
 import {View, type ViewProps, ViewStyle} from 'react-native';
-import {useThemeColor} from '@/hooks/useThemeColor';
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export type ThemedViewProps = ViewProps & {
     center?: "full" | "horizontal" | "vertical";
@@ -10,13 +10,13 @@ export type ThemedViewProps = ViewProps & {
 };
 
 const WihView = ({style, center, gap, flex, lightColor, darkColor, ...otherProps}: ThemedViewProps) => {
-    const backgroundColor = useThemeColor('background', {light: lightColor, dark: darkColor});
+    const theme = useWihTheme();
 
     const cStyle = center ? centerStyle[center] : {}
     const fStyle = flex ? flexStyle[flex] : {}
     const gStyle = gap ? {gap} : {};
 
-    return <View style={[{backgroundColor}, cStyle, fStyle, gStyle, style]} {...otherProps} />;
+    return <View style={[{backgroundColor: theme.background}, cStyle, fStyle, gStyle, style]} {...otherProps} />;
 }
 
 type CenterStyle = {

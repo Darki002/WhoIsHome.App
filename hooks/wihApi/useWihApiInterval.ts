@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {wihFetch, WihResponse} from "@/helper/WihApi";
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 export interface WihApiIntervalProps {
     time: number;

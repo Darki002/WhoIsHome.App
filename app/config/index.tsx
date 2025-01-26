@@ -1,13 +1,13 @@
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
-import {WihTextInput} from "@/components/input/WihInput";
 import {WihButton} from "@/components/input/WihButton";
 import React, {useState} from "react";
-import {ApiConfig, useApiConfig} from "@/components/config/context";
+import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {Dimensions, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {WihTextInput} from "@/components/input/WihTextInput";
 
 export default function Index() {
     const {t} = useTranslation();
@@ -47,8 +47,8 @@ export default function Index() {
                 value={baseUri}
                 onChangeText={setBaseUri}
                 style={styles.baseUri}
-                placeholder={t(Labels.placeholders.baseUri)}
-                autoFocus/>
+                placeholder={t(Labels.placeholders.baseUri)}/>
+
             <WihTextInput
                 value={apikey}
                 onChangeText={setApiKey}

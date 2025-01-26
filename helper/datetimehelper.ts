@@ -30,3 +30,12 @@ export const dateStringToDate = (dateString?: string | Date) : Date | undefined 
     }
     return  new Date(dateString);
 }
+
+export const timeDisplayString = (time?: Date | string) => {
+    if(!time) return undefined;
+
+    return new Date(time).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+};

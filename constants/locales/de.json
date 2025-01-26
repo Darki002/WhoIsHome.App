@@ -12,12 +12,26 @@
     "Register": "Registrieren",
     "AppConfig": "App Configuration",
     "EventCreator": "Event Erstellung",
-    "Summary": "Zusammenfassung"
+    "Summary": "Zusammenfassung",
+    "CreateFlow": {
+      "TitleStep": "Name des Events",
+      "DateStep": "Datum und Zeit",
+      "DinnerTimeStep": "Anwesenheit beim Abendessen"
+    }
   },
-  "SubTitles": {
+  "Sections": {
     "Today": "Heute",
     "ThisWeek": "Diese Woche",
     "Other": "Andere"
+  },
+  "Labels": {
+    "Date": "Datum",
+    "StartTime": "Startzeit",
+    "EndTime": "Endzeit",
+    "PresenceType": "Anwesenheit",
+    "DinnerTime": "Ankunftszeit",
+    "FirstOccurrence": "Start Datum",
+    "LastOccurrence": "End Datum"
   },
   "Tabs": {
     "Home": "Home",
@@ -35,12 +49,19 @@
     "Edit": "Bearbeiten",
     "Next": "Weiter",
     "Back": "Zurück",
-    "Finish": "Beenden"
+    "Finish": "Beenden",
+    "Create": "Erstellen"
   },
   "Placeholders": {
     "BaseUri": "URL",
     "ApiKey": "API Schlüssel",
-    "Title": "Titel"
+    "Title": "Titel",
+    "UserName": "Benutzername",
+    "Email": "Email",
+    "Password": "Passwort",
+    "SelectDate": "Datum wählen",
+    "SelectTime": "Zeit wählen",
+    "Picker": "Wählen Sie"
   },
   "Toast": {
     "Success": {
@@ -61,6 +82,27 @@
     "MissingPassword": "Password ist erforderlich!",
     "MissingUsername": "Benutzername ist erforderlich!",
     "MissingBaseUri": "Base Url ist erforderlich!",
-    "MissingApiKey": "Api Key ist erforderlich!"
+    "MissingApiKey": "Api Key ist erforderlich!",
+    "Validation": {
+      "Title": "Der Titel muss zwischen 1 und 50 Zeichen lang sein.",
+      "StartTime": "Startzeit ist erforderlich",
+      "EndTime": "Endzeit ist erforderlich",
+      "Date": "Datum ist erforderlich",
+      "PresenceType": "Präsenz angabe ist erforderlich",
+      "DinnerTime": "Abendessen Zeit ist erforderlich",
+      "FirstOccurrence": "Start Date ist erforderlich",
+      "LastOccurrence": "End Datum ist erforderlich"
+    }
+  },
+  "DailyOverviewCard": {
+    "UnknownTime": "Unbekannt"
+  },
+  "Descriptions": {
+    "EventCreator": "Hier kannst du ein neues Event erstellen. Wähle zwischen einmaligen oder wiederholdenem Event:",
+    "OneTimeEvent": "Ein Event für ein sspezifisches Datum.",
+    "RepeatedEvent": "Ein Event das sich ab dem ersten Datum wöchentlich wiederhold bis zum Enddatum.",
+    "CreateFlow": {
+      "TitleStep": "Gib deinem Event einen Namen."
+    }
   }
 }

@@ -1,5 +1,5 @@
-import {LoginInfos, useSession} from "@/components/auth/context";
-import {WihEmailInput, WihPasswordInput} from "@/components/input/WihInput";
+import {LoginInfos, useSession} from "@/components/appContexts/AuthContext";
+import {WihEmailInput, WihPasswordInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
@@ -37,15 +37,15 @@ const Login = () => {
 
             <WihEmailInput
                 value={email}
-                onChangeText={onChangeEmail}
+                onChangeValue={onChangeEmail}
                 style={styles.email}
-                autoFocus
             />
+
             <WihPasswordInput
                 value={password}
-                onChangeText={onChangePassword}
+                onChangeValue={onChangePassword}
                 style={styles.password}
-                autoCompleteType="current"
+                autoComplete="current"
             />
 
             {error ? <WihText style={{color: "red"}}>{error}</WihText> : null}

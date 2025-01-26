@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/wihApi/useWihApi";
-import {UserOverview} from "@/constants/WihTypes/WihTypes";
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import {useEffect} from "react";
@@ -11,6 +11,10 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {WihCollapsible} from "@/components/WihCollapsible";
+import {ScrollView, StyleSheet} from "react-native";
+
+const EVENT_COUNT_THRESHOLD = 4;
 
 export default function UserView() {
     const {t} = useTranslation();
@@ -20,7 +24,7 @@ export default function UserView() {
         endpoint: Endpoints.user.withId(id),
         method: "GET",
     });
-    const response = useWihApiFocus<UserOverview>({
+    const response = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.withId(id),
         method: "GET"
     });
@@ -50,7 +54,7 @@ export default function UserView() {
         )
     }
 
-    if (user.hasError) {
+    if (user.hasError || !response.response) {
         console.log(user.error);
         return (
             <WihView center="full">
@@ -59,14 +63,53 @@ export default function UserView() {
         )
     }
 
-    const overview = response.response;
+    const overview = new UserOverview(response.response);
     return (
-        <WihView center="horizontal">
-            <WihTitle>{user.response!.userName}</WihTitle>
+        <WihView style={styles.container}>
+            <ScrollView>
+                {/* Event Lists */}
+                <WihView style={styles.eventLists}>
+                    {/* Today */}
+                    {overview.Today.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.today)}
+                            isDefaultOpen={overview.Today.length < EVENT_COUNT_THRESHOLD}
+                        >
+                            <WihEventList events={overview.Today}/>
+                        </WihCollapsible>
+                    )}
 
-            <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
-            <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
-            <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
+                    {/* This Week */}
+                    {overview.ThisWeek.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.thisWeek)}
+                            isDefaultOpen={overview.ThisWeek.length < EVENT_COUNT_THRESHOLD}
+                        >
+                            <WihEventList events={overview.ThisWeek}/>
+                        </WihCollapsible>
+                    )}
+
+                    {/* Future Events */}
+                    {overview.FutureEvents.length > 0 && (
+                        <WihCollapsible
+                            title={t(Labels.sections.other)}
+                            isDefaultOpen={overview.FutureEvents.length < EVENT_COUNT_THRESHOLD}
+                        >
+                            <WihEventList events={overview.FutureEvents}/>
+                        </WihCollapsible>
+                    )}
+                </WihView>
+            </ScrollView>
         </WihView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+    },
+    eventLists: {
+        flex: 1
+    }
+});

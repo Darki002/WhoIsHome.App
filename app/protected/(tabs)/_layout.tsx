@@ -1,11 +1,9 @@
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {IonIcon, MaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
-import {Redirect, Tabs} from "expo-router";
+import {IonIcon, WihMaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
+import {Tabs} from "expo-router";
 import React from "react";
-import {useSession} from "@/components/auth/context";
-import {WihTitle} from "@/components/WihText";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const TabIconProps = {
     size: 28,
@@ -16,15 +14,14 @@ const TabIconProps = {
 
 const TabsLayout = () => {
     const {t} = useTranslation();
-    const tint = useThemeColor("tint");
-    const backgroundColor = useThemeColor('background');
+    const theme = useWihTheme();
 
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: tint,
+                tabBarActiveTintColor: theme.tint,
                 headerShown: false,
-                tabBarStyle: { backgroundColor: backgroundColor }
+                tabBarStyle: { backgroundColor: theme.background }
             }}>
             <Tabs.Screen
                 name="index"
@@ -40,8 +37,8 @@ const TabsLayout = () => {
                 options={{
                     title: t(Labels.tabs.create),
                     tabBarIcon: ({color, focused}) => (
-                        <MaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
-                                      color={color} {...TabIconProps} />
+                        <WihMaterialIcon name={focused ? 'add-circle' : 'add-circle-outline'}
+                                         color={color} {...TabIconProps} />
                     )
                 }}
             />

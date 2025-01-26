@@ -8,6 +8,7 @@ import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {StyleSheet} from "react-native";
 
 interface EventEditLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -53,11 +54,11 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
     }
 
     return (
-        <WihView center="full">
+        <WihView style={styles.container}>
             {children}
 
             {
-                <WihView flex="row">
+                <WihView style={styles.buttons}>
                     <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
                     <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
                 </WihView>
@@ -65,3 +66,19 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
         </WihView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 30
+    }
+})

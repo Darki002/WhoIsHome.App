@@ -1,6 +1,6 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
-import {ApiConfig} from "@/components/config/context";
+import {ApiConfig} from "@/components/appContexts/ConfigContext";
 
 export interface WihFetchProps {
     endpoint: string;

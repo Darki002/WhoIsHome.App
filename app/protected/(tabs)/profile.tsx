@@ -1,11 +1,10 @@
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText, WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
-import {Redirect} from "expo-router";
-import {UserOverview} from "@/constants/WihTypes/WihTypes";
+import {Dimensions, ScrollView, StyleSheet} from 'react-native';
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
@@ -13,87 +12,136 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import WihLoading from "@/components/WihLoading";
+import {WihCollapsible} from "@/components/WihCollapsible";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const TIME = 5 * 60 * 1000;
+const EVENT_COUNT_THRESHOLD = 4;
 
 const Profile = () => {
     const {t} = useTranslation();
+    const theme = useWihTheme();
     const {signOut} = useSession();
     const user = useWihApi<User | null>({
         endpoint: Endpoints.user.me,
         method: "GET",
     });
-    const response = useWihApiInterval<UserOverview | null>({
+    const response = useWihApiInterval<UserOverviewDto | null>({
         time: TIME,
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
 
     const dim = Dimensions.get("screen");
-    const viewStyle: ViewStyle = {
-        paddingLeft: dim.width / 12,
-        paddingTop: dim.height / 16
-    }
-    const avatarStyle = {
-        marginRight: dim.width / 20
-    }
-    const textStyle = {
-        fontSize: dim.fontScale * 24
-    }
 
     if (!response || !user) {
         return (
-            <WihView>
-                <WihView style={[viewStyle, styles.view]}>
-                    <WihAvatar name="" size={dim.scale * 14} style={avatarStyle}/>
-                    <WihText style={[styles.text, textStyle]}>Loading...</WihText>
-                    <WihButton onPress={() => {}}>{t(Labels.actions.logout)}</WihButton>
-                </WihView>
-                <WihView center="horizontal">
-                    <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                    <WihText>Loading...</WihText>
-                </WihView>
+            <WihView center="full">
+                <WihLoading/>
             </WihView>
         )
     }
 
     if (user.hasError) {
         console.error(user.error);
-        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+            </WihView>
+        )
     }
 
-    if (response.hasError) {
+    if (response.hasError || !response.response) {
         console.error(response.error);
-        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+            </WihView>
+        )
     }
 
-    const overview = response.response;
+    const userOverview = new UserOverview(response.response);
     const userName = user.response?.userName ?? "";
     return (
-        <>
-            <WihView style={[viewStyle, styles.view]}>
-                <WihAvatar name={userName} size={dim.scale * 14} style={avatarStyle}/>
-                <WihText style={[styles.text, textStyle]}>{userName}</WihText>
-                <WihButton onPress={() => signOut()}>{t(Labels.actions.logout)}</WihButton>
-            </WihView>
-            <WihView center="horizontal">
-                <WihTitle style={{marginTop: dim.height / 20}}>Your Events</WihTitle>
-                <WihEventList events={overview?.today} title={t(Labels.subTitles.today)}/>
-                <WihEventList events={overview?.thisWeek} title={t(Labels.subTitles.thisWeek)}/>
-                <WihEventList events={overview?.futureEvents} title={t(Labels.subTitles.other)}/>
-            </WihView>
-        </>
+        <WihView style={{flex: 1}}>
+            <ScrollView>
+                <WihView style={styles.container}>
+                    <WihView style={styles.profileHeader}>
+                        <WihView style={styles.userInfo}>
+                            <WihAvatar name={userName} size={dim.scale * 14} style={styles.avatar}/>
+                            <WihText style={styles.userName}>{userName}</WihText>
+                        </WihView>
+                        <WihButton onPress={signOut}>
+                            {t(Labels.actions.logout)}
+                        </WihButton>
+                    </WihView>
+
+                    {/* Event Lists */}
+                    <WihView style={styles.eventLists}>
+                        {/* Today */}
+                        {userOverview.Today.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.today)}
+                                isDefaultOpen={userOverview.Today.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.Today}/>
+                            </WihCollapsible>
+                        )}
+
+                        {/* This Week */}
+                        {userOverview.ThisWeek.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.thisWeek)}
+                                isDefaultOpen={userOverview.ThisWeek.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.ThisWeek}/>
+                            </WihCollapsible>
+                        )}
+
+                        {/* Future Events */}
+                        {userOverview.FutureEvents.length > 0 && (
+                            <WihCollapsible
+                                title={t(Labels.sections.other)}
+                                isDefaultOpen={userOverview.FutureEvents.length < EVENT_COUNT_THRESHOLD}
+                            >
+                                <WihEventList events={userOverview.FutureEvents}/>
+                            </WihCollapsible>
+                        )}
+                    </WihView>
+                </WihView>
+            </ScrollView>
+        </WihView>
     );
 }
 
 const styles = StyleSheet.create({
-    view: {
-        flexDirection: "row",
-        alignItems: "center"
+    container: {
+        flex: 1,
+        padding: 20,
+        marginTop: 20
     },
-    text: {
+    profileHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 35,
+        paddingHorizontal: 10
+    },
+    avatar: {
+        marginRight: 10
+    },
+    userInfo: {
+        flex: 1,
+        flexDirection: "row"
+    },
+    userName: {
+        textAlignVertical: "center",
+        fontSize: 18,
         fontWeight: "bold"
+    },
+    eventLists: {
+        flex: 1
     }
-})
+});
 
 export default Profile;

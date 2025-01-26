@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useState} from "react";
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {wihFetch} from "@/helper/WihApi";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {User} from "@/constants/WihTypes/User";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 export function usePermission(){
     const {config} = useApiConfig();

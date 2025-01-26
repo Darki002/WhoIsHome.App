@@ -1,22 +1,22 @@
 import {useFonts} from 'expo-font';
 import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
-import {useThemeColor} from '@/hooks/useThemeColor';
-import {Platform, useColorScheme} from 'react-native';
-import {ThemeProvider} from '@react-navigation/native';
-import {DarkTheme, LightTheme} from '@/constants/Colors';
-import {SessionProvider} from '@/components/auth/context';
-import {ApiConfigProvider, useApiConfig} from "@/components/config/context";
+import {useColorScheme} from 'react-native';
+import {SessionProvider} from '@/components/appContexts/AuthContext';
+import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {I18nextProvider} from "react-i18next";
+import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
+import {Colors} from "@/constants/Colors";
+import WihView from "@/components/WihView";
+import WihLoading from "@/components/WihLoading";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
-    const backgroundColor = useThemeColor("background");
     const colorScheme = useColorScheme();
     const {isApiConfigLoading} = useApiConfig();
 
@@ -31,17 +31,22 @@ const RootLayout = () => {
     }, [loaded]);
 
     if (!loaded || isApiConfigLoading) {
-        return null;
+        return (
+            <WihView center="full">
+                <WihLoading/>
+            </WihView>
+        );
     }
 
-    const isWeb = Platform.OS === "web";
     const screenOptions = {
-        ...(isWeb ? {} : {contentStyle: {backgroundColor}})
+        contentStyle: {
+            backgroundColor: Colors[colorScheme ?? "light"].background
+        }
     };
 
     return (
         <I18nextProvider i18n={i18n}>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
+            <WihThemeProvider>
                 <ApiConfigProvider>
                     <SessionProvider>
                         <Stack screenOptions={screenOptions}>
@@ -52,7 +57,7 @@ const RootLayout = () => {
                         </Stack>
                     </SessionProvider>
                 </ApiConfigProvider>
-            </ThemeProvider>
+            </WihThemeProvider>
         </I18nextProvider>
     );
 }

@@ -6,26 +6,30 @@ import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
-import {WihTextInput} from "@/components/input/WihInput";
 import WihView from "@/components/WihView";
-import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
+import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
+import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
+import WihIconRow from "@/components/WihIconRow";
+import {StyleSheet} from "react-native";
+import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihPicker} from "@/components/input/WihPicker";
+
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
+    {value: "Late", displayTextLabel: Labels.presenceType.late},
+    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+];
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    const options : Array<WihOption<PresenceType>> = [
-        {value: "Unknown", display: t(Labels.presenceType.unknown)},
-        {value: "Late", display: t(Labels.presenceType.late)},
-        {value: "NotPresent", display: t(Labels.presenceType.notPresent)}
-    ];
 
     const response = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
@@ -56,7 +60,7 @@ export default function OneTimeEventView() {
         router.back();
     }, [id]);
 
-    const onUpdate = useCallback(() => {
+    const onUpdate = () => {
         if (!event) return;
         const body: OneTimeEventDto = {
             Title: event.Title!,
@@ -67,7 +71,7 @@ export default function OneTimeEventView() {
             DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
         callWihApi(body);
-    }, [event]);
+    };
 
     if(!event) {
         return null;
@@ -85,46 +89,55 @@ export default function OneTimeEventView() {
         }
     }
 
-    // TODO: don't forget to translate when making it pretty
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
-            <WihView flex="row">
-                <WihText>Title:</WihText>
-                <WihTextInput value={event.Title} placeholder={t(Labels.placeholders.title)}
-                              onChangeText={t => updateEvent({Title: t})}></WihTextInput>
-            </WihView>
+            <WihTextInput
+                value={event.Title}
+                placeholder={t(Labels.placeholders.title)}
+                onChangeText={t => updateEvent({Title: t})}/>
 
-            <WihView flex="row">
-                <WihText>Date:</WihText>
+            <WihIconRow name="date-range" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
                 <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
-            </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>Start Time:</WihText>
-                <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
-            </WihView>
+            <WihIconRow name="timeline" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
+                    <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
+                    <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
+                </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>End Time:</WihText>
-                <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
-            </WihView>
-
-            <WihView flex="row">
-                <WihText>Presence Type:</WihText>
-                <WihSingleChoice
+            <WihIconRow name="home" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
+                <WihPicker
                     value={event.PresenceType}
                     options={options}
-                    direction="row"
                     onChange={onPresenceTypeChange}/>
-            </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>Dinner Time:</WihText>
+            <WihIconRow name="schedule" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
                     value={event.DinnerTime}
                     disabled={event.PresenceType !== "Late"}
                     onChange={onDinnerTimeChange}/>
-            </WihView>
+            </WihIconRow>
         </EventEditLayout>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    labels: {
+        fontWeight: "bold"
+    }
+});

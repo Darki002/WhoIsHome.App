@@ -1,10 +1,12 @@
-import {StyleSheet, View} from "react-native";
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {WihButton} from "@/components/input/WihButton";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import WihView from "@/components/WihView";
+import {WihText} from "@/components/WihText";
+import {useTranslation} from "react-i18next";
 
 export type WihOption<T> = {
     value?: T;
-    display: string;
+    displayTextLabel: string;
 }
 
 export interface WihSingleChoiceProps<T> {
@@ -12,51 +14,62 @@ export interface WihSingleChoiceProps<T> {
     options: Array<WihOption<T>>;
     direction?: "row" | "column";
     onChange: (value: T | undefined) => void;
+    allowDeselect?: boolean;
 }
 
-export function WihSingleChoice<T>({value, options, direction, onChange}: WihSingleChoiceProps<T>) {
-    const backgroundColor = useThemeColor('background');
-    const flex = styles[direction ?? "column"];
+export function WihSingleChoice<T>({
+                                       value,
+                                       options,
+                                       direction,
+                                       onChange,
+                                       allowDeselect = true,
+                                   }: WihSingleChoiceProps<T>) {
+    const theme = useWihTheme();
+    const {t} = useTranslation();
+
+    const handlePress = (optionValue: T | undefined) => {
+        if (value === optionValue && allowDeselect) {
+            onChange(undefined);
+        } else {
+            onChange(optionValue);
+        }
+    };
 
     return (
-        <View style={[{backgroundColor}, flex]}>
-            {options.map((o, i) =>
-                <OptionButton
-                    key={i}
-                    value={o.value}
-                    display={o.display}
-                    isSelected={o.value === value}
-                    onChange={onChange}/>
-            )}
-        </View>
+        <WihView style={[styles.container, {flexDirection: direction}]}>
+            {options.map((option, index) => (
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => handlePress(option.value)}
+                    style={[
+                        styles.option,
+                        value === option.value && {
+                            backgroundColor: theme.primary,
+                        },
+                    ]}
+                >
+                    <WihText
+                        style={{
+                            color: value === option.value ? theme.textInverse : theme.text,
+                        }}
+                    >
+                        {t(option.displayTextLabel)}
+                    </WihText>
+                </TouchableOpacity>
+            ))}
+        </WihView>
     );
 }
 
 const styles = StyleSheet.create({
-    row: {
-        display: "flex",
-        flexDirection: "row"
+    container: {
+        gap: 10
     },
-    column: {
-        display: "flex",
-        flexDirection: "column"
-    }
-})
-
-interface OptionButtonProps<T> {
-    value?: T;
-    display: string;
-    isSelected: boolean;
-    onChange: (value: T | undefined) => void;
-}
-
-function OptionButton<T>({value, display, isSelected, onChange}: OptionButtonProps<T>) {
-    const primary = useThemeColor('primary');
-    const secondary = useThemeColor('secondary');
-
-    const backgroundColor = isSelected ? primary : secondary;
-
-    return (
-        <WihButton onPress={() => onChange(value)} style={{backgroundColor}}>{display}</WihButton>
-    );
-}
+    option: {
+        padding: 10,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "gray",
+        alignItems: "center",
+    },
+});

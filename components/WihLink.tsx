@@ -1,11 +1,16 @@
 import {Link, LinkProps} from 'expo-router';
-import {useThemeColor} from "@/hooks/useThemeColor";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {TextStyle} from "react-native";
 
 const WihLink = ({style, children, href}: LinkProps) => {
-    const color = useThemeColor("text");
+    const theme = useWihTheme();
+
+    const colorStyle: TextStyle = {
+        color: theme.link
+    }
 
     return (
-        <Link href={href} style={[{color}, style]}>
+        <Link href={href} style={[colorStyle, style]}>
             {children}
         </Link>
     )

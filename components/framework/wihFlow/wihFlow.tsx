@@ -1,5 +1,5 @@
 import React, {ComponentType, useState} from "react";
-import {WihFlowNavAction, WihFlowNavBar} from "@/components/wihFlow/WihFlowNavigation";
+import {WihFlowNavAction, WihFlowNavBar} from "@/components/framework/wihFlow/WihFlowNavigation";
 import {WihTitle} from "@/components/WihText";
 
 export interface WihFlowComponentProps<T> {
@@ -14,7 +14,6 @@ export interface WihFlowStep<T> {
     component: WihFlowComponentType<T>;
     validate: (state: T) => boolean;
 }
-
 
 export type WihFlowParam<T> = {
     initValue?: T;
@@ -75,7 +74,8 @@ export function WihFlow<T extends object>({
 
     return (
         <WihFlowNavBar
-            currentStep={currentStepNumber}
+            currentStepNumber={currentStepNumber}
+            validate={() => currentStep.validate(state)}
             lastStep={steps.length - 1}
             onNavAction={onNavAction}
             children={element}/>

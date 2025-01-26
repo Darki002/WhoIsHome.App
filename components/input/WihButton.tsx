@@ -1,26 +1,52 @@
-import {Pressable, StyleSheet} from "react-native";
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {WihText} from "@/components/WihText";
-import {ReactNode} from "react";
+import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
+import {FC, ReactNode} from "react";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 type WihButtonProps = {
     children: ReactNode;
     onPress: () => void;
-    style?: object;
+    disabled?: boolean;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
 };
 
-export const WihButton = ({children, onPress, style}: WihButtonProps) => {
-    const color = useThemeColor("primary");
+export const WihButton: FC<WihButtonProps> = ({
+                                                        children,
+                                                        onPress,
+                                                        disabled = false,
+                                                        style,
+                                                        textStyle
+                                                    }) => {
+    const theme = useWihTheme();
+
     return (
-        <Pressable onPress={onPress} style={[{backgroundColor: color}, styles.button, style]}>
-            <WihText>{children}</WihText>
+        <Pressable
+            onPress={onPress}
+            disabled={disabled}
+            style={({ pressed }) => [
+                styles.button,
+                { backgroundColor: disabled ? theme.disabled : theme.primary },
+                pressed && !disabled && { backgroundColor: theme.primary },
+                style
+            ]}
+        >
+            <Text style={[styles.text, { color: theme.buttonText }, textStyle]}>
+                {children}
+            </Text>
         </Pressable>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     button: {
-        padding: 8,
-        borderRadius: 7
-    }
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    text: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });

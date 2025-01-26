@@ -6,8 +6,6 @@ import {WihText} from "@/components/WihText";
 import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import WihView from "@/components/WihView";
-import {WihTextInput} from "@/components/input/WihInput";
-import {WihDateInput, WihTimeInput} from "@/components/input/WihDateTimeInput";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
@@ -15,17 +13,23 @@ import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
+import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
+import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
+import WihIconRow from "@/components/WihIconRow";
+import {StyleSheet} from "react-native";
+import {WihPicker} from "@/components/input/WihPicker";
+
+const options : Array<WihOption<PresenceType>> = [
+    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
+    {value: "Late", displayTextLabel: Labels.presenceType.late},
+    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+];
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    const options : Array<WihOption<PresenceType>> = [
-        {value: "Unknown", display: t(Labels.presenceType.unknown)},
-        {value: "Late", display: t(Labels.presenceType.late)},
-        {value: "NotPresent", display: t(Labels.presenceType.notPresent)}
-    ];
 
     const response = useWihApiFocus<RepeatedEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),
@@ -56,7 +60,7 @@ export default function RepeatedEventView() {
         router.back();
     }, [id]);
 
-    const onUpdate = () => useCallback(() => {
+    const onUpdate = () => {
         if (!event) return;
         const body: RepeatedEventDto = {
             Title: event.Title!,
@@ -68,7 +72,7 @@ export default function RepeatedEventView() {
             DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
         callWihApi(body);
-    }, [event]);
+    };
 
     if(!event) {
         return null;
@@ -86,55 +90,63 @@ export default function RepeatedEventView() {
         }
     }
 
-    // TODO: don't forget to translate when making it pretty
     return (
         <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
-            <WihView flex="row">
-                <WihText>Title:</WihText>
-                <WihTextInput
-                    value={event.Title}
-                    placeholder={t(Labels.placeholders.title)}
-                    onChangeText={t => updateEvent({Title: t})}/>
-            </WihView>
+            <WihTextInput
+                value={event.Title}
+                placeholder={t(Labels.placeholders.title)}
+                onChangeText={t => updateEvent({Title: t})}/>
 
-            <WihView flex="row">
-                <WihText>First Occurrence:</WihText>
-                <WihDateInput value={event.FirstOccurrence}
-                              onChange={d => updateEvent({FirstOccurrence: d})}/>
-            </WihView>
+            <WihIconRow name="date-range" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
+                    <WihDateInput value={event.FirstOccurrence}
+                                  onChange={d => updateEvent({FirstOccurrence: d})}/>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.lastOccurrence)}: </WihText>
+                    <WihDateInput value={event.LastOccurrence}
+                                  onChange={d => updateEvent({LastOccurrence: d})}/>
+                </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>Last Occurrence:</WihText>
-                <WihDateInput value={event.LastOccurrence}
-                              onChange={d => updateEvent({LastOccurrence: d})}/>
-            </WihView>
+            <WihIconRow name="timeline" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
+                    <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
+                    <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
+                </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>Start Time:</WihText>
-                <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}/>
-            </WihView>
-
-            <WihView flex="row">
-                <WihText>End Time:</WihText>
-                <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}/>
-            </WihView>
-
-            <WihView flex="row">
-                <WihText>Presence Type:</WihText>
-                <WihSingleChoice
+            <WihIconRow name="home" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
+                <WihPicker
                     value={event.PresenceType}
                     options={options}
-                    direction="row"
                     onChange={onPresenceTypeChange}/>
-            </WihView>
+            </WihIconRow>
 
-            <WihView flex="row">
-                <WihText>Dinner Time:</WihText>
+            <WihIconRow name="schedule" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
                     value={event.DinnerTime}
                     disabled={event.PresenceType !== "Late"}
                     onChange={onDinnerTimeChange}/>
-            </WihView>
+            </WihIconRow>
         </EventEditLayout>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    labels: {
+        fontWeight: "bold"
+    }
+});

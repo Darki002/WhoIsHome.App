@@ -12,12 +12,26 @@ const Labels = {
         register: "Titles.Register",
         appConfig: "Titles.AppConfig",
         eventCreator: "Titles.EventCreator",
-        summary: "Titles.Summary"
+        summary: "Titles.Summary",
+        createFlow: {
+            titleStep: "Titles.CreateFlow.TitleStep",
+            dateStep: "Titles.CreateFlow.DateStep",
+            dinnerTimeStep: "Titles.CreateFlow.DinnerTimeStep",
+        }
     },
-    subTitles: {
-        today: "SubTitles.Today",
-        thisWeek: "SubTitles.ThisWeek",
-        other: "SubTitles.Other"
+    sections: {
+        today: "Sections.Today",
+        thisWeek: "Sections.ThisWeek",
+        other: "Sections.Other"
+    },
+    labels: {
+        date: "Labels.Date",
+        startTime: "Labels.StartTime",
+        endTime: "Labels.EndTime",
+        presenceType: "Labels.PresenceType",
+        dinnerTime: "Labels.DinnerTime",
+        firstOccurrence: "Labels.FirstOccurrence",
+        lastOccurrence: "Labels.LastOccurrence",
     },
     tabs: {
         home: "Tabs.Home",
@@ -35,12 +49,19 @@ const Labels = {
         edit: "Actions.Edit",
         next: "Actions.Next",
         back: "Actions.Back",
-        finish: "Actions.Finish"
+        finish: "Actions.Finish",
+        create: "Actions.Create"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
         apikey: "Placeholders.ApiKey",
-        title: "Placeholders.Title"
+        title: "Placeholders.Title",
+        userName: "Placeholders.UserName",
+        email: "Placeholders.Email",
+        password: "Placeholders.Password",
+        selectDate: "Placeholders.SelectDate",
+        selectTime: "Placeholders.SelectTime",
+        picker: "Placeholders.Picker"
     },
     toast: {
         success: {
@@ -61,7 +82,28 @@ const Labels = {
         missingPassword: "Errors.MissingPassword",
         missingUsername: "Errors.MissingUsername",
         missingBaseUri: "Errors.MissingBaseUri",
-        missingApiKey: "Errors.MissingApiKey"
+        missingApiKey: "Errors.MissingApiKey",
+        validation: {
+            title: "Errors.Validation.Title",
+            startTime: "Descriptions.Validation.StartTime",
+            endTime: "Descriptions.Validation.EndTime",
+            date: "Descriptions.Validation.Date",
+            presenceType: "Descriptions.Validation.PresenceType",
+            dinnerTime: "Descriptions.Validation.DinnerTime",
+            firstOccurrence: "Titles.CreateFlow.FirstOccurrence",
+            lastOccurrence: "Titles.CreateFlow.LastOccurrence",
+        }
+    },
+    dailyOverviewCard: {
+        unknownTime: "DailyOverviewCard.UnknownTime"
+    },
+    descriptions: {
+        eventCreator: "Descriptions.EventCreator",
+        oneTimeEvent: "Descriptions.OneTimeEvent",
+        repeatedEvent: "Descriptions.RepeatedEvent",
+        createFlow: {
+            titleStep: "Descriptions.CreateFlow.TitleStep",
+        }
     }
 } as const;
 

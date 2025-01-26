@@ -1,9 +1,9 @@
 import {wihFetch, WihResponse} from "@/helper/WihApi";
 import {useCallback, useState} from "react";
-import {useSession} from "@/components/auth/context";
+import {useSession} from "@/components/appContexts/AuthContext";
 import {useFocusEffect} from "expo-router";
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {useApiConfig} from "@/components/config/context";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 export interface WihApiProps {
     endpoint: string;

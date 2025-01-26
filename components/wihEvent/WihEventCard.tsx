@@ -1,49 +1,87 @@
-import {Pressable, StyleSheet} from "react-native";
-import {WihText, WihTitle} from "@/components/WihText";
+import React, {useCallback} from "react";
+import { Pressable, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihView";
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {timeStringToDate} from "@/helper/datetimehelper";
+import {WihText} from "@/components/WihText";
 import {useRouter} from "expo-router";
-import {useCallback} from "react";
-import {WihEvent} from "@/constants/WihTypes/Event/BaseTypes";
+import {EventType, WihEvent} from "@/constants/WihTypes/Event/WihEvent";
+import {timeDisplayString} from "@/helper/datetimehelper";
 
-export interface WihEventCardProps {
-    id: number;
-    title: string;
-    date: Date | string;
-    startTime: Date | string;
-    endTime: Date | string;
-    eventType: string;
+interface EventCardProps {
+    event: WihEvent;
 }
 
-export default function WihEventCard({event}: { event: WihEvent }) {
-    const borderColor = useThemeColor("border");
+const EventCard: React.FC<EventCardProps> = ({ event }) => {
+    const theme = useWihTheme();
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        const eventType = event.eventType === "OneTimeEvent" ? "oneTime" : "repeated";
-        router.push(`/protected/event/view/${eventType}/${event.id}`);
-    }, [event.id, event.eventType]);
+        const eventType = event.EventType === "OneTimeEvent" ? "oneTime" : "repeated";
+        router.push(`/protected/event/view/${eventType}/${event.Id}`);
+    }, [event.Id, event.EventType]);
 
-    const date = new Date(event.date);
-    const startTime = timeStringToDate(event.startTime)!;
-    const endTime = timeStringToDate(event.endTime)!;
+    const renderIcon = (eventType: EventType) => {
+        switch (eventType) {
+            case "OneTimeEvent":
+                return <MaterialIcons name="event" size={24} color={theme.primary} />;
+            case "RepeatedEvent":
+                return <MaterialIcons name="event-repeat" size={24} color={theme.primary} />;
+            default:
+                return null;
+        }
+    };
 
     return (
-        <Pressable onPress={onEventPress}>
-            <WihView style={[{borderColor}, styles.card]}>
-                <WihTitle>{event.title}</WihTitle>
-                <WihText>Date: {date.toLocaleDateString()}</WihText>
-                <WihText>Time: {startTime.toLocaleTimeString()}-{endTime.toLocaleTimeString()}</WihText>
+        <Pressable
+            style={({ pressed }) => [
+                styles.card,
+                { backgroundColor: pressed ? theme.primary : theme.background },
+                { borderColor: theme.primary },
+            ]}
+            onPress={() => onEventPress()}
+        >
+            <WihView style={styles.content} gap={10}>
+                <WihView style={styles.iconContainer}>{renderIcon(event.EventType)}</WihView>
+                <WihView style={styles.textContainer}>
+                    <WihText style={styles.title}>{event.Title}</WihText>
+                    <WihText>{event.Date?.toLocaleDateString()}</WihText>
+                    <WihText>
+                        {timeDisplayString(event.StartTime)} - {timeDisplayString(event.EndTime)}
+                    </WihText>
+                </WihView>
             </WihView>
         </Pressable>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 100,
-        borderStyle: "solid",
-        borderWidth: 3
+        borderRadius: 10,
+        padding: 15,
+        borderWidth: 1,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+        marginVertical: 10,
+    },
+    content: {
+        display:"flex",
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    iconContainer: {
+        marginRight: 10,
+    },
+    textContainer: {
+        display: "flex",
+        alignContent: "center"
+    },
+    title: {
+        fontSize: 20
     }
-})
+});
+
+export default EventCard;
