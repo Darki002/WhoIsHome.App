@@ -12,7 +12,7 @@ export interface WihFetchProps {
 
 const useWihFetch = <T>(props: WihFetchProps)  => {
     const {config} = useApiConfig();
-    const {session, onNewSession} = useSession();
+    const {session, onNewSession, signOut} = useSession();
 
     function onNewTokens(tokens: Tokens | undefined) {
         if (tokens) {
@@ -33,7 +33,13 @@ const useWihFetch = <T>(props: WihFetchProps)  => {
             onNewTokens: onNewTokens
         }
 
-        return await wihFetch<T>(params);
+        const response = await wihFetch<T>(params);
+
+        if(response.refreshFailed){
+            signOut();
+        }
+
+        return response;
     }, [props]);
 }
 
