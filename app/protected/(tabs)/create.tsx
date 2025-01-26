@@ -25,7 +25,6 @@ const Create = () => {
             <WihTitle>{t(Labels.titles.eventCreator)}</WihTitle>
             <WihText style={styles.description}>{t(Labels.descriptions.eventCreator)}</WihText>
 
-            {/* One-Time Event Section */}
             <WihCard>
                 <WihTitle style={styles.subTitle}>{t(Labels.oneTimeEvent)}</WihTitle>
                 <WihText style={styles.text}>{t(Labels.descriptions.oneTimeEvent)}</WihText>
@@ -34,10 +33,8 @@ const Create = () => {
                 </WihButton>
             </WihCard>
 
-            {/* Divider */}
             <WihDivider />
 
-            {/* Repeated Event Section */}
             <WihCard>
                 <WihTitle style={styles.subTitle}>{t(Labels.repeatedEvent)}</WihTitle>
                 <WihText style={styles.text}>{t(Labels.descriptions.repeatedEvent)}</WihText>
