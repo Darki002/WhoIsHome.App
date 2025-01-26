@@ -27,7 +27,7 @@ export const DateStepBase = ({
 
             {children}
 
-            <WihView flex="row" style={{alignItems: "center"}}>
+            <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                 <WihText>{t(Labels.labels.startTime)}:</WihText>
                 <WihTimeInput
                     value={state.StartTime}
@@ -35,7 +35,7 @@ export const DateStepBase = ({
             </WihView>
             {isInvalid && !state.StartTime && <WihText style={{color: theme.error}}>{t(Labels.errors.validation.startTime)}</WihText>}
 
-            <WihView flex="row" style={{alignItems: "center"}}>
+            <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                 <WihText>{t(Labels.labels.endTime)}:</WihText>
                 <WihTimeInput
                     value={state.EndTime}

@@ -54,7 +54,7 @@ const dateStep: WihFlowStep<OneTimeEvent> = {
         const theme = useWihTheme();
         return (
             <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
-                <WihView style={{flexDirection: "row"}}>
+                <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.date)}:</WihText>
                     <WihDateInput
                         value={state.Date}
@@ -72,7 +72,7 @@ const summaryStep: WihFlowStep<OneTimeEvent> = {
         const {t} = useTranslation();
         return (
             <WihView style={{alignItems: "center", justifyContent: "center"}}>
-                <WihTitle>{state.Title}</WihTitle>
+                <WihTitle style={{marginBottom: 15}}>{state.Title}</WihTitle>
 
                 <WihIconRow name="date-range" flexDirection="row">
                     <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
@@ -97,7 +97,7 @@ const summaryStep: WihFlowStep<OneTimeEvent> = {
 
                 <WihIconRow name="schedule" flexDirection="row">
                     <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
-                    <WihText>{state.DinnerTime ? timeDisplayString(state.DinnerTime) : "N/A"}</WihText>
+                    <WihText>{state.DinnerTime ? timeDisplayString(state.DinnerTime) : "-"}</WihText>
                 </WihIconRow>
             </WihView>
         )

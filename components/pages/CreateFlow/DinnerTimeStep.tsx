@@ -65,7 +65,7 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
                 {isInvalid && state.PresenceType === null && !state.EndTime &&
                     <WihText style={{color: theme.error}}>{t(Labels.errors.validation.presenceType)}</WihText>}
 
-                <WihView flex="row" style={{alignItems: "center"}}>
+                <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.dinnerTime)}:</WihText>
                     <WihTimeInput
                         value={state.DinnerTime ?? undefined}

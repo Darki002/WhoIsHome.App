@@ -26,6 +26,7 @@ const light = {
     info: "#1890FF",
     cardBackground: "#FAFAFA",
     cardBorder: "#E8E8E8",
+    divider: "#333",
 };
 
 const dark = {
@@ -53,6 +54,7 @@ const dark = {
     info: "#40A9FF",
     cardBackground: "#1F1F1F",
     cardBorder: "#333333",
+    divider: "#ddd",
 };
 
 

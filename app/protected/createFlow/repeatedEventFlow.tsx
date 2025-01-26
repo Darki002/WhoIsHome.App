@@ -15,6 +15,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihIconRow";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import WihDivider from "@/components/WihDivider";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -53,7 +54,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
         const theme = useWihTheme()
         return (
             <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
-                <WihView style={{flexDirection: "row"}}>
+                <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.firstOccurrence)}:</WihText>
                     <WihDateInput
                         value={state.FirstOccurrence}
@@ -62,7 +63,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
                 {isInvalid && !state.FirstOccurrence &&
                     <WihText style={{color: theme.error}}>{t(Labels.errors.validation.firstOccurrence)}</WihText>}
 
-                <WihView style={{flexDirection: "row"}}>
+                <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.lastOccurrence)}:</WihText>
                     <WihDateInput
                         value={state.LastOccurrence}
@@ -81,7 +82,8 @@ const summaryStep: WihFlowStep<RepeatedEvent> = {
         const {t} = useTranslation();
         return (
             <WihView style={{alignItems: "center", justifyContent: "center"}}>
-                <WihTitle>{state.Title}</WihTitle>
+                <WihTitle style={{marginBottom: 15}}>{state.Title}</WihTitle>
+
                 <WihIconRow name="date-range" flexDirection="column">
                     <WihView style={styles.container}>
                         <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
@@ -111,7 +113,7 @@ const summaryStep: WihFlowStep<RepeatedEvent> = {
 
                 <WihIconRow name="schedule" flexDirection="row">
                     <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
-                    <WihText>{state.DinnerTime ? timeDisplayString(state.DinnerTime) : "N/A"}</WihText>
+                    <WihText>{state.DinnerTime ? timeDisplayString(state.DinnerTime) : "-"}</WihText>
                 </WihIconRow>
             </WihView>
         )
