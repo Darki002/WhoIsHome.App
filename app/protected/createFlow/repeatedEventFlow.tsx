@@ -47,7 +47,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
     validate: (state: RepeatedEvent) => state.FirstOccurrence !== undefined && state.LastOccurrence !== undefined && state.FirstOccurrence <= state.LastOccurrence && DateValidationBase(state),
     component: ({state, setState, isInvalid}: WihFlowComponentProps<RepeatedEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
-            <WihView flex="row">
+            <WihView style={{flexDirection: "row"}}>
                 <WihText>First Occurrence:</WihText>
                 <WihDateInput
                     value={state.FirstOccurrence}
@@ -56,7 +56,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
             {isInvalid && !state.FirstOccurrence &&
                 <WihText style={{color: "red"}}>FirstOccurrence is required</WihText>}
 
-            <WihView flex="row">
+            <WihView style={{flexDirection: "row"}}>
                 <WihText>Last Occurrence:</WihText>
                 <WihDateInput
                     value={state.LastOccurrence}
@@ -72,7 +72,7 @@ const summaryStep: WihFlowStep<RepeatedEvent> = {
     component: ({state}: WihFlowComponentProps<RepeatedEvent>) => {
         const {t} = useTranslation();
         return (
-            <WihView center="full">
+            <WihView style={{alignItems: "center", justifyContent: "center"}}>
                 <WihTitle>{t(Labels.titles.summary)}</WihTitle>
                 <WihText>Title: {state.Title}</WihText>
                 <WihText>First: {state.FirstOccurrence?.toLocaleDateString()}</WihText>

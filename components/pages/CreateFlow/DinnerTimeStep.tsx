@@ -8,7 +8,7 @@ import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import Labels from "@/constants/locales/Labels";
 
-const options : Array<WihOption<PresenceType>> = [
+const options: Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
     {value: "Late", displayTextLabel: Labels.presenceType.late},
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}

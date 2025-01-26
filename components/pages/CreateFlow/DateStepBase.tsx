@@ -15,7 +15,7 @@ export const DateStepBase = ({
                                  isInvalid,
                                  children
                              }: PropsWithChildren<WihFlowComponentProps<EventBase>>) => (
-    <WihView center="full">
+    <WihView gap={20} style={{alignItems: "center", justifyContent: "center"}}>
         <WihTitle>Event Date & Time</WihTitle>
 
         {children}

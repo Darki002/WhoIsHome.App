@@ -48,7 +48,7 @@ const dateStep: WihFlowStep<OneTimeEvent> = {
     validate: (state: OneTimeEvent) => state.Date !== undefined && DateValidationBase(state),
     component: ({state, setState, isInvalid}: WihFlowComponentProps<OneTimeEvent>) => (
         <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
-            <WihView flex="row">
+            <WihView style={{flexDirection: "row"}}>
                 <WihText>Date:</WihText>
                 <WihDateInput
                     value={state.Date}
@@ -64,7 +64,7 @@ const summaryStep: WihFlowStep<OneTimeEvent> = {
     component: ({state}: WihFlowComponentProps<OneTimeEvent>) => {
         const {t} = useTranslation();
         return (
-            <WihView center="full">
+            <WihView style={{alignItems: "center", justifyContent: "center"}}>
                 <WihTitle>{t(Labels.titles.summary)}</WihTitle>
                 <WihText>Title: {state.Title}</WihText>
                 <WihText>Date: {state.Date?.toLocaleDateString()}</WihText>
