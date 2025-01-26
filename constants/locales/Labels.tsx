@@ -59,7 +59,8 @@ const Labels = {
         email: "Placeholders.Email",
         password: "Placeholders.Password",
         selectDate: "Placeholders.SelectDate",
-        selectTime: "Placeholders.SelectTime"
+        selectTime: "Placeholders.SelectTime",
+        picker: "Placeholders.Picker"
     },
     toast: {
         success: {

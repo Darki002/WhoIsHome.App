@@ -15,7 +15,6 @@
     "Summary": "Summary",
     "CreateFlow": {
       "TitleStep": "Event Title"
-
     }
   },
   "Sections": {
@@ -59,7 +58,8 @@
     "Email": "email",
     "Password": "password",
     "SelectDate": "Select a date",
-    "SelectTime": "Select a time"
+    "SelectTime": "Select a time",
+    "Picker": "Select"
   },
   "Toast": {
     "Success": {

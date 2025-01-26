@@ -58,7 +58,8 @@
     "Email": "Email",
     "Password": "Passwort",
     "SelectDate": "Datum wählen",
-    "SelectTime": "Zeit wählen"
+    "SelectTime": "Zeit wählen",
+    "Picker": "Wählen Sie"
   },
   "Toast": {
     "Success": {

@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     dataContainer: {
-        display: "flex",
         flexDirection: "row",
         alignItems: "center"
     }

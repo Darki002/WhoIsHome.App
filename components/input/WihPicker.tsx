@@ -1,4 +1,9 @@
 import {Picker} from "@react-native-picker/picker";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
+import WihView from "@/components/WihView";
+import {StyleSheet} from "react-native";
 
 export type WihOption<T> = {
     value?: T;
@@ -12,17 +17,31 @@ export interface WihPickerProps<T> {
 }
 
 export function WihPicker<T>({
-                                       value,
-                                       options,
-                                       onChange,
-                                   }: WihPickerProps<T>) {
+                                 value,
+                                 options,
+                                 onChange,
+                             }: WihPickerProps<T>) {
+    const theme = useWihTheme();
+    const {t} = useTranslation();
+
     return (
-        <Picker
-        selectedValue={value}
-        onValueChange={onChange}>
-            {options.map((option, index) => (
-                <Picker.Item key={index} label={option.displayTextLabel} value={option.value} />
-            ))}
-        </Picker>
+        <WihView>
+            <Picker
+                selectedValue={value}
+                onValueChange={onChange}
+                mode="dropdown"
+                dropdownIconColor={theme.text}
+                style={{
+                    color: theme.text,
+                    backgroundColor: theme.background,
+                    width: 200
+                }}
+            >
+                {options.map((option, index) => (
+                    <Picker.Item key={index} label={t(option.displayTextLabel)} value={option.value} />
+                ))}
+            </Picker>
+        </WihView>
     );
+
 }
