@@ -18,6 +18,7 @@ import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
 import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
+import {WihPicker} from "@/components/input/WihPicker";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -122,10 +123,9 @@ export default function RepeatedEventView() {
 
             <WihIconRow name="home" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
-                <WihSingleChoice
+                <WihPicker
                     value={event.PresenceType}
                     options={options}
-                    direction="row"
                     onChange={onPresenceTypeChange}/>
             </WihIconRow>
 

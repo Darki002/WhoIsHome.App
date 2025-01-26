@@ -45,12 +45,20 @@ const Profile = () => {
 
     if (user.hasError) {
         console.error(user.error);
-        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+            </WihView>
+        )
     }
 
     if (response.hasError || !response.response) {
         console.error(response.error);
-        return <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+        return (
+            <WihView center="full">
+                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
+            </WihView>
+        )
     }
 
     const userOverview = new UserOverview(response.response);
