@@ -15,7 +15,6 @@ export interface WihFlowStep<T> {
     validate: (state: T) => boolean;
 }
 
-
 export type WihFlowParam<T> = {
     initValue?: T;
     onFinish: (state: T) => void;
@@ -75,7 +74,8 @@ export function WihFlow<T extends object>({
 
     return (
         <WihFlowNavBar
-            currentStep={currentStepNumber}
+            currentStepNumber={currentStepNumber}
+            validate={() => currentStep.validate(state)}
             lastStep={steps.length - 1}
             onNavAction={onNavAction}
             children={element}/>
