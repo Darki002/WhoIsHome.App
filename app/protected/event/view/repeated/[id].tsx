@@ -11,12 +11,13 @@ import WihView from "@/components/WihView";
 import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
+import {WihErrorView} from "@/components/WihErrorView";
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-    const response = useWihApiFocus<RepeatedEventModel>({
+    const [response, refresh] = useWihApiFocus<RepeatedEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),
         method: "GET"
     });
@@ -26,7 +27,7 @@ export default function RepeatedEventView() {
     }, [id]);
 
     if (!response?.response) {
-        return null;
+        return <WihErrorView response={response!} refresh={refresh} />
     }
 
     const event = new RepeatedEvent(response?.response);

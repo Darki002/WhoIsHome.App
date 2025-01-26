@@ -1,11 +1,10 @@
 import {useSession} from "@/components/appContexts/AuthContext";
 import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
-import {WihText, WihTitle} from "@/components/WihText";
+import {WihText} from "@/components/WihText";
 import WihView from "@/components/WihView";
 import {Dimensions, ScrollView, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
-import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {User} from "@/constants/WihTypes/User";

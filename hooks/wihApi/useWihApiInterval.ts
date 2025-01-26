@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {WihResponse} from "@/helper/WihFetch";
 import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
@@ -10,7 +10,7 @@ export interface WihApiIntervalProps {
     body?: any;
 }
 
-export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalProps): WihResponse<T | null> | null {
+export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalProps): [WihResponse<T | null> | null, (callback: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const callApi = useWihFetch<T>(props)
 
@@ -21,5 +21,11 @@ export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalPro
         return () => clearInterval(id);
     }, []);
 
-    return response;
+    const refresh = useCallback((callback?: () => void) => {
+        callApi(props.body)
+            .then(e => setResponse(e))
+            .then(() => callback && callback());
+    }, [props]);
+
+    return [response, refresh];
 }

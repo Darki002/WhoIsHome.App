@@ -11,12 +11,13 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihIconRow";
+import {WihErrorView} from "@/components/WihErrorView";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
-    const response = useWihApiFocus<OneTimeEventModel>({
+    const [response, refresh] = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET"
     });
@@ -26,7 +27,7 @@ export default function OneTimeEventView() {
     }, [id]);
 
     if (!response?.response) {
-        return null;
+        return <WihErrorView response={response!} refresh={refresh} />
     }
 
     const event = new OneTimeEvent(response?.response);
