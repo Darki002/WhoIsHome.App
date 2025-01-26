@@ -14,7 +14,9 @@
     "EventCreator": "Event Erstellung",
     "Summary": "Zusammenfassung",
     "CreateFlow": {
-      "TitleStep": "Name des Events"
+      "TitleStep": "Name des Events",
+      "DateStep": "Datum und Zeit",
+      "DinnerTimeStep": "Anwesenheit beim Abendessen"
     }
   },
   "Sections": {
@@ -82,7 +84,14 @@
     "MissingBaseUri": "Base Url ist erforderlich!",
     "MissingApiKey": "Api Key ist erforderlich!",
     "Validation": {
-      "Title": "Der Titel muss zwischen 1 und 50 Zeichen lang sein."
+      "Title": "Der Titel muss zwischen 1 und 50 Zeichen lang sein.",
+      "StartTime": "Startzeit ist erforderlich",
+      "EndTime": "Endzeit ist erforderlich",
+      "Date": "Datum ist erforderlich",
+      "PresenceType": "Präsenz angabe ist erforderlich",
+      "DinnerTime": "Abendessen Zeit ist erforderlich",
+      "FirstOccurrence": "Start Date ist erforderlich",
+      "LastOccurrence": "End Datum ist erforderlich"
     }
   },
   "DailyOverviewCard": {

@@ -14,7 +14,9 @@
     "EventCreator": "Event Creator",
     "Summary": "Summary",
     "CreateFlow": {
-      "TitleStep": "Event Title"
+      "TitleStep": "Event Title",
+      "DateStep": "Date and Time",
+      "DinnerTimeStep": "Presence at dinner"
     }
   },
   "Sections": {
@@ -82,7 +84,14 @@
     "MissingBaseUri": "Base Url is required!",
     "MissingApiKey": "Api Key is required!",
     "Validation": {
-      "Title": "Title must be between 1 - 50 characters"
+      "Title": "Title must be between 1 - 50 characters",
+      "StartTime": "Starte time is required",
+      "EndTime": "End time is required",
+      "Date": "Date is required",
+      "PresenceType": "PresenceType is required",
+      "DinnerTime": "Dinner time is required",
+      "FirstOccurrence": "First occurrence is required",
+      "LastOccurrence": "Last occurrence is required"
     }
   },
   "DailyOverviewCard": {
@@ -93,7 +102,7 @@
     "OneTimeEvent": "An event for a specific date.",
     "RepeatedEvent": "An event that is on the first date and repeats every week until the last date.",
     "CreateFlow": {
-      "TitleStep": "Give your new event a Title."
+      "TitleStep": "Give your new event a Title.",
     }
   }
 }

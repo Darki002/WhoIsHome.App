@@ -14,8 +14,9 @@ const Labels = {
         eventCreator: "Titles.EventCreator",
         summary: "Titles.Summary",
         createFlow: {
-            titleStep: "Titles.CreateFlow.TitleStep"
-
+            titleStep: "Titles.CreateFlow.TitleStep",
+            dateStep: "Titles.CreateFlow.DateStep",
+            dinnerTimeStep: "Titles.CreateFlow.DinnerTimeStep",
         }
     },
     sections: {
@@ -30,7 +31,7 @@ const Labels = {
         presenceType: "Labels.PresenceType",
         dinnerTime: "Labels.DinnerTime",
         firstOccurrence: "Labels.FirstOccurrence",
-        lastOccurrence: "Labels.LastOccurrence"
+        lastOccurrence: "Labels.LastOccurrence",
     },
     tabs: {
         home: "Tabs.Home",
@@ -83,7 +84,14 @@ const Labels = {
         missingBaseUri: "Errors.MissingBaseUri",
         missingApiKey: "Errors.MissingApiKey",
         validation: {
-            title: "Errors.Validation.Title"
+            title: "Errors.Validation.Title",
+            startTime: "Descriptions.Validation.StartTime",
+            endTime: "Descriptions.Validation.EndTime",
+            date: "Descriptions.Validation.Date",
+            presenceType: "Descriptions.Validation.PresenceType",
+            dinnerTime: "Descriptions.Validation.DinnerTime",
+            firstOccurrence: "Titles.CreateFlow.FirstOccurrence",
+            lastOccurrence: "Titles.CreateFlow.LastOccurrence",
         }
     },
     dailyOverviewCard: {
@@ -94,8 +102,7 @@ const Labels = {
         oneTimeEvent: "Descriptions.OneTimeEvent",
         repeatedEvent: "Descriptions.RepeatedEvent",
         createFlow: {
-            titleStep: "Descriptions.CreateFlow.TitleStep"
-
+            titleStep: "Descriptions.CreateFlow.TitleStep",
         }
     }
 } as const;
