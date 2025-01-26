@@ -4,6 +4,7 @@ import {WihButton} from "@/components/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import WihDivider from "@/components/WihDivider";
 
 export type WihFlowNavAction = "Next" | "Back" | "Cancel" | "Finish";
 
@@ -22,6 +23,9 @@ export function WihFlowNavBar({ currentStepNumber, validate, lastStep, onNavActi
     return (
         <WihView flex="column" center="full" gap={20} style={{ paddingHorizontal: 20 }}>
             {children}
+
+            <WihDivider />
+
             <WihView flex="row" gap={15} style={{ marginTop: 20 }}>
                 {currentStepNumber > 0 && (
                     <WihButton onPress={() => onNavAction("Back")}>

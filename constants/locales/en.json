@@ -80,7 +80,10 @@
     "MissingPassword": "Password is required!",
     "MissingUsername": "Username is required!",
     "MissingBaseUri": "Base Url is required!",
-    "MissingApiKey": "Api Key is required!"
+    "MissingApiKey": "Api Key is required!",
+    "Validation": {
+      "Title": "Title must be between 1 - 50 characters"
+    }
   },
   "DailyOverviewCard": {
     "UnknownTime": "Unknown"

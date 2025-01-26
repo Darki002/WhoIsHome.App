@@ -49,13 +49,13 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
         }
 
         return (
-            <WihView center="full">
+            <WihView gap={20} style={{alignItems: "center", justifyContent: "center"}}>
                 <WihTitle>Dinner Time?</WihTitle>
 
                 <WihSingleChoice<PresenceType>
                     value={state.PresenceType}
                     options={options}
-                    direction="column"
+                    direction="row"
                     onChange={onPresenceTypeChange}/>
 
                 {isInvalid && state.PresenceType === null && !state.EndTime &&

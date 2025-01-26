@@ -81,7 +81,10 @@ const Labels = {
         missingPassword: "Errors.MissingPassword",
         missingUsername: "Errors.MissingUsername",
         missingBaseUri: "Errors.MissingBaseUri",
-        missingApiKey: "Errors.MissingApiKey"
+        missingApiKey: "Errors.MissingApiKey",
+        validation: {
+            title: "Errors.Validation.Title"
+        }
     },
     dailyOverviewCard: {
         unknownTime: "DailyOverviewCard.UnknownTime"
