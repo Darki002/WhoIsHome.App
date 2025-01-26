@@ -1,6 +1,6 @@
 import {createContext, type PropsWithChildren, useContext} from 'react';
 import {useStorageState} from '@/hooks/useStorageState';
-import {wihFetch} from '@/helper/WihApi';
+import {wihFetch} from '@/helper/WihFetch';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";

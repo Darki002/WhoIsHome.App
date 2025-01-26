@@ -1,8 +1,9 @@
-import {wihFetch, WihResponse} from "@/helper/WihApi";
+import {wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useEffect, useState} from "react";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
 export interface WihApiProps {
     endpoint: string;
@@ -11,23 +12,13 @@ export interface WihApiProps {
     body?: any;
 }
 
-export default function useWihApi<T>({endpoint, method, version = 1, body}: WihApiProps) {
-    const {config} = useApiConfig();
+export default function useWihApi<T>(props: WihApiProps) {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const {session, onNewSession} = useSession();
-
-    function onNewTokens(tokens: Tokens | undefined) {
-        if (tokens) {
-            onNewSession(tokens);
-        }
-    }
+    const callApi = useWihFetch<T>(props);
 
     useEffect(() => {
-        if (!session) return;
-
-        wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-            .then(e => setResponse(e));
-    }, [endpoint]);
+        callApi(props.body).then(e => setResponse(e));
+    }, [props]);
 
     return response;
 }

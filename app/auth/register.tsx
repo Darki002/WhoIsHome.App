@@ -4,7 +4,7 @@ import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
-import {wihFetch} from "@/helper/WihApi";
+import {wihFetch} from "@/helper/WihFetch";
 import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";

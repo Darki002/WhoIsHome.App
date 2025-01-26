@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
-import {wihFetch, WihResponse} from "@/helper/WihApi";
-import {useSession} from "@/components/appContexts/AuthContext";
-import {Tokens} from "@/constants/WihTypes/Auth";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {WihResponse} from "@/helper/WihFetch";
+import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
 export interface WihApiIntervalProps {
     time: number;
@@ -12,34 +10,13 @@ export interface WihApiIntervalProps {
     body?: any;
 }
 
-export default function useWihApiInterval<T>({
-                                                 time,
-                                                 endpoint,
-                                                 method,
-                                                 version = 1,
-                                                 body
-                                             }: WihApiIntervalProps): WihResponse<T | null> | null {
-    const {config} = useApiConfig();
+export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalProps): WihResponse<T | null> | null {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const {session, onNewSession} = useSession();
-
-    function onNewTokens(tokens: Tokens | undefined) {
-        if (tokens) {
-            onNewSession(tokens);
-        }
-    }
+    const callApi = useWihFetch<T>(props)
 
     useEffect(() => {
-        if (!session) return () => {
-        };
-
-        wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-            .then(e => setResponse(e));
-
-        // Refresh every other Minute
         const id = setInterval(() => {
-            wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-                .then(e => setResponse(e));
+            callApi(props.body).then(e => setResponse(e));
         }, time);
         return () => clearInterval(id);
     }, []);

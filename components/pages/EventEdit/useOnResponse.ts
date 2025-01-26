@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {WihResponse} from "@/helper/WihApi";
+import {WihResponse} from "@/helper/WihFetch";
 import Toast from "react-native-root-toast";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";

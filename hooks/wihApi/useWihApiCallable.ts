@@ -1,8 +1,6 @@
+import {WihResponse} from "@/helper/WihFetch";
 import {useCallback} from "react";
-import {useSession} from "@/components/appContexts/AuthContext";
-import {Tokens} from "@/constants/WihTypes/Auth";
-import {wihFetch, WihResponse} from "@/helper/WihApi";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
 export interface WihApiProps<T> {
     endpoint: string;
@@ -11,25 +9,9 @@ export interface WihApiProps<T> {
     version?: number;
 }
 
-export default function useWihApiCallable<T = {}>({
-                                                      endpoint,
-                                                      onResponse,
-                                                      method,
-                                                      version = 1
-                                                  }: WihApiProps<T>): (body: T) => void {
-    const {config} = useApiConfig();
-    const {session, onNewSession} = useSession();
-
-    function onNewTokens(tokens: Tokens | undefined) {
-        if (tokens) {
-            onNewSession(tokens);
-        }
-    }
-
+export default function useWihApiCallable<T = {}>(props: WihApiProps<T>): (body: T) => void {
+    const callApi = useWihFetch<T>(props);
     return useCallback((body: T) => {
-        if (!session) return;
-
-        wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-            .then(e => onResponse(e));
-    }, [endpoint]);
+        return callApi(body);
+    }, []);
 }

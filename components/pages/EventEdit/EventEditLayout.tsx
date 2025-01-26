@@ -1,4 +1,4 @@
-import {WihResponse} from "@/helper/WihApi";
+import {WihResponse} from "@/helper/WihFetch";
 import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PropsWithChildren, useCallback, useEffect} from "react";
 import {useNavigation} from "expo-router";
