@@ -15,16 +15,17 @@ export interface WihApiProps {
 
 export default function useWihApiFocus<T>(props: WihApiProps): [WihResponse<T | null> | null, (c: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const callApi = useWihFetch<T>(props)
-    useFocusEffect(() => {
+    const callApi = useWihFetch<T>(props);
+
+    useFocusEffect(useCallback(() => {
         callApi(props.body).then(e => setResponse(e));
-    });
+    }, [props.body]));
 
     const refresh = useCallback((callback?: () => void) => {
         callApi(props.body)
             .then(e => setResponse(e))
             .then(() => callback && callback());
-    }, [props]);
+    }, [props.body]);
 
     return [response, refresh];
 }

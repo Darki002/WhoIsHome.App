@@ -12,7 +12,6 @@ export interface WihApiProps {
     body?: any;
 }
 
-
 // keep in mind it will only call the API gain when the body changes but not it endpoint, method or version changes.
 export default function useWihApi<T>({endpoint, body, method, version}: WihApiProps) : [WihResponse<T | null> | null, (callback?: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
