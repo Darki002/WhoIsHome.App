@@ -12,19 +12,21 @@ export interface WihApiProps {
     body?: any;
 }
 
-export default function useWihApi<T>(props: WihApiProps) : [WihResponse<T | null> | null, (callback?: () => void) => void] {
+
+// keep in mind it will only call the API gain when the body changes but not it endpoint, method or version changes.
+export default function useWihApi<T>({endpoint, body, method, version}: WihApiProps) : [WihResponse<T | null> | null, (callback?: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const callApi = useWihFetch<T>(props);
+    const callApi = useWihFetch<T>({endpoint, method, version});
 
     useEffect(() => {
-        callApi(props.body).then(e => setResponse(e));
-    }, [props]);
+        callApi(body).then(e => setResponse(e));
+    }, [body]);
 
     const refresh = useCallback((callback?: () => void) => {
-        callApi(props.body)
+        callApi(body)
             .then(e => setResponse(e))
             .then(() => callback && callback());
-    }, [props]);
+    }, [body]);
 
     return [response, refresh];
 }
