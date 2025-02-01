@@ -19,8 +19,13 @@ const useWihFetch = <T>(props: WihFetchProps)  => {
         }
     }
 
-    return async (body: T) => {
+    return async (body?: T) => {
         if (!session) return null;
+
+        if(props.method === "GET" && body){
+            console.warn(`Attempting a GET request with a body for ${props.endpoint}`);
+            return null;
+        }
 
         const params = {
             endpoint: props.endpoint,

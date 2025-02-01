@@ -92,7 +92,8 @@
       "DinnerTime": "Dinner time is required",
       "FirstOccurrence": "First occurrence is required",
       "LastOccurrence": "Last occurrence is required"
-    }
+    },
+    "NoEvents" : "This user currently has no events."
   },
   "DailyOverviewCard": {
     "UnknownTime": "Unknown"

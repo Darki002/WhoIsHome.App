@@ -13,6 +13,7 @@ import Labels from "@/constants/locales/Labels";
 import {WihCollapsible} from "@/components/WihCollapsible";
 import {ScrollView, StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
+import {WihText} from "@/components/WihText";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -59,6 +60,14 @@ export default function UserView() {
     return (
         <WihView style={styles.container}>
             <ScrollView>
+                {
+                    overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
+                        <WihView center="full">
+                            <WihText>{t(Labels.errors.noEvents)}</WihText>
+                        </WihView>
+                    )
+                }
+
                 {/* Event Lists */}
                 <WihView style={styles.eventLists}>
                     {/* Today */}

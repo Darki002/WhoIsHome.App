@@ -92,7 +92,8 @@
       "DinnerTime": "Abendessen Zeit ist erforderlich",
       "FirstOccurrence": "Start Date ist erforderlich",
       "LastOccurrence": "End Datum ist erforderlich"
-    }
+    },
+    "NoEvents" : "Dieser Benutzer hat noch keine Events."
   },
   "DailyOverviewCard": {
     "UnknownTime": "Unbekannt"

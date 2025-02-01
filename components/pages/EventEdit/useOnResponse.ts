@@ -9,7 +9,7 @@ const useOnResponse = (id: number | string) => {
     const {t} = useTranslation();
     const router = useRouter();
 
-    return  useCallback((res: WihResponse | null) => {
+    return useCallback((res: WihResponse | null) => {
         if (!res || res.hasError) {
             console.error(res?.error ?? "Unknown Error");
             Toast.show(t(Labels.toast.error.updateEvent), {
