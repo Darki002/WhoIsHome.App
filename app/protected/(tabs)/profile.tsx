@@ -3,7 +3,7 @@ import {WihAvatar} from "@/components/WihAvatar";
 import {WihButton} from "@/components/input/WihButton";
 import {WihText} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import {Dimensions, ScrollView, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihEventList from "@/components/wihEvent/WihEventList";
 import useWihApi from "@/hooks/wihApi/useWihApi";
@@ -14,6 +14,8 @@ import Labels from "@/constants/locales/Labels";
 import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
 import {WihErrorView} from "@/components/WihErrorView";
+import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import {useCallback} from "react";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -28,6 +30,11 @@ const Profile = () => {
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
+
+    const refresh = useCallback(async () => {
+        await userRefresh();
+        await responseRefresh();
+    }, [userRefresh, responseRefresh])
 
     const dim = Dimensions.get("screen");
 
@@ -53,7 +60,7 @@ const Profile = () => {
     const userName = user.response?.userName ?? "";
     return (
         <WihView style={{flex: 1}}>
-            <ScrollView>
+            <WihRefreshableScrollView onRefresh={refresh}>
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>
@@ -98,7 +105,7 @@ const Profile = () => {
                         )}
                     </WihView>
                 </WihView>
-            </ScrollView>
+            </WihRefreshableScrollView>
         </WihView>
     );
 }

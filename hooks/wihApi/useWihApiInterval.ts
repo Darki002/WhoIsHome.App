@@ -10,7 +10,7 @@ export interface WihApiIntervalProps {
     body?: any;
 }
 
-export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalProps): [WihResponse<T | null> | null, (callback: () => void) => void] {
+export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalProps): [WihResponse<T | null> | null, () => Promise<void>] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
     const callApi = useWihFetch<T>(props)
 
@@ -24,10 +24,8 @@ export default function useWihApiInterval<T>({time, ...props}: WihApiIntervalPro
         return () => clearInterval(id);
     }, []);
 
-    const refresh = useCallback((callback?: () => void) => {
-        callApi(props.body)
-            .then(e => setResponse(e))
-            .then(() => callback && callback());
+    const refresh = useCallback(async () => {
+        callApi(props.body).then(e => setResponse(e));
     }, [props]);
 
     return [response, refresh];
