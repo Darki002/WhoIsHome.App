@@ -1,11 +1,10 @@
 import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
 import WihEventList from "@/components/wihEvent/WihEventList";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
@@ -13,6 +12,8 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {WihCollapsible} from "@/components/WihCollapsible";
 import {ScrollView, StyleSheet} from "react-native";
+import {WihErrorView} from "@/components/WihErrorView";
+import {WihText} from "@/components/WihText";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -20,11 +21,11 @@ export default function UserView() {
     const {t} = useTranslation();
     const {id} = useLocalSearchParams<{ id: string }>();
     const navigation = useNavigation();
-    const user = useWihApi<User | null>({
+    const [user, userRefresh] = useWihApi<User | null>({
         endpoint: Endpoints.user.withId(id),
         method: "GET",
     });
-    const response = useWihApiFocus<UserOverviewDto>({
+    const [response, refresh] = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.withId(id),
         method: "GET"
     });
@@ -47,26 +48,26 @@ export default function UserView() {
 
     if (response.hasError) {
         console.log(response.error);
-        return (
-            <WihView center="full">
-                <WihText>{t(Labels.errors.generic)}</WihText>
-            </WihView>
-        )
+        return <WihErrorView response={response!} refresh={refresh} />
     }
 
-    if (user.hasError || !response.response) {
+    if (user.hasError) {
         console.log(user.error);
-        return (
-            <WihView center="full">
-                <WihText>{t(Labels.errors.generic)}</WihText>
-            </WihView>
-        )
+        return <WihErrorView response={user} refresh={userRefresh} />
     }
 
-    const overview = new UserOverview(response.response);
+    const overview = new UserOverview(response.response!);
     return (
         <WihView style={styles.container}>
             <ScrollView>
+                {
+                    overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
+                        <WihView center="full">
+                            <WihText>{t(Labels.errors.noEvents)}</WihText>
+                        </WihView>
+                    )
+                }
+
                 {/* Event Lists */}
                 <WihView style={styles.eventLists}>
                     {/* Today */}

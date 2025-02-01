@@ -7,7 +7,7 @@ import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/W
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import WihView from "@/components/WihView";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
-import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
+import {WihOption} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";
@@ -19,6 +19,7 @@ import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
 import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/input/WihPicker";
+import {WihErrorView} from "@/components/WihErrorView";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -31,7 +32,7 @@ export default function RepeatedEventView() {
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const response = useWihApiFocus<RepeatedEventModel>({
+    const [response, refresh] = useWihApiFocus<RepeatedEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),
         method: "GET"
     });
@@ -75,7 +76,7 @@ export default function RepeatedEventView() {
     };
 
     if(!event) {
-        return null;
+        return <WihErrorView response={response!} refresh={refresh} />
     }
 
     const onDinnerTimeChange = (time: Date | undefined) => {

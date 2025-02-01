@@ -1,6 +1,6 @@
 import {useRouter} from "expo-router";
 import {useCallback} from "react";
-import {WihResponse} from "@/helper/WihApi";
+import {WihResponse} from "@/helper/WihFetch";
 import Toast from "react-native-root-toast";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 

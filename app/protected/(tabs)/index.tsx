@@ -8,12 +8,13 @@ import WihLoading from "@/components/WihLoading";
 import {DailyOverviewCard} from "@/components/wihEvent/DailyOverviewCard";
 import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
 import {StyleSheet} from "react-native";
+import {WihErrorView} from "@/components/WihErrorView";
 
 const TIME = 5 * 60 * 1000;
 
 export default function Index() {
     const {t} = useTranslation();
-    const response = useWihApiInterval<DailyOverviewDto[]>({
+    const [response, refresh] = useWihApiInterval<DailyOverviewDto[]>({
         time: TIME,
         method: "GET",
         endpoint: Endpoints.dailyOverview
@@ -28,11 +29,7 @@ export default function Index() {
     }
 
     if (response.hasError || !response.response) {
-        return (
-            <WihView center="full">
-                <WihTitle>{t(Labels.errors.generic)}</WihTitle>
-            </WihView>
-        )
+        return <WihErrorView response={response} refresh={refresh} />
     }
 
     const overviews = response.response.map(r => new DailyOverview(r));

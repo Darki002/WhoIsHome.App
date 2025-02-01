@@ -1,9 +1,10 @@
-import {createContext, type PropsWithChildren, useContext} from 'react';
+import {createContext, type PropsWithChildren, useContext, useEffect} from 'react';
 import {useStorageState} from '@/hooks/useStorageState';
-import {wihFetch} from '@/helper/WihApi';
+import {wihFetch} from '@/helper/WihFetch';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {useRouter} from "expo-router";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -37,11 +38,19 @@ export function useSession() {
 }
 
 export function SessionProvider({children}: PropsWithChildren) {
+    const router = useRouter();
     const {config, isApiConfigLoading} = useApiConfig();
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
     const isLoading = isLoadingSession || isLoadingRefreshToken || isApiConfigLoading;
+
+    useEffect(() => {
+        if (!isLoading && (!session || !refreshToken)) {
+            router.replace("/auth/login");
+            return;
+        }
+    }, [isLoading, session, refreshToken, router]);
 
     return (
         <AuthContext.Provider

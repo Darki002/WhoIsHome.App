@@ -16,6 +16,7 @@ export interface WihResponse<T = {}> {
     status: number;
     hasError: boolean;
     error: string | null;
+    refreshFailed: boolean;
     response?: T;
 }
 
@@ -38,6 +39,7 @@ export const wihFetch = async <TBody>({
             return ({
                 status: newTokens.status,
                 hasError: true,
+                refreshFailed: true,
                 error: newTokens.error
             });
         }
@@ -77,7 +79,8 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
         return ({
             status: 0,
             hasError: true,
-            error: error.message
+            error: error.message,
+            refreshFailed: false
         });
     }
 }
@@ -103,7 +106,8 @@ async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise
         return ({
             status: 0,
             hasError: true,
-            error: error.message
+            error: error.message,
+            refreshFailed: false
         });
     }
 }
@@ -116,6 +120,7 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
             status: response.status,
             hasError: false,
             error: null,
+            refreshFailed: false,
             response: body as T
         });
     }
@@ -123,20 +128,12 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     const message = await response.text();
     console.warn(`Request with error Status "${response.statusText}" - ${response.status} | Message: ${message}`);
 
-    switch (response.status) {
-        case 401:
-            return ({
-                status: response.status,
-                hasError: true,
-                error: response.statusText
-            });
-        default:
-            return ({
-                status: response.status,
-                hasError: true,
-                error: response.statusText
-            });
-    }
+    return ({
+        status: response.status,
+        hasError: true,
+        error: response.statusText,
+        refreshFailed: false
+    });
 }
 
 function getUri(baseUrl : string, endpoint: string, version: number = 1): string {

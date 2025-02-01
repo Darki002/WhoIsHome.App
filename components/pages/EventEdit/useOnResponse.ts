@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {WihResponse} from "@/helper/WihApi";
+import {WihResponse} from "@/helper/WihFetch";
 import Toast from "react-native-root-toast";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
@@ -9,7 +9,7 @@ const useOnResponse = (id: number | string) => {
     const {t} = useTranslation();
     const router = useRouter();
 
-    return  useCallback((res: WihResponse | null) => {
+    return useCallback((res: WihResponse | null) => {
         if (!res || res.hasError) {
             console.error(res?.error ?? "Unknown Error");
             Toast.show(t(Labels.toast.error.updateEvent), {

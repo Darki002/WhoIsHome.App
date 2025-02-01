@@ -92,7 +92,8 @@ const Labels = {
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",
             lastOccurrence: "Titles.CreateFlow.LastOccurrence",
-        }
+        },
+        noEvents: "Errors.NoEvents"
     },
     dailyOverviewCard: {
         unknownTime: "DailyOverviewCard.UnknownTime"

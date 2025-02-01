@@ -1,6 +1,6 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect} from "react";
-import {WihResponse} from "@/helper/WihApi";
+import {WihResponse} from "@/helper/WihFetch";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";

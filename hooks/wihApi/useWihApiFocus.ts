@@ -1,9 +1,10 @@
-import {wihFetch, WihResponse} from "@/helper/WihApi";
+import {wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useCallback, useState} from "react";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {useFocusEffect} from "expo-router";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
 export interface WihApiProps {
     endpoint: string;
@@ -12,25 +13,19 @@ export interface WihApiProps {
     body?: any;
 }
 
-export default function useWihApiFocus<T>({endpoint, method, version = 1, body}: WihApiProps) {
-    const {config} = useApiConfig();
+export default function useWihApiFocus<T>(props: WihApiProps): [WihResponse<T | null> | null, (c: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const {session, onNewSession} = useSession();
+    const callApi = useWihFetch<T>(props);
 
-    function onNewTokens(tokens: Tokens | undefined) {
-        if (tokens) {
-            onNewSession(tokens);
-        }
-    }
+    useFocusEffect(useCallback(() => {
+        callApi(props.body).then(e => setResponse(e));
+    }, [props.body]));
 
-    useFocusEffect(
-        useCallback(() => {
-            if (!session) return;
+    const refresh = useCallback((callback?: () => void) => {
+        callApi(props.body)
+            .then(e => setResponse(e))
+            .then(() => callback && callback());
+    }, [props.body]);
 
-            wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-                .then(e => setResponse(e));
-        }, [endpoint])
-    );
-
-    return response;
+    return [response, refresh];
 }

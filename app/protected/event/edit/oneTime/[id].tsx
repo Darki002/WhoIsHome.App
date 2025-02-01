@@ -7,7 +7,7 @@ import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import WihView from "@/components/WihView";
-import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
+import {WihOption} from "@/components/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
@@ -19,6 +19,7 @@ import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/input/WihTextInput";
 import {WihPicker} from "@/components/input/WihPicker";
+import {WihErrorView} from "@/components/WihErrorView";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -31,7 +32,7 @@ export default function OneTimeEventView() {
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const response = useWihApiFocus<OneTimeEventModel>({
+    const [response, refresh] = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET"
     });
@@ -74,7 +75,7 @@ export default function OneTimeEventView() {
     };
 
     if(!event) {
-        return null;
+        return <WihErrorView response={response!} refresh={refresh} />
     }
 
     const onDinnerTimeChange = (time: Date | undefined) => {

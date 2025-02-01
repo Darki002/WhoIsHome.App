@@ -1,8 +1,6 @@
-import {wihFetch, WihResponse} from "@/helper/WihApi";
-import {useEffect, useState} from "react";
-import {useSession} from "@/components/appContexts/AuthContext";
-import {Tokens} from "@/constants/WihTypes/Auth";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {WihResponse} from "@/helper/WihFetch";
+import {useCallback, useEffect, useState} from "react";
+import useWihFetch from "@/hooks/wihApi/useWihFetch";
 
 export interface WihApiProps {
     endpoint: string;
@@ -11,23 +9,20 @@ export interface WihApiProps {
     body?: any;
 }
 
-export default function useWihApi<T>({endpoint, method, version = 1, body}: WihApiProps) {
-    const {config} = useApiConfig();
+// keep in mind it will only call the API gain when the body changes but not it endpoint, method or version changes.
+export default function useWihApi<T>({endpoint, body, method, version}: WihApiProps) : [WihResponse<T | null> | null, (callback?: () => void) => void] {
     const [response, setResponse] = useState<WihResponse<T | null> | null>(null);
-    const {session, onNewSession} = useSession();
-
-    function onNewTokens(tokens: Tokens | undefined) {
-        if (tokens) {
-            onNewSession(tokens);
-        }
-    }
+    const callApi = useWihFetch<T>({endpoint, method, version});
 
     useEffect(() => {
-        if (!session) return;
+        callApi(body).then(e => setResponse(e));
+    }, [body]);
 
-        wihFetch<T>({endpoint, method, version, body, tokens: session, config: config!, onNewTokens})
-            .then(e => setResponse(e));
-    }, [endpoint]);
+    const refresh = useCallback((callback?: () => void) => {
+        callApi(body)
+            .then(e => setResponse(e))
+            .then(() => callback && callback());
+    }, [body]);
 
-    return response;
+    return [response, refresh];
 }
