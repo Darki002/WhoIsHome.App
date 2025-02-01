@@ -14,6 +14,7 @@ import {WihCollapsible} from "@/components/WihCollapsible";
 import {ScrollView, StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihText} from "@/components/WihText";
+import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -59,7 +60,7 @@ export default function UserView() {
     const overview = new UserOverview(response.response!);
     return (
         <WihView style={styles.container}>
-            <ScrollView>
+            <WihRefreshableScrollView onRefresh={[refresh, userRefresh]}>
                 {
                     overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
                         <WihView center="full">
@@ -100,7 +101,7 @@ export default function UserView() {
                         </WihCollapsible>
                     )}
                 </WihView>
-            </ScrollView>
+            </WihRefreshableScrollView>
         </WihView>
     )
 }

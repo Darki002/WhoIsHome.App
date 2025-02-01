@@ -15,7 +15,6 @@ import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
-import {useCallback} from "react";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -30,11 +29,6 @@ const Profile = () => {
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
-
-    const refresh = useCallback(async () => {
-        await userRefresh();
-        await responseRefresh();
-    }, [userRefresh, responseRefresh])
 
     const dim = Dimensions.get("screen");
 
@@ -60,7 +54,7 @@ const Profile = () => {
     const userName = user.response?.userName ?? "";
     return (
         <WihView style={{flex: 1}}>
-            <WihRefreshableScrollView onRefresh={refresh}>
+            <WihRefreshableScrollView onRefresh={[userRefresh, responseRefresh]}>
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>

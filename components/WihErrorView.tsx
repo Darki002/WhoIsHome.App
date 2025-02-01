@@ -12,7 +12,7 @@ export function WihErrorView({response, refresh} : {response?: WihResponse<any> 
         <WihView center="full">
             <WihRefreshableScrollView
                 contentContainerStyle={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}
-                onRefresh={refresh}
+                onRefresh={[refresh]}
             >
                 <WihTitle>{t(Labels.errors.generic)}</WihTitle>
                 <WihText>{response?.error ?? "Unknown error"}</WihText>

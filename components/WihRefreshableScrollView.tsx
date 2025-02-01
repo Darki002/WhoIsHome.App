@@ -2,8 +2,10 @@ import {PropsWithChildren, useCallback, useState} from "react";
 import WihView from "@/components/WihView";
 import {RefreshControl, ScrollView, ScrollViewProps} from "react-native";
 
+export type RefreshCallback = () => Promise<void>;
+
 export interface WihRefreshableViewProps extends ScrollViewProps {
-    onRefresh: () => Promise<void>;
+    onRefresh: RefreshCallback[];
 }
 
 export function WihRefreshableScrollView({children, onRefresh, ...rest}: PropsWithChildren<WihRefreshableViewProps>) {
@@ -11,7 +13,9 @@ export function WihRefreshableScrollView({children, onRefresh, ...rest}: PropsWi
 
     const onScrollRefresh = useCallback(async () => {
         setRefreshing(true);
-        await onRefresh();
+        for (const c of onRefresh) {
+            await c();
+        }
         setRefreshing(false);
     }, []);
 
