@@ -5,8 +5,12 @@
   "build": {
     "preview": {
       "extends": "production",
+      "distribution": "internal",
       "releaseChannel": "preview",
-      "autoIncrement": true
+      "autoIncrement": true,
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {
       "distribution": "internal",
