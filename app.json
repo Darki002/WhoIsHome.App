@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "WhoIsHome",
-    "slug": "WhoIsHome",
+    "slug": "whoishome",
+    "owner": "darki002",
     "version": "1.0.0-preview",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

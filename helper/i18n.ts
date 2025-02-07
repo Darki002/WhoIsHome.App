@@ -7,15 +7,9 @@ import de from '@/constants/locales/de.json';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const initI18n = async () => {
-    let savedLanguage: string | null = null; //await AsyncStorage.getItem("language");
-
-    if (!savedLanguage) {
-        savedLanguage = Localization.getLocales()[0]?.languageCode;
-    }
-
     i18n.use(initReactI18next).init({
         fallbackLng: 'en',
-        lng: savedLanguage ?? undefined,
+        lng: Localization.getLocales()[0]?.languageCode ?? undefined,
         resources: {
             en: { translation: en },
             de: { translation: de },
