@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": "latest"
+  },
+  "build": {
+    "preview": {
+      "extends": "production",
+      "distribution": "internal",
+      "releaseChannel": "preview",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "distribution": "internal",
+      "releaseChannel": "production",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
