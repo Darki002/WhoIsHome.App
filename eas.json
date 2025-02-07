@@ -8,6 +8,7 @@
       "extends": "production",
       "distribution": "internal",
       "releaseChannel": "preview",
+      "environment": "preview",
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
@@ -16,6 +17,7 @@
     "production": {
       "distribution": "internal",
       "releaseChannel": "production",
+      "environment": "production",
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
