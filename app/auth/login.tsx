@@ -12,7 +12,7 @@ const Login = () => {
     const { t } = useTranslation();
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
-    const [error, setError] = useState<string>("");
+    const [error, setError] = useState<string | null>(null);
     const {signIn} = useSession();
 
     async function onLogIn({email, password}: LoginInfos) {
@@ -26,9 +26,7 @@ const Login = () => {
         }
 
         const error = await signIn({email, password});
-        if (error) {
-            setError(error);
-        }
+        setError(error);
     }
 
     return (
