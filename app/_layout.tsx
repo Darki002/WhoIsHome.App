@@ -12,6 +12,7 @@ import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
 import WihView from "@/components/WihView";
 import WihLoading from "@/components/WihLoading";
+import {StatusBar} from "expo-status-bar";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -49,6 +50,10 @@ const RootLayout = () => {
             <WihThemeProvider>
                 <ApiConfigProvider>
                     <SessionProvider>
+                        <StatusBar
+                            style={colorScheme === 'dark' ? 'light' : 'dark'}
+                            backgroundColor={Colors[colorScheme ?? "light"].background}
+                        />
                         <Stack screenOptions={screenOptions}>
                             <Stack.Screen name="protected" options={{headerShown: false}}/>
                             <Stack.Screen name="auth" options={{headerShown: false}}/>
