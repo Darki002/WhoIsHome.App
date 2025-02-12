@@ -13,9 +13,24 @@ import {Colors} from "@/constants/Colors";
 import WihView from "@/components/WihView";
 import WihLoading from "@/components/WihLoading";
 import {StatusBar} from "expo-status-bar";
+import {isRunningInExpoGo} from "expo";
+import * as Sentry from '@sentry/react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// Construct a new integration instance. This is needed to communicate between the integration and React
+const navigationIntegration = Sentry.reactNavigationIntegration({
+    enableTimeToInitialDisplay: !isRunningInExpoGo(),
+});
+
+Sentry.init({
+    dsn: 'YOUR DSN HERE', // TODO
+    debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+    tracesSampleRate: 1.0, // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing. Adjusting this value in production.
+    integrations: [navigationIntegration],
+    enableNativeFramesTracking: !isRunningInExpoGo(), // Tracks slow and frozen frames in the application
+});
 
 const RootLayout = () => {
     const colorScheme = useColorScheme();
@@ -67,4 +82,5 @@ const RootLayout = () => {
     );
 }
 
-export default RootLayout;
+// Wrap the Root Layout route component with `Sentry.wrap` to capture gesture info and profiling data.
+export default Sentry.wrap(RootLayout);
