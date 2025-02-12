@@ -17,7 +17,7 @@ const register = () => {
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
-    const [error, setError] = useState<string>("");
+    const [error, setError] = useState<string | null>(null);
     const {signIn} = useSession();
 
     async function onRegister(email: string, password: string, userName: string) {
@@ -53,9 +53,7 @@ const register = () => {
         }
 
         const error = await signIn({email, password});
-        if (error) {
-            setError(error);
-        }
+        setError(error);
     }
 
     return (
