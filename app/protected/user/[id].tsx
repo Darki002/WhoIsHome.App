@@ -22,7 +22,7 @@ export default function UserView() {
     const {t} = useTranslation();
     const {id} = useLocalSearchParams<{ id: string }>();
     const navigation = useNavigation();
-    const [user, userRefresh] = useWihApi<User | null>({
+    const [user, userRefresh] = useWihApi<User>({
         endpoint: Endpoints.user.withId(id),
         method: "GET",
     });

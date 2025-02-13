@@ -21,11 +21,11 @@ const EVENT_COUNT_THRESHOLD = 4;
 const Profile = () => {
     const {t} = useTranslation();
     const {signOut} = useSession();
-    const [user, userRefresh] = useWihApi<User | null>({
+    const [user, userRefresh] = useWihApi<User>({
         endpoint: Endpoints.user.me,
         method: "GET",
     });
-    const [response, responseRefresh] = useWihApi<UserOverviewDto | null>({
+    const [response, responseRefresh] = useWihApi<UserOverviewDto>({
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
