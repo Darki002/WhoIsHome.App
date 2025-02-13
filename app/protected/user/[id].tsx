@@ -11,7 +11,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {WihCollapsible} from "@/components/WihCollapsible";
-import {ScrollView, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihText} from "@/components/WihText";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
@@ -48,12 +48,10 @@ export default function UserView() {
     }
 
     if (response.hasError) {
-        console.log(response.error);
         return <WihErrorView response={response!} refresh={refresh} />
     }
 
     if (user.hasError) {
-        console.log(user.error);
         return <WihErrorView response={user} refresh={userRefresh} />
     }
 

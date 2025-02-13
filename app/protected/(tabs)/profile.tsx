@@ -41,12 +41,10 @@ const Profile = () => {
     }
 
     if (user.hasError) {
-        console.error(user.error);
         return <WihErrorView response={user} refresh={userRefresh} />
     }
 
     if (response.hasError || !response.response) {
-        console.error(response.error);
         return <WihErrorView response={response} refresh={responseRefresh} />
     }
 
