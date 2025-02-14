@@ -19,10 +19,8 @@ import * as Sentry from '@sentry/react-native';
 SplashScreen.preventAutoHideAsync();
 
 Sentry.init({
-    dsn: 'YOUR DSN HERE', // TODO
-    debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-    tracesSampleRate: 0,
-    integrations: []
+    dsn: 'https://333861c10d47b85ce546c88ff117623f@o4508785521786880.ingest.de.sentry.io/4508785524342864',
+    debug: __DEV__
 });
 
 const RootLayout = () => {
