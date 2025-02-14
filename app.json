@@ -19,14 +19,16 @@
       "imageWidth": 200
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.darki.whoishome"
+      "package": "dev.darki.whoishome",
+      "newArchEnabled": true
     },
     "web": {
       "bundler": "metro",
