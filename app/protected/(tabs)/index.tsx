@@ -40,7 +40,7 @@ export default function Index() {
         <WihView  style={styles.container}>
             <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
-            <WihButton onPress={() => Sentry.nativeCrash()}>Crash App</WihButton>
+            <WihButton onPress={() => Sentry.nativeCrash()}>Crash App</WihButton> { /* TODO: remove this before merge */ }
 
             {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
         </WihView>
