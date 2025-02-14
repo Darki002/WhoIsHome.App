@@ -10,8 +10,6 @@ import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOvervie
 import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihButton} from "@/components/input/WihButton";
-import * as Sentry from "@sentry/react-native"
-import {throws} from "node:assert";
 
 const TIME = 5 * 60 * 1000;
 
