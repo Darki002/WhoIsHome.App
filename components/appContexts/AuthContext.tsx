@@ -3,7 +3,7 @@ import {useStorageState} from '@/hooks/useStorageState';
 import {WihApiError, wihFetch} from '@/helper/WihFetch';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useRouter} from "expo-router";
 import * as Sentry from "@sentry/react-native";
 
@@ -40,7 +40,7 @@ export function useSession() {
 
 export function SessionProvider({children}: PropsWithChildren) {
     const router = useRouter();
-    const {isApiConfigLoading} = useApiConfig();
+    const {config, isApiConfigLoading} = useApiConfig();
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
@@ -60,7 +60,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     if (!email || !password)
                         return "Missing Login Information";
 
-                    const response = await sendLoginRequest(email, password);
+                    const response = await sendLoginRequest(config!, email, password);
                     if (response.hasError) {
                         return response.error;
                     }
@@ -84,8 +84,7 @@ export function SessionProvider({children}: PropsWithChildren) {
     );
 }
 
-async function sendLoginRequest(email: string, password: string){
-    const {config} = useApiConfig();
+async function sendLoginRequest(config: ApiConfig, email: string, password: string){
 
     try{
         return await wihFetch<Tokens>({
@@ -95,11 +94,13 @@ async function sendLoginRequest(email: string, password: string){
             body: {email, password}
         });
     } catch (error: any){
-        Sentry.captureException(error);
-
         if(error instanceof WihApiError){
+            if(error.response.status !== 401){
+                Sentry.captureException(error);
+            }
             return error.response;
         } else {
+            Sentry.captureException(error);
             return {
                 hasError: true,
                 error: "unknown error",

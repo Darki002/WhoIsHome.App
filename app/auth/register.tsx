@@ -86,11 +86,13 @@ async function sendRegisterRequest(userName: string, email: string, password: st
             }
         });
     } catch (error: any){
-        Sentry.captureException(error);
-
         if(error instanceof WihApiError){
+            if(error.response.status !== 401){
+                Sentry.captureException(error);
+            }
             return error.response;
         } else {
+            Sentry.captureException(error);
             return {
                 hasError: true,
                 error: "unknown error",
