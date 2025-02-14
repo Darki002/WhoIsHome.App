@@ -6,6 +6,9 @@ on:
 
 jobs:
   build_android:
+    env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
     name: "Setup and Build"
     runs-on: ubuntu-latest
     permissions:
