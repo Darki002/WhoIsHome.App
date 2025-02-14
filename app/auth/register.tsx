@@ -4,7 +4,7 @@ import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
-import {WihApiError, wihFetch} from "@/helper/WihFetch";
+import {WihApiError, wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
@@ -71,7 +71,7 @@ const register = () => {
     )
 }
 
-async function sendRegisterRequest(userName: string, email: string, password: string){
+async function sendRegisterRequest(userName: string, email: string, password: string): Promise<WihResponse<string>> {
     const {config} = useApiConfig();
 
     try{

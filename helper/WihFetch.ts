@@ -28,7 +28,7 @@ export const wihFetch = async <TBody>({
                                           config,
                                           version = 1,
                                           onNewTokens
-                                      }: WihFetchProps): Promise<WihResponse<TBody> | undefined> => {
+                                      }: WihFetchProps): Promise<WihResponse<TBody>> => {
     try{
         return  await authFetch<TBody>(endpoint, method, body, tokens, config, version);
     } catch (error: any){
