@@ -9,11 +9,12 @@ import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import * as Sentry from "@sentry/react-native";
 
 const register = () => {
     const {t} = useTranslation();
+    const {config} = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
@@ -33,8 +34,8 @@ const register = () => {
             setError(t(Labels.errors.missingPassword));
             return;
         }
+        const response = await sendRegisterRequest(userName, email, password, config!);
 
-        const response = await sendRegisterRequest(userName, email, password);
         if (response.hasError) {
             setError(response.error);
         } else {
@@ -71,13 +72,12 @@ const register = () => {
     )
 }
 
-async function sendRegisterRequest(userName: string, email: string, password: string): Promise<WihResponse<string>> {
-    const {config} = useApiConfig();
+async function sendRegisterRequest(userName: string, email: string, password: string, config: ApiConfig): Promise<WihResponse<string>> {
 
     try{
         return await wihFetch<string>({
             endpoint: Endpoints.auth.register,
-            config: config!,
+            config: config,
             method: "POST",
             body: {
                 userName,
