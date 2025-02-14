@@ -9,6 +9,7 @@ import {DailyOverviewCard} from "@/components/wihEvent/DailyOverviewCard";
 import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
 import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
+import {WihButton} from "@/components/input/WihButton";
 
 const TIME = 5 * 60 * 1000;
 
@@ -37,6 +38,7 @@ export default function Index() {
     return (
         <WihView  style={styles.container}>
             <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
+
             {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
         </WihView>
     );

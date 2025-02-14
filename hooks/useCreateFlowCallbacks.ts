@@ -11,7 +11,6 @@ export default function useCreateFlowCallbacks(endpoint: string): [(body: any) =
 
     const onResponse = useCallback((response: WihResponse | null) => {
         if (!response || response.hasError) {
-            console.error(response?.error ?? "Unknown Error");
             Toast.show('Failed to create Event', {
                 duration: Toast.durations.SHORT,
             });

@@ -19,14 +19,16 @@
       "imageWidth": 200
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.darki.whoishome"
+      "package": "dev.darki.whoishome",
+      "newArchEnabled": true
     },
     "web": {
       "bundler": "metro",
@@ -36,7 +38,15 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "darki",
+          "project": "whoishome",
+          "url": "https://sentry.io/"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

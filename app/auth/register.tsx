@@ -4,16 +4,16 @@ import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
-import {wihFetch} from "@/helper/WihFetch";
+import {WihApiError, wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import * as Sentry from "@sentry/react-native";
 
 const register = () => {
     const {t} = useTranslation();
-    const {config} = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
@@ -21,7 +21,6 @@ const register = () => {
     const {signIn} = useSession();
 
     async function onRegister(email: string, password: string, userName: string) {
-        const {t} = useTranslation();
         if (!userName) {
             setError(t(Labels.errors.missingUsername));
             return;
@@ -35,25 +34,13 @@ const register = () => {
             return;
         }
 
-        const body = {
-            userName,
-            email,
-            password
-        }
-
-        const response = await wihFetch<string>({
-            endpoint: Endpoints.auth.register,
-            config: config!,
-            method: "POST",
-            body
-        });
+        const response = await sendRegisterRequest(userName, email, password);
         if (response.hasError) {
-            setError(response.error!);
-            return;
+            setError(response.error);
+        } else {
+            const error = await signIn({email, password});
+            setError(error);
         }
-
-        const error = await signIn({email, password});
-        setError(error);
     }
 
     return (
@@ -82,6 +69,39 @@ const register = () => {
                 onPress={async () => onRegister(email, password, userName)}>{t(Labels.actions.register)}</WihButton>
         </WihView>
     )
+}
+
+async function sendRegisterRequest(userName: string, email: string, password: string): Promise<WihResponse<string>> {
+    const {config} = useApiConfig();
+
+    try{
+        return await wihFetch<string>({
+            endpoint: Endpoints.auth.register,
+            config: config!,
+            method: "POST",
+            body: {
+                userName,
+                email,
+                password
+            }
+        });
+    } catch (error: any){
+        if(error instanceof WihApiError){
+            if(error.response.status !== 401){
+                Sentry.captureException(error);
+            }
+            return error.response;
+        } else {
+            Sentry.captureException(error);
+            return {
+                hasError: true,
+                error: "unknown error",
+                response: null,
+                refreshFailed: false,
+                status: 0
+            }
+        }
+    }
 }
 
 const styles = StyleSheet.create({

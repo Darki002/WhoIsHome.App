@@ -1,6 +1,7 @@
 import {createContext, type PropsWithChildren, useContext, useEffect} from "react";
 import {useStorageState} from "@/hooks/useStorageState";
 import {useRouter} from "expo-router";
+import * as Sentry from "@sentry/react-native"
 
 export interface ApiConfig {
     baseUri: string | null;
@@ -74,7 +75,7 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
 
         return response.ok;
     } catch (e: any) {
-        console.log(`Error while checking config: ${e.message}`);
+        Sentry.captureException(e);
         return false;
     }
 }

@@ -13,9 +13,21 @@ import {Colors} from "@/constants/Colors";
 import WihView from "@/components/WihView";
 import WihLoading from "@/components/WihLoading";
 import {StatusBar} from "expo-status-bar";
+import * as Sentry from '@sentry/react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+try {
+    SplashScreen.preventAutoHideAsync();
+} catch (error) {
+    console.warn("SplashScreen initialization failed:", error);
+    Sentry.captureException(error); // Log to Sentry if needed
+}
+
+Sentry.init({
+    dsn: 'https://333861c10d47b85ce546c88ff117623f@o4508785521786880.ingest.de.sentry.io/4508785524342864',
+    enabled: !__DEV__,
+    debug: __DEV__
+});
 
 const RootLayout = () => {
     const colorScheme = useColorScheme();
@@ -26,10 +38,20 @@ const RootLayout = () => {
     });
 
     useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
+        const hideSplashScreen = async () => {
+            try {
+                if (loaded) {
+                    await SplashScreen.hideAsync();
+                }
+            } catch (error) {
+                console.warn("SplashScreen.hideAsync() failed:", error);
+                Sentry.captureException(error);
+            }
+        };
+
+        hideSplashScreen();
     }, [loaded]);
+
 
     if (!loaded || isApiConfigLoading) {
         return (

@@ -11,7 +11,6 @@ const useOnResponse = (id: number | string) => {
 
     return useCallback((res: WihResponse | null) => {
         if (!res || res.hasError) {
-            console.error(res?.error ?? "Unknown Error");
             Toast.show(t(Labels.toast.error.updateEvent), {
                 duration: Toast.durations.SHORT,
             });

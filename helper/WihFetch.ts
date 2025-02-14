@@ -9,7 +9,7 @@ export interface WihFetchProps {
     config: ApiConfig;
     version?: number;
     body?: any;
-    onNewTokens?: (newTokens: Tokens | undefined) => void;
+    onNewTokens?: (newTokens: Tokens | undefined | null) => void;
 }
 
 export interface WihResponse<T = {}> {
@@ -17,7 +17,7 @@ export interface WihResponse<T = {}> {
     hasError: boolean;
     error: string | null;
     refreshFailed: boolean;
-    response?: T;
+    response?: T | null;
 }
 
 export const wihFetch = async <TBody>({
@@ -29,27 +29,21 @@ export const wihFetch = async <TBody>({
                                           version = 1,
                                           onNewTokens
                                       }: WihFetchProps): Promise<WihResponse<TBody>> => {
-    let response = await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+    try{
+        return  await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+    } catch (error: any){
+        if(error instanceof WihApiError){
+            if(tokens){
+                const newTokens = await refreshJwtToken(tokens.refreshToken!, config, onNewTokens);
+                tokens = newTokens.response ?? undefined;
+            }
 
-    if (tokens && response.hasError && response.status === 401) {
-        const newTokens = await refreshJwtToken(tokens.refreshToken!, config);
-
-        if (newTokens.hasError) {
-            onNewTokens ? onNewTokens(undefined) : null;
-            return ({
-                status: newTokens.status,
-                hasError: true,
-                refreshFailed: true,
-                error: newTokens.error
-            });
+            return await authFetch<TBody>(endpoint, method, body, tokens, config, version);
         }
-
-        onNewTokens ? onNewTokens(newTokens.response) : null;
-        response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, config, version);
-        return response;
+        else{
+            return await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+        }
     }
-
-    return response;
 }
 
 async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, config: ApiConfig, version: number): Promise<WihResponse<T>> {
@@ -63,7 +57,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
         headers.append("Authorization", `Bearer ${tokens.jwtToken}`);
     }
 
-    console.info(`${method} on ${uri}`)
+    console.info(`${method} on ${uri}`);
 
     try {
         const response = await fetch(uri, {
@@ -75,17 +69,14 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
 
         return await handleResponse(response);
     } catch (error: any) {
-        console.error(`Request failed: ${error.message}`);
-        return ({
-            status: 0,
-            hasError: true,
-            error: error.message,
-            refreshFailed: false
-        });
+        if(error instanceof WihApiError){
+            throw error;
+        }
+        throw new Error(`Network or Fetch Error: ${error.message}`);
     }
 }
 
-async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise<WihResponse<Tokens>> {
+async function refreshJwtToken(refreshToken: string, config: ApiConfig, onNewTokens?: (newTokens: Tokens | undefined | null) => void): Promise<WihResponse<Tokens>> {
     const uri = getUri(config.baseUri!, Endpoints.auth.refresh);
 
     const headers = new Headers();
@@ -99,21 +90,22 @@ async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise
             mode: "cors",
             headers: headers
         });
-
-        return await handleResponse<Tokens>(response);
+        const newTokens = await handleResponse<Tokens>(response);
+        onNewTokens && onNewTokens(newTokens.response);
+        return newTokens;
     } catch (error: any) {
-        console.error(`Request failed: ${error.message}`);
-        return ({
-            status: 0,
-            hasError: true,
-            error: error.message,
-            refreshFailed: false
-        });
+        onNewTokens && onNewTokens(undefined);
+        if(error instanceof WihApiError){
+            throw error;
+        }
+        throw new Error(`Network or Fetch Error: ${error.message}`);
     }
 }
 
 async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
-    if (response.status === 200) {
+    const status = response.status;
+
+    if (status >= 200 && status < 300) {
 
         const body = await response.json();
         return ({
@@ -126,16 +118,26 @@ async function handleResponse<T>(response: Response): Promise<WihResponse<T>> {
     }
 
     const message = await response.text();
-    console.warn(`Request with error Status "${response.statusText}" - ${response.status} | Message: ${message}`);
-
-    return ({
+    const errorResponse: WihResponse<T> = {
         status: response.status,
         hasError: true,
-        error: response.statusText,
+        error: message || response.statusText,
         refreshFailed: false
-    });
+    };
+
+    throw new WihApiError<T>(`HTTP Error ${response.status}: ${message || response.statusText}`, errorResponse);
 }
 
 function getUri(baseUrl : string, endpoint: string, version: number = 1): string {
     return `${baseUrl}/api/v${version}/${endpoint}`;
+}
+
+export class WihApiError<T> extends Error {
+    response: WihResponse<T>;
+
+    constructor(message: string, response: WihResponse<T>) {
+        super(message);
+        this.name = "ApiError";
+        this.response = response;
+    }
 }
