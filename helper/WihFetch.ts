@@ -41,7 +41,7 @@ export const wihFetch = async <TBody>({
             return await authFetch<TBody>(endpoint, method, body, tokens, config, version);
         }
         else{
-            return  await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+            return await authFetch<TBody>(endpoint, method, body, tokens, config, version);
         }
     }
 }
