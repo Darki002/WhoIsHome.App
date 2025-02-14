@@ -26,12 +26,6 @@ const ProtectedLayout = () => {
         );
     }
 
-    if(isInvalidSession(session)){
-        router.dismissAll();
-        router.replace("/auth/login");
-        return null;
-    }
-
     const screenOptions = {
         contentStyle: {
             backgroundColor: theme.background
