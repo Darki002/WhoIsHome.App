@@ -28,23 +28,22 @@ export const wihFetch = async <TBody>({
                                           config,
                                           version = 1,
                                           onNewTokens
-                                      }: WihFetchProps): Promise<WihResponse<TBody>> => {
-    let response = await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+                                      }: WihFetchProps): Promise<WihResponse<TBody> | undefined> => {
+    try{
+        return  await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+    } catch (error: any){
+        if(error instanceof WihApiError){
+            if(tokens){
+                const newTokens = await refreshJwtToken(tokens.refreshToken!, config, onNewTokens);
+                tokens = newTokens.response ?? undefined;
+            }
 
-    if (tokens && response.hasError && response.status === 401) {
-        const newTokens = await refreshJwtToken(tokens.refreshToken!, config);
-
-        if (newTokens.hasError) {
-            onNewTokens ? onNewTokens(undefined) : null;
-            throw new WihApiError<Tokens>(newTokens.error || "Unknown error", newTokens)
+            return await authFetch<TBody>(endpoint, method, body, tokens, config, version);
         }
-
-        onNewTokens ? onNewTokens(newTokens.response) : null;
-        response = await authFetch<TBody>(endpoint, method, body, newTokens.response!, config, version);
-        return response;
+        else{
+            return  await authFetch<TBody>(endpoint, method, body, tokens, config, version);
+        }
     }
-
-    return response;
 }
 
 async function authFetch<T>(endpoint: string, method: string, body: any | undefined, tokens: Tokens | undefined, config: ApiConfig, version: number): Promise<WihResponse<T>> {
@@ -77,7 +76,7 @@ async function authFetch<T>(endpoint: string, method: string, body: any | undefi
     }
 }
 
-async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise<WihResponse<Tokens>> {
+async function refreshJwtToken(refreshToken: string, config: ApiConfig, onNewTokens?: (newTokens: Tokens | undefined | null) => void): Promise<WihResponse<Tokens>> {
     const uri = getUri(config.baseUri!, Endpoints.auth.refresh);
 
     const headers = new Headers();
@@ -91,9 +90,11 @@ async function refreshJwtToken(refreshToken: string, config: ApiConfig): Promise
             mode: "cors",
             headers: headers
         });
-
-        return await handleResponse<Tokens>(response);
+        const newTokens = await handleResponse<Tokens>(response);
+        onNewTokens && onNewTokens(newTokens.response);
+        return newTokens;
     } catch (error: any) {
+        onNewTokens && onNewTokens(undefined);
         if(error instanceof WihApiError){
             throw error;
         }
