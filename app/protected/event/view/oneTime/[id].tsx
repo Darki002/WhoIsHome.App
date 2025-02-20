@@ -30,7 +30,7 @@ export default function OneTimeEventView() {
         endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "DELETE",
         onResponse: onResponse
-    })
+    });
 
     const [response, refresh] = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
