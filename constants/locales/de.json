@@ -50,7 +50,9 @@
     "Next": "Weiter",
     "Back": "Zurück",
     "Finish": "Beenden",
-    "Create": "Erstellen"
+    "Create": "Erstellen",
+    "Confirm": "Bestätigen",
+    "Delete": "Löschen"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -105,5 +107,9 @@
     "CreateFlow": {
       "TitleStep": "Gib deinem Event einen Namen."
     }
+  },
+  "Dialog": {
+    "DeleteTitle": "Event löschen?",
+    "DeleteMessage": "Willst du wirklich dieses Event löschen?"
   }
 }
