@@ -52,12 +52,12 @@ export default function EventViewLayout({response, onEdit, onDelete, children}: 
             {children}
 
             {
-                permissionCheck(response.response?.userId) ? (
+                permissionCheck(response.response?.userId) && (
                     <WihView flex="row">
                         <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
                         <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
                     </WihView>
-                ) : null
+                )
             }
 
             <WihDialog
