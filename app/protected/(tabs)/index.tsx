@@ -1,6 +1,5 @@
 import {WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
@@ -10,13 +9,11 @@ import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOvervie
 import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
-
-const TIME = 5 * 60 * 1000;
+import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 
 export default function Index() {
     const {t} = useTranslation();
-    const [response, refresh] = useWihApiInterval<DailyOverviewDto[]>({
-        time: TIME,
+    const [response, refresh] = useWihApiFocus<DailyOverviewDto[]>({
         method: "GET",
         endpoint: Endpoints.dailyOverview
     });
