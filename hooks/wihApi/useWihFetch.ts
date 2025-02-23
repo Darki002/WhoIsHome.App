@@ -10,7 +10,7 @@ export interface WihFetchProps {
     version?: number;
 }
 
-const useWihFetch = <T>(props: WihFetchProps)  => {
+const useWihFetch = <T>(props: WihFetchProps) => {
     const {config} = useApiConfig();
     const {session, onNewSession, signOut} = useSession();
 
@@ -23,7 +23,7 @@ const useWihFetch = <T>(props: WihFetchProps)  => {
     return async (body?: T): Promise<WihResponse<T> | null> => {
         if (!session) return null;
 
-        if(props.method === "GET" && body){
+        if (props.method === "GET" && body) {
             console.warn(`Attempting a GET request with a body for ${props.endpoint}`);
             return null;
         }
@@ -41,24 +41,26 @@ const useWihFetch = <T>(props: WihFetchProps)  => {
         try {
             const response = await wihFetch<T>(params);
 
-            if(response.refreshFailed){
+            if (response.refreshFailed) {
                 signOut();
             }
 
             return response;
-        } catch (error: any){
-            Sentry.captureException(error);
+        } catch (error: any) {
 
-            if(error instanceof WihApiError){
+            if (error instanceof WihApiError) {
+                console.warn(error.message);
                 return error.response;
             } else {
-              return {
-                  hasError: true,
-                  error: "unknown error",
-                  response: null,
-                  refreshFailed: false,
-                  status: 0
-              }
+                Sentry.captureException(error);
+                console.error(error);
+                return {
+                    hasError: true,
+                    error: "unknown error",
+                    response: null,
+                    refreshFailed: false,
+                    status: 0
+                }
             }
         }
     }
