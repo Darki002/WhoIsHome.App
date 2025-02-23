@@ -52,7 +52,7 @@ const Labels = {
         finish: "Actions.Finish",
         create: "Actions.Create",
         confirm: "Actions.Confirm",
-        delete: "Action.Delete"
+        delete: "Actions.Delete"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
