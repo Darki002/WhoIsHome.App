@@ -47,18 +47,24 @@ export default function EventViewLayout({response, onEdit, onDelete, children}: 
         )
     }
 
+    const showOwnerActions = () => {
+        const isOwner = permissionCheck(response.response?.userId);
+        if(isOwner) {
+            return (
+                <WihView flex="row">
+                    <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
+                    <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
+                </WihView>
+            )
+        }
+        return null
+    }
+
     return (
         <WihView style={styles.container}>
             {children}
 
-            {
-                permissionCheck(response.response?.userId) && (
-                    <WihView flex="row">
-                        <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
-                        <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
-                    </WihView>
-                )
-            }
+            {showOwnerActions()}
 
             <WihDialog
                 visible={showDeleteDialog}
