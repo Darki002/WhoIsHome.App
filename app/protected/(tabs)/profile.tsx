@@ -53,7 +53,7 @@ const Profile = () => {
     const userName = user.response?.userName ?? "";
     return (
         <WihView style={{flex: 1}}>
-            <WihRefreshableScrollView onRefresh={[userRefresh, responseRefresh]}>
+            <WihRefreshableScrollView onRefresh={[userRefresh, responseRefresh]} style={{height: "100%"}}>
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>

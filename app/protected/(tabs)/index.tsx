@@ -1,6 +1,5 @@
 import {WihTitle} from "@/components/WihText";
 import WihView from "@/components/WihView";
-import useWihApiInterval from "@/hooks/wihApi/useWihApiInterval";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
@@ -9,14 +8,12 @@ import {DailyOverviewCard} from "@/components/wihEvent/DailyOverviewCard";
 import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
 import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
-import {WihButton} from "@/components/input/WihButton";
-
-const TIME = 5 * 60 * 1000;
+import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 
 export default function Index() {
     const {t} = useTranslation();
-    const [response, refresh] = useWihApiInterval<DailyOverviewDto[]>({
-        time: TIME,
+    const [response, refresh] = useWihApiFocus<DailyOverviewDto[]>({
         method: "GET",
         endpoint: Endpoints.dailyOverview
     });
@@ -36,10 +33,12 @@ export default function Index() {
     const overviews = response.response.map(r => new DailyOverview(r));
 
     return (
-        <WihView  style={styles.container}>
-            <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
+        <WihView style={styles.container}>
+            <WihRefreshableScrollView onRefresh={[refresh]} style={{height: "100%"}}>
+                <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
-            {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
+                {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
+            </WihRefreshableScrollView>
         </WihView>
     );
 }

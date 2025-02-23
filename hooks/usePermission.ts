@@ -1,17 +1,14 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback} from "react";
 import {User} from "@/constants/WihTypes/User";
-import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import useWihApi from "@/hooks/wihApi/useWihApi";
 
 export function usePermission(){
-    const [userId, setUserId] = useState<number | null>();
-    const getUser = useWihFetch<User>({endpoint: "User/Me", method: "GET"});
-
-    useEffect(() => {
-        getUser().then(e => setUserId(e?.response?.id));
-    }, []);
+    const [user] = useWihApi<User>({endpoint: "User/Me", method: "GET"});
 
     return useCallback((permittedUserId?: number) => {
+        console.log(`Permission check for ${permittedUserId} with current user ${user?.response?.id}`);
+        if(!user?.response) return false;
         if(!permittedUserId) return false;
-        return permittedUserId === userId;
-    }, [userId]);
+        return permittedUserId === user?.response?.id;
+    }, [user]);
 }
