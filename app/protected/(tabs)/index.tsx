@@ -33,11 +33,13 @@ export default function Index() {
     const overviews = response.response.map(r => new DailyOverview(r));
 
     return (
-        <WihRefreshableScrollView onRefresh={[refresh]} style={styles.container}>
-            <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
+        <WihView style={styles.container}>
+            <WihRefreshableScrollView onRefresh={[refresh]}>
+                <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
-            {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
-        </WihRefreshableScrollView>
+                {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
+            </WihRefreshableScrollView>
+        </WihView>
     );
 }
 
