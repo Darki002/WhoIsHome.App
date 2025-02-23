@@ -1,5 +1,5 @@
 import {useNavigation} from "expo-router";
-import {PropsWithChildren, useEffect} from "react";
+import {PropsWithChildren, useEffect, useState} from "react";
 import {WihResponse} from "@/helper/WihFetch";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
@@ -9,16 +9,19 @@ import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
+import WihDialog from "@/components/WihDialog";
 
 interface EventViewLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
     onEdit: () => void;
+    onDelete: () => void;
 }
 
-export default function EventViewLayout({response, onEdit, children}: PropsWithChildren<EventViewLayoutProps>) {
+export default function EventViewLayout({response, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
+    const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
     useEffect(() => {
         if (!response) {
@@ -49,12 +52,25 @@ export default function EventViewLayout({response, onEdit, children}: PropsWithC
             {children}
 
             {
-                permissionCheck(response.response?.userId) ? (
+                permissionCheck(response.response?.userId) && (
                     <WihView flex="row">
                         <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
+                        <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
                     </WihView>
-                ) : null
+                )
             }
+
+            <WihDialog
+                visible={showDeleteDialog}
+                title={t(Labels.dialog.deleteTitle)}
+                message={t(Labels.dialog.deleteMessage)}
+                onConfirm={() => {
+                    setShowDeleteDialog(false);
+                    onDelete();
+                }}
+                onCancel={() => setShowDeleteDialog(false)}
+            />
+
         </WihView>
     )
 }

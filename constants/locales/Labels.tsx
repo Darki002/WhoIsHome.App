@@ -50,7 +50,9 @@ const Labels = {
         next: "Actions.Next",
         back: "Actions.Back",
         finish: "Actions.Finish",
-        create: "Actions.Create"
+        create: "Actions.Create",
+        confirm: "Actions.Confirm",
+        delete: "Actions.Delete"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
@@ -105,6 +107,10 @@ const Labels = {
         createFlow: {
             titleStep: "Descriptions.CreateFlow.TitleStep",
         }
+    },
+    dialog: {
+        deleteTitle: "Dialog.DeleteTitle",
+        deleteMessage: "Dialog.DeleteMessage"
     }
 } as const;
 
