@@ -15,6 +15,7 @@ import WihLoading from "@/components/WihLoading";
 import {WihCollapsible} from "@/components/WihCollapsible";
 import {WihErrorView} from "@/components/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -25,7 +26,7 @@ const Profile = () => {
         endpoint: Endpoints.user.me,
         method: "GET",
     });
-    const [response, responseRefresh] = useWihApi<UserOverviewDto>({
+    const [response, responseRefresh] = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.url,
         method: "GET",
     });
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        paddingTop: 40,
         marginTop: 20
     },
     profileHeader: {

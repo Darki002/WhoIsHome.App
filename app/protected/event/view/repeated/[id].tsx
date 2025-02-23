@@ -12,11 +12,26 @@ import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import {WihErrorView} from "@/components/WihErrorView";
+import {WihResponse} from "@/helper/WihFetch";
+import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    const onResponse = useCallback((response: WihResponse | null) => {
+        if(!response?.hasError){
+            router.back();
+        }
+    }, []);
+
+    const deleteEvent = useWihApiCallable({
+        endpoint: Endpoints.repeatedEvent.withId(id),
+        method: "DELETE",
+        onResponse: onResponse
+    });
+
     const [response, refresh] = useWihApiFocus<RepeatedEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),
         method: "GET"
@@ -33,7 +48,7 @@ export default function RepeatedEventView() {
     const event = new RepeatedEvent(response?.response);
 
     return (
-        <EventViewLayout response={response} onEdit={onEdit}>
+        <EventViewLayout response={response} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>

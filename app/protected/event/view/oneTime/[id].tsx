@@ -12,11 +12,26 @@ import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihIconRow";
 import {WihErrorView} from "@/components/WihErrorView";
+import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
+import {WihResponse} from "@/helper/WihFetch";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    const onResponse = useCallback((response: WihResponse | null) => {
+        if(!response?.hasError){
+            router.back();
+        }
+    }, []);
+
+    const deleteEvent = useWihApiCallable({
+        endpoint: Endpoints.oneTimeEvent.withId(id),
+        method: "DELETE",
+        onResponse: onResponse
+    });
+
     const [response, refresh] = useWihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET"
@@ -33,7 +48,7 @@ export default function OneTimeEventView() {
     const event = new OneTimeEvent(response?.response);
 
     return (
-        <EventViewLayout response={response} onEdit={onEdit}>
+        <EventViewLayout response={response} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
                 <WihText>{event.Date?.toLocaleDateString() ?? "N/A"}</WihText>
