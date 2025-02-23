@@ -34,7 +34,7 @@ export default function Index() {
 
     return (
         <WihView style={styles.container}>
-            <WihRefreshableScrollView onRefresh={[refresh]}>
+            <WihRefreshableScrollView onRefresh={[refresh]} style={{height: "100%"}}>
                 <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
                 {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
