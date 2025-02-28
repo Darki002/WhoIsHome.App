@@ -1,6 +1,5 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect, useState} from "react";
-import {WihResponse} from "@/helper/WihFetch";
 import WihView from "@/components/WihView";
 import {WihText} from "@/components/WihText";
 import {WihButton} from "@/components/input/WihButton";
@@ -10,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihDialog from "@/components/WihDialog";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventViewLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -28,18 +28,18 @@ export default function EventViewLayout({response, onEdit, onDelete, children}: 
             navigation.setOptions({title: "Loading..."});
             return;
         }
-        if (response.hasError) {
+        if (!response.isValid()) {
             navigation.setOptions({title: "Error"});
             return;
         }
-        navigation.setOptions({title: response.response?.title ?? "Untitled Event"});
+        navigation.setOptions({title: response.data?.title ?? "Untitled Event"});
     }, [response]);
 
     if (!response) {
         return null;
     }
 
-    if (response.hasError) {
+    if (!response.isValid()) {
         return (
             <WihView center="full">
                 <WihText>{t(Labels.errors.generic)}</WihText>
@@ -48,7 +48,7 @@ export default function EventViewLayout({response, onEdit, onDelete, children}: 
     }
 
     const showOwnerActions = () => {
-        const isOwner = permissionCheck(response.response?.userId);
+        const isOwner = permissionCheck(response.data?.userId);
         if(isOwner) {
             return (
                 <WihView flex="row">

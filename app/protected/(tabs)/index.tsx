@@ -26,11 +26,11 @@ export default function Index() {
         )
     }
 
-    if (response.hasError || !response.response) {
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response} refresh={refresh} />
     }
 
-    const overviews = response.response.map(r => new DailyOverview(r));
+    const overviews = response.data.map(r => new DailyOverview(r));
 
     return (
         <WihView style={styles.container}>

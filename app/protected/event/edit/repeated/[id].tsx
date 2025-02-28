@@ -20,6 +20,7 @@ import WihIconRow from "@/components/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/input/WihPicker";
 import {WihErrorView} from "@/components/WihErrorView";
+import WihLoading from "@/components/WihLoading";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -39,10 +40,10 @@ export default function RepeatedEventView() {
 
     const [event, setEvent] = useState<RepeatedEvent | null>(new RepeatedEvent());
     useEffect(() => {
-        if (!response || !response.response || response.hasError) {
+        if (!response?.data || !response.isValid()) {
             return;
         }
-        const repeatedEvent = new RepeatedEvent(response?.response);
+        const repeatedEvent = new RepeatedEvent(response.data);
         setEvent(repeatedEvent);
     }, [response]);
 
@@ -74,6 +75,14 @@ export default function RepeatedEventView() {
         }
         callWihApi(body);
     };
+
+    if (!response) {
+        return (
+            <WihView center="full">
+                <WihLoading />
+            </WihView>
+        )
+    }
 
     if(!event) {
         return <WihErrorView response={response!} refresh={refresh} />

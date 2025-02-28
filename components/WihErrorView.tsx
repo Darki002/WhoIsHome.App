@@ -1,9 +1,9 @@
-import {WihResponse} from "@/helper/WihFetch";
 import WihView from "@/components/WihView";
 import {WihText, WihTitle} from "@/components/WihText";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 export function WihErrorView({response, refresh} : {response?: WihResponse<any> | null, refresh: () => Promise<void>}){
     const {t} = useTranslation();
@@ -15,7 +15,7 @@ export function WihErrorView({response, refresh} : {response?: WihResponse<any> 
                 onRefresh={[refresh]}
             >
                 <WihTitle>{t(Labels.errors.generic)}</WihTitle>
-                <WihText>{response?.error ?? "Unknown error"}</WihText>
+                <WihText>{response?.getErrorMessage() ?? "Unknown error"}</WihText>
             </WihRefreshableScrollView>
         </WihView>
     )

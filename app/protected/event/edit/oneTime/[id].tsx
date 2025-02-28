@@ -20,6 +20,7 @@ import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/input/WihTextInput";
 import {WihPicker} from "@/components/input/WihPicker";
 import {WihErrorView} from "@/components/WihErrorView";
+import WihLoading from "@/components/WihLoading";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -39,10 +40,10 @@ export default function OneTimeEventView() {
 
     const [event, setEvent] = useState<OneTimeEvent | null>(new OneTimeEvent());
     useEffect(() => {
-        if (!response || !response.response || response.hasError) {
+        if (!response?.data || !response.isValid()) {
             return;
         }
-        const event = new OneTimeEvent(response?.response);
+        const event = new OneTimeEvent(response.data);
         setEvent(event);
     }, [response]);
 
@@ -73,6 +74,14 @@ export default function OneTimeEventView() {
         }
         callWihApi(body);
     };
+
+    if (!response) {
+        return (
+            <WihView center="full">
+                <WihLoading />
+            </WihView>
+        )
+    }
 
     if(!event) {
         return <WihErrorView response={response!} refresh={refresh} />

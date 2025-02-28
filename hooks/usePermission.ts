@@ -6,8 +6,8 @@ export function usePermission(){
     const [user] = useWihApi<User>({endpoint: "User/Me", method: "GET"});
 
     return useCallback((permittedUserId?: number) => {
-        if(!user?.response) return false;
+        if(!user?.data) return false;
         if(!permittedUserId) return false;
-        return permittedUserId === user?.response?.id;
+        return permittedUserId === user.data.id;
     }, [user]);
 }

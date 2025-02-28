@@ -1,8 +1,9 @@
-import {WihApiError, wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import * as Sentry from "@sentry/react-native"
+import {WihResponse} from "@/helper/fetch/WihResponse";
+import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 
 export interface WihFetchProps {
     endpoint: string;
@@ -23,46 +24,25 @@ const useWihFetch = <T>(props: WihFetchProps) => {
     return async (body?: T): Promise<WihResponse<T> | null> => {
         if (!session) return null;
 
-        if (props.method === "GET" && body) {
-            console.warn(`Attempting a GET request with a body for ${props.endpoint}`);
-            return null;
+        const response = await new WihFetchBuilder(config!, session)
+            .setEndpoint(props.endpoint)
+            .setMethod(props.method)
+            .setVersion(props.version)
+            .setBody(body)
+            .addNewTokenListener(onNewTokens)
+            .fetch<T>();
+
+        if(response.isValid()) return response;
+
+        if(response.error){
+            Sentry.captureException(response.error);
         }
 
-        const params = {
-            endpoint: props.endpoint,
-            method: props.method,
-            version: props.version,
-            body: body,
-            tokens: session,
-            config: config!,
-            onNewTokens: onNewTokens
+        if (response.refreshFailed) {
+            signOut();
         }
 
-        try {
-            const response = await wihFetch<T>(params);
-
-            if (response.refreshFailed) {
-                signOut();
-            }
-
-            return response;
-        } catch (error: any) {
-
-            if (error instanceof WihApiError) {
-                console.warn(error.message);
-                return error.response;
-            } else {
-                Sentry.captureException(error);
-                console.error(error);
-                return {
-                    hasError: true,
-                    error: "unknown error",
-                    response: null,
-                    refreshFailed: false,
-                    status: 0
-                }
-            }
-        }
+        return response;
     }
 }
 

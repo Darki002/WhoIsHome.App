@@ -1,7 +1,7 @@
-import {WihResponse} from "@/helper/WihFetch";
 import {useCallback, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 export interface WihApiProps {
     endpoint: string;

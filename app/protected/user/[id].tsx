@@ -36,26 +36,26 @@ export default function UserView() {
             navigation.setOptions({title: t(Labels.headers.unknown)});
             return;
         }
-        if (user.hasError) {
+        if (!user.isValid()) {
             navigation.setOptions({title: t(Labels.errors.header)});
             return;
         }
-        navigation.setOptions({title: user.response?.userName});
+        navigation.setOptions({title: user.data?.userName});
     }, [user]);
 
     if (!response || !user) {
         return <WihLoading/>
     }
 
-    if (response.hasError) {
+    if (!response.isValid()) {
         return <WihErrorView response={response!} refresh={refresh} />
     }
 
-    if (user.hasError) {
+    if (!user.isValid()) {
         return <WihErrorView response={user} refresh={userRefresh} />
     }
 
-    const overview = new UserOverview(response.response!);
+    const overview = new UserOverview(response.data!);
     return (
         <WihView style={styles.container}>
             <WihRefreshableScrollView onRefresh={[refresh, userRefresh]}>
