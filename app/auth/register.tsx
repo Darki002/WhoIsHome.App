@@ -4,13 +4,14 @@ import {WihText, WihTitle} from "@/components/WihText";
 import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
 import {WihButton} from "@/components/input/WihButton";
 import {StyleSheet} from "react-native";
-import {WihApiError, wihFetch, WihResponse} from "@/helper/WihFetch";
 import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import * as Sentry from "@sentry/react-native";
+import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 const register = () => {
     const {t} = useTranslation();
@@ -36,8 +37,8 @@ const register = () => {
         }
         const response = await sendRegisterRequest(userName, email, password, config!);
 
-        if (response.hasError) {
-            setError(response.error);
+        if (response.isValid()) {
+            setError(response.getErrorMessage());
         } else {
             const error = await signIn({email, password});
             setError(error);
@@ -74,34 +75,21 @@ const register = () => {
 
 async function sendRegisterRequest(userName: string, email: string, password: string, config: ApiConfig): Promise<WihResponse<string>> {
 
-    try{
-        return await wihFetch<string>({
-            endpoint: Endpoints.auth.register,
-            config: config,
-            method: "POST",
-            body: {
-                userName,
-                email,
-                password
-            }
-        });
-    } catch (error: any){
-        if(error instanceof WihApiError){
-            if(error.response.status !== 401){
-                Sentry.captureException(error);
-            }
-            return error.response;
-        } else {
-            Sentry.captureException(error);
-            return {
-                hasError: true,
-                error: "unknown error",
-                response: null,
-                refreshFailed: false,
-                status: 0
-            }
-        }
+    const response = await new WihFetchBuilder(config)
+        .setEndpoint(Endpoints.auth.register)
+        .setMethod("POST")
+        .setBody({
+            userName,
+            email,
+            password
+        })
+        .fetch<string>();
+
+    if(response.error){
+        Sentry.captureException(response.error);
     }
+
+    return response;
 }
 
 const styles = StyleSheet.create({
