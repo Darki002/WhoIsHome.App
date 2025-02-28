@@ -4,10 +4,12 @@ import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
+export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
 
 export class WihFetchBuilder {
     private readonly config: ApiConfig;
     private tokens?: Tokens;
+    private onNewTokens?: OnNewTokenCallback;
 
     private endpoint: string = "";
     private apiVersion: number = 1;
@@ -43,6 +45,16 @@ export class WihFetchBuilder {
         return this;
     }
 
+    addNewTokenListener(onNewTokens?: (tokens: (Tokens | undefined | null)) => void) {
+        this.onNewTokens = onNewTokens;
+        return this;
+    }
+
+    addCustomHeader(key: string, value: string){
+        this.headers.append(key, value);
+        return this;
+    }
+
     private async buildHeaders() {
         this.headers.append("Content-Type", "application/json");
         this.headers.append("X-API-KEY", this.config.apikey!);
@@ -60,6 +72,10 @@ export class WihFetchBuilder {
         await this.buildHeaders();
         const uri = this.buildUrl();
 
+        if (this.method === "GET" && this.body) {
+            console.warn(`Attempting a GET request with a body for ${this.endpoint}`);
+        }
+
         try {
             const response = await fetch(uri, {
                 method: this.method,
@@ -72,9 +88,9 @@ export class WihFetchBuilder {
 
             if(!apiResponse.isValid()){
                 if(apiResponse.status === 401 && this.tokens?.refreshToken){
-                    const newTokens = await refreshJwtToken(this.tokens.refreshToken, this.config);
+                    const newTokens = await refreshJwtToken(this.tokens.refreshToken, this.config, this.onNewTokens);
                     if (!newTokens) {
-                        return WihResponse.fail<T>("Refresh token expired, re-authentication required.", 401);
+                        return WihResponse.fail<T>("Refresh token expired, re-authentication required.", 401, true);
                     }
 
                     this.tokens = newTokens;

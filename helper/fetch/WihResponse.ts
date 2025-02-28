@@ -3,15 +3,18 @@ export class WihResponse<T> {
 
     readonly status: number;
     readonly success: boolean;
+    readonly refreshFailed: boolean;
+
     readonly data?: T;
     readonly error?: Error;
 
-    private constructor(status: number, success: boolean, data?: T, errorMessage?: string, error?: Error) {
+    private constructor(status: number, success: boolean, data?: T, errorMessage?: string, refreshFailed: boolean = false, error?: Error) {
         this.status = status;
         this.success = success;
         this.data = data;
         this.errorMessage = errorMessage;
         this.error = error;
+        this.refreshFailed = refreshFailed;
     }
 
     static async fromResponse<T>(response: Response): Promise<WihResponse<T>> {
@@ -24,12 +27,12 @@ export class WihResponse<T> {
         return new WihResponse<T>(response.status, false, undefined, errorText || response.statusText);
     }
 
-    static fail<T>(errorMessage: string, status: number = 400): WihResponse<T> {
-        return new WihResponse<T>(status, false, undefined, errorMessage);
+    static fail<T>(errorMessage: string, status: number = 400, refreshFailed: boolean = false): WihResponse<T> {
+        return new WihResponse<T>(status, false, undefined, errorMessage, refreshFailed);
     }
 
     static error<T>(error: Error): WihResponse<T> {
-        return new WihResponse<T>(-1, false, undefined, error.message, error);
+        return new WihResponse<T>(-1, false, undefined, error.message, false, error);
     }
 
     isValid(): boolean {
