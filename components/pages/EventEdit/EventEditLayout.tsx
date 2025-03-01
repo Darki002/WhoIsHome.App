@@ -1,4 +1,3 @@
-import {WihResponse} from "@/helper/WihFetch";
 import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PropsWithChildren, useCallback, useEffect} from "react";
 import {useNavigation} from "expo-router";
@@ -9,6 +8,7 @@ import {WihButton} from "@/components/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventEditLayoutProps {
     response: WihResponse<EventModelBase | null> | null;
@@ -22,7 +22,7 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
     const permissionCheck = usePermission();
 
     const onUpdatedChecked = useCallback(() => {
-        const allowed = permissionCheck(response?.response?.userId);
+        const allowed = permissionCheck(response?.data?.userId);
         if(allowed){
             onUpdate();
         }
@@ -33,11 +33,11 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
             navigation.setOptions({title: t(Labels.headers.unknown)});
             return;
         }
-        if (response.hasError) {
+        if (!response.isValid()) {
             navigation.setOptions({title: t(Labels.errors.header)});
             return;
         }
-        const title = response.response?.title ?? t(Labels.errors.header);
+        const title = response.data?.title ?? t(Labels.errors.header);
         navigation.setOptions({title: `${t(Labels.headers.editing)}: ${title}`});
     }, [response]);
 
@@ -45,7 +45,7 @@ export default function EventEditLayout({response, onCancel, onUpdate, children}
         return null;
     }
 
-    if (response.hasError) {
+    if (!response.isValid()) {
         return (
             <WihView center="full">
                 <WihText>{t(Labels.errors.generic)}</WihText>

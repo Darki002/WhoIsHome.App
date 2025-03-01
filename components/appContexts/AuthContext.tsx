@@ -1,11 +1,11 @@
 import {createContext, type PropsWithChildren, useContext, useEffect} from 'react';
 import {useStorageState} from '@/hooks/useStorageState';
-import {WihApiError, wihFetch} from '@/helper/WihFetch';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useRouter} from "expo-router";
 import * as Sentry from "@sentry/react-native";
+import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -61,11 +61,12 @@ export function SessionProvider({children}: PropsWithChildren) {
                         return "Missing Login Information";
 
                     const response = await sendLoginRequest(config!, email, password);
-                    if (response.hasError) {
-                        return response.error;
+                    if (!response.isValid()) {
+                        return response.getErrorMessage();
                     }
-                    setSession(response.response?.jwtToken || null);
-                    setRefreshToken(response.response?.refreshToken || null);
+
+                    setSession(response.data?.jwtToken || null);
+                    setRefreshToken(response.data?.refreshToken || null);
                     return null;
                 },
                 signOut: () => {
@@ -86,28 +87,10 @@ export function SessionProvider({children}: PropsWithChildren) {
 
 async function sendLoginRequest(config: ApiConfig, email: string, password: string){
 
-    try{
-        return await wihFetch<Tokens>({
-            endpoint: Endpoints.auth.login,
-            method: "POST",
-            config: config!,
-            body: {email, password}
-        });
-    } catch (error: any){
-        if(error instanceof WihApiError){
-            if(error.response.status !== 401){
-                Sentry.captureException(error);
-            }
-            return error.response;
-        } else {
-            Sentry.captureException(error);
-            return {
-                hasError: true,
-                error: "unknown error",
-                response: null,
-                refreshFailed: false,
-                status: 0
-            }
-        }
-    }
+    return await new WihFetchBuilder(config)
+        .setEndpoint(Endpoints.auth.login)
+        .setMethod("POST")
+        .setBody({email, password})
+        .addErrorHandler(Sentry.captureException)
+        .fetch<Tokens>();
 }

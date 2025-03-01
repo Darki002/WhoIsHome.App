@@ -41,16 +41,16 @@ const Profile = () => {
         )
     }
 
-    if (user.hasError) {
+    if (!user.isValid()) {
         return <WihErrorView response={user} refresh={userRefresh} />
     }
 
-    if (response.hasError || !response.response) {
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response} refresh={responseRefresh} />
     }
 
-    const userOverview = new UserOverview(response.response);
-    const userName = user.response?.userName ?? "";
+    const userOverview = new UserOverview(response.data);
+    const userName = user.data?.userName ?? "";
     return (
         <WihView style={{flex: 1}}>
             <WihRefreshableScrollView onRefresh={[userRefresh, responseRefresh]} style={{height: "100%"}}>

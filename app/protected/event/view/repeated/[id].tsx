@@ -12,16 +12,17 @@ import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import {WihErrorView} from "@/components/WihErrorView";
-import {WihResponse} from "@/helper/WihFetch";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
+import {WihResponse} from "@/helper/fetch/WihResponse";
+import WihLoading from "@/components/WihLoading";
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const onResponse = useCallback((response: WihResponse | null) => {
-        if(!response?.hasError){
+    const onResponse = useCallback((response: WihResponse<{}> | null) => {
+        if(response && response.isValid()){
             router.back();
         }
     }, []);
@@ -41,11 +42,19 @@ export default function RepeatedEventView() {
         router.push(`/protected/event/edit/repeated/${id}`);
     }, [id]);
 
-    if (!response?.response) {
+    if (!response) {
+        return (
+            <WihView center="full">
+                <WihLoading />
+            </WihView>
+        )
+    }
+
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response!} refresh={refresh} />
     }
 
-    const event = new RepeatedEvent(response?.response);
+    const event = new RepeatedEvent(response.data);
 
     return (
         <EventViewLayout response={response} onEdit={onEdit} onDelete={deleteEvent}>

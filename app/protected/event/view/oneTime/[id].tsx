@@ -13,15 +13,16 @@ import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihIconRow";
 import {WihErrorView} from "@/components/WihErrorView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import {WihResponse} from "@/helper/WihFetch";
+import {WihResponse} from "@/helper/fetch/WihResponse";
+import WihLoading from "@/components/WihLoading";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const onResponse = useCallback((response: WihResponse | null) => {
-        if(!response?.hasError){
+    const onResponse = useCallback((response: WihResponse<{}> | null) => {
+        if(response && response.isValid()){
             router.back();
         }
     }, []);
@@ -41,11 +42,19 @@ export default function OneTimeEventView() {
         router.push(`/protected/event/edit/oneTime/${id}`);
     }, [id]);
 
-    if (!response?.response) {
+    if (!response) {
+        return (
+            <WihView center="full">
+                <WihLoading />
+            </WihView>
+        )
+    }
+
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response} refresh={refresh} />
     }
 
-    const event = new OneTimeEvent(response?.response);
+    const event = new OneTimeEvent(response.data);
 
     return (
         <EventViewLayout response={response} onEdit={onEdit} onDelete={deleteEvent}>

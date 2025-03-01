@@ -1,6 +1,6 @@
-import {WihResponse} from "@/helper/WihFetch";
 import {useCallback, useEffect, useState} from "react";
 import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 export interface WihApiProps {
     endpoint: string;
