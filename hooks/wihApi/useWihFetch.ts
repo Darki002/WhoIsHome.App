@@ -30,13 +30,10 @@ const useWihFetch = <T>(props: WihFetchProps) => {
             .setVersion(props.version)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
+            .addErrorHandler(Sentry.captureException)
             .fetch<T>();
 
         if(response.isValid()) return response;
-
-        if(response.error){
-            Sentry.captureException(response.error);
-        }
 
         if (response.refreshFailed) {
             signOut();

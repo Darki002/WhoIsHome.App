@@ -83,11 +83,8 @@ async function sendRegisterRequest(userName: string, email: string, password: st
             email,
             password
         })
+        .addErrorHandler(Sentry.captureException)
         .fetch<string>();
-
-    if(response.error){
-        Sentry.captureException(response.error);
-    }
 
     return response;
 }

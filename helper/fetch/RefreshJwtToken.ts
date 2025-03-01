@@ -1,7 +1,7 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {ApiConfig} from "@/components/appContexts/ConfigContext";
 import {Endpoints} from "@/constants/endpoints";
-import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 let refreshJwtTokenQueue: Promise<Tokens | null> | null = null;
 
@@ -26,16 +26,29 @@ async function refresh(
     onNewTokens?: (newTokens: Tokens | null) => void
 ): Promise<Tokens | null> {
 
-    const response = await new WihFetchBuilder(config)
-        .setEndpoint(Endpoints.auth.refresh)
-        .setMethod("POST")
-        .addCustomHeader("RefreshToken", refreshToken)
-        .fetch<Tokens>();
+    const headers = new Headers();
+    headers.append("RefreshToken", refreshToken);
+    headers.append("X-API-KEY", config.apikey!);
+    headers.append("Content-Type", "application/json");
 
-    if (!response.isValid()) {
+    const uri = buildUrl(config, );
+
+    const response = await fetch(uri, {
+        method: "POST",
+        headers: headers,
+        mode: "cors"
+    });
+
+    const wihResponse = await WihResponse.fromResponse<Tokens>(response);
+
+    if (!wihResponse.isValid()){
         return null;
     }
 
-    onNewTokens && onNewTokens(response.data!);
-    return response.data!;
+    onNewTokens && onNewTokens(wihResponse.data!);
+    return wihResponse.data!;
+}
+
+function buildUrl(config: ApiConfig): string {
+    return `${config.baseUri}/api/v1/${Endpoints.auth.refresh}`;
 }

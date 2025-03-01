@@ -87,15 +87,10 @@ export function SessionProvider({children}: PropsWithChildren) {
 
 async function sendLoginRequest(config: ApiConfig, email: string, password: string){
 
-    const response = await new WihFetchBuilder(config)
+    return await new WihFetchBuilder(config)
         .setEndpoint(Endpoints.auth.login)
         .setMethod("POST")
         .setBody({email, password})
+        .addErrorHandler(Sentry.captureException)
         .fetch<Tokens>();
-
-    if(response.error){
-        Sentry.captureException(response.error);
-    }
-
-    return response;
 }

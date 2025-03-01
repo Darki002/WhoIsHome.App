@@ -9,7 +9,9 @@ export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
 export class WihFetchBuilder {
     private readonly config: ApiConfig;
     private tokens?: Tokens;
+
     private onNewTokens?: OnNewTokenCallback;
+    private onError?: (error: Error) => void;
 
     private endpoint: string = "";
     private apiVersion: number = 1;
@@ -47,6 +49,11 @@ export class WihFetchBuilder {
 
     addNewTokenListener(onNewTokens?: (tokens: (Tokens | undefined | null)) => void) {
         this.onNewTokens = onNewTokens;
+        return this;
+    }
+
+    addErrorHandler(onError?: (error: Error) => void) {
+        this.onError = onError;
         return this;
     }
 
@@ -100,6 +107,7 @@ export class WihFetchBuilder {
 
             return apiResponse;
         } catch (error: any) {
+            this.onError && this.onError(error);
             return WihResponse.error<T>(error);
         }
     }
@@ -118,6 +126,7 @@ export class WihFetchBuilder {
 
             return await WihResponse.fromResponse<T>(response);
         } catch (error: any) {
+            this.onError && this.onError(error);
             return WihResponse.error<T>(error);
         }
     }
