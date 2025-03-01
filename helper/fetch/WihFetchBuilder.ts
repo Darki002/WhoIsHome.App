@@ -2,6 +2,7 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 import {ApiConfig} from "@/components/appContexts/ConfigContext";
 import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
+import {WihLogger} from "@/helper/WihLogger";
 
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
 export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
@@ -9,9 +10,7 @@ export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
 export class WihFetchBuilder {
     private readonly config: ApiConfig;
     private tokens?: Tokens;
-
     private onNewTokens?: OnNewTokenCallback;
-    private onError?: (error: Error) => void;
 
     private endpoint: string = "";
     private apiVersion: number = 1;
@@ -52,11 +51,6 @@ export class WihFetchBuilder {
         return this;
     }
 
-    addErrorHandler(onError?: (error: Error) => void) {
-        this.onError = onError;
-        return this;
-    }
-
     addCustomHeader(key: string, value: string){
         this.headers.append(key, value);
         return this;
@@ -65,6 +59,10 @@ export class WihFetchBuilder {
     private buildHeaders() {
         this.headers.append("Content-Type", "application/json");
         this.headers.append("X-API-KEY", this.config.apikey!);
+
+        if(!this.config.apikey){
+            WihLogger.warn("Attempting a request without a API Key!");
+        }
 
         if (this.tokens) {
             this.headers.append("Authorization", `Bearer ${this.tokens.jwtToken}`);
@@ -80,7 +78,7 @@ export class WihFetchBuilder {
         const uri = this.buildUrl();
 
         if (this.method === "GET" && this.body) {
-            console.warn(`Attempting a GET request with a body for ${this.endpoint}`);
+            WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
 
         try {
@@ -107,7 +105,7 @@ export class WihFetchBuilder {
 
             return apiResponse;
         } catch (error: any) {
-            this.onError && this.onError(error);
+            WihLogger.error(error);
             return WihResponse.error<T>(error);
         }
     }
@@ -126,7 +124,7 @@ export class WihFetchBuilder {
 
             return await WihResponse.fromResponse<T>(response);
         } catch (error: any) {
-            this.onError && this.onError(error);
+            WihLogger.error(error);
             return WihResponse.error<T>(error);
         }
     }

@@ -9,7 +9,6 @@ import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
-import * as Sentry from "@sentry/react-native";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
@@ -83,7 +82,6 @@ async function sendRegisterRequest(userName: string, email: string, password: st
             email,
             password
         })
-        .addErrorHandler(Sentry.captureException)
         .fetch<string>();
 
     return response;

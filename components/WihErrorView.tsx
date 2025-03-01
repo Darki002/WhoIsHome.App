@@ -4,12 +4,12 @@ import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import * as Sentry from "@sentry/react-native";
+import {WihLogger} from "@/helper/WihLogger";
 
 export function WihErrorView({response, refresh} : {response?: WihResponse<any> | null, refresh: () => Promise<void>}){
     const {t} = useTranslation();
 
-    Sentry.captureMessage(`Showing error: ${response?.getErrorMessage()}`);
+    WihLogger.error(`Showing error: ${response?.getErrorMessage()}`);
 
     return(
         <WihView center="full">

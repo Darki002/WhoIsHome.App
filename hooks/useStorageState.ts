@@ -2,6 +2,7 @@ import {useCallback, useEffect, useReducer} from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {Platform} from 'react-native';
 import * as Sentry from "@sentry/react-native"
+import {WihLogger} from "@/helper/WihLogger";
 
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
 
@@ -22,8 +23,8 @@ export async function setStorageItemAsync(key: string, value: string | null) {
             } else {
                 localStorage.setItem(key, value);
             }
-        } catch (e) {
-            Sentry.captureException(e);
+        } catch (e : any) {
+            WihLogger.error(e);
         }
     } else {
         if (value == null) {
@@ -45,8 +46,8 @@ export function useStorageState(key: string): UseStateHook<string> {
                 if (typeof localStorage !== 'undefined') {
                     setState(localStorage.getItem(key));
                 }
-            } catch (e) {
-                Sentry.captureException(e);
+            } catch (e: any) {
+                WihLogger.error(e);
             }
         } else {
             SecureStore.getItemAsync(key).then(value => {

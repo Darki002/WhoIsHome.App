@@ -2,6 +2,7 @@ import {createContext, type PropsWithChildren, useContext, useEffect} from "reac
 import {useStorageState} from "@/hooks/useStorageState";
 import {useRouter} from "expo-router";
 import * as Sentry from "@sentry/react-native"
+import {WihLogger} from "@/helper/WihLogger";
 
 export interface ApiConfig {
     baseUri: string | null;
@@ -75,7 +76,7 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
 
         return response.ok;
     } catch (e: any) {
-        Sentry.captureException(e);
+        WihLogger.error(e);
         return false;
     }
 }

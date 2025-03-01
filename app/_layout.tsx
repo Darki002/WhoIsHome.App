@@ -14,13 +14,13 @@ import WihView from "@/components/WihView";
 import WihLoading from "@/components/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
+import {WihLogger} from "@/helper/WihLogger";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
     SplashScreen.preventAutoHideAsync();
-} catch (error) {
-    console.warn("SplashScreen initialization failed:", error);
-    Sentry.captureException(error); // Log to Sentry if needed
+} catch (error: any) {
+    WihLogger.error(error);
 }
 
 Sentry.init({
@@ -43,9 +43,8 @@ const RootLayout = () => {
                 if (loaded) {
                     await SplashScreen.hideAsync();
                 }
-            } catch (error) {
-                console.warn("SplashScreen.hideAsync() failed:", error);
-                Sentry.captureException(error);
+            } catch (error: any) {
+                WihLogger.warn(error);
             }
         };
 

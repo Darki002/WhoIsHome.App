@@ -1,7 +1,6 @@
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
-import * as Sentry from "@sentry/react-native"
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 
@@ -30,7 +29,6 @@ const useWihFetch = <T>(props: WihFetchProps) => {
             .setVersion(props.version)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
-            .addErrorHandler(Sentry.captureException)
             .fetch<T>();
 
         if(response.isValid()) return response;

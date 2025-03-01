@@ -4,7 +4,6 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useRouter} from "expo-router";
-import * as Sentry from "@sentry/react-native";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 
 export type LoginInfos = {
@@ -92,7 +91,6 @@ async function sendLoginRequest(config: ApiConfig, email: string, password: stri
         .setEndpoint(Endpoints.auth.login)
         .setMethod("POST")
         .setBody({email, password})
-        .addErrorHandler(Sentry.captureException)
         .fetch<Tokens>();
 }
 
@@ -101,6 +99,5 @@ async function sendLogoutRequest(config: ApiConfig, tokens: Tokens){
     return await new WihFetchBuilder(config, tokens)
         .setEndpoint(Endpoints.auth.logout)
         .setMethod("POST")
-        .addErrorHandler(Sentry.captureException)
         .fetch<{}>();
 }
