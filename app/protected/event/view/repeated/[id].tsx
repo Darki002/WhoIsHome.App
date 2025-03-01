@@ -50,7 +50,7 @@ export default function RepeatedEventView() {
         )
     }
 
-    if (!response?.data) {
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response!} refresh={refresh} />
     }
 

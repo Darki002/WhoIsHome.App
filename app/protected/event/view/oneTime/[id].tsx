@@ -50,7 +50,7 @@ export default function OneTimeEventView() {
         )
     }
 
-    if (response?.isValid() || !response?.data) {
+    if (!response.isValid() || !response.data) {
         return <WihErrorView response={response} refresh={refresh} />
     }
 

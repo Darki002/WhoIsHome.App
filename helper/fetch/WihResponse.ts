@@ -15,6 +15,10 @@ export class WihResponse<T> {
         this.errorMessage = errorMessage;
         this.error = error;
         this.refreshFailed = refreshFailed;
+
+        if(__DEV__ && !this.success){
+            console.error(`Got an failing response: ${this.getErrorMessage()}`)
+        }
     }
 
     static async fromResponse<T>(response: Response): Promise<WihResponse<T>> {

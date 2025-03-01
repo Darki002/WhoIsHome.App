@@ -62,7 +62,7 @@ export class WihFetchBuilder {
         return this;
     }
 
-    private async buildHeaders() {
+    private buildHeaders() {
         this.headers.append("Content-Type", "application/json");
         this.headers.append("X-API-KEY", this.config.apikey!);
 
@@ -76,7 +76,7 @@ export class WihFetchBuilder {
     }
 
     async fetch<T>(): Promise<WihResponse<T>> {
-        await this.buildHeaders();
+        this.buildHeaders();
         const uri = this.buildUrl();
 
         if (this.method === "GET" && this.body) {
@@ -113,7 +113,7 @@ export class WihFetchBuilder {
     }
 
     private async retry<T>(): Promise<WihResponse<T>> {
-        await this.buildHeaders();
+        this.buildHeaders();
         const uri = this.buildUrl();
 
         try {
