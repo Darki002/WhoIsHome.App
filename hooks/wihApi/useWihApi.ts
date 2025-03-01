@@ -18,8 +18,11 @@ export default function useWihApi<T>({endpoint, body, method, version}: WihApiPr
         callApi(body).then(e => setResponse(e));
     }, [body]);
 
-    const refresh = useCallback(async () => {
-        callApi(body).then(e => setResponse(e));
+    const refresh = useCallback(() => {
+       return (async () => {
+            const r = await callApi(body); // TODO: do this for the other once too
+            setResponse(r);
+        })()
     }, [body]);
 
     return [response, refresh];
