@@ -52,8 +52,8 @@ export default function EventViewLayout({response, onEdit, onDelete, children}: 
         if(isOwner) {
             return (
                 <WihView flex="row" style={{gap: 30}}>
-                    <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
                     <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
+                    <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
                 </WihView>
             )
         }
