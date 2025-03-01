@@ -69,7 +69,8 @@ export function SessionProvider({children}: PropsWithChildren) {
                     setRefreshToken(response.data?.refreshToken || null);
                     return null;
                 },
-                signOut: () => {
+                signOut: async () => {
+                    await sendLogoutRequest(config!, {jwtToken: session, refreshToken: refreshToken});
                     setSession(null);
                     setRefreshToken(null);
                 },
@@ -93,4 +94,13 @@ async function sendLoginRequest(config: ApiConfig, email: string, password: stri
         .setBody({email, password})
         .addErrorHandler(Sentry.captureException)
         .fetch<Tokens>();
+}
+
+async function sendLogoutRequest(config: ApiConfig, tokens: Tokens){
+
+    return await new WihFetchBuilder(config, tokens)
+        .setEndpoint(Endpoints.auth.logout)
+        .setMethod("POST")
+        .addErrorHandler(Sentry.captureException)
+        .fetch<{}>();
 }
