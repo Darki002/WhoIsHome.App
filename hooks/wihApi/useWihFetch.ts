@@ -3,6 +3,7 @@ import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {WihLogger} from "@/helper/WihLogger";
 
 export interface WihFetchProps {
     endpoint: string;
@@ -21,9 +22,17 @@ const useWihFetch = <T>(props: WihFetchProps) => {
     }
 
     return async (body?: T): Promise<WihResponse<T> | null> => {
-        if (!session) return null;
+        if (!session) {
+            WihLogger.warn(`Skip Request ${props.endpoint} due to missing session!`);
+            return null;
+        }
 
-        const response = await new WihFetchBuilder(config!, session)
+        if(!config?.apikey){
+            WihLogger.warn(`Skip Request ${props.endpoint} due to missing API Key!`);
+            return null;
+        }
+
+        const response = await new WihFetchBuilder(config, session)
             .setEndpoint(props.endpoint)
             .setMethod(props.method)
             .setVersion(props.version)

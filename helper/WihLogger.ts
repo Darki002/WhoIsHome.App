@@ -26,4 +26,10 @@ export class WihLogger {
             console.info(`[INFO] ${message}`);
         }
     }
+
+    static debug(message: any){
+        if(__DEV__){
+            console.debug(message);
+        }
+    }
 }
