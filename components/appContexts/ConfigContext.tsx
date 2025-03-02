@@ -1,7 +1,6 @@
 import {createContext, type PropsWithChildren, useContext, useEffect} from "react";
 import {useStorageState} from "@/hooks/useStorageState";
 import {useRouter} from "expo-router";
-import * as Sentry from "@sentry/react-native"
 import {WihLogger} from "@/helper/WihLogger";
 
 export interface ApiConfig {
