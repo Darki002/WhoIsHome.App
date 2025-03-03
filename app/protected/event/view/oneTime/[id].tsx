@@ -2,19 +2,19 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import React, {useCallback} from "react";
 import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
-import {WihText} from "@/components/WihText";
+import {WihText} from "@/components/WihComponents/display/WihText";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import {Endpoints} from "@/constants/endpoints";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {timeDisplayString} from "@/helper/datetimehelper";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
-import WihIconRow from "@/components/WihIconRow";
-import {WihErrorView} from "@/components/WihErrorView";
+import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import WihLoading from "@/components/WihLoading";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();

@@ -1,8 +1,8 @@
-import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
-import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
 

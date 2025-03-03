@@ -1,20 +1,20 @@
-import {WihText} from "@/components/WihText";
+import {WihText} from "@/components/WihComponents/display/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import React, {useCallback} from "react";
 import {RepeatedEvent, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import {Endpoints} from "@/constants/endpoints";
-import WihIconRow from "@/components/WihIconRow";
+import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import Labels from "@/constants/locales/Labels";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-import {WihErrorView} from "@/components/WihErrorView";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import WihLoading from "@/components/WihLoading";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
 
 export default function RepeatedEventView() {
     const {t} = useTranslation();

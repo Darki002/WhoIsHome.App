@@ -1,13 +1,13 @@
-import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
-import {WihButton} from "@/components/input/WihButton";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
 import React, {useState} from "react";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {Dimensions, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 
 export default function Index() {
     const {t} = useTranslation();

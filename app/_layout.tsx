@@ -10,8 +10,8 @@ import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigCo
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
-import WihView from "@/components/WihView";
-import WihLoading from "@/components/WihLoading";
+import WihView from "@/components/WihComponents/view/WihView";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";

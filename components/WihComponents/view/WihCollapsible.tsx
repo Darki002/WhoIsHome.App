@@ -2,8 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {PropsWithChildren, useState} from 'react';
 import {StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 
-import {WihText} from '@/components/WihText';
-import WihView from '@/components/WihView';
+import {WihText} from '@/components/WihComponents/display/WihText';
+import WihView from '@/components/WihComponents/view/WihView';
 import {Colors} from '@/constants/Colors';
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 

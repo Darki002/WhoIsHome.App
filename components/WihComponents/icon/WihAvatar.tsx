@@ -1,5 +1,5 @@
-import {WihText} from "./WihText";
-import WihView from "./WihView";
+import {WihText} from "../display/WihText";
+import WihView from "../view/WihView";
 import {StyleSheet, ViewStyle} from 'react-native';
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 

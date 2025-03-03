@@ -1,4 +1,4 @@
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {StyleSheet} from "react-native";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 

@@ -1,8 +1,8 @@
 import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/framework/wihFlow/wihFlow";
-import {WihText, WihTitle} from "@/components/WihText";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
 import React, {useCallback} from "react";
-import WihView from "@/components/WihView";
-import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
 import {formatDate, formatTime, timeDisplayString} from "@/helper/datetimehelper";
 import TitleStep from "@/components/pages/CreateFlow/TitleStep";
 import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
@@ -13,7 +13,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import WihIconRow from "@/components/WihIconRow";
+import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 
 const defaultOneTimeEvent: OneTimeEvent = {

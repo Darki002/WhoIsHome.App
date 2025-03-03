@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
-import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/input/WihAuthInput";
-import {WihButton} from "@/components/input/WihButton";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import {WihEmailInput, WihPasswordInput, WihUsernameInput} from "@/components/WihComponents/input/WihAuthInput";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {StyleSheet} from "react-native";
 import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";

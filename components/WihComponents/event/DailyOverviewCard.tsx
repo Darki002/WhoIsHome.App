@@ -1,8 +1,8 @@
 import {DailyOverview} from "@/constants/WihTypes/DailyOverview";
 import {Pressable, StyleSheet} from "react-native";
 import {useRouter} from "expo-router";
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText} from "@/components/WihComponents/display/WihText";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {MaterialIcons} from "@expo/vector-icons";
 import React from "react";

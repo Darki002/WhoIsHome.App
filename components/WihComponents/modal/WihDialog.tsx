@@ -1,7 +1,7 @@
 import { Modal, StyleSheet, View } from "react-native";
-import WihView from "@/components/WihView";
-import { WihText } from "@/components/WihText";
-import { WihButton } from "@/components/input/WihButton";
+import WihView from "@/components/WihComponents/view/WihView";
+import { WihText } from "@/components/WihComponents/display/WihText";
+import { WihButton } from "@/components/WihComponents/input/WihButton";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";

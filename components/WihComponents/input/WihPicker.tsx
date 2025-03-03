@@ -2,7 +2,7 @@ import {Picker} from "@react-native-picker/picker";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {StyleSheet} from "react-native";
 
 export type WihOption<T> = {

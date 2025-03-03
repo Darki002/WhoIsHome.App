@@ -1,8 +1,8 @@
 import {useSession} from "@/components/appContexts/AuthContext";
-import {WihAvatar} from "@/components/WihAvatar";
-import {WihButton} from "@/components/input/WihButton";
-import {WihText} from "@/components/WihText";
-import WihView from "@/components/WihView";
+import {WihAvatar} from "@/components/WihComponents/icon/WihAvatar";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
+import {WihText} from "@/components/WihComponents/display/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
 import {Dimensions, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihEventList from "@/components/WihComponents/event/WihEventList";
@@ -11,10 +11,10 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import WihLoading from "@/components/WihLoading";
-import {WihCollapsible} from "@/components/WihCollapsible";
-import {WihErrorView} from "@/components/WihErrorView";
-import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
+import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 
 const EVENT_COUNT_THRESHOLD = 4;

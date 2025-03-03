@@ -1,9 +1,9 @@
 import { Stack} from 'expo-router';
 import {StyleSheet} from 'react-native';
 
-import WihView from '@/components/WihView';
-import WihLink from '@/components/WihLink';
-import {WihText} from "@/components/WihText";
+import WihView from '@/components/WihComponents/view/WihView';
+import WihLink from '@/components/WihComponents/navigation/WihLink';
+import {WihText} from "@/components/WihComponents/display/WihText";
 
 export default function NotFoundScreen() {
     return (
