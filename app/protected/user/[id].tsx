@@ -3,7 +3,7 @@ import WihView from "@/components/WihView";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihLoading from "@/components/WihLoading";
-import WihEventList from "@/components/wihEvent/WihEventList";
+import WihEventList from "@/components/WihComponents/event/WihEventList";
 import React, {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {User} from "@/constants/WihTypes/User";

@@ -4,7 +4,7 @@ import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
 import WihLoading from "@/components/WihLoading";
-import {DailyOverviewCard} from "@/components/wihEvent/DailyOverviewCard";
+import {DailyOverviewCard} from "@/components/WihComponents/event/DailyOverviewCard";
 import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
 import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihErrorView";
