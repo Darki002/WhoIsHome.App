@@ -13,6 +13,6 @@ export default function useWihApiCallable<T = {}>(props: WihApiProps<T>): (body?
     const callApi = useWihFetch<T>(props);
     return useCallback(async (body?: T) => {
         const response = await callApi(body);
-        return props.onResponse(response);
+        props.onResponse(response);
     }, []);
 }
