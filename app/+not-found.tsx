@@ -1,9 +1,8 @@
-import { Stack} from 'expo-router';
+import {Link, Stack} from 'expo-router';
 import {StyleSheet} from 'react-native';
 
-import WihView from '@/components/WihView';
-import WihLink from '@/components/WihLink';
-import {WihText} from "@/components/WihText";
+import WihView from '@/components/WihComponents/view/WihView';
+import {WihText} from "@/components/WihComponents/display/WihText";
 
 export default function NotFoundScreen() {
     return (
@@ -11,9 +10,9 @@ export default function NotFoundScreen() {
             <Stack.Screen options={{title: 'Oops!'}}/>
             <WihView style={styles.container}>
                 <WihText>This screen doesn't exist.</WihText>
-                <WihLink href="/protected/(tabs)" style={styles.link}>
+                <Link href="/protected/(tabs)" style={styles.link}>
                     Go to home screen!
-                </WihLink>
+                </Link>
             </WihView>
         </>
     );

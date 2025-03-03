@@ -1,4 +1,4 @@
-import {IonIcon, WihMaterialIcon, MaterialCommunityIcon} from '@/components/WihIcon';
+import {IonIcon, WihMaterialIcon, MaterialCommunityIcon} from '@/components/WihComponents/icon/WihIcon';
 import {Tabs} from "expo-router";
 import React from "react";
 import {useTranslation} from "react-i18next";

@@ -1,10 +1,10 @@
 import {ReactNode} from "react";
-import WihView from "@/components/WihView";
-import {WihButton} from "@/components/input/WihButton";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import WihDivider from "@/components/WihDivider";
+import WihDivider from "@/components/WihComponents/layout/WihDivider";
 
 export type WihFlowNavAction = "Next" | "Back" | "Cancel" | "Finish";
 

@@ -1,12 +1,12 @@
-import {WihText, WihTitle} from "@/components/WihText";
-import WihView from "@/components/WihView";
-import {WihButton} from "@/components/input/WihButton";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
-import WihDivider from "@/components/WihDivider";
-import WihCard from "@/components/WihCard";
+import WihDivider from "@/components/WihComponents/layout/WihDivider";
+import WihCard from "@/components/WihComponents/layout/WihCard";
 
 const Create = () => {
     const {t} = useTranslation();

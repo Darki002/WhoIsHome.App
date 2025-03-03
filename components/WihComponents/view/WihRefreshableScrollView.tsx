@@ -1,5 +1,5 @@
 import {PropsWithChildren, useCallback, useState} from "react";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {RefreshControl, ScrollView, ScrollViewProps} from "react-native";
 
 export type RefreshCallback = () => Promise<void>;

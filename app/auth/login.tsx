@@ -1,8 +1,8 @@
 import {LoginInfos, useSession} from "@/components/appContexts/AuthContext";
-import {WihEmailInput, WihPasswordInput} from "@/components/input/WihAuthInput";
-import {WihButton} from "@/components/input/WihButton";
-import {WihText, WihTitle} from "@/components/WihText";
-import WihView from "@/components/WihView";
+import {WihEmailInput, WihPasswordInput} from "@/components/WihComponents/input/WihAuthInput";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
 import React, {useState} from "react";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";

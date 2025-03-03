@@ -1,20 +1,20 @@
 import {useLocalSearchParams, useNavigation} from "expo-router";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
-import WihLoading from "@/components/WihLoading";
-import WihEventList from "@/components/wihEvent/WihEventList";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import React, {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {WihCollapsible} from "@/components/WihCollapsible";
+import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
 import {StyleSheet} from "react-native";
-import {WihErrorView} from "@/components/WihErrorView";
-import {WihText} from "@/components/WihText";
-import {WihRefreshableScrollView} from "@/components/WihRefreshableScrollView";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
+import {WihText} from "@/components/WihComponents/display/WihText";
+import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 
 const EVENT_COUNT_THRESHOLD = 4;
 

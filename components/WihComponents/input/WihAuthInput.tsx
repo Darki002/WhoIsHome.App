@@ -1,7 +1,7 @@
 import {TextInputProps, TextStyle, ViewStyle} from "react-native";
 import React from "react";
 import Labels from "@/constants/locales/Labels";
-import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {useTranslation} from "react-i18next";
 
 export interface WihUsernameInputProps {

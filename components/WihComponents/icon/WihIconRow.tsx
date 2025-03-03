@@ -1,7 +1,7 @@
 import React, {ComponentProps, PropsWithChildren} from "react";
 import {MaterialIcons} from "@expo/vector-icons";
-import WihView from "@/components/WihView";
-import {WihMaterialIcon} from "@/components/WihIcon";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihMaterialIcon} from "@/components/WihComponents/icon/WihIcon";
 import {StyleSheet} from "react-native";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 

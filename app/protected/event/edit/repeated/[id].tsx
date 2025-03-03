@@ -2,25 +2,25 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
-import {WihText} from "@/components/WihText";
+import {WihText} from "@/components/WihComponents/display/WihText";
 import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import WihView from "@/components/WihView";
+import WihView from "@/components/WihComponents/view/WihView";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
-import {WihOption} from "@/components/input/WihSingleChoice";
+import {WihOption} from "@/components/WihComponents/input/WihSingleChoice";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
-import {WihTextInput} from "@/components/input/WihTextInput";
-import {WihDateInput} from "@/components/input/DateTime/WihDateInput";
-import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
-import WihIconRow from "@/components/WihIconRow";
+import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
+import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
+import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
+import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
-import {WihPicker} from "@/components/input/WihPicker";
-import {WihErrorView} from "@/components/WihErrorView";
-import WihLoading from "@/components/WihLoading";
+import {WihPicker} from "@/components/WihComponents/input/WihPicker";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
+import WihLoading from "@/components/WihComponents/feedback/WihLoading";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},

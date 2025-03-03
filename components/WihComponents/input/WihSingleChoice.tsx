@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
 
 export type WihOption<T> = {

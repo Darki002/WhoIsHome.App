@@ -1,8 +1,8 @@
-import {WihOption, WihSingleChoice} from "@/components/input/WihSingleChoice";
+import {WihOption, WihSingleChoice} from "@/components/WihComponents/input/WihSingleChoice";
 import {WihFlowComponentProps, WihFlowStep} from "@/components/framework/wihFlow/wihFlow";
-import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
-import {WihTimeInput} from "@/components/input/DateTime/WihTimeInput";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 import React from "react";
 import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";

@@ -1,14 +1,14 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect, useState} from "react";
-import WihView from "@/components/WihView";
-import {WihText} from "@/components/WihText";
-import {WihButton} from "@/components/input/WihButton";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText} from "@/components/WihComponents/display/WihText";
+import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
 import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
-import WihDialog from "@/components/WihDialog";
+import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventViewLayoutProps {

@@ -1,9 +1,9 @@
 import {WihFlowComponentProps, WihFlowStep} from "@/components/framework/wihFlow/wihFlow";
-import WihView from "@/components/WihView";
-import {WihText, WihTitle} from "@/components/WihText";
+import WihView from "@/components/WihComponents/view/WihView";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
 import React from "react";
 import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
-import {WihTextInput} from "@/components/input/WihTextInput";
+import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";

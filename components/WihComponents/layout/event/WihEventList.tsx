@@ -1,4 +1,4 @@
-import WihEventCard from "@/components/wihEvent/WihEventCard";
+import WihEventCard from "@/components/WihComponents/layout/event/WihEventCard";
 import {WihEvent} from "@/constants/WihTypes/Event/WihEvent";
 
 export type WihEventListProps = {
