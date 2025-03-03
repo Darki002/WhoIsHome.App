@@ -1,7 +1,7 @@
 import {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
-import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import useWihApi from "@/hooks/wihApi/useWihApi";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {WihLogger} from "@/helper/WihLogger";
 
@@ -29,7 +29,7 @@ export function WihUserProvider({children}: PropsWithChildren) {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const {isApiConfigLoading} = useApiConfig();
 
-    const getUser = useWihFetch<User>({
+    const getUser = useWihApi<User>({
         endpoint: Endpoints.user.me,
         method: "GET"
     });

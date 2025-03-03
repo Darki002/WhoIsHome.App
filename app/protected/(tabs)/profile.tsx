@@ -6,7 +6,7 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {Dimensions, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
-import useWihApi from "@/hooks/wihApi/useWihApi";
+import useWihApiEffect from "@/hooks/wihApi/useWihApiEffect";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";

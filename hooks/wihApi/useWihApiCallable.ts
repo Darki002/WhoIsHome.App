@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import useWihApi from "@/hooks/wihApi/useWihApi";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 export interface WihApiProps<T> {
@@ -10,7 +10,7 @@ export interface WihApiProps<T> {
 }
 
 export default function useWihApiCallable<T = {}>(props: WihApiProps<T>): (body?: T) => void {
-    const callApi = useWihFetch<T>(props);
+    const callApi = useWihApi<T>(props);
     return useCallback(async (body?: T) => {
         const response = await callApi(body);
         props.onResponse(response);

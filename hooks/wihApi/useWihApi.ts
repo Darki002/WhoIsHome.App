@@ -1,29 +1,53 @@
-import {useCallback, useEffect, useState} from "react";
-import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {useSession} from "@/components/appContexts/AuthContext";
+import {Tokens} from "@/constants/WihTypes/Auth";
 import {WihResponse} from "@/helper/fetch/WihResponse";
+import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {WihLogger} from "@/helper/WihLogger";
 
-export interface WihApiProps {
+export interface WihFetchProps {
     endpoint: string;
-    method: "GET" | "POST" | "DELETE";
+    method: "GET" | "POST" | "DELETE" | "PATCH";
     version?: number;
-    body?: any;
 }
 
-// keep in mind it will only call the API gain when the body changes but not it endpoint, method or version changes.
-export default function useWihApi<T>({endpoint, body, method, version}: WihApiProps) : [WihResponse<T | null> | null, () => Promise<void>] {
-    const [response, setResponse] = useState<WihResponse<T> | null>(null);
-    const callApi = useWihFetch<T>({endpoint, method, version});
+const useWihApi = <T>(props: WihFetchProps) => {
+    const {config} = useApiConfig();
+    const {session, onNewSession, signOut} = useSession();
 
-    useEffect(() => {
-        callApi(body).then(e => setResponse(e));
-    }, [body]);
+    function onNewTokens(tokens: Tokens | undefined | null) {
+        if (tokens) {
+            onNewSession(tokens);
+        }
+    }
 
-    const refresh = useCallback(() => {
-       return (async () => {
-            const r = await callApi(body);
-            setResponse(r);
-        })()
-    }, [body]);
+    return async (body?: T): Promise<WihResponse<T> | null> => {
+        if (!session) {
+            WihLogger.warn(`Skip Request ${props.endpoint} due to missing session!`);
+            return null;
+        }
 
-    return [response, refresh];
+        if(!config?.apikey){
+            WihLogger.warn(`Skip Request ${props.endpoint} due to missing API Key!`);
+            return null;
+        }
+
+        const response = await new WihFetchBuilder(config, session)
+            .setEndpoint(props.endpoint)
+            .setMethod(props.method)
+            .setVersion(props.version)
+            .setBody(body)
+            .addNewTokenListener(onNewTokens)
+            .fetch<T>();
+
+        if(response.isValid()) return response;
+
+        if (response.refreshFailed) {
+            signOut();
+        }
+
+        return response;
+    }
 }
+
+export default useWihApi;
