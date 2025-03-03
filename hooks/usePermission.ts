@@ -1,13 +1,12 @@
 import {useCallback} from "react";
-import {User} from "@/constants/WihTypes/User";
-import useWihApi from "@/hooks/wihApi/useWihApi";
 import {WihLogger} from "@/helper/WihLogger";
+import {useWihUser} from "@/components/appContexts/WIhUserContext";
 
 export function usePermission(){
-    const [user] = useWihApi<User>({endpoint: "User/Me", method: "GET"});
+    const {user} = useWihUser();
 
     return useCallback((permittedUserId?: number) => {
-        if(!user?.data) {
+        if(!user) {
             WihLogger.warn("(Permission Check) Logged in user was not being loaded.");
             return false;
         }
@@ -15,6 +14,6 @@ export function usePermission(){
             WihLogger.warn("(Permission Check) There was no given user ID that can access this resource.");
             return false;
         }
-        return permittedUserId === user.data.id;
+        return permittedUserId === user.id;
     }, [user]);
 }

@@ -3,6 +3,7 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import useWihFetch from "@/hooks/wihApi/useWihFetch";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {WihLogger} from "@/helper/WihLogger";
 
 const WihUserContext = createContext<{
     user: User | null,
@@ -35,10 +36,17 @@ export function WihUserProvider({children}: PropsWithChildren) {
 
     useEffect(() => {
         if(isApiConfigLoading) return;
-        
+
         getUser()
-            .then(u => setUser(u?.data ?? null))
-            .then(() => setIsLoading(false));
+            .then(u => {
+                if(u?.isValid()){
+                    setUser(u?.data ?? null)
+                }
+                else if (u?.error){
+                    WihLogger.error(u.error)
+                }
+                setIsLoading(false)
+            });
     }, [isApiConfigLoading]);
 
     return (

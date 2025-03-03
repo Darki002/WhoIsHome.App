@@ -16,16 +16,16 @@ import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
+import {useWihUser} from "@/components/appContexts/WIhUserContext";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
 const Profile = () => {
     const {t} = useTranslation();
     const {signOut} = useSession();
-    const [user, userRefresh] = useWihApi<User>({
-        endpoint: Endpoints.user.me,
-        method: "GET",
-    });
+    const {user} = useWihUser();
+
+
     const [response, responseRefresh] = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.url,
         method: "GET",
@@ -41,19 +41,15 @@ const Profile = () => {
         )
     }
 
-    if (!user.isValid()) {
-        return <WihErrorView response={user} refresh={userRefresh} />
-    }
-
     if (!response.isValid() || !response.data) {
         return <WihErrorView response={response} refresh={responseRefresh} />
     }
 
     const userOverview = new UserOverview(response.data);
-    const userName = user.data?.userName ?? "";
+    const userName = user?.userName ?? "";
     return (
         <WihView style={{flex: 1}}>
-            <WihRefreshableScrollView onRefresh={[userRefresh, responseRefresh]} style={{height: "100%"}}>
+            <WihRefreshableScrollView onRefresh={[responseRefresh]} style={{height: "100%"}}>
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>
