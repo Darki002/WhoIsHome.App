@@ -18,11 +18,9 @@ export default function useWihApiFocus<T>(props: WihApiProps): [WihResponse<T | 
         callApi(props.body).then(e => setResponse(e));
     }, [props.body]));
 
-    const refresh = useCallback(() => {
-        return (async () => {
-            const r = await callApi(props.body);
-            setResponse(r);
-        })()
+    const refresh = useCallback(async () => {
+        const r = await callApi(props.body);
+        setResponse(r);
     }, [props.body]);
 
     return [response, refresh];

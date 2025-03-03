@@ -17,7 +17,7 @@ export function WihRefreshableScrollView({children, onRefresh, ...rest}: PropsWi
             await c();
         }
         setRefreshing(false);
-    }, []);
+    }, [onRefresh]);
 
     return (
         <WihView>
