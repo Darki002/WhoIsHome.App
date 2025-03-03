@@ -25,7 +25,6 @@ const Profile = () => {
     const {signOut} = useSession();
     const {user} = useWihUser();
 
-
     const [response, responseRefresh] = useWihApiFocus<UserOverviewDto>({
         endpoint: Endpoints.userOverview.url,
         method: "GET",
