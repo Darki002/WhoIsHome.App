@@ -22,7 +22,7 @@ const AuthContext = createContext<{
     signOut: () => null,
     onNewSession: _ => null,
     session: null,
-    isSessionLoading: true,
+    isSessionLoading: false,
 });
 
 // This hook can be used to access the user info.

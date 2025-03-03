@@ -15,6 +15,7 @@ import WihLoading from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
+import {useWihUser, WihUserProvider} from "@/components/appContexts/WIhUserContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
@@ -32,6 +33,7 @@ Sentry.init({
 const RootLayout = () => {
     const colorScheme = useColorScheme();
     const {isApiConfigLoading} = useApiConfig();
+    const {isUserLoading} = useWihUser();
 
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
@@ -52,7 +54,7 @@ const RootLayout = () => {
     }, [loaded]);
 
 
-    if (!loaded || isApiConfigLoading) {
+    if (!loaded || isApiConfigLoading || isUserLoading) {
         return (
             <WihView center="full">
                 <WihLoading/>
@@ -71,16 +73,18 @@ const RootLayout = () => {
             <WihThemeProvider>
                 <ApiConfigProvider>
                     <SessionProvider>
-                        <StatusBar
-                            style={colorScheme === 'dark' ? 'light' : 'dark'}
-                            backgroundColor={Colors[colorScheme ?? "light"].background}
-                        />
-                        <Stack screenOptions={screenOptions}>
-                            <Stack.Screen name="protected" options={{headerShown: false}}/>
-                            <Stack.Screen name="auth" options={{headerShown: false}}/>
-                            <Stack.Screen name="config" options={{headerShown: false}}/>
-                            <Stack.Screen name="+not-found"/>
-                        </Stack>
+                        <WihUserProvider>
+                            <StatusBar
+                                style={colorScheme === 'dark' ? 'light' : 'dark'}
+                                backgroundColor={Colors[colorScheme ?? "light"].background}
+                            />
+                            <Stack screenOptions={screenOptions}>
+                                <Stack.Screen name="protected" options={{headerShown: false}}/>
+                                <Stack.Screen name="auth" options={{headerShown: false}}/>
+                                <Stack.Screen name="config" options={{headerShown: false}}/>
+                                <Stack.Screen name="+not-found"/>
+                            </Stack>
+                        </WihUserProvider>
                     </SessionProvider>
                 </ApiConfigProvider>
             </WihThemeProvider>

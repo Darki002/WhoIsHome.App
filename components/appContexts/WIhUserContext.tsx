@@ -2,6 +2,7 @@ import {createContext, type PropsWithChildren, useContext, useEffect, useState} 
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import useWihFetch from "@/hooks/wihApi/useWihFetch";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 const WihUserContext = createContext<{
     user: User | null,
@@ -25,6 +26,7 @@ export function useWihUser() {
 export function WihUserProvider({children}: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const {isApiConfigLoading} = useApiConfig();
 
     const getUser = useWihFetch<User>({
         endpoint: Endpoints.user.me,
@@ -32,10 +34,12 @@ export function WihUserProvider({children}: PropsWithChildren) {
     });
 
     useEffect(() => {
+        if(isApiConfigLoading) return;
+        
         getUser()
             .then(u => setUser(u?.data ?? null))
             .then(() => setIsLoading(false));
-    }, []);
+    }, [isApiConfigLoading]);
 
     return (
         <WihUserContext.Provider value={{user, isUserLoading: isLoading}}>
