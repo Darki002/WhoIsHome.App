@@ -31,7 +31,7 @@ async function refresh(
     headers.append("X-API-KEY", config.apikey!);
     headers.append("Content-Type", "application/json");
 
-    const uri = buildUrl(config, );
+    const uri = buildUrl(config);
 
     const response = await fetch(uri, {
         method: "POST",

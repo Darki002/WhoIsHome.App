@@ -60,7 +60,6 @@ export class WihFetchBuilder {
         this.headers.append("Content-Type", "application/json");
         this.headers.append("X-API-KEY", this.config.apikey!);
 
-        WihLogger.debug(this.config); // TODO Remove after debug
         if(!this.config.apikey){
             WihLogger.warn("Attempting a request without a API Key!");
         }
