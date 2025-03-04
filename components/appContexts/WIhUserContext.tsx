@@ -10,7 +10,7 @@ const WihUserContext = createContext<{
     isUserLoading: boolean
 }>({
     user: null,
-    isUserLoading: true
+    isUserLoading: false
 });
 
 export function useWihUser() {
