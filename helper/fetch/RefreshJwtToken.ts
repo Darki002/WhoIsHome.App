@@ -12,7 +12,7 @@ export async function refreshJwtToken(
 ): Promise<Tokens | null> {
     if (!refreshJwtTokenQueue) {
         refreshJwtTokenQueue = (async () => {
-            const tokens = refresh(refreshToken, config, onNewTokens);
+            const tokens = await refresh(refreshToken, config, onNewTokens);
             refreshJwtTokenQueue = null;
             return tokens;
         })();
