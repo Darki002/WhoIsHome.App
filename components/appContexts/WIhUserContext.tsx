@@ -2,17 +2,11 @@ import React, {createContext, type PropsWithChildren, useContext, useEffect, use
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import useWihApi from "@/hooks/wihApi/useWihApi";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {WihLogger} from "@/helper/WihLogger";
 import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
-const WihUserContext = createContext<{
-    user: User | null,
-    isUserLoading: boolean
-}>({
-    user: null,
-    isUserLoading: true
-});
+const WihUserContext = createContext<User | null>(null);
 
 export function useWihUser() {
     const value = useContext(WihUserContext);
@@ -28,35 +22,40 @@ export function useWihUser() {
 export function WihUserProvider({children}: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const {isApiConfigLoading} = useApiConfig();
 
     const getUser = useWihApi<User>({
         endpoint: Endpoints.user.me,
         method: "GET"
     });
 
+    useEffect(() => {
+        getUser()
+            .then(u => {
+                setUser(handleResponse(u));
+                setIsLoading(false);
+            });
+    }, []);
+
     if(isLoading) {
         return <WihLoading/>;
     }
 
-    useEffect(() => {
-        if(isApiConfigLoading) return;
-
-        getUser()
-            .then(u => {
-                if(u?.isValid()){
-                    setUser(u?.data ?? null)
-                }
-                else if (u?.error){
-                    WihLogger.error(u.error)
-                }
-                setIsLoading(false)
-            });
-    }, [isApiConfigLoading]);
-
     return (
-        <WihUserContext.Provider value={{user, isUserLoading: isLoading}}>
+        <WihUserContext.Provider value={user}>
             {children}
         </WihUserContext.Provider>
-    )
+    );
+}
+
+function handleResponse(response: WihResponse<User> | string){
+    if(response instanceof WihResponse){
+
+        if(response.isValid()) return response.data!;
+        WihLogger.error(`(WihUserProvider) Could not load logged in User! | Message: ${response.error}`);
+        return null;
+    }
+    else {
+        WihLogger.error(response);
+        return null;
+    }
 }
