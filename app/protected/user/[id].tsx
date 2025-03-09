@@ -25,7 +25,7 @@ export default function UserView() {
     })
 }
 
-function UserViewOverviewComponent({response, refresh} : WihApiFocusComponentParams<User>) {
+function UserViewOverviewComponent({response} : WihApiFocusComponentParams<User>) {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     const user = response;
