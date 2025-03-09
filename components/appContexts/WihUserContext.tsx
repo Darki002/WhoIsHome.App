@@ -1,7 +1,7 @@
 import React, {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
-import useWihApi from "@/hooks/wihApi/useWihApi";
+import useWihApi from "@/hooks/useWihApi";
 import {WihLogger} from "@/helper/WihLogger";
 import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {WihResponse} from "@/helper/fetch/WihResponse";

@@ -1,5 +1,5 @@
 import {ReactNode, useCallback, useState} from "react";
-import useWihApi, {WihFetchProps} from "@/hooks/wihApi/useWihApi";
+import useWihApi, {WihFetchProps} from "@/hooks/useWihApi";
 import {useFocusEffect} from "expo-router";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
