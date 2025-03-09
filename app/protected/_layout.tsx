@@ -1,10 +1,10 @@
-import {Redirect, Stack, useNavigation, useRouter} from 'expo-router';
+import { Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/appContexts/AuthContext';
 import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
 import WihView from "@/components/WihComponents/view/WihView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 const ProtectedLayout = () => {

@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihComponents/view/WihView";
 import useWihApiEffect from "@/hooks/wihApi/useWihApiEffect";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import React, {useEffect} from "react";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";

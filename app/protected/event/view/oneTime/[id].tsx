@@ -14,7 +14,7 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 export default function OneTimeEventView() {
     const {t} = useTranslation();

@@ -10,8 +10,7 @@ import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigCo
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
-import WihView from "@/components/WihComponents/view/WihView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
@@ -32,8 +31,6 @@ Sentry.init({
 
 const RootLayout = () => {
     const colorScheme = useColorScheme();
-    const {isApiConfigLoading} = useApiConfig();
-    const {isUserLoading} = useWihUser();
 
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
@@ -54,12 +51,8 @@ const RootLayout = () => {
     }, [loaded]);
 
 
-    if (!loaded || isApiConfigLoading || isUserLoading) {
-        return (
-            <WihView center="full">
-                <WihLoading/>
-            </WihView>
-        );
+    if (!loaded) {
+        return <WihLoading/>;
     }
 
     const screenOptions = {

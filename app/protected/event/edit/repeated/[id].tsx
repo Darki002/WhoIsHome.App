@@ -20,7 +20,7 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},

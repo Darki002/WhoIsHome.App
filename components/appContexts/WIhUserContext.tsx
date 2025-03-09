@@ -1,16 +1,17 @@
-import {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
+import React, {createContext, type PropsWithChildren, useContext, useEffect, useState} from "react";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import useWihApi from "@/hooks/wihApi/useWihApi";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {WihLogger} from "@/helper/WihLogger";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 const WihUserContext = createContext<{
     user: User | null,
     isUserLoading: boolean
 }>({
     user: null,
-    isUserLoading: false
+    isUserLoading: true
 });
 
 export function useWihUser() {
@@ -33,6 +34,10 @@ export function WihUserProvider({children}: PropsWithChildren) {
         endpoint: Endpoints.user.me,
         method: "GET"
     });
+
+    if(isLoading) {
+        return <WihLoading/>;
+    }
 
     useEffect(() => {
         if(isApiConfigLoading) return;

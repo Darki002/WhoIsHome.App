@@ -1,7 +1,8 @@
-import {createContext, type PropsWithChildren, useContext, useEffect} from "react";
+import React, {createContext, type PropsWithChildren, useContext, useEffect} from "react";
 import {useStorageState} from "@/hooks/useStorageState";
 import {useRouter} from "expo-router";
 import {WihLogger} from "@/helper/WihLogger";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 export interface ApiConfig {
     baseUri: string | null;
@@ -15,7 +16,7 @@ const ApiContext = createContext<{
 }>({
     setConfig: async () => null,
     config: null,
-    isApiConfigLoading: false
+    isApiConfigLoading: true
 });
 
 export function useApiConfig() {
@@ -39,6 +40,10 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
             return;
         }
     }, [isLoading, config, router]);
+
+    if(isLoading) {
+        return <WihLoading/>;
+    }
 
     return (
         <ApiContext.Provider
