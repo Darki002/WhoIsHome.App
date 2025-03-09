@@ -3,7 +3,7 @@ import {WihLogger} from "@/helper/WihLogger";
 import {useWihUser} from "@/components/appContexts/WihUserContext";
 
 export function usePermission(){
-    const {user} = useWihUser();
+    const user = useWihUser();
 
     return useCallback((permittedUserId?: number) => {
         if(!user) {
