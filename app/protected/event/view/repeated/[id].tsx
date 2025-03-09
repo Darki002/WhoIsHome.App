@@ -12,7 +12,7 @@ import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import {WihApiFocus} from "@/components/framework/wihApi/focus/WihApiFocus";
+import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 
 export default function RepeatedEventView() {

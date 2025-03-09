@@ -12,7 +12,7 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
-import {WihApiFocus} from "@/components/framework/wihApi/focus/WihApiFocus";
+import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 
 export default function OneTimeEventView() {
     const {id} = useLocalSearchParams<{ id: string }>();
