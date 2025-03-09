@@ -14,7 +14,7 @@ import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
-import {useWihUser} from "@/components/appContexts/WIhUserContext";
+import {useWihUser} from "@/components/appContexts/WihUserContext";
 
 const EVENT_COUNT_THRESHOLD = 4;
 

@@ -14,7 +14,7 @@ import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
-import {WihUserProvider} from "@/components/appContexts/WIhUserContext";
+import {WihUserProvider} from "@/components/appContexts/WihUserContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {

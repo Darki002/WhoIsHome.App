@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import {WihLogger} from "@/helper/WihLogger";
-import {useWihUser} from "@/components/appContexts/WIhUserContext";
+import {useWihUser} from "@/components/appContexts/WihUserContext";
 
 export function usePermission(){
     const {user} = useWihUser();
