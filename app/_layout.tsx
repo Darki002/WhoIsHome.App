@@ -6,7 +6,7 @@ import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
 import {SessionProvider} from '@/components/appContexts/AuthContext';
-import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfigProvider} from "@/components/appContexts/ConfigContext";
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
@@ -14,7 +14,7 @@ import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
-import {useWihUser, WihUserProvider} from "@/components/appContexts/WIhUserContext";
+import {WihUserProvider} from "@/components/appContexts/WIhUserContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
