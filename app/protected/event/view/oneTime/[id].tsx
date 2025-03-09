@@ -51,7 +51,7 @@ export default function OneTimeEventView() {
     }
 
     if (!response.isValid() || !response.data) {
-        return <WihErrorView response={response} refresh={refresh} />
+        return <WihErrorView error={response} refresh={refresh} />
     }
 
     const event = new OneTimeEvent(response.data);

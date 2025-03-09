@@ -27,7 +27,7 @@ export default function Index() {
     }
 
     if (!response.isValid() || !response.data) {
-        return <WihErrorView response={response} refresh={refresh} />
+        return <WihErrorView error={response} refresh={refresh} />
     }
 
     const overviews = response.data.map(r => new DailyOverview(r));

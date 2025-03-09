@@ -48,11 +48,11 @@ export default function UserView() {
     }
 
     if (!response.isValid()) {
-        return <WihErrorView response={response!} refresh={refresh} />
+        return <WihErrorView error={response!} refresh={refresh} />
     }
 
     if (!user.isValid()) {
-        return <WihErrorView response={user} refresh={userRefresh} />
+        return <WihErrorView error={user} refresh={userRefresh} />
     }
 
     const overview = new UserOverview(response.data!);

@@ -39,7 +39,7 @@ const Profile = () => {
     }
 
     if (!response.isValid() || !response.data) {
-        return <WihErrorView response={response} refresh={responseRefresh} />
+        return <WihErrorView error={response} refresh={responseRefresh} />
     }
 
     const userOverview = new UserOverview(response.data);

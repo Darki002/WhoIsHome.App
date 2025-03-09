@@ -85,7 +85,7 @@ export default function RepeatedEventView() {
     }
 
     if(!event) {
-        return <WihErrorView response={response!} refresh={refresh} />
+        return <WihErrorView error={response!} refresh={refresh} />
     }
 
     const onDinnerTimeChange = (time: Date | undefined) => {
