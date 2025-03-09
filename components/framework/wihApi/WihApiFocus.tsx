@@ -3,12 +3,18 @@ import useWihApi, {WihFetchProps} from "@/hooks/wihApi/useWihApi";
 import {useFocusEffect} from "expo-router";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
+import {WihApiMethods} from "@/helper/fetch/WihFetchBuilder";
 
-export interface WihApiFocusProps<T> extends WihFetchProps {
-    Children: (props: {response: T}) => ReactNode;
+export interface WihApiFocusComponentParams<T> {
+    response: T;
+    refresh: () => void;
 }
 
-export function WihApiFocus<T extends any>({endpoint, method, version, Children} : WihApiFocusProps<T>) {
+export interface WihApiFocusProps<T> extends WihFetchProps {
+    Component: (props: WihApiFocusComponentParams<T>) => ReactNode;
+}
+
+export function WihApiFocus<T extends any>({endpoint, method, version, Component} : WihApiFocusProps<T>) {
     const {data, error, isLoading, refresh} = useWihApiFocus<T>({endpoint, method, version});
 
     if(isLoading) {
@@ -23,7 +29,7 @@ export function WihApiFocus<T extends any>({endpoint, method, version, Children}
         return <WihErrorView error={"(Focus API) There was no data present and no error!"} refresh={refresh} />
     }
 
-    return <Children response={data} />
+    return <Component response={data} refresh={refresh} />
 }
 
 export default function useWihApiFocus<T>(props: WihFetchProps) {

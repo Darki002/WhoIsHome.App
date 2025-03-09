@@ -1,8 +1,6 @@
 import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihComponents/view/WihView";
-import useWihApiEffect from "@/hooks/wihApi/useWihApiEffect";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
-import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import React, {useEffect} from "react";
 import {User} from "@/constants/WihTypes/User";
@@ -11,10 +9,9 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
 import {StyleSheet} from "react-native";
-import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
-import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/focus/WihApiFocus";
+import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
@@ -22,46 +19,44 @@ export default function UserView() {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     return WihApiFocus({
-        endpoint: Endpoints.userOverview.withId(id),
+        endpoint: Endpoints.user.withId(id),
         method: "GET",
-        Component: UserViewComponent
+        Component: UserViewOverviewComponent
     })
 }
 
-function UserViewComponent({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) {
+function UserViewOverviewComponent({response, refresh} : WihApiFocusComponentParams<User>) {
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    const user = response;
+
+    return WihApiFocus({
+        endpoint: Endpoints.userOverview.withId(id),
+        method: "GET",
+        Component: ({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) => UserViewComponent({
+            user: user,
+            overviewResponse: response,
+            overviewRefresh: refresh})
+    })
+}
+
+function UserViewComponent({user, overviewResponse, overviewRefresh} : {
+    user: User;
+    overviewResponse: UserOverviewDto;
+    overviewRefresh: () => void;
+}) {
     const {t} = useTranslation();
     const navigation = useNavigation();
-    
-    const [user, userRefresh] = useWihApiEffect<User>({
-        endpoint: Endpoints.user.withId(id),
-        method: "GET",
-    });
 
     useEffect(() => {
-        if (!user) {
-            navigation.setOptions({title: t(Labels.headers.unknown)});
-            return;
-        }
-        if (!user.isValid()) {
-            navigation.setOptions({title: t(Labels.errors.header)});
-            return;
-        }
-        navigation.setOptions({title: user.data?.userName});
+        navigation.setOptions({title: user.userName});
     }, [user]);
 
-    if (!user) {
-        return <WihLoadingView/>
-    }
+    const overview = new UserOverview(overviewResponse);
 
-    if (!user.isValid()) {
-        return <WihErrorView error={user} refresh={userRefresh} />
-    }
-
-    const overview = new UserOverview(response);
     return (
         <WihView style={styles.container}>
-            <WihRefreshableScrollView onRefresh={refresh}>
+            <WihRefreshableScrollView onRefresh={overviewRefresh}>
                 {
                     overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
                         <WihView center="full">
