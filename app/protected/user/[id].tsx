@@ -15,31 +15,6 @@ import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wi
 
 const EVENT_COUNT_THRESHOLD = 4;
 
-export default function UserView() {
-    const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus({
-        endpoint: Endpoints.user.withId(id),
-        method: "GET",
-        Component: UserViewOverviewComponent
-    })
-}
-
-function UserViewOverviewComponent({response} : WihApiFocusComponentParams<User>) {
-    const {id} = useLocalSearchParams<{ id: string }>();
-
-    const user = response;
-
-    return WihApiFocus({
-        endpoint: Endpoints.userOverview.withId(id),
-        method: "GET",
-        Component: ({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) => UserViewComponent({
-            user: user,
-            overviewResponse: response,
-            overviewRefresh: refresh})
-    })
-}
-
 function UserViewComponent({user, overviewResponse, overviewRefresh} : {
     user: User;
     overviewResponse: UserOverviewDto;
@@ -111,3 +86,28 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
+export default function UserView() {
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    return WihApiFocus({
+        endpoint: Endpoints.user.withId(id),
+        method: "GET",
+        Component: UserViewOverviewComponent
+    })
+}
+
+function UserViewOverviewComponent({response} : WihApiFocusComponentParams<User>) {
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    const user = response;
+
+    return WihApiFocus({
+        endpoint: Endpoints.userOverview.withId(id),
+        method: "GET",
+        Component: ({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) => UserViewComponent({
+            user: user,
+            overviewResponse: response,
+            overviewRefresh: refresh})
+    })
+}

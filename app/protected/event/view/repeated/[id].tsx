@@ -15,16 +15,6 @@ import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 
-export default function RepeatedEventView() {
-    const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "GET",
-        Component: RepeatedEventViewComponent
-    });
-}
-
 function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
@@ -93,3 +83,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     }
 });
+
+export default function RepeatedEventView() {
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    return WihApiFocus<OneTimeEventModel>({
+        endpoint: Endpoints.repeatedEvent.withId(id),
+        method: "GET",
+        Component: RepeatedEventViewComponent
+    });
+}
