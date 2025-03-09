@@ -12,19 +12,19 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
-import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
+import {WihApiFocus} from "@/components/framework/wihApi/focus/WihApiFocus";
 
-export default function OneTimeEventViewHOC() {
+export default function OneTimeEventView() {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     return WihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
         method: "GET",
-        Children: OneTimeEventView
+        Component: OneTimeEventViewComponent
     });
 }
 
-function OneTimeEventView({response}: {response: OneTimeEventModel}) {
+function OneTimeEventViewComponent({response}: {response: OneTimeEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 

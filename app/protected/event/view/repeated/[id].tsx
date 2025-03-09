@@ -12,20 +12,20 @@ import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
+import {WihApiFocus} from "@/components/framework/wihApi/focus/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 
-export default function RepeatedEventViewHOC() {
+export default function RepeatedEventView() {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     return WihApiFocus<OneTimeEventModel>({
         endpoint: Endpoints.repeatedEvent.withId(id),
         method: "GET",
-        Children: RepeatedEventView
+        Component: RepeatedEventViewComponent
     });
 }
 
-function RepeatedEventView({response}: {response: RepeatedEventModel}) {
+function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 

@@ -2,10 +2,9 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihComponents/view/WihView";
 import useWihApiEffect from "@/hooks/wihApi/useWihApiEffect";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import React, {useEffect} from "react";
-import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
@@ -15,20 +14,28 @@ import {StyleSheet} from "react-native";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
+import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/focus/WihApiFocus";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
 export default function UserView() {
-    const {t} = useTranslation();
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    return WihApiFocus({
+        endpoint: Endpoints.userOverview.withId(id),
+        method: "GET",
+        Component: UserViewComponent
+    })
+}
+
+function UserViewComponent({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) {
+    const {id} = useLocalSearchParams<{ id: string }>();
+    const {t} = useTranslation();
     const navigation = useNavigation();
+    
     const [user, userRefresh] = useWihApiEffect<User>({
         endpoint: Endpoints.user.withId(id),
         method: "GET",
-    });
-    const [response, refresh] = useWihApiFocus<UserOverviewDto>({
-        endpoint: Endpoints.userOverview.withId(id),
-        method: "GET"
     });
 
     useEffect(() => {
@@ -43,22 +50,18 @@ export default function UserView() {
         navigation.setOptions({title: user.data?.userName});
     }, [user]);
 
-    if (!response || !user) {
-        return <WihLoading/>
-    }
-
-    if (!response.isValid()) {
-        return <WihErrorView error={response!} refresh={refresh} />
+    if (!user) {
+        return <WihLoadingView/>
     }
 
     if (!user.isValid()) {
         return <WihErrorView error={user} refresh={userRefresh} />
     }
 
-    const overview = new UserOverview(response.data!);
+    const overview = new UserOverview(response);
     return (
         <WihView style={styles.container}>
-            <WihRefreshableScrollView onRefresh={[refresh, userRefresh]}>
+            <WihRefreshableScrollView onRefresh={refresh}>
                 {
                     overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
                         <WihView center="full">
