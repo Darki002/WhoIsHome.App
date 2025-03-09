@@ -79,7 +79,7 @@ function RepeatedEventViewComponent({response} : WihApiFocusComponentParams<Repe
     }
 
     return (
-        <EventEditLayout response={event} onCancel={onCancel} onUpdate={onUpdate}>
+        <EventEditLayout event={event} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
                 value={event.Title}
                 placeholder={t(Labels.placeholders.title)}

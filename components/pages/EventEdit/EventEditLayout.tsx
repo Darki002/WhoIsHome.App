@@ -11,27 +11,27 @@ import {StyleSheet} from "react-native";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventEditLayoutProps {
-    response: EventBase;
+    event: EventBase;
     onCancel: () => void;
     onUpdate: () => void;
 }
 
-export default function EventEditLayout({response, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
+export default function EventEditLayout({event, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
     const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
 
     const onUpdatedChecked = useCallback(() => {
-        const allowed = permissionCheck(response.UserId);
+        const allowed = permissionCheck(event.UserId);
         if(allowed){
             onUpdate();
         }
-    }, [onUpdate, response]);
+    }, [onUpdate, event]);
 
     useEffect(() => {
-        const title = response.Title ?? t(Labels.errors.header);
+        const title = event.Title ?? t(Labels.errors.header);
         navigation.setOptions({title: `${t(Labels.headers.editing)}: ${title}`});
-    }, [response]);
+    }, [event]);
 
     return (
         <WihView style={styles.container}>
