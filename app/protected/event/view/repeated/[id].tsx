@@ -1,6 +1,5 @@
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
-import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
 import React, {useCallback} from "react";
 import {RepeatedEvent, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
@@ -11,15 +10,24 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {WihResponse} from "@/helper/fetch/WihResponse";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
+import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
+import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 
-export default function RepeatedEventView() {
+export default function RepeatedEventViewHOC() {
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    return WihApiFocus<OneTimeEventModel>({
+        endpoint: Endpoints.repeatedEvent.withId(id),
+        method: "GET",
+        Children: RepeatedEventView
+    });
+}
+
+function RepeatedEventView({response}: {response: RepeatedEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
-    const {id} = useLocalSearchParams<{ id: string }>();
 
     const onResponse = useCallback((response: WihResponse<{}> | null) => {
         if(response && response.isValid()){
@@ -28,36 +36,19 @@ export default function RepeatedEventView() {
     }, []);
 
     const deleteEvent = useWihApiCallable({
-        endpoint: Endpoints.repeatedEvent.withId(id),
+        endpoint: Endpoints.repeatedEvent.withId(`${response.id}`),
         method: "DELETE",
         onResponse: onResponse
     });
 
-    const [response, refresh] = useWihApiFocus<RepeatedEventModel>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "GET"
-    });
-
     const onEdit = useCallback(() => {
-        router.push(`/protected/event/edit/repeated/${id}`);
-    }, [id]);
+        router.push(`/protected/event/edit/repeated/${response.id}`);
+    }, [response.id]);
 
-    if (!response) {
-        return (
-            <WihView center="full">
-                <WihLoading />
-            </WihView>
-        )
-    }
-
-    if (!response.isValid() || !response.data) {
-        return <WihErrorView error={response!} refresh={refresh} />
-    }
-
-    const event = new RepeatedEvent(response.data);
+    const event = new RepeatedEvent(response);
 
     return (
-        <EventViewLayout response={response} onEdit={onEdit} onDelete={deleteEvent}>
+        <EventViewLayout event={response} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>

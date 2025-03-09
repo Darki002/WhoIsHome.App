@@ -2,6 +2,7 @@ import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {timeStringToDate} from "@/helper/datetimehelper";
 
 export interface EventModelBase {
+    id?: number;
     title?: string;
     startTime?: Date | string;
     endTime?: Date | string;

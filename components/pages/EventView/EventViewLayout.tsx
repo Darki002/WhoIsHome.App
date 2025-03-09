@@ -12,43 +12,23 @@ import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventViewLayoutProps {
-    response: WihResponse<EventModelBase | null> | null;
+    event: EventModelBase;
     onEdit: () => void;
     onDelete: () => void;
 }
 
-export default function EventViewLayout({response, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
+export default function EventViewLayout({event, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!response) {
-            navigation.setOptions({title: "Loading..."});
-            return;
-        }
-        if (!response.isValid()) {
-            navigation.setOptions({title: "Error"});
-            return;
-        }
-        navigation.setOptions({title: response.data?.title ?? "Untitled Event"});
-    }, [response]);
-
-    if (!response) {
-        return null;
-    }
-
-    if (!response.isValid()) {
-        return (
-            <WihView center="full">
-                <WihText>{t(Labels.errors.generic)}</WihText>
-            </WihView>
-        )
-    }
+        navigation.setOptions({title: event.title ?? "Untitled Event"});
+    }, [event]);
 
     const showOwnerActions = () => {
-        const isOwner = permissionCheck(response.data?.userId);
+        const isOwner = permissionCheck(event.userId);
         if(isOwner) {
             return (
                 <WihView flex="row" style={{gap: 30}}>
