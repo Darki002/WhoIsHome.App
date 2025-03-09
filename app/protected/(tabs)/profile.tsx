@@ -6,47 +6,29 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {Dimensions, StyleSheet} from 'react-native';
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
-import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
-import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
-import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {useWihUser} from "@/components/appContexts/WihUserContext";
+import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
+import {Endpoints} from "@/constants/endpoints";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
-const Profile = () => {
+const ProfileComponent = ({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => {
     const {t} = useTranslation();
     const {signOut} = useSession();
-    const {user} = useWihUser();
-
-    const [response, responseRefresh] = useWihApiFocus<UserOverviewDto>({
-        endpoint: Endpoints.userOverview.url,
-        method: "GET",
-    });
+    const user = useWihUser();
 
     const dim = Dimensions.get("screen");
 
-    if (!response || !user) {
-        return (
-            <WihView center="full">
-                <WihLoading/>
-            </WihView>
-        )
-    }
-
-    if (!response.isValid() || !response.data) {
-        return <WihErrorView error={response} refresh={responseRefresh} />
-    }
-
-    const userOverview = new UserOverview(response.data);
+    const userOverview = new UserOverview(response);
     const userName = user?.userName ?? "";
+
     return (
         <WihView style={{flex: 1}}>
-            <WihRefreshableScrollView onRefresh={[responseRefresh]} style={{height: "100%"}}>
+            <WihRefreshableScrollView onRefresh={refresh} style={{height: "100%"}}>
                 <WihView style={styles.container}>
                     <WihView style={styles.profileHeader}>
                         <WihView style={styles.userInfo}>
@@ -126,4 +108,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Profile;
+export default WihApiFocus({
+    endpoint: Endpoints.userOverview.url,
+    method: "GET",
+    Component: ProfileComponent
+})
