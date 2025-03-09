@@ -1,5 +1,4 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
-import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import React, {useCallback, useEffect, useState} from "react";
@@ -19,8 +18,7 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
-import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
+import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -28,23 +26,14 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-export default function OneTimeEventView() {
+function OneTimeEventViewComponent({response} : WihApiFocusComponentParams<OneTimeEventModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const [response, refresh] = useWihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.oneTimeEvent.withId(id),
-        method: "GET"
-    });
-
-    const [event, setEvent] = useState<OneTimeEvent | null>(new OneTimeEvent());
+    const [event, setEvent] = useState<OneTimeEvent>(new OneTimeEvent(response));
     useEffect(() => {
-        if (!response?.data || !response.isValid()) {
-            return;
-        }
-        const event = new OneTimeEvent(response.data);
-        setEvent(event);
+        setEvent(new OneTimeEvent(response));
     }, [response]);
 
     const updateEvent = useCallback((update: Partial<OneTimeEvent>) => {
@@ -75,18 +64,6 @@ export default function OneTimeEventView() {
         callWihApi(body);
     };
 
-    if (!response) {
-        return (
-            <WihView center="full">
-                <WihLoading />
-            </WihView>
-        )
-    }
-
-    if(!event) {
-        return <WihErrorView error={response!} refresh={refresh} />
-    }
-
     const onDinnerTimeChange = (time: Date | undefined) => {
         const value = event.PresenceType === "Late" ? time : null;
         updateEvent({DinnerTime: value});
@@ -100,7 +77,7 @@ export default function OneTimeEventView() {
     }
 
     return (
-        <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
+        <EventEditLayout response={event} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
                 value={event.Title}
                 placeholder={t(Labels.placeholders.title)}
@@ -151,3 +128,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     }
 });
+
+export default function OneTimeEventView() {
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    return WihApiFocus<OneTimeEventModel>({
+        endpoint: Endpoints.oneTimeEvent.withId(id),
+        method: "GET",
+        Component: OneTimeEventViewComponent
+    });
+}

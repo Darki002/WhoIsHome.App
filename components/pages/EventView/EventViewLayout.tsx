@@ -1,18 +1,16 @@
 import {useNavigation} from "expo-router";
 import {PropsWithChildren, useEffect, useState} from "react";
 import WihView from "@/components/WihComponents/view/WihView";
-import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
-import {EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
+import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
-import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventViewLayoutProps {
-    event: EventModelBase;
+    event: EventBase;
     onEdit: () => void;
     onDelete: () => void;
 }
@@ -24,11 +22,11 @@ export default function EventViewLayout({event, onEdit, onDelete, children}: Pro
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
     useEffect(() => {
-        navigation.setOptions({title: event.title ?? "Untitled Event"});
+        navigation.setOptions({title: event.Title ?? "Untitled Event"});
     }, [event]);
 
     const showOwnerActions = () => {
-        const isOwner = permissionCheck(event.userId);
+        const isOwner = permissionCheck(event.UserId);
         if(isOwner) {
             return (
                 <WihView flex="row" style={{gap: 30}}>

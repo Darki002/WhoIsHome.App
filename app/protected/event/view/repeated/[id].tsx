@@ -38,7 +38,7 @@ function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) 
     const event = new RepeatedEvent(response);
 
     return (
-        <EventViewLayout event={response} onEdit={onEdit} onDelete={deleteEvent}>
+        <EventViewLayout event={event} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>

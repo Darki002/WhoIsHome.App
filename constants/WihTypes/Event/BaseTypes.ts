@@ -25,6 +25,7 @@ export class EventBase {
     EndTime?: Date;
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
+    UserId?: number;
 
     constructor(eventModelBase?: EventModelBase) {
 
@@ -34,6 +35,7 @@ export class EventBase {
 
         this.Title = eventModelBase.title;
         this.PresenceType = eventModelBase.presenceType;
+        this.UserId = eventModelBase.userId;
 
         this.StartTime = timeStringToDate(eventModelBase.startTime);
         this.EndTime = timeStringToDate(eventModelBase.endTime);

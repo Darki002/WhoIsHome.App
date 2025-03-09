@@ -37,7 +37,7 @@ function OneTimeEventViewComponent({response}: {response: OneTimeEventModel}) {
     const event = new OneTimeEvent(response);
 
     return (
-        <EventViewLayout event={response} onEdit={onEdit} onDelete={deleteEvent}>
+        <EventViewLayout event={event} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
                 <WihText>{event.Date?.toLocaleDateString() ?? "N/A"}</WihText>
