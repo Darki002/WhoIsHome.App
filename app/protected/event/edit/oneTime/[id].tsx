@@ -3,7 +3,6 @@ import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihT
 import {WihText} from "@/components/WihComponents/display/WihText";
 import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihOption} from "@/components/WihComponents/input/WihSingleChoice";
@@ -19,6 +18,7 @@ import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
+import useWihApi from "@/hooks/useWihApi";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -40,11 +40,10 @@ function OneTimeEventViewComponent({response} : WihApiFocusComponentParams<OneTi
         setEvent((prev) => ({...prev, ...update}));
     }, []);
 
-    const onResponse = useOnResponse(id);
-    const callWihApi = useWihApiCallable<OneTimeEventDto>({
+    const onResponse = useOnResponse();
+    const callWihApi = useWihApi<OneTimeEventDto>({
         endpoint: Endpoints.oneTimeEvent.withId(id),
-        method: "PATCH",
-        onResponse
+        method: "PATCH"
     });
 
     const onCancel = useCallback(() => {
@@ -61,7 +60,7 @@ function OneTimeEventViewComponent({response} : WihApiFocusComponentParams<OneTi
             PresenceType: event.PresenceType!,
             DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
-        callWihApi(body);
+        callWihApi(body).then(onResponse);
     };
 
     const onDinnerTimeChange = (time: Date | undefined) => {

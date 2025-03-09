@@ -5,12 +5,12 @@ import {useTranslation} from "react-i18next";
 import {useRouter} from "expo-router";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
-const useOnResponse = (id: number | string) => {
+const useOnResponse = () => {
     const {t} = useTranslation();
     const router = useRouter();
 
-    return useCallback((res: WihResponse<{}> | null) => {
-        if (!res || !res.isValid()) {
+    return useCallback((res: WihResponse<{}> | string) => {
+        if (typeof res === "string" || !res || !res.isValid()) {
             Toast.show(t(Labels.toast.error.updateEvent), {
                 duration: Toast.durations.SHORT,
             });
@@ -21,7 +21,7 @@ const useOnResponse = (id: number | string) => {
             duration: Toast.durations.SHORT,
         });
         router.back();
-    }, [id]);
+    }, []);
 }
 
 export default useOnResponse;

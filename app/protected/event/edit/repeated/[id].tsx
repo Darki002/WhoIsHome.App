@@ -3,7 +3,6 @@ import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import WihView from "@/components/WihComponents/view/WihView";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihOption} from "@/components/WihComponents/input/WihSingleChoice";
@@ -20,6 +19,7 @@ import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
+import useWihApi from "@/hooks/useWihApi";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -41,11 +41,10 @@ function RepeatedEventViewComponent({response} : WihApiFocusComponentParams<Repe
         setEvent((prev) => ({...prev, ...update}));
     }
 
-    const onResponse = useOnResponse(id);
-    const callWihApi = useWihApiCallable<RepeatedEventDto>({
+    const onResponse = useOnResponse();
+    const callWihApi = useWihApi<RepeatedEventDto>({
         endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "PATCH",
-        onResponse
+        method: "PATCH"
     });
 
     const onCancel = useCallback(() => {
@@ -63,7 +62,7 @@ function RepeatedEventViewComponent({response} : WihApiFocusComponentParams<Repe
             PresenceType: event.PresenceType!,
             DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
-        callWihApi(body);
+        callWihApi(body).then(onResponse);
     };
 
     const onDinnerTimeChange = (time: Date | undefined) => {
