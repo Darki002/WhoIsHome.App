@@ -66,3 +66,4 @@ To avoid the Config Screen everytime you start up the project you can set the co
 | EXPO_PUBLIC_USE_ENV_CONFIG | If True use the configs of the following env variables                                                                          | A boolean True or False            |
 | EXPO_PUBLIC_API_BASE_URI   | The Base URL to the Server or local instance                                                                                    | A string URL e.g. `localhost:8080` |
 | EXPO_PUBLIC_API_KEY        | The API Key defined in the backend. See [here](https://github.com/Darki002/WhoIsHome/blob/main/README.md#environment-variables) | A string for the API Key           |
+| SENTRY_AUTH_TOKEN          | Sentry Auth Token for Logging to Sentry. You also have to change `app.json` in order to work                                    | String                             |
