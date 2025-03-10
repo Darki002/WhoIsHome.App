@@ -3,6 +3,7 @@ import useWihApi, {WihFetchProps} from "@/hooks/useWihApi";
 import {useFocusEffect} from "expo-router";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
+import {WihLogger} from "@/helper/WihLogger";
 
 export interface WihApiFocusComponentParams<T> {
     response: T;
@@ -34,7 +35,7 @@ export function WihApiFocus<T extends any>({endpoint, method, version, Component
 export default function useWihApiFocus<T>(props: WihFetchProps) {
     const [data, setData] = useState<T | null | undefined>();
     const [error, setError] = useState<string | Error | undefined | null>();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const callApi = useWihApi<T>(props);
 
@@ -55,9 +56,9 @@ export default function useWihApiFocus<T>(props: WihFetchProps) {
 
             setIsLoading(false);
         });
-    }, [callApi]);
+    }, []);
 
-    useFocusEffect(call);
+    useFocusEffect(useCallback(() => call(), []));
 
     return {data, error, isLoading, refresh: call};
 }

@@ -43,7 +43,6 @@ export function WihUserProvider({children}: PropsWithChildren) {
         if(!isSessionLoading && !isApiConfigLoading){
             getUser()
                 .then(u => {
-                    WihLogger.debug(u);
                     setUser(handleResponse(u));
                     setIsLoading(false);
                 });
