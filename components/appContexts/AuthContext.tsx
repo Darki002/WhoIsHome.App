@@ -1,4 +1,4 @@
-import {createContext, type PropsWithChildren, useContext, useEffect} from 'react';
+import React, {createContext, type PropsWithChildren, useContext, useEffect} from 'react';
 import {useStorageState} from '@/hooks/useStorageState';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
@@ -72,6 +72,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     await sendLogoutRequest(config!, {jwtToken: session, refreshToken: refreshToken});
                     setSession(null);
                     setRefreshToken(null);
+                    router.replace("/auth/login");
                 },
                 onNewSession: tokens => {
                     setSession(tokens.jwtToken);

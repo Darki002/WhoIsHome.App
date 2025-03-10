@@ -1,10 +1,8 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
-import useWihApiFocus from "@/hooks/wihApi/useWihApiFocus";
 import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
 import WihView from "@/components/WihComponents/view/WihView";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihOption} from "@/components/WihComponents/input/WihSingleChoice";
@@ -19,8 +17,9 @@ import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInp
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
-import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
+import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
+import useWihApi from "@/hooks/useWihApi";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -28,34 +27,24 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-export default function RepeatedEventView() {
+function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEventModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const [response, refresh] = useWihApiFocus<RepeatedEventModel>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "GET"
-    });
-
-    const [event, setEvent] = useState<RepeatedEvent | null>(new RepeatedEvent());
+    const [event, setEvent] = useState<RepeatedEvent>(new RepeatedEvent());
     useEffect(() => {
-        if (!response?.data || !response.isValid()) {
-            return;
-        }
-        const repeatedEvent = new RepeatedEvent(response.data);
-        setEvent(repeatedEvent);
+        setEvent(new RepeatedEvent(response));
     }, [response]);
 
     const updateEvent = (update: Partial<RepeatedEvent>) => {
         setEvent((prev) => ({...prev, ...update}));
     }
 
-    const onResponse = useOnResponse(id);
-    const callWihApi = useWihApiCallable<RepeatedEventDto>({
+    const onResponse = useOnResponse();
+    const callWihApi = useWihApi<RepeatedEventDto>({
         endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "PATCH",
-        onResponse
+        method: "PATCH"
     });
 
     const onCancel = useCallback(() => {
@@ -73,20 +62,8 @@ export default function RepeatedEventView() {
             PresenceType: event.PresenceType!,
             DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
         }
-        callWihApi(body);
+        callWihApi(body).then(onResponse);
     };
-
-    if (!response) {
-        return (
-            <WihView center="full">
-                <WihLoading />
-            </WihView>
-        )
-    }
-
-    if(!event) {
-        return <WihErrorView response={response!} refresh={refresh} />
-    }
 
     const onDinnerTimeChange = (time: Date | undefined) => {
         const value = event.PresenceType === "Late" ? time : null;
@@ -101,7 +78,7 @@ export default function RepeatedEventView() {
     }
 
     return (
-        <EventEditLayout response={response} onCancel={onCancel} onUpdate={onUpdate}>
+        <EventEditLayout event={event} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
                 value={event.Title}
                 placeholder={t(Labels.placeholders.title)}
@@ -160,3 +137,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     }
 });
+
+export default function () {
+    const {id} = useLocalSearchParams<{ id: string }>();
+    return <WihApiFocus Component={RepeatedEventView} endpoint={Endpoints.repeatedEvent.withId(id)} method="GET" />
+}

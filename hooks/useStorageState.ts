@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useReducer} from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {Platform} from 'react-native';
-import * as Sentry from "@sentry/react-native"
 import {WihLogger} from "@/helper/WihLogger";
 
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];

@@ -13,11 +13,11 @@ const Create = () => {
     const router = useRouter();
 
     const routeToOneTime = () => {
-        router.push("/protected/createFlow/oneTimeEventFlow");
+        router.push("/(app)/createFlow/oneTimeEventFlow");
     }
 
     const routeToRepeated = () => {
-        router.push("/protected/createFlow/repeatedEventFlow");
+        router.push("/(app)/createFlow/repeatedEventFlow");
     }
 
     return (

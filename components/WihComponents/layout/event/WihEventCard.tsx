@@ -18,7 +18,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
     const onEventPress = useCallback(() => {
         const eventType = event.EventType === "OneTimeEvent" ? "oneTime" : "repeated";
-        router.push(`/protected/event/view/${eventType}/${event.Id}`);
+        router.push(`/(app)/event/view/${eventType}/${event.Id}`);
     }, [event.Id, event.EventType]);
 
     const renderIcon = (eventType: EventType) => {

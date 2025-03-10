@@ -1,16 +1,20 @@
-import {Redirect, Stack, useNavigation, useRouter} from 'expo-router';
+import { Stack, useRouter} from 'expo-router';
 import 'react-native-reanimated';
 import {useSession} from '@/components/appContexts/AuthContext';
 import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
-import WihView from "@/components/WihComponents/view/WihView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {useWihUser} from "@/components/appContexts/WihUserContext";
 
-const ProtectedLayout = () => {
+const AppLayout = () => {
     const router = useRouter();
     const theme = useWihTheme();
+
+    const {isApiConfigLoading} = useApiConfig();
     const {session, isSessionLoading} = useSession();
+    const {isUserLoading} = useWihUser();
 
     useEffect(() => {
         if (!isSessionLoading && isInvalidSession(session)) {
@@ -18,12 +22,8 @@ const ProtectedLayout = () => {
         }
     }, [session, isSessionLoading]);
 
-    if (isSessionLoading) {
-        return (
-            <WihView center="full">
-                <WihLoading/>
-            </WihView>
-        );
+    if (isSessionLoading || isApiConfigLoading || isUserLoading) {
+        return <WihLoadingView />
     }
 
     const screenOptions = {
@@ -42,4 +42,4 @@ const ProtectedLayout = () => {
     );
 }
 
-export default ProtectedLayout;
+export default AppLayout;

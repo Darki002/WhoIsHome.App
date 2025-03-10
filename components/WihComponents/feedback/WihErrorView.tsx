@@ -6,19 +6,23 @@ import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefre
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
 
-export function WihErrorView({response, refresh} : {response?: WihResponse<any> | null, refresh: () => Promise<void>}){
+export function WihErrorView({error, refresh} : {error: WihResponse<any> | Error | string | null, refresh: () => void}){
     const {t} = useTranslation();
 
-    WihLogger.error(`Showing error: ${response?.getErrorMessage()}`);
+    const errorMessage = error instanceof WihResponse
+        ? error!.getErrorMessage()
+        : error ?? "Unknown Error";
+
+    WihLogger.error(errorMessage);
 
     return(
         <WihView center="full">
             <WihRefreshableScrollView
                 contentContainerStyle={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}
-                onRefresh={[refresh]}
+                onRefresh={refresh}
             >
                 <WihTitle>{t(Labels.errors.generic)}</WihTitle>
-                <WihText>{response?.getErrorMessage() ?? "Unknown error"}</WihText>
+                <WihText>{`${errorMessage}`}</WihText>
             </WihRefreshableScrollView>
         </WihView>
     )

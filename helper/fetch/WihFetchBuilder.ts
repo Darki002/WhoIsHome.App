@@ -81,6 +81,8 @@ export class WihFetchBuilder {
             WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
 
+        WihLogger.debug(`Request for: ${uri}`);
+
         try {
             const response = await fetch(uri, {
                 method: this.method,
@@ -113,6 +115,8 @@ export class WihFetchBuilder {
     private async retry<T>(): Promise<WihResponse<T>> {
         this.buildHeaders();
         const uri = this.buildUrl();
+
+        WihLogger.debug(`Retry for: ${uri}`);
 
         try {
             const response = await fetch(uri, {

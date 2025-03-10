@@ -6,15 +6,15 @@ import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
 import {SessionProvider} from '@/components/appContexts/AuthContext';
-import {ApiConfigProvider, useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfigProvider} from "@/components/appContexts/ConfigContext";
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
-import WihView from "@/components/WihComponents/view/WihView";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
+import {WihUserProvider} from "@/components/appContexts/WihUserContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
@@ -31,7 +31,6 @@ Sentry.init({
 
 const RootLayout = () => {
     const colorScheme = useColorScheme();
-    const {isApiConfigLoading} = useApiConfig();
 
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
@@ -52,12 +51,8 @@ const RootLayout = () => {
     }, [loaded]);
 
 
-    if (!loaded || isApiConfigLoading) {
-        return (
-            <WihView center="full">
-                <WihLoading/>
-            </WihView>
-        );
+    if (!loaded) {
+        return <WihLoading/>;
     }
 
     const screenOptions = {
@@ -71,16 +66,18 @@ const RootLayout = () => {
             <WihThemeProvider>
                 <ApiConfigProvider>
                     <SessionProvider>
-                        <StatusBar
-                            style={colorScheme === 'dark' ? 'light' : 'dark'}
-                            backgroundColor={Colors[colorScheme ?? "light"].background}
-                        />
-                        <Stack screenOptions={screenOptions}>
-                            <Stack.Screen name="protected" options={{headerShown: false}}/>
-                            <Stack.Screen name="auth" options={{headerShown: false}}/>
-                            <Stack.Screen name="config" options={{headerShown: false}}/>
-                            <Stack.Screen name="+not-found"/>
-                        </Stack>
+                        <WihUserProvider>
+                            <StatusBar
+                                style={colorScheme === 'dark' ? 'light' : 'dark'}
+                                backgroundColor={Colors[colorScheme ?? "light"].background}
+                            />
+                            <Stack screenOptions={screenOptions}>
+                                <Stack.Screen name="(app)" options={{headerShown: false}}/>
+                                <Stack.Screen name="auth" options={{headerShown: false}}/>
+                                <Stack.Screen name="config" options={{headerShown: false}}/>
+                                <Stack.Screen name="+not-found"/>
+                            </Stack>
+                        </WihUserProvider>
                     </SessionProvider>
                 </ApiConfigProvider>
             </WihThemeProvider>

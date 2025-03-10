@@ -2,11 +2,10 @@ import {IonIcon, WihMaterialIcon} from '@/components/WihComponents/icon/WihIcon'
 import {useRouter, Tabs} from "expo-router";
 import React, {useEffect} from "react";
 import {useSession} from "@/components/appContexts/AuthContext";
-import {WihTitle} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import WihLoading from "@/components/WihComponents/feedback/WihLoading";
+import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 const TabIconProps = {
     size: 28,
@@ -23,7 +22,7 @@ const AuthLayout = () => {
 
     useEffect(() => {
         if (session && session.jwtToken && session.refreshToken) {
-            router.replace("/protected/(tabs)");
+            router.replace("/(app)/(tabs)");
         }
     }, [session]);
 
