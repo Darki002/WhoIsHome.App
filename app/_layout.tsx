@@ -72,7 +72,7 @@ const RootLayout = () => {
                                 backgroundColor={Colors[colorScheme ?? "light"].background}
                             />
                             <Stack screenOptions={screenOptions}>
-                                <Stack.Screen name="protected" options={{headerShown: false}}/>
+                                <Stack.Screen name="(app)" options={{headerShown: false}}/>
                                 <Stack.Screen name="auth" options={{headerShown: false}}/>
                                 <Stack.Screen name="config" options={{headerShown: false}}/>
                                 <Stack.Screen name="+not-found"/>

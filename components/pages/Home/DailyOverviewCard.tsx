@@ -19,7 +19,7 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
     const router = useRouter();
 
     const onOverviewPress = () => {
-        router.push(`/protected/user/${overview.User.id}`);
+        router.push(`/(app)/user/${overview.User.id}`);
     }
 
     const renderIcon = (isAtHome: boolean) => {

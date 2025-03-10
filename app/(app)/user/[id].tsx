@@ -2,7 +2,7 @@ import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihComponents/view/WihView";
 import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
@@ -15,7 +15,7 @@ import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wi
 
 const EVENT_COUNT_THRESHOLD = 4;
 
-function UserViewComponent({user, overviewResponse, overviewRefresh} : {
+function UserViewComponent({user, overviewResponse, overviewRefresh}: {
     user: User;
     overviewResponse: UserOverviewDto;
     overviewRefresh: () => void;
@@ -89,25 +89,17 @@ const styles = StyleSheet.create({
 
 export default function UserView() {
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus({
-        endpoint: Endpoints.user.withId(id),
-        method: "GET",
-        Component: UserViewOverviewComponent
-    })
+    return <WihApiFocus Component={UserViewOverviewComponent} endpoint={Endpoints.user.withId(id)} method="GET"/>
 }
 
-function UserViewOverviewComponent({response} : WihApiFocusComponentParams<User>) {
+function UserViewOverviewComponent({response}: WihApiFocusComponentParams<User>) {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     const user = response;
 
-    return WihApiFocus({
-        endpoint: Endpoints.userOverview.withId(id),
-        method: "GET",
-        Component: ({response, refresh} : WihApiFocusComponentParams<UserOverviewDto>) => UserViewComponent({
-            user: user,
-            overviewResponse: response,
-            overviewRefresh: refresh})
-    })
+    const component = useCallback(({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => (
+        <UserViewComponent user={user} overviewResponse={response} overviewRefresh={refresh} />
+    ), [user]);
+
+    return <WihApiFocus Component={component} endpoint={Endpoints.userOverview.withId(id)} method="GET" />
 }

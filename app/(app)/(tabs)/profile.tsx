@@ -16,7 +16,7 @@ import {Endpoints} from "@/constants/endpoints";
 
 const EVENT_COUNT_THRESHOLD = 4;
 
-const ProfileComponent = ({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => {
+const Profile = ({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => {
     const {t} = useTranslation();
     const {signOut} = useSession();
     const {user} = useWihUser();
@@ -108,8 +108,6 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WihApiFocus({
-    endpoint: Endpoints.userOverview.url,
-    method: "GET",
-    Component: ProfileComponent
-})
+export default function () {
+    return <WihApiFocus endpoint={Endpoints.userOverview.url} method="GET" Component={Profile} />
+}

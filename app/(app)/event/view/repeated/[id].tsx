@@ -14,7 +14,7 @@ import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import useWihApi from "@/hooks/useWihApi";
 
-function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) {
+function RepeatedEventView({response}: {response: RepeatedEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 
@@ -24,7 +24,7 @@ function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) 
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/protected/event/edit/repeated/${response.id}`);
+        router.push(`/(app)/event/edit/repeated/${response.id}`);
     }, [response.id]);
 
     const event = new RepeatedEvent(response);
@@ -76,12 +76,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function RepeatedEventView() {
+export default function () {
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "GET",
-        Component: RepeatedEventViewComponent
-    });
+    return <WihApiFocus Component={RepeatedEventView} endpoint={Endpoints.repeatedEvent.withId(id)} method="GET" />
 }

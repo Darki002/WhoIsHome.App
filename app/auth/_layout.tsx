@@ -22,7 +22,7 @@ const AuthLayout = () => {
 
     useEffect(() => {
         if (session && session.jwtToken && session.refreshToken) {
-            router.replace("/protected/(tabs)");
+            router.replace("/(app)/(tabs)");
         }
     }, [session]);
 

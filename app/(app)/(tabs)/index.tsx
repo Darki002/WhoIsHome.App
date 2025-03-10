@@ -9,15 +9,7 @@ import {StyleSheet} from "react-native";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 
-export default function Index() {
-    return WihApiFocus({
-        endpoint: Endpoints.dailyOverview,
-        method: "GET",
-        Component: IndexComponent
-    })
-}
-
-function IndexComponent({response, refresh} : WihApiFocusComponentParams<DailyOverviewDto[]>) {
+function Index({response, refresh} : WihApiFocusComponentParams<DailyOverviewDto[]>) {
     const {t} = useTranslation();
     const overviews = response.map(r => new DailyOverview(r));
 
@@ -41,4 +33,8 @@ const styles = StyleSheet.create({
         fontSize: 25,
         marginBottom: 20
     }
-})
+});
+
+export default function () {
+    return <WihApiFocus endpoint={Endpoints.dailyOverview} method="GET" Component={Index} />
+}

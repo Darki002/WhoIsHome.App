@@ -27,7 +27,7 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-function RepeatedEventViewComponent({response} : WihApiFocusComponentParams<RepeatedEventModel>) {
+function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEventModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
@@ -138,12 +138,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function RepeatedEventView() {
+export default function () {
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
-        method: "GET",
-        Component: RepeatedEventViewComponent
-    });
+    return <WihApiFocus Component={RepeatedEventView} endpoint={Endpoints.repeatedEvent.withId(id)} method="GET" />
 }

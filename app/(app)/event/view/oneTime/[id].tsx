@@ -13,7 +13,7 @@ import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTim
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
 
-function OneTimeEventViewComponent({response}: {response: OneTimeEventModel}) {
+function OneTimeEventView({response}: {response: OneTimeEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 
@@ -23,7 +23,7 @@ function OneTimeEventViewComponent({response}: {response: OneTimeEventModel}) {
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/protected/event/edit/oneTime/${response.id}`);
+        router.push(`/(app)/event/edit/oneTime/${response.id}`);
     }, [response.id]);
 
     const event = new OneTimeEvent(response);
@@ -69,12 +69,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function OneTimeEventView() {
+export default function () {
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.oneTimeEvent.withId(id),
-        method: "GET",
-        Component: OneTimeEventViewComponent
-    });
+    return <WihApiFocus Component={OneTimeEventView} endpoint={Endpoints.oneTimeEvent.withId(id)} method="GET" />
 }

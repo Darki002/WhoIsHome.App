@@ -26,7 +26,7 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-function OneTimeEventViewComponent({response} : WihApiFocusComponentParams<OneTimeEventModel>) {
+function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
@@ -128,12 +128,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function OneTimeEventView() {
+export default function () {
     const {id} = useLocalSearchParams<{ id: string }>();
-
-    return WihApiFocus<OneTimeEventModel>({
-        endpoint: Endpoints.oneTimeEvent.withId(id),
-        method: "GET",
-        Component: OneTimeEventViewComponent
-    });
+    return  <WihApiFocus Component={OneTimeEventView} endpoint={Endpoints.oneTimeEvent.withId(id)} method="GET" />
 }
