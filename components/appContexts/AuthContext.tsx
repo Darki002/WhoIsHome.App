@@ -77,6 +77,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     await sendLogoutRequest(config!, {jwtToken: session, refreshToken: refreshToken});
                     setSession(null);
                     setRefreshToken(null);
+                    router.replace("/auth/login");
                 },
                 onNewSession: tokens => {
                     setSession(tokens.jwtToken);
