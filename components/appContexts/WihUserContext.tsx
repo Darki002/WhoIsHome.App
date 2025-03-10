@@ -6,6 +6,7 @@ import {WihLogger} from "@/helper/WihLogger";
 import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {useSession} from "@/components/appContexts/AuthContext";
+import {useApiConfig} from "@/components/appContexts/ConfigContext";
 
 const WihUserContext = createContext<{
     user: User | null;
@@ -28,6 +29,7 @@ export function useWihUser() {
 
 export function WihUserProvider({children}: PropsWithChildren) {
     const {isSessionLoading} = useSession();
+    const {isApiConfigLoading} = useApiConfig();
 
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,14 +40,15 @@ export function WihUserProvider({children}: PropsWithChildren) {
     });
 
     useEffect(() => {
-        if(!isSessionLoading){
+        if(!isSessionLoading && !isApiConfigLoading){
             getUser()
                 .then(u => {
+                    WihLogger.debug(u);
                     setUser(handleResponse(u));
                     setIsLoading(false);
                 });
         }
-    }, [isSessionLoading]);
+    }, [isSessionLoading, isApiConfigLoading]);
 
     return (
         <WihUserContext.Provider value={{

@@ -60,7 +60,6 @@ export class WihFetchBuilder {
         this.headers.append("Content-Type", "application/json");
         this.headers.append("X-API-KEY", this.config.apikey!);
 
-        WihLogger.debug(this.config); // TODO Remove after debug
         if(!this.config.apikey){
             WihLogger.warn("Attempting a request without a API Key!");
         }
@@ -81,6 +80,8 @@ export class WihFetchBuilder {
         if (this.method === "GET" && this.body) {
             WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
+
+        WihLogger.debug(`Request for: ${uri}`);
 
         try {
             const response = await fetch(uri, {
@@ -114,6 +115,8 @@ export class WihFetchBuilder {
     private async retry<T>(): Promise<WihResponse<T>> {
         this.buildHeaders();
         const uri = this.buildUrl();
+
+        WihLogger.debug(`Retry for: ${uri}`);
 
         try {
             const response = await fetch(uri, {
