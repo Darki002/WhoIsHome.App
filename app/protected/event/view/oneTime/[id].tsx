@@ -9,25 +9,17 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import {WihResponse} from "@/helper/fetch/WihResponse";
 import {OneTimeEvent, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
+import useWihApi from "@/hooks/useWihApi";
 
 function OneTimeEventViewComponent({response}: {response: OneTimeEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 
-    const onResponse = useCallback((r: WihResponse<{}> | null) => {
-        if(r && r.isValid()){
-            router.back();
-        }
-    }, []);
-
-    const deleteEvent = useWihApiCallable({
+    const deleteEvent = useWihApi({
         endpoint: Endpoints.oneTimeEvent.withId(`${response.id}`),
         method: "DELETE",
-        onResponse: onResponse
     });
 
     const onEdit = useCallback(() => {

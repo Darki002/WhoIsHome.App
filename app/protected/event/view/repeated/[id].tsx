@@ -10,25 +10,17 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-import useWihApiCallable from "@/hooks/wihApi/useWihApiCallable";
-import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
+import useWihApi from "@/hooks/useWihApi";
 
 function RepeatedEventViewComponent({response}: {response: RepeatedEventModel}) {
     const {t} = useTranslation();
     const router = useRouter();
 
-    const onResponse = useCallback((response: WihResponse<{}> | null) => {
-        if(response && response.isValid()){
-            router.back();
-        }
-    }, []);
-
-    const deleteEvent = useWihApiCallable({
+    const deleteEvent = useWihApi({
         endpoint: Endpoints.repeatedEvent.withId(`${response.id}`),
-        method: "DELETE",
-        onResponse: onResponse
+        method: "DELETE"
     });
 
     const onEdit = useCallback(() => {

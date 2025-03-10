@@ -1,5 +1,5 @@
-import {useNavigation} from "expo-router";
-import {PropsWithChildren, useEffect, useState} from "react";
+import {useNavigation, useRouter} from "expo-router";
+import {PropsWithChildren, useCallback, useEffect, useState} from "react";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
@@ -8,15 +8,17 @@ import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
+import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventViewLayoutProps {
     event: EventBase;
     onEdit: () => void;
-    onDelete: () => void;
+    onDelete: () => Promise<WihResponse<any> | string>;
 }
 
 export default function EventViewLayout({event, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
+    const router = useRouter();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
@@ -24,6 +26,14 @@ export default function EventViewLayout({event, onEdit, onDelete, children}: Pro
     useEffect(() => {
         navigation.setOptions({title: event.Title ?? "Untitled Event"});
     }, [event]);
+
+    const deleteEvent = useCallback(() => {
+        onDelete().then(r => {
+            if(typeof r !== "string" && r.isValid()){
+                router.back();
+            }
+        });
+    }, [router, onDelete]);
 
     const showOwnerActions = () => {
         const isOwner = permissionCheck(event.UserId);
@@ -50,7 +60,7 @@ export default function EventViewLayout({event, onEdit, onDelete, children}: Pro
                 message={t(Labels.dialog.deleteMessage)}
                 onConfirm={() => {
                     setShowDeleteDialog(false);
-                    onDelete();
+                    deleteEvent();
                 }}
                 onCancel={() => setShowDeleteDialog(false)}
             />
