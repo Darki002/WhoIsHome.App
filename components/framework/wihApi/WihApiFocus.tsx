@@ -3,7 +3,6 @@ import useWihApi, {WihFetchProps} from "@/hooks/useWihApi";
 import {useFocusEffect} from "expo-router";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
-import {WihApiMethods} from "@/helper/fetch/WihFetchBuilder";
 
 export interface WihApiFocusComponentParams<T> {
     response: T;
