@@ -6,7 +6,13 @@ import {WihLogger} from "@/helper/WihLogger";
 import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
-const WihUserContext = createContext<User | null>(null);
+const WihUserContext = createContext<{
+    user: User | null;
+    isUserLoading: boolean;
+}>({
+    user: null,
+    isUserLoading: false
+});
 
 export function useWihUser() {
     const value = useContext(WihUserContext);
@@ -36,12 +42,11 @@ export function WihUserProvider({children}: PropsWithChildren) {
             });
     }, []);
 
-    if(isLoading) {
-        return <WihLoading/>;
-    }
-
     return (
-        <WihUserContext.Provider value={user}>
+        <WihUserContext.Provider value={{
+            user: user,
+            isUserLoading: isLoading
+        }}>
             {children}
         </WihUserContext.Provider>
     );

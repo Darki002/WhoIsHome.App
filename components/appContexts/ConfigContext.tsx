@@ -16,7 +16,7 @@ const ApiContext = createContext<{
 }>({
     setConfig: async () => null,
     config: null,
-    isApiConfigLoading: true
+    isApiConfigLoading: false
 });
 
 export function useApiConfig() {
@@ -40,10 +40,6 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
             return;
         }
     }, [isLoading, config, router]);
-
-    if(isLoading) {
-        return <WihLoading/>;
-    }
 
     return (
         <ApiContext.Provider

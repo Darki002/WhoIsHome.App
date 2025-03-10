@@ -5,7 +5,6 @@ import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -23,7 +22,7 @@ const AuthContext = createContext<{
     signOut: () => null,
     onNewSession: _ => null,
     session: null,
-    isSessionLoading: true,
+    isSessionLoading: false,
 });
 
 // This hook can be used to access the user info.
@@ -52,10 +51,6 @@ export function SessionProvider({children}: PropsWithChildren) {
             return;
         }
     }, [isLoading, session, refreshToken, router]);
-
-    if(isLoading) {
-        return <WihLoading/>;
-    }
 
     return (
         <AuthContext.Provider

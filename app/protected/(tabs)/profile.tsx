@@ -19,7 +19,7 @@ const EVENT_COUNT_THRESHOLD = 4;
 const ProfileComponent = ({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => {
     const {t} = useTranslation();
     const {signOut} = useSession();
-    const user = useWihUser();
+    const {user} = useWihUser();
 
     const dim = Dimensions.get("screen");
 
