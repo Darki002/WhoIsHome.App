@@ -50,7 +50,6 @@ const RootLayout = () => {
         hideSplashScreen();
     }, [loaded]);
 
-
     if (!loaded) {
         return <WihLoading/>;
     }

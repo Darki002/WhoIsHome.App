@@ -13,7 +13,7 @@ const WihUserContext = createContext<{
     isUserLoading: boolean;
 }>({
     user: null,
-    isUserLoading: false
+    isUserLoading: true
 });
 
 export function useWihUser() {
@@ -41,6 +41,7 @@ export function WihUserProvider({children}: PropsWithChildren) {
 
     useEffect(() => {
         if(!isSessionLoading && !isApiConfigLoading){
+            setIsLoading(true);
             getUser()
                 .then(u => {
                     setUser(handleResponse(u));

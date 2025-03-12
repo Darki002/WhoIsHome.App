@@ -16,7 +16,7 @@ const ApiContext = createContext<{
 }>({
     setConfig: async () => null,
     config: null,
-    isApiConfigLoading: false
+    isApiConfigLoading: true
 });
 
 export function useApiConfig() {
