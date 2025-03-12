@@ -10,7 +10,7 @@ export class WihResponse<T> {
     readonly data?: T;
     readonly error?: Error;
 
-    private constructor(status: number, success: boolean, data?: T, errorMessage?: string, refreshFailed: boolean = false, error?: Error) {
+    private constructor(status: number, success: boolean, data?: T, errorMessage?: string, error?: Error, refreshFailed: boolean = false) {
         this.status = status;
         this.success = success;
         this.data = data;
@@ -35,11 +35,11 @@ export class WihResponse<T> {
     }
 
     static fail<T>(errorMessage: string, status: number = 400, refreshFailed: boolean = false): WihResponse<T> {
-        return new WihResponse<T>(status, false, undefined, errorMessage, refreshFailed);
+        return new WihResponse<T>(status, false, undefined, errorMessage, undefined, refreshFailed);
     }
 
     static error<T>(error: Error): WihResponse<T> {
-        return new WihResponse<T>(-1, false, undefined, error.message, false, error);
+        return new WihResponse<T>(-1, false, undefined, error.message, error);
     }
 
     isValid(): boolean {

@@ -96,8 +96,9 @@ export class WihFetchBuilder {
             if(!apiResponse.isValid()){
                 if(apiResponse.status === 401 && this.tokens?.refreshToken){
                     const newTokens = await refreshJwtToken(this.tokens.refreshToken, this.config, this.onNewTokens);
-                    if (!newTokens) {
-                        return WihResponse.fail<T>("Refresh token expired, re-authentication required.", 401, true);
+                    if (typeof newTokens === "string") {
+                        WihLogger.info(`Refresh failed! | Message: ${newTokens}`);
+                        return WihResponse.fail<T>(`Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
                     }
 
                     this.tokens = newTokens;

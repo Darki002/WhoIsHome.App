@@ -3,13 +3,13 @@ import {ApiConfig} from "@/components/appContexts/ConfigContext";
 import {Endpoints} from "@/constants/endpoints";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
-let refreshJwtTokenQueue: Promise<Tokens | null> | null = null;
+let refreshJwtTokenQueue: Promise<Tokens | string> | null = null;
 
 export async function refreshJwtToken(
     refreshToken: string,
     config: ApiConfig,
     onNewTokens?: (newTokens: Tokens | null) => void
-): Promise<Tokens | null> {
+): Promise<Tokens | string> {
     if (!refreshJwtTokenQueue) {
         refreshJwtTokenQueue = (async () => {
             const tokens = await refresh(refreshToken, config, onNewTokens);
@@ -24,7 +24,7 @@ async function refresh(
     refreshToken: string,
     config: ApiConfig,
     onNewTokens?: (newTokens: Tokens | null) => void
-): Promise<Tokens | null> {
+): Promise<Tokens | string> {
 
     const headers = new Headers();
     headers.append("RefreshToken", refreshToken);
@@ -42,11 +42,11 @@ async function refresh(
     const wihResponse = await WihResponse.fromResponse<Tokens>(response);
 
     if (!wihResponse.isValid()){
-        return null;
+        return wihResponse.getErrorMessage();
     }
 
-    onNewTokens && onNewTokens(wihResponse.data!);
-    return wihResponse.data!;
+    onNewTokens && onNewTokens(wihResponse.data ?? null);
+    return wihResponse.data ?? "No Token present in the response";
 }
 
 function buildUrl(config: ApiConfig): string {
