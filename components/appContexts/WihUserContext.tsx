@@ -64,7 +64,7 @@ function handleResponse(response: WihResponse<User> | string){
     if(response instanceof WihResponse){
 
         if(response.isValid()) return response.data!;
-        WihLogger.error(`(WihUserProvider) Could not load logged in User! | Message: ${response.error}`);
+        WihLogger.error(`(WihUserProvider) Could not load logged in User! | Message: ${response.getErrorMessage()}`);
         return null;
     }
     else {
