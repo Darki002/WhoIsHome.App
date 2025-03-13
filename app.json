@@ -3,7 +3,7 @@
     "name": "WhoIsHome",
     "slug": "whoishome",
     "owner": "darki002",
-    "version": "2.2-beta.1",
+    "version": "2.2-beta.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
