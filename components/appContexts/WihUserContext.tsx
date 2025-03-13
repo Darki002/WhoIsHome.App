@@ -3,7 +3,6 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import useWihApi from "@/hooks/useWihApi";
 import {WihLogger} from "@/helper/WihLogger";
-import {WihLoading} from "@/components/WihComponents/feedback/WihLoading";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {useApiConfig} from "@/components/appContexts/ConfigContext";
@@ -40,14 +39,14 @@ export function WihUserProvider({children}: PropsWithChildren) {
     });
 
     useEffect(() => {
-        if(!isSessionLoading && !isApiConfigLoading){
-            setIsLoading(true);
-            getUser()
-                .then(u => {
-                    setUser(handleResponse(u));
-                    setIsLoading(false);
-                });
-        }
+        if (isSessionLoading || isApiConfigLoading) return;
+
+        setIsLoading(true);
+        getUser()
+            .then(u => {
+                setUser(handleResponse(u));
+                setIsLoading(false);
+            });
     }, [isSessionLoading, isApiConfigLoading]);
 
     return (
@@ -60,14 +59,13 @@ export function WihUserProvider({children}: PropsWithChildren) {
     );
 }
 
-function handleResponse(response: WihResponse<User> | string){
-    if(response instanceof WihResponse){
+function handleResponse(response: WihResponse<User> | string) {
+    if (response instanceof WihResponse) {
 
-        if(response.isValid()) return response.data!;
+        if (response.isValid()) return response.data!;
         WihLogger.error(`(WihUserProvider) Could not load logged in User! | Message: ${response.getErrorMessage()}`);
         return null;
-    }
-    else {
+    } else {
         WihLogger.error(response);
         return null;
     }
