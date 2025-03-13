@@ -81,7 +81,7 @@ export class WihFetchBuilder {
             WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
 
-        WihLogger.debug(`Request for: ${uri}`);
+        WihLogger.debug(`Request for: ${uri} | session = ${this.tokens?.jwtToken} | config = ${this.config.apikey}`); // TODO
 
         try {
             const response = await fetch(uri, {

@@ -17,12 +17,14 @@ const AuthContext = createContext<{
     onNewSession: (tokens: Tokens) => void;
     session: Tokens | null;
     isSessionLoading: boolean;
+    isSignedIn: boolean;
 }>({
     signIn: async () => null,
     signOut: () => null,
     onNewSession: _ => null,
     session: null,
     isSessionLoading: true,
+    isSignedIn: false,
 });
 
 // This hook can be used to access the user info.
@@ -80,6 +82,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                 },
                 session: session && refreshToken ? {jwtToken: session, refreshToken: refreshToken} : null,
                 isSessionLoading: isLoading,
+                isSignedIn: session != null && refreshToken != null
             }}>
             {children}
         </AuthContext.Provider>

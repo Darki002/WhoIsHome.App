@@ -27,8 +27,8 @@ export function useWihUser() {
 }
 
 export function WihUserProvider({children}: PropsWithChildren) {
-    const {isSessionLoading} = useSession();
-    const {isApiConfigLoading} = useApiConfig();
+    const {isSessionLoading, isSignedIn} = useSession();
+    const {isApiConfigLoading, isConfigured} = useApiConfig();
 
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,15 +39,24 @@ export function WihUserProvider({children}: PropsWithChildren) {
     });
 
     useEffect(() => {
-        if (isSessionLoading || isApiConfigLoading) return;
+        if(!isSignedIn || !isConfigured) {
+            WihLogger.debug(`Won't load user! Is not logged in ${isSignedIn} | or not configured ${isConfigured}`); // TODO
+            return;
+        }
 
+        if (isSessionLoading || isApiConfigLoading) {
+            WihLogger.debug(`Won't load user! Still loading other stuff: Session =  ${isSessionLoading} | Config = ${isApiConfigLoading}`); // TODO
+            return;
+        }
+
+        WihLogger.debug(`Start loading with: Session =  ${isSessionLoading} | Config = ${isApiConfigLoading}`) // TODO
         setIsLoading(true);
         getUser()
             .then(u => {
                 setUser(handleResponse(u));
                 setIsLoading(false);
             });
-    }, [isSessionLoading, isApiConfigLoading]);
+    }, [isSessionLoading, isApiConfigLoading, isSignedIn, isConfigured]);
 
     return (
         <WihUserContext.Provider value={{
@@ -66,7 +75,7 @@ function handleResponse(response: WihResponse<User> | string) {
         WihLogger.error(`(WihUserProvider) Could not load logged in User! | Message: ${response.getErrorMessage()}`);
         return null;
     } else {
-        WihLogger.error(response);
+        WihLogger.error(`(WihUserProvider) ${response}`);
         return null;
     }
 }

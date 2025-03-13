@@ -25,6 +25,7 @@ export class WihLogger {
         if (__DEV__) {
             console.info(`[INFO] ${message}`);
         }
+        Sentry.captureMessage(message, {level: "info"});
     }
 
     static debug(message: any){

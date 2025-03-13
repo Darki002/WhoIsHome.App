@@ -32,6 +32,8 @@ const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<
             return `Skip Request ${props.endpoint} due to missing API Key!`;
         }
 
+        WihLogger.debug(`Start request with: session = ${session} | config = ${config}`) // TODO
+
         const response = await new WihFetchBuilder(config, session)
             .setEndpoint(props.endpoint)
             .setMethod(props.method)
