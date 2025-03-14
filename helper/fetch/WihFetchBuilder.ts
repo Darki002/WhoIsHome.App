@@ -119,7 +119,7 @@ export class WihFetchBuilder {
         this.buildHeaders();
         const uri = this.buildUrl();
 
-        WihLogger.debug(`Retry for: ${uri}`);
+        WihLogger.debug(`Retry for: ${uri} | X-API-KEY = ${this.headers.get("X-API-KEY")}`); // TODO
 
         try {
             const response = await fetch(uri, {
