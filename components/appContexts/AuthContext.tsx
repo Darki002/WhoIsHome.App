@@ -49,7 +49,7 @@ export function SessionProvider({children}: PropsWithChildren) {
     const isLoading = isLoadingSession || isLoadingRefreshToken || isApiConfigLoading;
 
     useEffect(() => {
-        WihLogger.debug(`(Session Context) isLoading = ${isLoading} | session = ${session}`);
+        WihLogger.debug(`(Session Context) isLoading = ${isLoading} | session = ${session} | refresh = ${refreshToken}`);
 
         if (!isLoading && (!session || !refreshToken)) {
             router.replace("/auth/login");

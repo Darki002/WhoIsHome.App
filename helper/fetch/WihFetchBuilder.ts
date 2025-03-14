@@ -3,7 +3,6 @@ import {ApiConfig} from "@/components/appContexts/ConfigContext";
 import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
-import {header} from "@sentry/react-native/dist/js/utils/envelope";
 
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
 export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
@@ -59,10 +58,12 @@ export class WihFetchBuilder {
 
     private buildHeaders() {
         this.headers.append("Content-Type", "application/json");
-        this.headers.append("X-API-KEY", this.config.apikey!);
 
-        if(!this.config.apikey){
-            WihLogger.warn("Attempting a request without a API Key!");
+        if(this.config.apikey){
+            this.headers.append("X-API-KEY", this.config.apikey);
+            WihLogger.debug(`Added Header with: X-API-KEY ${this.config.apikey}`);
+        } else {
+            WihLogger.warn(`Attempting a request without a API Key! ${this.config.apikey}`);
         }
 
         if (this.tokens) {
@@ -82,7 +83,7 @@ export class WihFetchBuilder {
             WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
 
-        WihLogger.debug(`Request for: ${uri} | header = ${this.headers}`); // TODO
+        WihLogger.debug(`Request for: ${uri} | X-API-KEY = ${this.headers.get("X-API-KEY")}`); // TODO
 
         try {
             const response = await fetch(uri, {

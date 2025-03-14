@@ -40,16 +40,16 @@ export function WihUserProvider({children}: PropsWithChildren) {
 
     useEffect(() => {
         if(!isSignedIn || !isConfigured) {
-            WihLogger.debug(`Won't load user! Is not logged in ${isSignedIn} | or not configured ${isConfigured}`); // TODO
+            WihLogger.debug(`Won't load user! Is not logged in isSignedIn = ${isSignedIn} | or not configured isConfigured = ${isConfigured}`); // TODO
             return;
         }
 
         if (isSessionLoading || isApiConfigLoading) {
-            WihLogger.debug(`Won't load user! Still loading other stuff: Session =  ${isSessionLoading} | Config = ${isApiConfigLoading}`); // TODO
+            WihLogger.debug(`Won't load user! Still loading other stuff: isSessionLoading =  ${isSessionLoading} | isApiConfigLoading = ${isApiConfigLoading}`); // TODO
             return;
         }
 
-        WihLogger.debug(`Start loading with: Session =  ${isSessionLoading} | Config = ${isApiConfigLoading}`) // TODO
+        WihLogger.debug(`Start loading with: isSessionLoading =  ${isSessionLoading} | isApiConfigLoading = ${isApiConfigLoading}`) // TODO
         setIsLoading(true);
         getUser()
             .then(u => {
