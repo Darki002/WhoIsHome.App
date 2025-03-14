@@ -3,6 +3,7 @@ import {ApiConfig} from "@/components/appContexts/ConfigContext";
 import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
+import {header} from "@sentry/react-native/dist/js/utils/envelope";
 
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
 export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
@@ -81,7 +82,7 @@ export class WihFetchBuilder {
             WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
         }
 
-        WihLogger.debug(`Request for: ${uri} | session = ${this.tokens?.jwtToken} | config = ${this.config.apikey}`); // TODO
+        WihLogger.debug(`Request for: ${uri} | header = ${this.headers}`); // TODO
 
         try {
             const response = await fetch(uri, {

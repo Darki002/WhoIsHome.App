@@ -5,6 +5,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {WihLogger} from "@/helper/WihLogger";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -48,6 +49,8 @@ export function SessionProvider({children}: PropsWithChildren) {
     const isLoading = isLoadingSession || isLoadingRefreshToken || isApiConfigLoading;
 
     useEffect(() => {
+        WihLogger.debug(`(Session Context) isLoading = ${isLoading} | session = ${session}`);
+
         if (!isLoading && (!session || !refreshToken)) {
             router.replace("/auth/login");
             return;
