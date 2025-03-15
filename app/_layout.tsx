@@ -1,7 +1,7 @@
 import {useFonts} from 'expo-font';
 import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
@@ -15,6 +15,8 @@ import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
 import {WihUserProvider} from "@/components/appContexts/WihUserContext";
+import {registerForPushNotificationsAsync} from "@/helper/WihPushNotification";
+import * as Notifications from 'expo-notifications';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
@@ -35,6 +37,28 @@ const RootLayout = () => {
     const [loaded] = useFonts({
         Roboto: require('../assets/fonts/Roboto-Black.ttf'),
     });
+
+    const notificationListener = useRef<Notifications.EventSubscription>();
+    const responseListener = useRef<Notifications.EventSubscription>();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync();
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            WihLogger.log(RootLayout.name, notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            WihLogger.log(RootLayout.name, response);
+        });
+
+        return () => {
+            notificationListener.current &&
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            responseListener.current &&
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
 
     useEffect(() => {
         const hideSplashScreen = async () => {
