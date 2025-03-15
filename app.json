@@ -28,7 +28,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "dev.darki.whoishome",
-      "newArchEnabled": true
+      "newArchEnabled": true,
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",
