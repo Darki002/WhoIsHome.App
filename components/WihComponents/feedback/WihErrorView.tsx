@@ -13,7 +13,7 @@ export function WihErrorView({error, refresh} : {error: WihResponse<any> | Error
         ? error!.getErrorMessage()
         : error ?? "Unknown Error";
 
-    WihLogger.error(errorMessage);
+    WihLogger.error(WihErrorView.name, errorMessage);
 
     return(
         <WihView center="full">

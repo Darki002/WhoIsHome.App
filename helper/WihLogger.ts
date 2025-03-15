@@ -1,36 +1,36 @@
 import * as Sentry from "@sentry/react-native";
 
 export class WihLogger {
-    static log(message: string) {
+    static log(component: string, message: string) {
         if (__DEV__) {
-            console.log(`[LOG] ${message}`);
+            console.log(`[LOG] (${component}) ${message}`);
         }
     }
 
-    static warn(message: string) {
+    static warn(component: string, message: string) {
         if (__DEV__) {
-            console.warn(`[WARN] ${message}`);
+            console.warn(`[WARN] (${component}) ${message}`);
         }
         Sentry.captureMessage(message, { level: "warning" });
     }
 
-    static error(error: Error | string) {
+    static error(component: string, error: Error | string) {
         if (__DEV__) {
-            console.error(`[ERROR] ${error}`);
+            console.error(`[ERROR] (${component}) ${error}`);
         }
         Sentry.captureException(error);
     }
 
-    static info(message: string) {
+    static info(component: string, message: string) {
         if (__DEV__) {
-            console.info(`[INFO] ${message}`);
+            console.info(`[INFO] (${component}) ${message}`);
         }
         Sentry.captureMessage(message, {level: "info"});
     }
 
-    static debug(message: any){
+    static debug(component: string, message: any){
         if(__DEV__){
-            console.debug(message);
+            console.debug(`[DEBUG] (${component}) ${message}`);
         }
     }
 }

@@ -20,7 +20,7 @@ import {WihUserProvider} from "@/components/appContexts/WihUserContext";
 try {
     SplashScreen.preventAutoHideAsync();
 } catch (error: any) {
-    WihLogger.error(error);
+    WihLogger.error("RootLayout", error);
 }
 
 Sentry.init({
@@ -43,7 +43,7 @@ const RootLayout = () => {
                     await SplashScreen.hideAsync();
                 }
             } catch (error: any) {
-                WihLogger.warn(error);
+                WihLogger.warn(RootLayout.name, error);
             }
         };
 

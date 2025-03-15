@@ -36,7 +36,6 @@ export function ApiConfigProvider({children}: PropsWithChildren) {
     const {isLoading, config, setConfig} = useConfigs();
 
     useEffect(() => {
-        WihLogger.debug(`(Config Context) isLoading = ${isLoading} | apikey = ${config?.apikey} | url = ${config?.baseUri}`);
         if (!isLoading && (!config?.baseUri || !config?.apikey)) {
             router.replace("/config");
             return;
@@ -79,7 +78,7 @@ async function checkConfig({apikey, baseUri}: ApiConfig): Promise<boolean> {
 
         return response.ok;
     } catch (e: any) {
-        WihLogger.error(e);
+        WihLogger.error(ApiConfigProvider.name, e);
         return false;
     }
 }

@@ -18,7 +18,7 @@ export class WihResponse<T> {
         this.error = error;
         this.refreshFailed = refreshFailed;
 
-        WihLogger.debug(`(Response) Success ${success} | data ${data} | error ${errorMessage} | refresh failed ${refreshFailed}`);
+        WihLogger.debug(WihResponse.name, `Success ${success} | data ${data} | error ${errorMessage} | refresh failed ${refreshFailed}`);
     }
 
     static async fromResponse<T>(response: Response): Promise<WihResponse<T>> {

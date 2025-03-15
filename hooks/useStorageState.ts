@@ -23,7 +23,7 @@ export async function setStorageItemAsync(key: string, value: string | null) {
                 localStorage.setItem(key, value);
             }
         } catch (e : any) {
-            WihLogger.error(e);
+            WihLogger.error("Async Storage", e);
         }
     } else {
         if (value == null) {
@@ -46,7 +46,7 @@ export function useStorageState(key: string): UseStateHook<string> {
                     setState(localStorage.getItem(key));
                 }
             } catch (e: any) {
-                WihLogger.error(e);
+                WihLogger.error("Async Storage", e);
             }
         } else {
             SecureStore.getItemAsync(key).then(value => {

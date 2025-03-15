@@ -23,16 +23,14 @@ const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<
 
     return async (body?: T): Promise<WihResponse<T> | string> => {
         if (!session || !session.jwtToken || !session.refreshToken) {
-            WihLogger.warn(`Skip Request ${props.endpoint} due to missing session!`);
+            WihLogger.warn(useWihApi.name, `Skip Request ${props.endpoint} due to missing session!`);
             return `Skip Request ${props.endpoint} due to missing session!`;
         }
 
         if(!config?.apikey || !config.baseUri){
-            WihLogger.warn(`Skip Request ${props.endpoint} due to missing API Key or baseUri!`);
+            WihLogger.warn(useWihApi.name, `Skip Request ${props.endpoint} due to missing API Key or baseUri!`);
             return `Skip Request ${props.endpoint} due to missing API Key or baseUri!`;
         }
-
-        WihLogger.debug(`Start request with: session = ${session.jwtToken} | config = ${config.apikey}`); // TODO
 
         const response = await new WihFetchBuilder(config, session)
             .setEndpoint(props.endpoint)

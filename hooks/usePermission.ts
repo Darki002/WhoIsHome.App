@@ -7,11 +7,11 @@ export function usePermission(){
 
     return useCallback((permittedUserId?: number) => {
         if(!user) {
-            WihLogger.warn("(Permission Check) Logged in user was not being loaded.");
+            WihLogger.warn(usePermission.name, "Logged in user was not being loaded.");
             return false;
         }
         if(!permittedUserId) {
-            WihLogger.warn("(Permission Check) There was no given user ID that can access this resource.");
+            WihLogger.warn(usePermission.name, "There was no given user ID that can access this resource.");
             return false;
         }
         return permittedUserId === user.id;

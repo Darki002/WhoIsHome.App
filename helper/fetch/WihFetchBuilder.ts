@@ -61,9 +61,8 @@ export class WihFetchBuilder {
 
         if(this.config.apikey){
             this.headers.append("X-API-KEY", this.config.apikey);
-            WihLogger.debug(`Added Header with: X-API-KEY ${this.config.apikey}`);
         } else {
-            WihLogger.warn(`Attempting a request without a API Key! ${this.config.apikey}`);
+            WihLogger.warn(WihFetchBuilder.name, `Attempting a request without a API Key! ${this.config.apikey}`);
         }
 
         if (this.tokens) {
@@ -80,10 +79,8 @@ export class WihFetchBuilder {
         const uri = this.buildUrl();
 
         if (this.method === "GET" && this.body) {
-            WihLogger.warn(`Attempting a GET request with a body for ${this.endpoint}`);
+            WihLogger.warn(WihFetchBuilder.name, `Attempting a GET request with a body for ${this.endpoint}`);
         }
-
-        WihLogger.debug(`Request for: ${uri} | X-API-KEY = ${this.headers.get("X-API-KEY")}`); // TODO
 
         try {
             const response = await fetch(uri, {
@@ -104,7 +101,7 @@ export class WihFetchBuilder {
 
             return apiResponse;
         } catch (error: any) {
-            WihLogger.error(error);
+            WihLogger.error(WihFetchBuilder.name, error);
             return WihResponse.error<T>(error);
         }
     }
@@ -112,7 +109,7 @@ export class WihFetchBuilder {
     private async refresh<T>(): Promise<WihResponse<T>> {
         const newTokens = await refreshJwtToken(this.tokens?.refreshToken!, this.config, this.onNewTokens);
         if (typeof newTokens === "string") {
-            WihLogger.info(`Refresh failed! | Message: ${newTokens}`);
+            WihLogger.info(WihFetchBuilder.name, `Refresh failed! | Message: ${newTokens}`);
             return WihResponse.fail<T>(`Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
         }
 
@@ -125,8 +122,6 @@ export class WihFetchBuilder {
     private async retry<T>(): Promise<WihResponse<T>> {
         const uri = this.buildUrl();
 
-        WihLogger.debug(`Retry for: ${uri} | X-API-KEY = ${this.headers.get("X-API-KEY")}`); // TODO
-
         try {
             const response = await fetch(uri, {
                 method: this.method,
@@ -137,7 +132,7 @@ export class WihFetchBuilder {
 
             return await WihResponse.fromResponse<T>(response);
         } catch (error: any) {
-            WihLogger.error(error);
+            WihLogger.error(WihFetchBuilder.name, error);
             return WihResponse.error<T>(error);
         }
     }
