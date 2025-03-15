@@ -97,13 +97,7 @@ export class WihFetchBuilder {
 
             if(!apiResponse.isValid()){
                 if(apiResponse.status === 401 && this.tokens?.refreshToken){
-                    const newTokens = await refreshJwtToken(this.tokens.refreshToken, this.config, this.onNewTokens);
-                    if (typeof newTokens === "string") {
-                        WihLogger.info(`Refresh failed! | Message: ${newTokens}`);
-                        return WihResponse.fail<T>(`Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
-                    }
-
-                    this.tokens = newTokens;
+                    return this.refresh<T>();
                 }
                 return this.retry<T>();
             }
@@ -115,8 +109,20 @@ export class WihFetchBuilder {
         }
     }
 
+    private async refresh<T>(): Promise<WihResponse<T>> {
+        const newTokens = await refreshJwtToken(this.tokens?.refreshToken!, this.config, this.onNewTokens);
+        if (typeof newTokens === "string") {
+            WihLogger.info(`Refresh failed! | Message: ${newTokens}`);
+            return WihResponse.fail<T>(`Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
+        }
+
+        this.tokens = newTokens;
+        this.headers.delete("Authorization");
+        this.headers.append("Authorization", `Bearer ${this.tokens.jwtToken}`);
+        return this.retry<T>();
+    }
+
     private async retry<T>(): Promise<WihResponse<T>> {
-        this.buildHeaders();
         const uri = this.buildUrl();
 
         WihLogger.debug(`Retry for: ${uri} | X-API-KEY = ${this.headers.get("X-API-KEY")}`); // TODO
