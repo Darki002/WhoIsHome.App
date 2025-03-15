@@ -42,8 +42,8 @@
       [
         "@sentry/react-native/expo",
         {
-          "organization": "darki",
-          "project": "whoishome",
+          "organization": "<your-organization>",
+          "project": "<your-project-name>",
           "url": "https://sentry.io/"
         }
       ]
@@ -56,7 +56,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "fd384f72-eb60-4f5c-a603-9f6352b20cbf"
+        "projectId": "<your-projectId>"
       }
     }
   }
