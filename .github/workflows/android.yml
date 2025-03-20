@@ -42,5 +42,5 @@ jobs:
           credentials: ${{ secrets.GSA }}
           filename: ./whoishome.apk
           folderId: ${{ vars.FOLDERID }}
-          name: 'whoishome-${{ github.ref }}.apk'
+          name: 'whoishome-${{ github.ref_name }}.apk'
           overwrite: "true"
