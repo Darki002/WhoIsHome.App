@@ -11,7 +11,6 @@ import {timeDisplayString} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
-import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import useWihApi from "@/hooks/useWihApi";
 
 function RepeatedEventView({response}: {response: RepeatedEventModel}) {
