@@ -2,7 +2,7 @@ import React, {createContext, type PropsWithChildren, useContext, useEffect} fro
 import {useStorageState} from '@/hooks/useStorageState';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
-import {ApiConfig, useApiConfig} from "@/hooks/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 

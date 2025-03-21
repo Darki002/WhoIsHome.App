@@ -8,7 +8,7 @@ import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
-import {ApiConfig, useApiConfig} from "@/hooks/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
