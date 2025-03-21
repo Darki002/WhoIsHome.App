@@ -5,7 +5,6 @@ import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {useApiConfig} from "@/hooks/ConfigContext";
 import {useWihUser} from "@/components/appContexts/WihUserContext";
 
 const AppLayout = () => {
