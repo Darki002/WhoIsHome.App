@@ -18,7 +18,6 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
-import {OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
 import useWihApi from "@/hooks/useWihApi";
 
 const options : Array<WihOption<PresenceType>> = [

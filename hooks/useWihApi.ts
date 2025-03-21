@@ -1,4 +1,4 @@
-import {useApiConfig} from "@/hooks/ConfigContext";
+import {useApiConfig} from "@/hooks/useApiConfig";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {WihResponse} from "@/helper/fetch/WihResponse";

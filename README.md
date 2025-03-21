@@ -28,13 +28,14 @@ Explain how to build the app with the Action
 
 ## Build App
 
-### Env Variables for GitHub Action
+### Env Variables
 
 | Field                    | Description                                                                                                                                         |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | EXPO_PUBLIC_API_BASE_URI | The URL to the server where the Backend Service is hosted                                                                                           |
 | EXPO_PUBLIC_API_KEY      | The API Key configured in the Backend Service. See [Env Variables](https://github.com/Darki002/WhoIsHome/blob/main/README.md#environment-variables) |
 | SENTRY_AUTH_TOKEN        | Sentry Auth Token for Logging to Sentry. You also have to change `app.json` in order to work                                                        |
+| EXPO_PUBLIC_SENTRY_DSN   | DSN for Sentry                                                                                                                                      |
 
 ## Backend Service
 
