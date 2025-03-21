@@ -6,7 +6,6 @@ import 'react-native-reanimated';
 import i18n from "@/helper/i18n"
 import {useColorScheme} from 'react-native';
 import {SessionProvider} from '@/components/appContexts/AuthContext';
-import {ApiConfigProvider} from "@/components/appContexts/ConfigContext";
 import {I18nextProvider} from "react-i18next";
 import {WihThemeProvider} from "@/components/appContexts/WihThemeProvider";
 import {Colors} from "@/constants/Colors";
@@ -63,22 +62,19 @@ const RootLayout = () => {
     return (
         <I18nextProvider i18n={i18n}>
             <WihThemeProvider>
-                <ApiConfigProvider>
-                    <SessionProvider>
-                        <WihUserProvider>
-                            <StatusBar
-                                style={colorScheme === 'dark' ? 'light' : 'dark'}
-                                backgroundColor={Colors[colorScheme ?? "light"].background}
-                            />
-                            <Stack screenOptions={screenOptions}>
-                                <Stack.Screen name="(app)" options={{headerShown: false}}/>
-                                <Stack.Screen name="auth" options={{headerShown: false}}/>
-                                <Stack.Screen name="config" options={{headerShown: false}}/>
-                                <Stack.Screen name="+not-found"/>
-                            </Stack>
-                        </WihUserProvider>
-                    </SessionProvider>
-                </ApiConfigProvider>
+                <SessionProvider>
+                    <WihUserProvider>
+                        <StatusBar
+                            style={colorScheme === 'dark' ? 'light' : 'dark'}
+                            backgroundColor={Colors[colorScheme ?? "light"].background}
+                        />
+                        <Stack screenOptions={screenOptions}>
+                            <Stack.Screen name="(app)" options={{headerShown: false}}/>
+                            <Stack.Screen name="auth" options={{headerShown: false}}/>
+                            <Stack.Screen name="+not-found"/>
+                        </Stack>
+                    </WihUserProvider>
+                </SessionProvider>
             </WihThemeProvider>
         </I18nextProvider>
     );

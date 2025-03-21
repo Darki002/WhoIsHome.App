@@ -1,4 +1,4 @@
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
+import {useApiConfig} from "@/hooks/ConfigContext";
 import {useSession} from "@/components/appContexts/AuthContext";
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {WihResponse} from "@/helper/fetch/WihResponse";
@@ -12,7 +12,7 @@ export interface WihFetchProps {
 }
 
 const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<T> | string> => {
-    const {config} = useApiConfig();
+    const config = useApiConfig();
     const {session, onNewSession, signOut} = useSession();
 
     function onNewTokens(tokens: Tokens | undefined | null) {

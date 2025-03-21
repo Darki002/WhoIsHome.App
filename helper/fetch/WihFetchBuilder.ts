@@ -1,5 +1,5 @@
 import {Tokens} from "@/constants/WihTypes/Auth";
-import {ApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfig} from "@/hooks/ConfigContext";
 import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
