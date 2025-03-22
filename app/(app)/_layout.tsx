@@ -5,14 +5,12 @@ import React, {useEffect} from "react";
 import {isInvalidSession} from "@/helper/sessionHelper";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {useApiConfig} from "@/components/appContexts/ConfigContext";
 import {useWihUser} from "@/components/appContexts/WihUserContext";
 
 const AppLayout = () => {
     const router = useRouter();
     const theme = useWihTheme();
 
-    const {isApiConfigLoading} = useApiConfig();
     const {session, isSessionLoading} = useSession();
     const {isUserLoading} = useWihUser();
 
@@ -22,7 +20,7 @@ const AppLayout = () => {
         }
     }, [session, isSessionLoading]);
 
-    if (isSessionLoading || isApiConfigLoading || isUserLoading) {
+    if (isSessionLoading || isUserLoading) {
         return <WihLoadingView />
     }
 

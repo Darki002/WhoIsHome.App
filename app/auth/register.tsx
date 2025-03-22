@@ -8,13 +8,13 @@ import {useSession} from "@/components/appContexts/AuthContext";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {Endpoints} from "@/constants/endpoints";
-import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
 const register = () => {
     const {t} = useTranslation();
-    const {config} = useApiConfig();
+    const config = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
     const [password, onChangePassword] = useState<string>("");
@@ -74,7 +74,7 @@ const register = () => {
 
 async function sendRegisterRequest(userName: string, email: string, password: string, config: ApiConfig): Promise<WihResponse<string>> {
 
-    const response = await new WihFetchBuilder(config)
+    return await new WihFetchBuilder(config)
         .setEndpoint(Endpoints.auth.register)
         .setMethod("POST")
         .setBody({
@@ -83,8 +83,6 @@ async function sendRegisterRequest(userName: string, email: string, password: st
             password
         })
         .fetch<string>();
-
-    return response;
 }
 
 const styles = StyleSheet.create({

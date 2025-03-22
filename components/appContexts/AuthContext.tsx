@@ -2,7 +2,7 @@ import React, {createContext, type PropsWithChildren, useContext, useEffect} fro
 import {useStorageState} from '@/hooks/useStorageState';
 import {Tokens} from "@/constants/WihTypes/Auth";
 import {Endpoints} from "@/constants/endpoints";
-import {ApiConfig, useApiConfig} from "@/components/appContexts/ConfigContext";
+import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 
@@ -41,11 +41,11 @@ export function useSession() {
 
 export function SessionProvider({children}: PropsWithChildren) {
     const router = useRouter();
-    const {config, isApiConfigLoading} = useApiConfig();
+    const config = useApiConfig();
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
-    const isLoading = isLoadingSession || isLoadingRefreshToken || isApiConfigLoading;
+    const isLoading = isLoadingSession || isLoadingRefreshToken;
 
     useEffect(() => {
         if (!isLoading && (!session || !refreshToken)) {

@@ -1,13 +1,17 @@
 name: Build & Upload Android APK
 
 on:
-    release: 
-      types: [published]
+  push:
+    tags: 
+      - '**'
 
 jobs:
   build_android:
     env:
+        EXPO_PUBLIC_API_BASE_URI: ${{ secrets.API_BASE_URI }}
+        EXPO_PUBLIC_API_KEY: ${{ secrets.API_KEY }}
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        EXPO_PUBLIC_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     name: "Setup and Build"
     runs-on: ubuntu-latest
@@ -29,18 +33,18 @@ jobs:
           packager: npm
           token: ${{ secrets.EXPO_TOKEN }}
           
-      - name: 📦 Install dependencie
+      - name: 📦 Install dependencies
         run: npm i
 
       - name: 👷 Build android app
         run: eas build --profile production --platform android --non-interactive --local --output=./whoishome.apk
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release to Google Drive
+        uses: adityak74/google-drive-upload-git-action@main
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./whoishome.apk
-          asset_name: whoishome.apk
-          asset_content_type: application/vnd.android.package-archive
+          credentials: ${{ secrets.GSA }}
+          filename: ./whoishome.apk
+          folderId: ${{ vars.FOLDERID }}
+          name: 'whoishome-${{ github.ref_name }}.apk'
+          mimeType: 'application/vnd.android.package-archive'
+          overwrite: "true"

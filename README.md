@@ -18,27 +18,24 @@ The whole project is fully open source and free to use.
 
 # Use the app for yourself
 
-## Mobile App
+*TODO:* new set up with configuration for
 
-In the future a prebuild of the Mobile app will be available here on this repository, but only as an `.apk` for Android.
-For IOS or any other platform you can a build yourself. 
+* EAS
+* Sentry (optional)
+* Firebase Cloud Messaging
 
-### Installation (Android only)
+Explain how to build the app with the Action
 
-1. Download the `.apk` file
-2. Enable `Setting > Security > Unknown Sources` *
-3. Execute the apk
-4. Open the app
-5. Set the configs on the configs screen
+## Build App
 
-\* Must be enabled since you don't download it from the Google Play Store.
+### Env Variables
 
-### Config Screen
-
-| Field    | Description                                                                                                                                         |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Base URL | THe URL to the server where the Backend Service is hosted                                                                                           |
-| API KEy  | The API Key configured in the Backend Service. See [Env Variables](https://github.com/Darki002/WhoIsHome/blob/main/README.md#environment-variables) |
+| Field                    | Description                                                                                                                                         |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| EXPO_PUBLIC_API_BASE_URI | The URL to the server where the Backend Service is hosted                                                                                           |
+| EXPO_PUBLIC_API_KEY      | The API Key configured in the Backend Service. See [Env Variables](https://github.com/Darki002/WhoIsHome/blob/main/README.md#environment-variables) |
+| SENTRY_AUTH_TOKEN        | Sentry Auth Token for Logging to Sentry. You also have to change `app.json` in order to work                                                        |
+| EXPO_PUBLIC_SENTRY_DSN   | DSN for Sentry                                                                                                                                      |
 
 ## Backend Service
 
@@ -54,16 +51,3 @@ To start the project
 4. start the project with `npx expo start`
 
 For more information check out the documentation of [Expo](https://expo.dev/).
-
-## Local Configuration
-
-To avoid the Config Screen everytime you start up the project you can set the configs in the Environment Variables instead.
-
-*Note: only works for local development*
-
-| ENV VAR                    | Description                                                                                                                     | Value                              |
-|----------------------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
-| EXPO_PUBLIC_USE_ENV_CONFIG | If True use the configs of the following env variables                                                                          | A boolean True or False            |
-| EXPO_PUBLIC_API_BASE_URI   | The Base URL to the Server or local instance                                                                                    | A string URL e.g. `localhost:8080` |
-| EXPO_PUBLIC_API_KEY        | The API Key defined in the backend. See [here](https://github.com/Darki002/WhoIsHome/blob/main/README.md#environment-variables) | A string for the API Key           |
-| SENTRY_AUTH_TOKEN          | Sentry Auth Token for Logging to Sentry. You also have to change `app.json` in order to work                                    | String                             |
