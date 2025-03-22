@@ -34,7 +34,7 @@ export async function registerForPushNotificationsAsync() {
         finalStatus = status;
     }
 
-    if(finalStatus === "granted"){
+    if(finalStatus !== "granted"){
         WihLogger.error("Notifications", "Permission not granted to get push token for push notification!");
         return;
     }
