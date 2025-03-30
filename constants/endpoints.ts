@@ -21,5 +21,6 @@ export const Endpoints = {
     userOverview: {
         url: "UserOverview",
         withId: (id: number | string) => `${Endpoints.userOverview.url}/${id}`
-    }
+    },
+    pushUp: "PushUp"
 } as const;
