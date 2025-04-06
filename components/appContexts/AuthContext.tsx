@@ -5,6 +5,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
+import {usePushTokenSync} from "@/hooks/usePushTokenSync";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -42,6 +43,7 @@ export function useSession() {
 export function SessionProvider({children}: PropsWithChildren) {
     const router = useRouter();
     const config = useApiConfig();
+    const { disablePushUp } = usePushTokenSync();
     const [[isLoadingSession, session], setSession] = useStorageState('session');
     const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
@@ -71,6 +73,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     return null;
                 },
                 signOut: async () => {
+                    await disablePushUp();
                     await sendLogoutRequest(config!, {jwtToken: session, refreshToken: refreshToken});
                     setSession(null);
                     setRefreshToken(null);
@@ -90,7 +93,6 @@ export function SessionProvider({children}: PropsWithChildren) {
 }
 
 async function sendLoginRequest(config: ApiConfig, email: string, password: string){
-
     return await new WihFetchBuilder(config)
         .setEndpoint(Endpoints.auth.login)
         .setMethod("POST")
@@ -99,7 +101,6 @@ async function sendLoginRequest(config: ApiConfig, email: string, password: stri
 }
 
 async function sendLogoutRequest(config: ApiConfig, tokens: Tokens){
-
     return await new WihFetchBuilder(config, tokens)
         .setEndpoint(Endpoints.auth.logout)
         .setMethod("POST")

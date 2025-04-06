@@ -7,12 +7,12 @@ import {Endpoints} from "@/constants/endpoints";
 const LAST_PUSH_TOKEN_KEY = 'lastPushToken';
 
 export function usePushTokenSync() {
-    const pushTokenApi = useWihApi<{ token: string, enable?: boolean }>({
+    const pushTokenApi = useWihApi<{ token: string | null, enable?: boolean }>({
         endpoint: Endpoints.pushUp,
         method: "POST",
     });
 
-    return  useCallback(async (pushToken: string) => {
+    const syncPushToken = useCallback(async (pushToken: string) => {
         try {
             const lastToken = await AsyncStorage.getItem(LAST_PUSH_TOKEN_KEY);
             if (lastToken === pushToken) {
@@ -34,4 +34,17 @@ export function usePushTokenSync() {
             WihLogger.error(usePushTokenSync.name, err);
         }
     }, [pushTokenApi]);
+
+    const disablePushUp = useCallback(async () => {
+        const token = await AsyncStorage.getItem(LAST_PUSH_TOKEN_KEY);
+        if (!token) return;
+
+        const response = await pushTokenApi({ token: null, enable: false });
+        if (typeof response !== 'string' && response.isValid()) {
+            await AsyncStorage.removeItem(LAST_PUSH_TOKEN_KEY);
+            WihLogger.debug("PushToken", "Disabled and cleared.");
+        }
+    }, [pushTokenApi]);
+
+    return { syncPushToken, disablePushUp };
 }

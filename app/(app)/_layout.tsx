@@ -22,7 +22,7 @@ const AppLayout = () => {
         }
     }, [session, isSessionLoading]);
 
-    const syncPushToken = usePushTokenSync();
+    const {syncPushToken} = usePushTokenSync();
     useEffect(() => {
         if(isSessionLoading){
             return;
