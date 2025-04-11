@@ -21,7 +21,7 @@ jobs:
       - name: 🏗 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🏗 Setup Google Service Account
+      - name: 📝 Create Google Service Account
         run: echo "${{ secrets.EXPO_GSA }}" > ./google-services.json
         
       - name: 🏗 Setup Node
@@ -42,7 +42,7 @@ jobs:
       - name: 👷 Build android app
         run: eas build --profile production --platform android --non-interactive --local --output=./whoishome.apk
 
-      - name: Upload Release to Google Drive
+      - name: 📤 Upload Release to Google Drive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.GSA }}
