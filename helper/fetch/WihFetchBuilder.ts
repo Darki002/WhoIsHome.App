@@ -82,6 +82,8 @@ export class WihFetchBuilder {
             WihLogger.warn(WihFetchBuilder.name, `Attempting a GET request with a body for ${this.endpoint}`);
         }
 
+        WihLogger.debug(WihFetchBuilder.name, `Request ${this.method} ${uri}`);
+
         try {
             const response = await fetch(uri, {
                 method: this.method,

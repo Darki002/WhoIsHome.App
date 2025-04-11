@@ -20,6 +20,15 @@
       "android": {
         "buildType": "apk"
       }
+    },
+    "development": {
+      "distribution": "internal",
+      "releaseChannel": "preview",
+      "environment": "development",
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk"
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/react-native";
 
 export class WihLogger {
-    static log(component: string, message: string) {
+    static log(component: string, message: any) {
         if (__DEV__) {
             console.log(`[LOG] (${component}) ${message}`);
         }
