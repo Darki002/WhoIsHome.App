@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "608213316300",
+    "project_id": "whoshome-9856f",
+    "storage_bucket": "whoshome-9856f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608213316300:android:9b8360264ca12da3bb4869",
+        "android_client_info": {
+          "package_name": "dev.darki.whoishome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608213316300-39nrqj6lfim0j60lqfbuj3dumk98ght1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIM7c8VrlBvFPJFECNGVEXxX_5T7aQMZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608213316300-39nrqj6lfim0j60lqfbuj3dumk98ght1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
