@@ -1,24 +1,13 @@
-import {timeStringToDate} from "@/helper/datetimehelper";
+import {SimpleUser} from "@/constants/WihTypes/User";
 
-export type DailyOverviewUser = {
-    id: number;
-    username: string;
-}
-
-export interface DailyOverviewDto {
-    user: DailyOverviewUser;
+export interface DailyOverview {
     isAtHome: boolean;
-    dinnerTime: string | null;
+    dinnerTime: string | null;  // "HH:mm:ss" or null
 }
 
-export class DailyOverview {
-    User: DailyOverviewUser;
-    IsAtHome: boolean;
-    DinnerTime: Date | null;
+export type DailyOverviews = Record<string, DailyOverview>;
 
-    constructor(dailyOverviewDto : DailyOverviewDto) {
-        this.User = dailyOverviewDto.user;
-        this.IsAtHome = dailyOverviewDto.isAtHome;
-        this.DinnerTime = timeStringToDate(dailyOverviewDto.dinnerTime ?? undefined) ?? null;
-    }
+export interface WeeklyReport {
+    user: SimpleUser;
+    dailyOverviews: DailyOverviews;
 }
