@@ -1,15 +1,18 @@
 import {SimpleUser} from "@/constants/WihTypes/User";
-import {timeStringToDate} from "@/helper/datetimehelper";
+import {dateStringToDate, timeStringToDate} from "@/helper/datetimehelper";
 
-export type WeeklyReportDto = {
-    user: SimpleUser;
-    dailyOverviews: WeeklyReportDailyOverviewDto[];
-}
-
-export type WeeklyReportDailyOverviewDto = {
+export interface DailyOverviewItem {
+    date: string;
     isAtHome: boolean;
     dinnerTime: string | null;
 }
+
+export interface WeeklyReportDto {
+    user: SimpleUser;
+    dailyOverviews: DailyOverviewItem[];
+}
+
+export type WeeklyReportsResponse = WeeklyReportDto[];
 
 export class WeeklyReport {
     User: SimpleUser;
@@ -22,10 +25,12 @@ export class WeeklyReport {
 }
 
 export class WeeklyReportDailyOverview {
+    Date: Date;
     IsAtHome: boolean;
     DinnerTime: Date | null;
 
-    constructor(weeklyReportDailyOverviewDto: WeeklyReportDailyOverviewDto) {
+    constructor(weeklyReportDailyOverviewDto: DailyOverviewItem) {
+        this.Date = dateStringToDate(weeklyReportDailyOverviewDto.date)!;
         this.IsAtHome = weeklyReportDailyOverviewDto.isAtHome;
         this.DinnerTime = timeStringToDate(weeklyReportDailyOverviewDto.dinnerTime ?? undefined) ?? null;
     }
