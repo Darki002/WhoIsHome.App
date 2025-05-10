@@ -1,4 +1,4 @@
-import {WihTitle} from "@/components/WihComponents/display/WihText";
+import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
@@ -8,6 +8,7 @@ import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOvervie
 import {StyleSheet} from "react-native";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
+import {WihPagination} from "@/components/WihComponents/view/WihPagination";
 
 function Index({response, refresh} : WihApiFocusComponentParams<DailyOverviewDto[]>) {
     const {t} = useTranslation();
@@ -15,11 +16,17 @@ function Index({response, refresh} : WihApiFocusComponentParams<DailyOverviewDto
 
     return (
         <WihView style={styles.container}>
-            <WihRefreshableScrollView onRefresh={refresh} style={{height: "100%"}}>
-                <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
+            <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
-                {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
-            </WihRefreshableScrollView>
+            <WihPagination>
+                <WihRefreshableScrollView onRefresh={refresh} style={{height: "100%"}}>
+                    {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
+                </WihRefreshableScrollView>
+
+                <WihView>
+                    <WihText>Hallo</WihText>
+                </WihView>
+            </WihPagination>
         </WihView>
     );
 }
