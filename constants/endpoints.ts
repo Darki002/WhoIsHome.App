@@ -18,9 +18,10 @@ export const Endpoints = {
         withId: (id: number | string) => `${Endpoints.repeatedEvent.url}/${id}`
     },
     dailyOverview: "DailyOverview",
+    weeklyReport: "WeeklyReport",
     userOverview: {
         url: "UserOverview",
         withId: (id: number | string) => `${Endpoints.userOverview.url}/${id}`
     },
-    pushUp: "PushUp"
+    pushUp: "PushUp",
 } as const;

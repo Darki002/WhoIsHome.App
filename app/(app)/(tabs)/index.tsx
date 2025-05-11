@@ -1,32 +1,51 @@
-import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
+import { WihTitle} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
-import {Endpoints} from "@/constants/endpoints";
-import {DailyOverviewCard} from "@/components/pages/Home/DailyOverviewCard";
-import {DailyOverview, DailyOverviewDto} from "@/constants/WihTypes/DailyOverview";
-import {StyleSheet} from "react-native";
-import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
-import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
-import {WihPagination} from "@/components/WihComponents/view/WihPagination";
+import {Dimensions, StyleSheet} from "react-native";
+import DailyOverviewScreen from "@/components/pages/Home/DailyOverviewScreen";
+import {useState} from "react";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {SceneMap, TabBar, TabView} from "react-native-tab-view";
+import WeeklyReportScreen from "@/components/pages/Home/WeeklyReportScreen";
 
-function Index({response, refresh} : WihApiFocusComponentParams<DailyOverviewDto[]>) {
+export default function Index() {
     const {t} = useTranslation();
-    const overviews = response.map(r => new DailyOverview(r));
+    const theme = useWihTheme();
+
+    const layout = Dimensions.get('window');
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: 'daily', title: 'Daily' },
+        { key: 'weekly', title: 'Weekly' },
+    ]);
+
+    const renderScene = SceneMap({
+        daily: DailyOverviewScreen,
+        weekly: WeeklyReportScreen,
+    });
 
     return (
         <WihView style={styles.container}>
             <WihTitle style={styles.title}>{t(Labels.titles.welcome)}!</WihTitle>
 
-            <WihPagination>
-                <WihRefreshableScrollView onRefresh={refresh} style={{height: "100%"}}>
-                    {overviews.map((o, i) => <DailyOverviewCard key={i} overview={o} />)}
-                </WihRefreshableScrollView>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
+                renderTabBar={props => (
+                    <TabBar
+                        {...props}
+                        indicatorStyle={{ backgroundColor: theme.primary }}
+                        style={{ backgroundColor: theme.background }}
+                        activeColor={theme.text}
+                        inactiveColor={theme.textSecondary}
+                        tabStyle={{ paddingVertical: 8 }}
+                    />
+                )}
+            />
 
-                <WihView>
-                    <WihText>Hallo</WihText>
-                </WihView>
-            </WihPagination>
         </WihView>
     );
 }
@@ -41,7 +60,3 @@ const styles = StyleSheet.create({
         marginBottom: 20
     }
 });
-
-export default function () {
-    return <WihApiFocus endpoint={Endpoints.dailyOverview} method="GET" Component={Index} />
-}
