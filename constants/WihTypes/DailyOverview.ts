@@ -1,18 +1,14 @@
 import {timeStringToDate} from "@/helper/datetimehelper";
-
-export type DailyOverviewUser = {
-    id: number;
-    username: string;
-}
+import {SimpleUser} from "@/constants/WihTypes/User";
 
 export interface DailyOverviewDto {
-    user: DailyOverviewUser;
+    user: SimpleUser;
     isAtHome: boolean;
     dinnerTime: string | null;
 }
 
 export class DailyOverview {
-    User: DailyOverviewUser;
+    User: SimpleUser;
     IsAtHome: boolean;
     DinnerTime: Date | null;
 
