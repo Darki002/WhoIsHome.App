@@ -6,6 +6,7 @@ import {Endpoints} from "@/constants/endpoints";
 import {getLocales} from "expo-localization";
 
 const LAST_PUSH_TOKEN_KEY = 'lastPushToken';
+const LAST_LANGUAGE_CODE_KEY = 'languageCode';
 
 export function usePushTokenSync() {
     const pushTokenApi = useWihApi<{ token: string | null, languageCode?: string | null, enable?: boolean }>({
@@ -16,14 +17,18 @@ export function usePushTokenSync() {
     const syncPushToken = useCallback(async (pushToken: string) => {
         try {
             const lastToken = await AsyncStorage.getItem(LAST_PUSH_TOKEN_KEY);
-            if (lastToken === pushToken) {
+            const lastLanguageCode = await AsyncStorage.getItem(LAST_LANGUAGE_CODE_KEY);
+
+            const languageCode = getLocales()[0]?.languageCode;
+
+            if (lastToken === pushToken && languageCode === lastLanguageCode) {
                 WihLogger.debug("PushToken", "Token unchanged, skipping backend sync.");
                 return;
             }
 
             const response = await pushTokenApi({
                 token: pushToken,
-                languageCode: getLocales()[0]?.languageCode
+                languageCode: languageCode
             });
 
             if (typeof response === 'string') {
@@ -34,6 +39,12 @@ export function usePushTokenSync() {
             if (response.isValid()) {
                 WihLogger.log("PushToken", "Token successfully synced.");
                 await AsyncStorage.setItem(LAST_PUSH_TOKEN_KEY, pushToken);
+
+                if(languageCode){
+                    await AsyncStorage.setItem(LAST_LANGUAGE_CODE_KEY, languageCode);
+                } else {
+                    await AsyncStorage.removeItem(LAST_LANGUAGE_CODE_KEY);
+                }
             }
         } catch (err: any) {
             WihLogger.error(usePushTokenSync.name, err);
