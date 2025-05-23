@@ -3,11 +3,12 @@ import { useCallback } from 'react';
 import { WihLogger } from "@/helper/WihLogger";
 import useWihApi from "@/hooks/useWihApi";
 import {Endpoints} from "@/constants/endpoints";
+import {getLocales} from "expo-localization";
 
 const LAST_PUSH_TOKEN_KEY = 'lastPushToken';
 
 export function usePushTokenSync() {
-    const pushTokenApi = useWihApi<{ token: string | null, enable?: boolean }>({
+    const pushTokenApi = useWihApi<{ token: string | null, languageCode?: string | null, enable?: boolean }>({
         endpoint: Endpoints.pushUp,
         method: "POST",
     });
@@ -20,7 +21,11 @@ export function usePushTokenSync() {
                 return;
             }
 
-            const response = await pushTokenApi({ token: pushToken });
+            const response = await pushTokenApi({
+                token: pushToken,
+                languageCode: getLocales()[0]?.languageCode
+            });
+
             if (typeof response === 'string') {
                 WihLogger.warn("PushToken", "Sync failed: " + response);
                 return;
