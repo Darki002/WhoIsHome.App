@@ -23,7 +23,8 @@ export class WihResponse<T> {
 
     static async fromResponse<T>(response: Response): Promise<WihResponse<T>> {
         if (response.ok) {
-            const data = await response.json();
+            const isJson = response.headers.get("Content-Type")?.includes("application/json") ?? false
+            const data = isJson ? await response.json() : await response.text();
             return new WihResponse<T>(response.status, true, data);
         }
 
