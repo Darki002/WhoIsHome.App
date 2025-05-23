@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import {WeeklyReport} from "@/constants/WihTypes/WeeklyReport";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihAvatar} from "@/components/WihComponents/icon/WihAvatar";
@@ -8,6 +8,7 @@ import {timeDisplayString} from "@/helper/datetimehelper";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {useRouter} from "expo-router";
 
 interface Props {
     report: WeeklyReport;
@@ -16,9 +17,10 @@ interface Props {
 export default function WeeklyReportCard({ report }: Props) {
     const theme = useWihTheme();
     const { t } = useTranslation();
+    const router = useRouter();
 
     return (
-        <WihView style={[
+        <Pressable onPress={() => router.push(`/(app)/user/${report.User.id}`)} style={[
             styles.card,
             { borderColor: theme.primary, backgroundColor: theme.background }
         ]}>
@@ -50,7 +52,7 @@ export default function WeeklyReportCard({ report }: Props) {
                     </WihView>
                 ))}
             </WihView>
-        </WihView>
+        </Pressable>
     );
 }
 
