@@ -111,5 +111,16 @@
   "Dialog": {
     "DeleteTitle": "Event löschen?",
     "DeleteMessage": "Willst du wirklich dieses Event löschen?"
+  },
+  "Weekdays": {
+    "ShortByNumber": {
+      "Sunday": "So",
+      "Monday": "Mo",
+      "Tuesday": "Di",
+      "Wednesday": "Mi",
+      "Thursday": "Do",
+      "Friday": "Fr",
+      "Saturday": "Sa"
+    }
   }
 }

@@ -5,25 +5,31 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {WihAvatar} from "@/components/WihComponents/icon/WihAvatar";
 import { WihText } from '@/components/WihComponents/display/WihText';
 import {formatDate} from "@/helper/datetimehelper";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
+import {useTranslation} from "react-i18next";
+import Labels from "@/constants/locales/Labels";
 
 interface Props {
     report: WeeklyReport;
 }
 
 export default function WeeklyReportCard({ report }: Props) {
+    const theme = useWihTheme();
+    const { t } = useTranslation();
+
     return (
-        <WihView style={styles.card}>
-            {/* Header: avatar + name */}
+        <WihView style={[
+            styles.card,
+            { borderColor: theme.primary, backgroundColor: theme.background }
+        ]}>
             <WihView style={styles.header}>
                 <WihAvatar name={report.User.username} size={40} style={styles.avatar} />
                 <WihText style={styles.name}>{report.User.username}</WihText>
             </WihView>
-
-            {/* 7-day overview row */}
             <WihView style={styles.daysRow}>
                 {report.DailyOverviews.map(day => (
                     <WihView style={styles.dayCell} key={day.Date.toISOString()}>
-                        <WihText style={styles.dayLabel}>{formatDate(day.Date)}</WihText>
+                        <WihText style={styles.dayLabel}>{t(Labels.weekdays.shortByNumber[day.Date.getDay()])}</WihText>
                         <WihView
                             style={[
                                 styles.dot,
@@ -45,15 +51,10 @@ export default function WeeklyReportCard({ report }: Props) {
 const DOT_SIZE = 10;
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFF',
-        borderRadius: 8,
+        borderRadius: 10,
         padding: 12,
         marginBottom: 12,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
+        borderWidth: 1,
     },
     header: {
         flexDirection: 'row',

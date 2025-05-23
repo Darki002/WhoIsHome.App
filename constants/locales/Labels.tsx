@@ -111,6 +111,17 @@ const Labels = {
     dialog: {
         deleteTitle: "Dialog.DeleteTitle",
         deleteMessage: "Dialog.DeleteMessage"
+    },
+    weekdays: {
+        shortByNumber: [
+            "Weekdays.ShortByNumber.Sunday",
+            "Weekdays.ShortByNumber.Monday",
+            "Weekdays.ShortByNumber.Tuesday",
+            "Weekdays.ShortByNumber.Wednesday",
+            "Weekdays.ShortByNumber.Thursday",
+            "Weekdays.ShortByNumber.Friday",
+            "Weekdays.ShortByNumber.Saturday"
+        ]
     }
 } as const;
 

@@ -105,11 +105,22 @@
     "OneTimeEvent": "An event for a specific date.",
     "RepeatedEvent": "An event that is on the first date and repeats every week until the last date.",
     "CreateFlow": {
-      "TitleStep": "Give your new event a Title.",
+      "TitleStep": "Give your new event a Title."
     }
   },
   "Dialog": {
     "DeleteTitle": "Delete Event?",
     "DeleteMessage": "Do you really want to delete this event?"
+  },
+  "Weekdays": {
+    "ShortByNumber": {
+      "Sunday": "Su",
+      "Monday": "Mo",
+      "Tuesday": "Tu",
+      "Wednesday": "We",
+      "Thursday": "Th",
+      "Friday": "Fr",
+      "Saturday": "Sa"
+    }
   }
 }
