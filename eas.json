@@ -17,6 +17,7 @@
       "distribution": "internal",
       "releaseChannel": "production",
       "environment": "production",
+      "developmentClient": false,
       "android": {
         "buildType": "apk"
       }
