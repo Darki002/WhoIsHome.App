@@ -20,9 +20,9 @@ export default function WeeklyReportCard({ report }: Props) {
     const router = useRouter();
 
     return (
-        <Pressable onPress={() => router.push(`/(app)/user/${report.User.id}`)} style={[
+        <Pressable onPress={() => router.push(`/(app)/user/${report.User.id}`)} style={({pressed}) => [
             styles.card,
-            { borderColor: theme.primary, backgroundColor: theme.background }
+            { borderColor: theme.primary, backgroundColor: pressed ? theme.primary : theme.background }
         ]}>
             <WihView style={styles.header}>
                 <WihAvatar name={report.User.username} size={40} style={styles.avatar} />
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 8,
+        paddingBottom: 8,
     },
     avatar: {
         marginRight: 8,
