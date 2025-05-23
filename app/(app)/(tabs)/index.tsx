@@ -16,8 +16,8 @@ export default function Index() {
     const layout = Dimensions.get('window');
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'daily', title: 'Daily' },
-        { key: 'weekly', title: 'Weekly' },
+        { key: 'daily', title: t(Labels.tabs.daily) },
+        { key: 'weekly', title: t(Labels.tabs.weekly) },
     ]);
 
     const renderScene = SceneMap({

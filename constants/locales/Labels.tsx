@@ -39,6 +39,8 @@ const Labels = {
         profile: "Tabs.Profile",
         login: "Tabs.Login",
         register: "Tabs.Register",
+        daily: "Tabs.Daily",
+        weekly: "Tabs.Weekly",
     },
     actions: {
         login: "Actions.Login",

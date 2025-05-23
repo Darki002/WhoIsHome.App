@@ -38,7 +38,9 @@
     "Create": "Create",
     "Profile": "Profile",
     "Login": "Sign In",
-    "Register": "Register"
+    "Register": "Register",
+    "Daily": "Daily",
+    "Weekly": "Weekly"
   },
   "Actions": {
     "Login": "Sign In",
