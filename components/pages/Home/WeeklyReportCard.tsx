@@ -4,7 +4,7 @@ import {WeeklyReport} from "@/constants/WihTypes/WeeklyReport";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihAvatar} from "@/components/WihComponents/icon/WihAvatar";
 import { WihText } from '@/components/WihComponents/display/WihText';
-import {formatDate} from "@/helper/datetimehelper";
+import {timeDisplayString} from "@/helper/datetimehelper";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
@@ -44,7 +44,7 @@ export default function WeeklyReportCard({ report }: Props) {
                         />
                         {day.DinnerTime && (
                             <WihText style={styles.time}>
-                                {formatDate(day.DinnerTime)}
+                                {timeDisplayString(day.DinnerTime)}
                             </WihText>
                         )}
                     </WihView>
