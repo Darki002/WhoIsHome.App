@@ -67,6 +67,9 @@ export const Colors = {
         secondary: secondary,
         tint: primary,
         tabIconSelected: primary,
+        atHome: "#2b802b",
+        dinner: "#FAAD14",
+        away: "#913737",
     },
     dark: {
         ...dark,
@@ -74,6 +77,9 @@ export const Colors = {
         secondary: secondary,
         tint: primary,
         tabIconSelected: primary,
+        atHome: "#2b802b",
+        dinner: "#FAAD14",
+        away: "#913737",
     },
 };
 

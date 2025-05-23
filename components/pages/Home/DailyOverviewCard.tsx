@@ -22,10 +22,15 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
         router.push(`/(app)/user/${overview.User.id}`);
     }
 
-    const renderIcon = (isAtHome: boolean) => {
-        return isAtHome
-            ? <MaterialIcons name="check-circle" size={24} color="#2b802b"/>
-            : <MaterialIcons name="cancel" size={24} color="#913737"/>;
+    const renderIcon = (overview: DailyOverview) => {
+        if(overview.IsAtHome){
+            if(overview.DinnerTime){
+                return <MaterialIcons name="check-circle" size={24} color={theme.dinner}/>
+            }
+            return <MaterialIcons name="check-circle" size={24} color={theme.atHome}/>
+        }
+
+        return <MaterialIcons name="cancel" size={24} color={theme.away}/>
     };
 
     return (
@@ -38,7 +43,7 @@ export const DailyOverviewCard = ({overview}: DailyOverviewProps) => {
             onPress={() => onOverviewPress()}
         >
             <WihView style={styles.content} gap={10}>
-                <WihView style={styles.iconContainer}>{renderIcon(overview.IsAtHome)}</WihView>
+                <WihView style={styles.iconContainer}>{renderIcon(overview)}</WihView>
                 <WihView style={styles.textContainer}>
                     <WihText style={styles.title}>{overview.User.username}</WihText>
                     <DinnerTimeCard dinnerTime={overview.DinnerTime} isAtHome={overview.IsAtHome}/>

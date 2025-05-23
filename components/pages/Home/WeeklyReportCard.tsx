@@ -33,7 +33,13 @@ export default function WeeklyReportCard({ report }: Props) {
                         <WihView
                             style={[
                                 styles.dot,
-                                day.IsAtHome ? styles.atHome : styles.away,
+                                {
+                                    backgroundColor: day.IsAtHome
+                                        ? day.DinnerTime
+                                            ? theme.dinner
+                                            : theme.atHome
+                                        : theme.away
+                                }
                             ]}
                         />
                         {day.DinnerTime && (
@@ -85,12 +91,6 @@ const styles = StyleSheet.create({
         height: DOT_SIZE,
         borderRadius: DOT_SIZE / 2,
         marginBottom: 4,
-    },
-    atHome: {
-        backgroundColor: '#52C41A',
-    },
-    away: {
-        backgroundColor: '#D9D9D9',
     },
     time: {
         fontSize: 10,
