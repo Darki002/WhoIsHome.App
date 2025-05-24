@@ -28,7 +28,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "dev.darki.whoishome",
-      "versionCode": 3,
+      "versionCode": 4,
       "newArchEnabled": true,
       "googleServicesFile": "./google-services.json"
     },
