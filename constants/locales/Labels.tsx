@@ -90,12 +90,10 @@ const Labels = {
         validation: {
             title: "Errors.Validation.Title",
             startTime: "Descriptions.Validation.StartTime",
-            endTime: "Descriptions.Validation.EndTime",
             date: "Descriptions.Validation.Date",
             presenceType: "Descriptions.Validation.PresenceType",
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",
-            lastOccurrence: "Titles.CreateFlow.LastOccurrence",
         },
         noEvents: "Errors.NoEvents"
     },

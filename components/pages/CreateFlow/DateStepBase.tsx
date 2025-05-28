@@ -9,7 +9,7 @@ import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 export function DateValidationBase(state: EventBase): boolean {
-    return state.StartTime !== undefined && state.EndTime !== undefined && state.StartTime <= state.EndTime;
+    return state.StartTime !== undefined && (state.EndTime ? state.StartTime <= state.EndTime : true);
 }
 
 export const DateStepBase = ({
@@ -41,7 +41,6 @@ export const DateStepBase = ({
                     value={state.EndTime}
                     onChange={(time) => setState({EndTime: time})}/>
             </WihView>
-            {isInvalid && !state.EndTime && <WihText style={{color: theme.error}}>{t(Labels.errors.validation.endTime)}</WihText>}
         </WihView>
     );
 };

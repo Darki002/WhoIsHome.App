@@ -90,12 +90,10 @@
     "Validation": {
       "Title": "Title must be between 1 - 50 characters",
       "StartTime": "Starte time is required",
-      "EndTime": "End time is required",
       "Date": "Date is required",
       "PresenceType": "PresenceType is required",
       "DinnerTime": "Dinner time is required",
-      "FirstOccurrence": "First occurrence is required",
-      "LastOccurrence": "Last occurrence is required"
+      "FirstOccurrence": "First occurrence is required"
     },
     "NoEvents" : "This user currently has no events."
   },

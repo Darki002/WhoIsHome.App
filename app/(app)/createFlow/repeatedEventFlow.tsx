@@ -15,7 +15,6 @@ import {Endpoints} from "@/constants/endpoints";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import WihDivider from "@/components/WihComponents/layout/WihDivider";
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -34,7 +33,7 @@ export default function RepeatedEventFlow() {
         const body: RepeatedEventDto = {
             Title: state.Title!,
             FirstOccurrence: formatDate(state.FirstOccurrence!),
-            LastOccurrence: formatDate(state.LastOccurrence!),
+            LastOccurrence: state.LastOccurrence ? formatDate(state.LastOccurrence) : null,
             StartTime: formatTime(state.StartTime!),
             EndTime: formatTime(state.EndTime!),
             PresenceType: state.PresenceType!,
@@ -48,7 +47,7 @@ export default function RepeatedEventFlow() {
 }
 
 const dateStep: WihFlowStep<RepeatedEvent> = {
-    validate: (state: RepeatedEvent) => state.FirstOccurrence !== undefined && state.LastOccurrence !== undefined && state.FirstOccurrence <= state.LastOccurrence && DateValidationBase(state),
+    validate: (state: RepeatedEvent) => state.FirstOccurrence !== undefined && (state.LastOccurrence ? state.FirstOccurrence <= state.LastOccurrence : true) && DateValidationBase(state),
     component: ({state, setState, isInvalid}: WihFlowComponentProps<RepeatedEvent>) => {
         const {t} = useTranslation();
         const theme = useWihTheme()
@@ -69,8 +68,6 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
                         value={state.LastOccurrence}
                         onChange={(date) => setState({LastOccurrence: date})}/>
                 </WihView>
-                {isInvalid && !state.LastOccurrence &&
-                    <WihText style={{color: theme.error}}>{t(Labels.errors.validation.lastOccurrence)}</WihText>}
             </DateStepBase>
         );
     }

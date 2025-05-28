@@ -5,7 +5,7 @@ export interface EventModelBase {
     id?: number;
     title?: string;
     startTime?: Date | string;
-    endTime?: Date | string;
+    endTime?: Date | string | null;
     presenceType?: PresenceType;
     dinnerTime?: Date | null;
     userId: number;
@@ -14,7 +14,7 @@ export interface EventModelBase {
 export interface EventDtoBase {
     Title: string;
     StartTime: string;
-    EndTime: string;
+    EndTime: string | null;
     PresenceType: PresenceType;
     DinnerTime: string | null;
 }
@@ -22,7 +22,7 @@ export interface EventDtoBase {
 export class EventBase {
     Title?: string;
     StartTime?: Date;
-    EndTime?: Date;
+    EndTime?: Date | null;
     PresenceType?: PresenceType;
     DinnerTime?: Date | null;
     UserId?: number;
@@ -38,7 +38,7 @@ export class EventBase {
         this.UserId = eventModelBase.userId;
 
         this.StartTime = timeStringToDate(eventModelBase.startTime);
-        this.EndTime = timeStringToDate(eventModelBase.endTime);
+        this.EndTime = eventModelBase.endTime ? timeStringToDate(eventModelBase.endTime) : null;
         this.DinnerTime = eventModelBase.dinnerTime ? timeStringToDate(eventModelBase.dinnerTime) : null;
     }
 }

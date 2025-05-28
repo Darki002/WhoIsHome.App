@@ -55,7 +55,7 @@ function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEvent
         const body: RepeatedEventDto = {
             Title: event.Title!,
             FirstOccurrence: formatDate(event.FirstOccurrence!),
-            LastOccurrence: formatDate(event.LastOccurrence!),
+            LastOccurrence: event.LastOccurrence ? formatDate(event.LastOccurrence) : null,
             StartTime: formatTime(event.StartTime!),
             EndTime: formatTime(event.EndTime!),
             PresenceType: event.PresenceType!,
