@@ -12,6 +12,8 @@ export interface WihDateInputProps {
     disabled?: boolean;
 }
 
+// react-native-paper-dates
+
 export const WihDateInput = ({value, onChange, disabled = false}: WihDateInputProps) => {
     const theme = useWihTheme();
     const {t} = useTranslation();

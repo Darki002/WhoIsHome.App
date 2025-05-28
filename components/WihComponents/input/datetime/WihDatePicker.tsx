@@ -12,6 +12,8 @@ export interface WihDatePickerProps {
   disabled?: boolean;
 }
 
+// react-native-paper-dates
+
 export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePickerProps) => {
   const theme = useWihTheme();
   const { t } = useTranslation();
