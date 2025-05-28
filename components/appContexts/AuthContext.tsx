@@ -6,6 +6,7 @@ import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {useRouter} from "expo-router";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {usePushTokenSync} from "@/hooks/usePushTokenSync";
+import {WihLogger} from "@/helper/WihLogger";
 
 export type LoginInfos = {
     email: string | undefined;
@@ -80,6 +81,7 @@ export function SessionProvider({children}: PropsWithChildren) {
                     router.replace("/auth/login");
                 },
                 onNewSession: tokens => {
+                    WihLogger.info(SessionProvider.name, `New Session received! Updating local storage...`);
                     setSession(tokens.jwtToken);
                     setRefreshToken(tokens.refreshToken)
                 },
