@@ -22,7 +22,7 @@
     "@react-navigation/native": "^7.0.14",
     "@sentry/react-native": "~6.10.0",
     "eas-cli": "^15.0.6",
-    "expo": "~52.0.46",
+    "expo": "~52.0.47",
     "expo-constants": "~17.0.8",
     "expo-dev-client": "~5.0.19",
     "expo-device": "~7.0.3",
