@@ -43,6 +43,7 @@ export function usePushTokenSync() {
                 await AsyncStorage.setItem(LAST_PUSH_TOKEN_KEY, pushToken);
 
                 if(languageCode){
+                    WihLogger.debug(usePushTokenSync.name, `Setting language code: ${languageCode}`);
                     await AsyncStorage.setItem(LAST_LANGUAGE_CODE_KEY, languageCode);
                 } else {
                     await AsyncStorage.removeItem(LAST_LANGUAGE_CODE_KEY);
