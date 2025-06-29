@@ -21,6 +21,8 @@ export function usePushTokenSync() {
 
             const languageCode = getLocales()[0]?.languageCode;
 
+            WihLogger.debug(usePushTokenSync.name, `languageCode : ${languageCode} lastLanguageCode : ${lastLanguageCode}`);
+            WihLogger.debug(usePushTokenSync.name, `pushToken : ${pushToken} lastToken : ${lastToken}`);
             if (lastToken === pushToken && languageCode === lastLanguageCode) {
                 WihLogger.debug("PushToken", "Token unchanged, skipping backend sync.");
                 return;
