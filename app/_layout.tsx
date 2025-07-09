@@ -14,6 +14,7 @@ import {StatusBar} from "expo-status-bar";
 import * as Sentry from '@sentry/react-native';
 import {WihLogger} from "@/helper/WihLogger";
 import {WihUserProvider} from "@/components/appContexts/WihUserContext";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 try {
@@ -60,23 +61,25 @@ const RootLayout = () => {
     };
 
     return (
-        <I18nextProvider i18n={i18n}>
-            <WihThemeProvider>
-                <SessionProvider>
-                    <WihUserProvider>
-                        <StatusBar
-                            style={colorScheme === 'dark' ? 'light' : 'dark'}
-                            backgroundColor={Colors[colorScheme ?? "light"].background}
-                        />
-                        <Stack screenOptions={screenOptions}>
-                            <Stack.Screen name="(app)" options={{headerShown: false}}/>
-                            <Stack.Screen name="auth" options={{headerShown: false}}/>
-                            <Stack.Screen name="+not-found"/>
-                        </Stack>
-                    </WihUserProvider>
-                </SessionProvider>
-            </WihThemeProvider>
-        </I18nextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <I18nextProvider i18n={i18n}>
+                <WihThemeProvider>
+                    <SessionProvider>
+                        <WihUserProvider>
+                            <StatusBar
+                                style={colorScheme === 'dark' ? 'light' : 'dark'}
+                                backgroundColor={Colors[colorScheme ?? "light"].background}
+                            />
+                            <Stack screenOptions={screenOptions}>
+                                <Stack.Screen name="(app)" options={{headerShown: false}}/>
+                                <Stack.Screen name="auth" options={{headerShown: false}}/>
+                                <Stack.Screen name="+not-found"/>
+                            </Stack>
+                        </WihUserProvider>
+                    </SessionProvider>
+                </WihThemeProvider>
+            </I18nextProvider>
+        </GestureHandlerRootView>
     );
 }
 
