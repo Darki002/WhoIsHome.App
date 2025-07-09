@@ -2,7 +2,6 @@ import {WihFlow, WihFlowComponentProps, WihFlowStep} from "@/components/framewor
 import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
 import React, {useCallback} from "react";
 import WihView from "@/components/WihComponents/view/WihView";
-import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
 import {formatDate, formatTime, timeDisplayString} from "@/helper/datetimehelper";
 import TitleStep from "@/components/pages/CreateFlow/TitleStep";
 import DinnerTimeStep from "@/components/pages/CreateFlow/DinnerTimeStep";
@@ -15,6 +14,7 @@ import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
+import {WihDatePicker} from "@/components/WihComponents/input/datetime/WihDatePicker";
 
 const defaultOneTimeEvent: OneTimeEvent = {
     Title: "",
@@ -56,7 +56,7 @@ const dateStep: WihFlowStep<OneTimeEvent> = {
             <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
                 <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.date)}:</WihText>
-                    <WihDateInput
+                    <WihDatePicker
                         value={state.Date}
                         onChange={(date) => setState({Date: date})}/>
                 </WihView>
