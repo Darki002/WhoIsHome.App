@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform } from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
 import { useTranslation } from 'react-i18next';
@@ -203,7 +203,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
       </TouchableOpacity>
 
       <Modal visible={visible} transparent animationType="none">
-        <View style={styles.modalContainer}>
+        <WihView style={styles.modalContainer}>
           <Animated.View
             style={[
               styles.backdrop,
@@ -322,7 +322,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
               </TouchableOpacity>
             </WihView>
           </Animated.View>
-        </View>
+        </WihView>
       </Modal>
     </>
   );
