@@ -86,6 +86,8 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     handleClose();
   };
 
+
+  // TODO: fix flashing when switching months
   const goToPreviousMonth = () => {
     translateX.setValue(-width);
     Animated.timing(translateX, {
