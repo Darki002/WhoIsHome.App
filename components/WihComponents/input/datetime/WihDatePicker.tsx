@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform, View} from 'react-native';
+import React, {useState, useEffect, useMemo, useRef} from 'react';
+import {StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform, View, Easing} from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,6 @@ import Labels from '@/constants/locales/Labels';
 import WihView from '@/components/WihComponents/view/WihView';
 import {GestureDetector, Gesture, Directions, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {formatDate} from "@/helper/datetimehelper";
-import {WihLogger} from "@/helper/WihLogger";
 import {runOnJS} from "react-native-reanimated";
 
 export interface WihDatePickerProps {
@@ -16,6 +15,12 @@ export interface WihDatePickerProps {
   disabled?: boolean;
 }
 
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const months = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
 export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePickerProps) => {
   const theme = useWihTheme();
   const { t } = useTranslation();
@@ -23,13 +28,19 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
   const [visible, setVisible] = useState<boolean>(false);
   const [animation] = useState(new Animated.Value(0));
   const [selectedDate, setSelectedDate] = useState<Date>(value || new Date());
-  const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date());
 
-  // Update selected date when value changes
+  const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date());
+  const [prevMonth, setPrevMonth] = useState<Date>(value ? new Date(value.getFullYear(), value.getMonth() - 1, 1) : new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  const [nextMonth, setNextMonth] = useState<Date>(value ? new Date(value.getFullYear(), value.getMonth() + 1, 1) : new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+
+  const translateX = useRef(new Animated.Value(-width)).current;
+
   useEffect(() => {
     if (value) {
       setSelectedDate(value);
       setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
+      setPrevMonth(new Date(value.getFullYear(), value.getMonth() - 1, 1));
+      setNextMonth(new Date(value.getFullYear(), value.getMonth() + 1, 1));
     }
   }, [value]);
 
@@ -69,20 +80,40 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     if (value) {
       setSelectedDate(value);
       setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
+      setPrevMonth(new Date(value.getFullYear(), value.getMonth() - 1, 1));
+      setNextMonth(new Date(value.getFullYear(), value.getMonth() + 1, 1));
     }
     handleClose();
   };
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-  };
-
   const goToPreviousMonth = () => {
-    setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
+    translateX.setValue(-width);
+    Animated.timing(translateX, {
+      toValue: 0,
+      duration: 300,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
+      setPrevMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
+      setNextMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
+      translateX.setValue(-width);
+    });
   };
 
   const goToNextMonth = () => {
-    setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
+    translateX.setValue(-width);
+    Animated.timing(translateX, {
+      toValue: -2 * width,
+      duration: 300,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
+      setPrevMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
+      setNextMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
+      translateX.setValue(-width);
+    });
   };
 
   const flingRight = useMemo(() =>
@@ -99,6 +130,8 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     const today = new Date();
     setSelectedDate(today);
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+    setPrevMonth(new Date(today.getFullYear(), today.getMonth() - 1, 1));
+    setNextMonth(new Date(today.getFullYear(), today.getMonth() + 1, 1));
   };
 
   const formattedDate = value ? formatDate(value) : t(Labels.placeholders.selectDate);
@@ -113,56 +146,6 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     outputRange: [0, 0.5],
   });
 
-  const generateCalendar = () => {
-    const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
-
-    // Get first day of month and how many days in month
-    const firstDayOfMonth = new Date(year, month, 1);
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // Get day of week of first day (0 = Sunday, 1 = Monday, etc.)
-    let firstDayOfWeek = firstDayOfMonth.getDay();
-
-    // Generate days array
-    const days: (Date | null)[] = [];
-
-    // Add empty slots for days before first day of month
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      days.push(null);
-    }
-
-    // Add days of month
-    for (let i = 1; i <= daysInMonth; i++) {
-      days.push(new Date(year, month, i));
-    }
-
-    // Split into weeks
-    const weeks: (Date | null)[][] = [];
-    let week: (Date | null)[] = [];
-
-    days.forEach((day, index) => {
-      week.push(day);
-      if (week.length === 7 || index === days.length - 1) {
-        // Fill remaining days of last week with null
-        while (week.length < 7) {
-          week.push(null);
-        }
-        weeks.push(week);
-        week = [];
-      }
-    });
-
-    return weeks;
-  };
-
-  const calendar = generateCalendar();
-  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
   const isToday = (date: Date) => {
     const today = new Date();
     return date.getDate() === today.getDate() &&
@@ -175,6 +158,46 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
         date.getMonth() === selectedDate.getMonth() &&
         date.getFullYear() === selectedDate.getFullYear();
   };
+
+
+  const MonthView = ({ month }: { month: Date }) => {
+    const calendar = generateCalendar(month);
+
+    return (
+        <WihView style={{width: width}}>
+          {calendar.map((week, weekIndex) => (
+              <WihView key={weekIndex} style={styles.weekContainer}>
+                {week.map((day, dayIndex) => (
+                    <TouchableOpacity
+                        key={dayIndex}
+                        style={[
+                          styles.dayContainer,
+                          day && isSelected(day) && { backgroundColor: theme.primary },
+                          day && isToday(day) && !isSelected(day) && {
+                            borderColor: theme.primary,
+                            borderWidth: 1
+                          },
+                        ]}
+                        onPress={() => day && setSelectedDate(day)}
+                        disabled={!day}
+                    >
+                      {day && (
+                          <WihText
+                              style={[
+                                styles.dayText,
+                                { color: isSelected(day) ? theme.buttonText : theme.text },
+                              ]}
+                          >
+                            {day.getDate()}
+                          </WihText>
+                      )}
+                    </TouchableOpacity>
+                ))}
+              </WihView>
+          ))}
+        </WihView>
+    )
+  }
 
   return (
       <>
@@ -269,38 +292,11 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
                 </WihView>
 
                 <GestureDetector gesture={Gesture.Race(flingRight, flingLeft)}>
-                  <WihView style={styles.calendarContainer}>
-                    {calendar.map((week, weekIndex) => (
-                        <WihView key={weekIndex} style={styles.weekContainer}>
-                          {week.map((day, dayIndex) => (
-                              <TouchableOpacity
-                                  key={dayIndex}
-                                  style={[
-                                    styles.dayContainer,
-                                    day && isSelected(day) && { backgroundColor: theme.primary },
-                                    day && isToday(day) && !isSelected(day) && {
-                                      borderColor: theme.primary,
-                                      borderWidth: 1
-                                    },
-                                  ]}
-                                  onPress={() => day && handleDateSelect(day)}
-                                  disabled={!day}
-                              >
-                                {day && (
-                                    <WihText
-                                        style={[
-                                          styles.dayText,
-                                          { color: isSelected(day) ? theme.buttonText : theme.text },
-                                        ]}
-                                    >
-                                      {day.getDate()}
-                                    </WihText>
-                                )}
-                              </TouchableOpacity>
-                          ))}
-                        </WihView>
-                    ))}
-                  </WihView>
+                    <Animated.View style={[styles.calendarContainer, { transform: [{translateX}]}]}>
+                        <MonthView month={prevMonth} />
+                        <MonthView month={currentMonth} />
+                        <MonthView month={nextMonth} />
+                    </Animated.View>
                 </GestureDetector>
 
                 <WihView style={styles.todayButtonContainer}>
@@ -332,6 +328,50 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
         </Modal>
       </>
   );
+};
+
+
+const generateCalendar = (currentMonth: Date) => {
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+
+  // Get first day of month and how many days in month
+  const firstDayOfMonth = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Get day of week of first day (0 = Sunday, 1 = Monday, etc.)
+  let firstDayOfWeek = firstDayOfMonth.getDay();
+
+  // Generate days array
+  const days: (Date | null)[] = [];
+
+  // Add empty slots for days before first day of month
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    days.push(null);
+  }
+
+  // Add days of month
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(new Date(year, month, i));
+  }
+
+  // Split into weeks
+  const weeks: (Date | null)[][] = [];
+  let week: (Date | null)[] = [];
+
+  days.forEach((day, index) => {
+    week.push(day);
+    if (week.length === 7 || index === days.length - 1) {
+      // Fill remaining days of last week with null
+      while (week.length < 7) {
+        week.push(null);
+      }
+      weeks.push(week);
+      week = [];
+    }
+  });
+
+  return weeks;
 };
 
 const { width, height } = Dimensions.get('window');
@@ -401,7 +441,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   calendarContainer: {
-    paddingHorizontal: 8,
+    flexDirection: "row",
+    width: width * 3
   },
   weekContainer: {
     flexDirection: 'row',
