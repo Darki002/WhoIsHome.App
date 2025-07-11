@@ -26,7 +26,6 @@ export const WihTimePicker = ({ value, onChange, disabled = false }: WihTimePick
   const [hoursInput, setHoursInput] = useState<string>(value ? formatNumber(value.getHours()) : '18');
   const [minutesInput, setMinutesInput] = useState<string>(value ? formatNumber(value.getMinutes()) : '00');
   const [animation] = useState(new Animated.Value(0));
-  // Track which field should have focus
   const [focusMinutes, setFocusMinutes] = useState<boolean>(false);
 
   useEffect(() => {
