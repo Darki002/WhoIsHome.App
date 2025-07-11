@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Labels from '@/constants/locales/Labels';
 import WihView from '@/components/WihComponents/view/WihView';
 import {Directions, FlingGestureHandler, GestureHandlerStateChangeEvent, State} from 'react-native-gesture-handler';
+import {formatDate} from "@/helper/datetimehelper";
 
 export interface WihDatePickerProps {
   value?: Date | null;
@@ -102,7 +103,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
   };
 
-  const formattedDate = value ? value.toLocaleDateString() : t(Labels.placeholders.selectDate);
+  const formattedDate = value ? formatDate(value) : t(Labels.placeholders.selectDate);
 
   const modalTranslateY = animation.interpolate({
     inputRange: [0, 1],
