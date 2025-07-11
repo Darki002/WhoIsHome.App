@@ -78,12 +78,10 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
   };
 
   const goToPreviousMonth = () => {
-    WihLogger.debug(WihDatePicker.name, `Going to previous month: ${currentMonth}`);
     setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
   };
 
   const goToNextMonth = () => {
-    WihLogger.debug(WihDatePicker.name, `Going to next month: ${currentMonth}`);
     setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
   };
 
