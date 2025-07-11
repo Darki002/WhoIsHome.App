@@ -105,7 +105,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
 
   const modalTranslateY = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [400, 0], // Increased from 300 to 400 for better slide effect
+    outputRange: [400, 0],
   });
 
   const backdropOpacity = animation.interpolate({
@@ -113,7 +113,6 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     outputRange: [0, 0.5],
   });
 
-  // Generate calendar for current month
   const generateCalendar = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
