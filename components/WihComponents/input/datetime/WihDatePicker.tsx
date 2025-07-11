@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform } from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
 import { useTranslation } from 'react-i18next';
 import Labels from '@/constants/locales/Labels';
 import WihView from '@/components/WihComponents/view/WihView';
+import {Directions, FlingGestureHandler, GestureHandlerStateChangeEvent, State} from 'react-native-gesture-handler';
 
 export interface WihDatePickerProps {
   value?: Date | null;
@@ -81,6 +82,18 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
 
   const goToNextMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  };
+
+  const onSwipeRight = ({ nativeEvent }: GestureHandlerStateChangeEvent) => {
+    if (nativeEvent.state === State.END) {
+      goToPreviousMonth();
+    }
+  };
+
+  const onSwipeLeft = ({ nativeEvent }: GestureHandlerStateChangeEvent) => {
+    if (nativeEvent.state === State.END) {
+      goToNextMonth();
+    }
   };
 
   const goToToday = () => {
@@ -250,41 +263,47 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
               ))}
             </WihView>
 
-            <ScrollView style={styles.calendarContainer}>
-              {calendar.map((week, weekIndex) => (
-                <WihView key={weekIndex} style={styles.weekContainer}>
-                  {week.map((day, dayIndex) => (
-                    <TouchableOpacity
-                      key={dayIndex}
-                      style={[
-                        styles.dayContainer,
-                        day && isSelected(day) && { backgroundColor: theme.primary },
-                        day && isToday(day) && { borderColor: theme.primary, borderWidth: 1 },
-                      ]}
-                      onPress={() => day && handleDateSelect(day)}
-                      disabled={!day}
-                    >
-                      {day && (
-                        <WihText
-                          style={[
-                            styles.dayText,
-                            { color: isSelected(day) ? theme.buttonText : theme.text },
-                          ]}
-                        >
-                          {day.getDate()}
-                        </WihText>
-                      )}
-                    </TouchableOpacity>
-                  ))}
-                </WihView>
-              ))}
-            </ScrollView>
+            <FlingGestureHandler direction={Directions.RIGHT} onHandlerStateChange={onSwipeRight}>
+            <FlingGestureHandler direction={Directions.LEFT} onHandlerStateChange={onSwipeLeft}>
+              <WihView style={styles.calendarContainer}>
+                {calendar.map((week, weekIndex) => (
+                  <WihView key={weekIndex} style={styles.weekContainer}>
+                    {week.map((day, dayIndex) => (
+                      <TouchableOpacity
+                        key={dayIndex}
+                        style={[
+                          styles.dayContainer,
+                          day && isSelected(day) && { backgroundColor: theme.primary },
+                          day && isToday(day) && { borderColor: theme.primary, borderWidth: 1 },
+                        ]}
+                        onPress={() => day && handleDateSelect(day)}
+                        disabled={!day}
+                      >
+                        {day && (
+                          <WihText
+                            style={[
+                              styles.dayText,
+                              { color: isSelected(day) ? theme.buttonText : theme.text },
+                            ]}
+                          >
+                            {day.getDate()}
+                          </WihText>
+                        )}
+                      </TouchableOpacity>
+                    ))}
+                  </WihView>
+                ))}
+              </WihView>
+            </FlingGestureHandler>
+            </FlingGestureHandler>
 
             <TouchableOpacity
               style={[styles.todayButton, { backgroundColor: theme.secondary }]}
               onPress={goToToday}
             >
-              <WihText style={{ color: theme.buttonText }}>Today</WihText>
+              <WihView style={{flex: 1}}>
+                <WihText style={{ color: theme.buttonText }}>Today</WihText>
+              </WihView>
             </TouchableOpacity>
 
             <WihView style={styles.footer}>
