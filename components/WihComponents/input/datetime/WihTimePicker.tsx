@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform } from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
