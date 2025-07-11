@@ -11,14 +11,14 @@ import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
-import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
-import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
+import {WihDatePicker} from "@/components/WihComponents/input/datetime/WihDatePicker";
+import {WihTimePicker} from "@/components/WihComponents/input/datetime/WihTimePicker";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -84,17 +84,17 @@ function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventMo
 
             <WihIconRow name="date-range" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
-                <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
+                <WihDatePicker value={event.Date} onChange={d => updateEvent({Date: d})}></WihDatePicker>
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
+                    <WihTimePicker value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimePicker>
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
+                    <WihTimePicker value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimePicker>
                 </WihView>
             </WihIconRow>
 
@@ -108,7 +108,7 @@ function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventMo
 
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
-                <WihTimeInput
+                <WihTimePicker
                     value={event.DinnerTime}
                     disabled={event.PresenceType !== "Late"}
                     onChange={onDinnerTimeChange}/>

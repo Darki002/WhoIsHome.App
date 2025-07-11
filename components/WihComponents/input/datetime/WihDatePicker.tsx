@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform } from 'react-native';
+import React, {useState, useEffect, useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform, View} from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
 import { useTranslation } from 'react-i18next';
 import Labels from '@/constants/locales/Labels';
 import WihView from '@/components/WihComponents/view/WihView';
-import {Directions, FlingGestureHandler, GestureHandlerStateChangeEvent, State} from 'react-native-gesture-handler';
+import {GestureDetector, Gesture, Directions} from 'react-native-gesture-handler';
 import {formatDate} from "@/helper/datetimehelper";
 
 export interface WihDatePickerProps {
@@ -85,17 +85,15 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
 
-  const onSwipeRight = ({ nativeEvent }: GestureHandlerStateChangeEvent) => {
-    if (nativeEvent.state === State.END) {
-      goToPreviousMonth();
-    }
-  };
+  const flingRight = useMemo(() =>
+    Gesture.Fling()
+        .direction(Directions.RIGHT)
+        .onEnd(_ => goToPreviousMonth()), []);
 
-  const onSwipeLeft = ({ nativeEvent }: GestureHandlerStateChangeEvent) => {
-    if (nativeEvent.state === State.END) {
-      goToNextMonth();
-    }
-  };
+  const flingLeft = useMemo(() =>
+      Gesture.Fling()
+      .direction(Directions.LEFT)
+      .onEnd(_ => goToNextMonth()), []);
 
   const goToToday = () => {
     const today = new Date();
@@ -264,8 +262,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
               ))}
             </WihView>
 
-            <FlingGestureHandler direction={Directions.RIGHT} onHandlerStateChange={onSwipeRight}>
-            <FlingGestureHandler direction={Directions.LEFT} onHandlerStateChange={onSwipeLeft}>
+            <GestureDetector gesture={Gesture.Race(flingRight, flingLeft)}>
               <WihView style={styles.calendarContainer}>
                 {calendar.map((week, weekIndex) => (
                   <WihView key={weekIndex} style={styles.weekContainer}>
@@ -295,8 +292,7 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
                   </WihView>
                 ))}
               </WihView>
-            </FlingGestureHandler>
-            </FlingGestureHandler>
+            </GestureDetector>
 
             <TouchableOpacity
               style={[styles.todayButton, { backgroundColor: theme.secondary }]}

@@ -12,13 +12,13 @@ import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
-import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
-import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
+import {WihDatePicker} from "@/components/WihComponents/input/datetime/WihDatePicker";
+import {WihTimePicker} from "@/components/WihComponents/input/datetime/WihTimePicker";
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -86,12 +86,12 @@ function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEvent
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
-                    <WihDateInput value={event.FirstOccurrence}
+                    <WihDatePicker value={event.FirstOccurrence}
                                   onChange={d => updateEvent({FirstOccurrence: d})}/>
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.lastOccurrence)}: </WihText>
-                    <WihDateInput value={event.LastOccurrence}
+                    <WihDatePicker value={event.LastOccurrence}
                                   onChange={d => updateEvent({LastOccurrence: d})}/>
                 </WihView>
             </WihIconRow>
@@ -99,11 +99,11 @@ function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEvent
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
+                    <WihTimePicker value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimePicker>
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
+                    <WihTimePicker value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimePicker>
                 </WihView>
             </WihIconRow>
 
@@ -117,7 +117,7 @@ function RepeatedEventView({response} : WihApiFocusComponentParams<RepeatedEvent
 
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
-                <WihTimeInput
+                <WihTimePicker
                     value={event.DinnerTime}
                     disabled={event.PresenceType !== "Late"}
                     onChange={onDinnerTimeChange}/>
