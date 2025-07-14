@@ -1,11 +1,21 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
-import {StyleSheet, TouchableOpacity, Modal, Dimensions, Animated, Platform, View, Easing} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Dimensions,
+  Animated,
+  Platform,
+  View,
+  Easing,
+  FlatList
+} from 'react-native';
 import { WihText } from '@/components/WihComponents/display/WihText';
 import { useWihTheme } from '@/components/appContexts/WihThemeProvider';
 import { useTranslation } from 'react-i18next';
 import Labels from '@/constants/locales/Labels';
 import WihView from '@/components/WihComponents/view/WihView';
-import {GestureDetector, Gesture, Directions, GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Gesture, Directions, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {formatDate} from "@/helper/datetimehelper";
 import {runOnJS} from "react-native-reanimated";
 
@@ -29,18 +39,14 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
   const [animation] = useState(new Animated.Value(0));
   const [selectedDate, setSelectedDate] = useState<Date>(value || new Date());
 
-  const [currentMonth, setCurrentMonth] = useState<Date>(value || new Date());
-  const [prevMonth, setPrevMonth] = useState<Date>(value ? new Date(value.getFullYear(), value.getMonth() - 1, 1) : new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
-  const [nextMonth, setNextMonth] = useState<Date>(value ? new Date(value.getFullYear(), value.getMonth() + 1, 1) : new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  const [monthCalenders, setMonthCalenders] = useState<Date[]>([value || new Date()]);
 
   const translateX = useRef(new Animated.Value(-width)).current;
 
   useEffect(() => {
     if (value) {
       setSelectedDate(value);
-      setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
-      setPrevMonth(new Date(value.getFullYear(), value.getMonth() - 1, 1));
-      setNextMonth(new Date(value.getFullYear(), value.getMonth() + 1, 1));
+      setMonthCalenders([value]);
     }
   }, [value]);
 
@@ -79,61 +85,15 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
   const handleCancel = () => {
     if (value) {
       setSelectedDate(value);
-      setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
-      setPrevMonth(new Date(value.getFullYear(), value.getMonth() - 1, 1));
-      setNextMonth(new Date(value.getFullYear(), value.getMonth() + 1, 1));
+      setMonthCalenders([value]);
     }
     handleClose();
   };
 
-
-  // TODO: fix flashing when switching months
-  const goToPreviousMonth = () => {
-    translateX.setValue(-width);
-    Animated.timing(translateX, {
-      toValue: 0,
-      duration: 300,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start(() => {
-      setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
-      setPrevMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
-      setNextMonth(p => new Date(p.getFullYear(), p.getMonth() - 1, 1));
-      translateX.setValue(-width);
-    });
-  };
-
-  const goToNextMonth = () => {
-    translateX.setValue(-width);
-    Animated.timing(translateX, {
-      toValue: -2 * width,
-      duration: 300,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start(() => {
-      setCurrentMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
-      setPrevMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
-      setNextMonth(p => new Date(p.getFullYear(), p.getMonth() + 1, 1));
-      translateX.setValue(-width);
-    });
-  };
-
-  const flingRight = useMemo(() =>
-      Gesture.Fling()
-          .direction(Directions.RIGHT)
-          .onEnd(_ => runOnJS(goToPreviousMonth)()), []);
-
-  const flingLeft = useMemo(() =>
-      Gesture.Fling()
-          .direction(Directions.LEFT)
-          .onEnd(_ => runOnJS(goToNextMonth)()), []);
-
   const goToToday = () => {
     const today = new Date();
     setSelectedDate(today);
-    setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
-    setPrevMonth(new Date(today.getFullYear(), today.getMonth() - 1, 1));
-    setNextMonth(new Date(today.getFullYear(), today.getMonth() + 1, 1));
+    setMonthCalenders([new Date(today.getFullYear(), today.getMonth(), 1)]);
   };
 
   const formattedDate = value ? formatDate(value) : t(Labels.placeholders.selectDate);
@@ -293,13 +253,16 @@ export const WihDatePicker = ({ value, onChange, disabled = false }: WihDatePick
                   ))}
                 </WihView>
 
-                <GestureDetector gesture={Gesture.Race(flingRight, flingLeft)}>
-                    <Animated.View style={[styles.calendarContainer, { transform: [{translateX}]}]}>
-                        <MonthView month={prevMonth} />
-                        <MonthView month={currentMonth} />
-                        <MonthView month={nextMonth} />
-                    </Animated.View>
-                </GestureDetector>
+                <View style={styles.calendarContainer}>
+                  <FlatList
+                      data={monthCalenders}
+                      renderItem={({item}) => <MonthView month={item} />}
+                      onEndReachedThreshold={1}
+                      keyExtractor={(item, _) => item.getMilliseconds().toString()}
+                      horizontal
+                      onEndReached={generateNextMonthCalendar}
+                  />
+                </View>
 
                 <WihView style={styles.todayButtonContainer}>
                   <TouchableOpacity
