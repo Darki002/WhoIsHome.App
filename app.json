@@ -3,7 +3,7 @@
     "name": "WhoIsHome",
     "slug": "whoishome",
     "owner": "darki002",
-    "version": "3.0",
+    "version": "3.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -28,7 +28,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "dev.darki.whoishome",
-      "versionCode": 4,
+      "versionCode": 5,
       "newArchEnabled": true,
       "googleServicesFile": "./google-services.json"
     },
