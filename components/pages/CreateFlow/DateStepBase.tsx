@@ -6,7 +6,7 @@ import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihTimePicker} from "@/components/WihComponents/input/datetime/WihTimePicker";
+import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 
 export function DateValidationBase(state: EventBase): boolean {
     return state.StartTime !== undefined && (state.EndTime ? state.StartTime <= state.EndTime : true);
@@ -29,7 +29,7 @@ export const DateStepBase = ({
 
             <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                 <WihText>{t(Labels.labels.startTime)}:</WihText>
-                <WihTimePicker
+                <WihTimeInput
                     value={state.StartTime}
                     onChange={(time) => setState({StartTime: time})}/>
             </WihView>
@@ -37,7 +37,7 @@ export const DateStepBase = ({
 
             <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                 <WihText>{t(Labels.labels.endTime)}:</WihText>
-                <WihTimePicker
+                <WihTimeInput
                     value={state.EndTime}
                     onChange={(time) => setState({EndTime: time})}/>
             </WihView>

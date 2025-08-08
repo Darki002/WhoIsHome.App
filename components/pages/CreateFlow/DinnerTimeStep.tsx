@@ -8,7 +8,7 @@ import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihTimePicker} from "@/components/WihComponents/input/datetime/WihTimePicker";
+import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 
 const options: Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -67,7 +67,7 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
 
                 <WihView flex="row" style={{alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.dinnerTime)}:</WihText>
-                    <WihTimePicker
+                    <WihTimeInput
                         value={state.DinnerTime ?? undefined}
                         onChange={onTimeChange}
                         disabled={state.PresenceType !== "Late"}/>
