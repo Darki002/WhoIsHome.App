@@ -14,7 +14,8 @@ import {Endpoints} from "@/constants/endpoints";
 import {StyleSheet} from "react-native";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihDatePicker} from "@/components/WihComponents/input/datetime/WihDatePicker";
+import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
+
 
 const defaultOneTimeEvent: RepeatedEvent = {
     Title: "",
@@ -55,7 +56,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
             <DateStepBase state={state} setState={setState} isInvalid={isInvalid}>
                 <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.firstOccurrence)}:</WihText>
-                    <WihDatePicker
+                    <WihDateInput
                         value={state.FirstOccurrence}
                         onChange={(date) => setState({FirstOccurrence: date})}/>
                 </WihView>
@@ -64,7 +65,7 @@ const dateStep: WihFlowStep<RepeatedEvent> = {
 
                 <WihView style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                     <WihText>{t(Labels.labels.lastOccurrence)}:</WihText>
-                    <WihDatePicker
+                    <WihDateInput
                         value={state.LastOccurrence}
                         onChange={(date) => setState({LastOccurrence: date})}/>
                 </WihView>
