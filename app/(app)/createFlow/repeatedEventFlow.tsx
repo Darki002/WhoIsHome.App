@@ -36,7 +36,7 @@ export default function RepeatedEventFlow() {
             FirstOccurrence: formatDate(state.FirstOccurrence!),
             LastOccurrence: state.LastOccurrence ? formatDate(state.LastOccurrence) : null,
             StartTime: formatTime(state.StartTime!),
-            EndTime: formatTime(state.EndTime!),
+            EndTime:  state.EndTime ? formatTime(state.EndTime) : null,
             PresenceType: state.PresenceType!,
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }

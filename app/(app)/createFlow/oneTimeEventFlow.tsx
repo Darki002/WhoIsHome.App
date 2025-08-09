@@ -33,7 +33,7 @@ export default function OneTimeEventFlow() {
             Title: state.Title!,
             Date: formatDate(state.Date!),
             StartTime: formatTime(state.StartTime!),
-            EndTime: formatTime(state.EndTime!),
+            EndTime:  state.EndTime ? formatTime(state.EndTime) : null,
             PresenceType: state.PresenceType!,
             DinnerTime: state.DinnerTime ? formatTime(state.DinnerTime) : null
         }
