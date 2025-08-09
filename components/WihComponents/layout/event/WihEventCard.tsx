@@ -32,6 +32,14 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         }
     };
 
+    const getDurationText = () => {
+        if(!event.EndTime){
+            return timeDisplayString(event.StartTime);
+        }
+
+        return `${timeDisplayString(event.StartTime)} - ${timeDisplayString(event.EndTime)}`;
+    }
+
     return (
         <Pressable
             style={({ pressed }) => [
@@ -46,9 +54,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 <WihView style={styles.textContainer}>
                     <WihText style={styles.title}>{event.Title}</WihText>
                     <WihText>{event.Date?.toLocaleDateString()}</WihText>
-                    <WihText>
-                        {timeDisplayString(event.StartTime)} - {timeDisplayString(event.EndTime)}
-                    </WihText>
+                    <WihText>{getDurationText()}</WihText>
                 </WihView>
             </WihView>
         </Pressable>
