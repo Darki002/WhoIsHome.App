@@ -1,27 +1,28 @@
 export const Endpoints = {
     auth: {
-        register: "Auth/Register",
-        login: "Auth/Login",
-        refresh: "Auth/Refresh",
-        logout: "Auth/Logout"
+        register: "auth/register",
+        login: "auth/login",
+        refresh: "auth/refresh",
+        logout: "auth/logout"
     },
     user: {
-        me: "User/Me",
-        withId: (id: number | string) => `User/${id}`
+        me: "user",
+        withId: (id: number | string) => `user/${id}`
     },
-    oneTimeEvent: {
-        url: "OneTimeEvent",
-        withId: (id: number | string) => `${Endpoints.oneTimeEvent.url}/${id}`
+    eventGroup: {
+        url: "event-group",
+        withId: (id: number | string) => `${Endpoints.eventGroup.url}/${id}`,
+        instance: {
+            withDate: (id: number | string, date: Date) => `${Endpoints.eventGroup.url}/${id}/instance/${date.toISOString()}`,
+        }
     },
-    repeatedEvent: {
-        url: "RepeatedEvent",
-        withId: (id: number | string) => `${Endpoints.repeatedEvent.url}/${id}`
+    quarries: {
+        dailyOverview: "daily-overview",
+        weeklyReport: "weekly-report",
+        userOverview: {
+            url: "user-overview",
+            withId: (id: number | string) => `${Endpoints.quarries.userOverview.url}/${id}`
+        },
     },
-    dailyOverview: "DailyOverview",
-    weeklyReport: "WeeklyReport",
-    userOverview: {
-        url: "UserOverview",
-        withId: (id: number | string) => `${Endpoints.userOverview.url}/${id}`
-    },
-    pushUp: "PushUp",
+    pushUp: "push-up-settings",
 } as const;
