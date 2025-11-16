@@ -8,7 +8,7 @@ import WeeklyReportCard from "@/components/pages/Home/WeeklyReportCard";
 export default function WeeklyReportScreen() {
     return (
         <WihApiFocus<WeeklyReportsResponse>
-            endpoint={Endpoints.weeklyReport}
+            endpoint={Endpoints.quarries.weeklyReport}
             method="GET"
             Component={({response, refresh}) => {
                 const reports = response.map(r => new WeeklyReport(r));

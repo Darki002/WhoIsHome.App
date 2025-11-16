@@ -8,7 +8,7 @@ import {DailyOverviewCard} from "@/components/pages/Home/DailyOverviewCard";
 export default function DailyOverviewScreen() {
     return (
         <WihApiFocus<DailyOverviewDto[]>
-            endpoint={Endpoints.dailyOverview}
+            endpoint={Endpoints.quarries.dailyOverview}
             method="GET"
             Component={({ response, refresh }) => {
                 const overviews = response.map(r => new DailyOverview(r));

@@ -101,5 +101,5 @@ function UserViewOverviewComponent({response}: WihApiFocusComponentParams<User>)
         <UserViewComponent user={user} overviewResponse={response} overviewRefresh={refresh} />
     ), [user]);
 
-    return <WihApiFocus Component={component} endpoint={Endpoints.userOverview.withId(id)} method="GET" />
+    return <WihApiFocus Component={component} endpoint={Endpoints.quarries.userOverview.withId(id)} method="GET" />
 }

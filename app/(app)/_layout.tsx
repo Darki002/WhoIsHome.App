@@ -35,7 +35,7 @@ const AppLayout = () => {
             }
         };
         registerAndSync();
-    }, [session, isSessionLoading]);
+    }, [isSessionLoading]);
 
     if (isSessionLoading || isUserLoading) {
         return <WihLoadingView />

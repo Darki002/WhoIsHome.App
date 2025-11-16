@@ -20,6 +20,7 @@ const Create = () => {
         router.push("/(app)/createFlow/repeatedEventFlow");
     }
 
+    // TODO: remove flow, and make it one scrollable page. Event creation is now unified
     return (
         <WihView center="full" style={styles.mainContainer}>
             <WihTitle>{t(Labels.titles.eventCreator)}</WihTitle>

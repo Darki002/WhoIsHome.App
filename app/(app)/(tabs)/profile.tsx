@@ -109,5 +109,5 @@ const styles = StyleSheet.create({
 });
 
 export default function () {
-    return <WihApiFocus endpoint={Endpoints.userOverview.url} method="GET" Component={Profile} />
+    return <WihApiFocus endpoint={Endpoints.quarries.userOverview.url} method="GET" Component={Profile} />
 }
