@@ -3,12 +3,18 @@ import {PropsWithChildren, useCallback, useEffect, useState} from "react";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
-import {EventBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
+
+/*
+* TODO
+*  We separate Instance and groups. So you always have groups or instance you view.
+*  No merging together anymore.
+*  When you click on a event in the overview, you can choose between view/edit instance or group
+* */
 
 interface EventViewLayoutProps {
     event: EventBase;
