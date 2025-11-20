@@ -1,6 +1,6 @@
 import {useLocalSearchParams, useNavigation} from "expo-router";
 import WihView from "@/components/WihComponents/view/WihView";
-import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/OverviewTypes";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import React, {useCallback, useEffect} from "react";
 import {User} from "@/constants/WihTypes/User";

@@ -1,8 +1,8 @@
 import WihEventCard from "@/components/WihComponents/layout/event/WihEventCard";
-import {WihEvent} from "@/constants/WihTypes/Event/WihEvent";
+import {UserOverviewEvent} from "@/constants/WihTypes/UserOverviewEvent";
 
 export type WihEventListProps = {
-    events: WihEvent[] | null | undefined;
+    events: UserOverviewEvent[] | null | undefined;
 }
 
 export default function WihEventList({events}: WihEventListProps) {

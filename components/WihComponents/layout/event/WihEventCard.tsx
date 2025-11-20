@@ -5,11 +5,11 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useRouter} from "expo-router";
-import {EventType, WihEvent} from "@/constants/WihTypes/Event/WihEvent";
+import {EventType, UserOverviewEvent} from "@/constants/WihTypes/UserOverviewEvent";
 import {timeDisplayString} from "@/helper/datetimehelper";
 
 interface EventCardProps {
-    event: WihEvent;
+    event: UserOverviewEvent;
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {

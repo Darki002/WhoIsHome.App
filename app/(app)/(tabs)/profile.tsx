@@ -4,7 +4,7 @@ import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
 import {Dimensions, StyleSheet} from 'react-native';
-import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/WihTypes";
+import {UserOverview, UserOverviewDto} from "@/constants/WihTypes/OverviewTypes";
 import WihEventList from "@/components/WihComponents/layout/event/WihEventList";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
