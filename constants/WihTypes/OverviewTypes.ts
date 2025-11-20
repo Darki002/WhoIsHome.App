@@ -6,24 +6,27 @@ export interface UserOverviewEventModel {
     date: Date | string;
     startTime: Date | string;
     endTime: Date | string;
+    hasRepetitions: boolean;
     templateId: number;
 }
 
 export class UserOverviewEvent {
     id: number;
     title: string;
-    templateId: number;
     date: Date | undefined;
     startTime: Date | undefined;
     endTime: Date | undefined;
+    hasRepetitions: boolean;
+    templateId: number;
 
-    constructor(wihEventDto: UserOverviewEventModel) {
-        this.id = wihEventDto.id;
-        this.title = wihEventDto.title;
-        this.templateId = wihEventDto.templateId;
-        this.startTime = timeStringToDate(wihEventDto.startTime);
-        this.endTime = timeStringToDate(wihEventDto.endTime);
-        this.date = dateStringToDate(wihEventDto.date);
+    constructor(userOverviewEventModel: UserOverviewEventModel) {
+        this.id = userOverviewEventModel.id;
+        this.title = userOverviewEventModel.title;
+        this.startTime = timeStringToDate(userOverviewEventModel.startTime);
+        this.endTime = timeStringToDate(userOverviewEventModel.endTime);
+        this.date = dateStringToDate(userOverviewEventModel.date);
+        this.hasRepetitions = userOverviewEventModel.hasRepetitions;
+        this.templateId = userOverviewEventModel.templateId;
     }
 }
 

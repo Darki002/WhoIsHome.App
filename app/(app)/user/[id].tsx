@@ -96,7 +96,6 @@ function UserViewOverviewComponent({response}: WihApiFocusComponentParams<User>)
     const {id} = useLocalSearchParams<{ id: string }>();
 
     const user = response;
-
     const component = useCallback(({response, refresh}: WihApiFocusComponentParams<UserOverviewDto>) => (
         <UserViewComponent user={user} overviewResponse={response} overviewRefresh={refresh} />
     ), [user]);

@@ -5,8 +5,8 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useRouter} from "expo-router";
-import {EventType, UserOverviewEvent} from "@/constants/WihTypes/UserOverviewEvent";
 import {timeDisplayString} from "@/helper/datetimehelper";
+import {UserOverviewEvent} from "@/constants/WihTypes/OverviewTypes";
 
 interface EventCardProps {
     event: UserOverviewEvent;
@@ -17,27 +17,22 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        const eventType = event.EventType === "OneTimeEvent" ? "oneTime" : "repeated";
-        router.push(`/(app)/event/view/${eventType}/${event.Id}`);
-    }, [event.Id, event.EventType]);
+        const eventType = event.hasRepetitions ? "oneTime" : "repeated";
+        router.push(`/(app)/event/view/${eventType}/${event.id}`);
+    }, [event.id, event.hasRepetitions]);
 
-    const renderIcon = (eventType: EventType) => {
-        switch (eventType) {
-            case "OneTimeEvent":
-                return <MaterialIcons name="event" size={24} color={theme.primary} />;
-            case "RepeatedEvent":
-                return <MaterialIcons name="event-repeat" size={24} color={theme.primary} />;
-            default:
-                return null;
-        }
+    const renderIcon = (hasRepetitions: boolean) => {
+        return !hasRepetitions
+            ? <MaterialIcons name="event" size={24} color={theme.primary} />
+            : <MaterialIcons name="event-repeat" size={24} color={theme.primary} />;
     };
 
     const getDurationText = () => {
-        if(!event.EndTime){
-            return timeDisplayString(event.StartTime);
+        if(!event.endTime){
+            return timeDisplayString(event.startTime);
         }
 
-        return `${timeDisplayString(event.StartTime)} - ${timeDisplayString(event.EndTime)}`;
+        return `${timeDisplayString(event.startTime)} - ${timeDisplayString(event.endTime)}`;
     }
 
     return (
@@ -50,10 +45,10 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             onPress={() => onEventPress()}
         >
             <WihView style={styles.content} gap={10}>
-                <WihView style={styles.iconContainer}>{renderIcon(event.EventType)}</WihView>
+                <WihView style={styles.iconContainer}>{renderIcon(event.hasRepetitions)}</WihView>
                 <WihView style={styles.textContainer}>
-                    <WihText style={styles.title}>{event.Title}</WihText>
-                    <WihText>{event.Date?.toLocaleDateString()}</WihText>
+                    <WihText style={styles.title}>{event.title}</WihText>
+                    <WihText>{event.date?.toLocaleDateString()}</WihText>
                     <WihText>{getDurationText()}</WihText>
                 </WihView>
             </WihView>

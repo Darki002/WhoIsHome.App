@@ -1,5 +1,5 @@
 import WihEventCard from "@/components/WihComponents/layout/event/WihEventCard";
-import {UserOverviewEvent} from "@/constants/WihTypes/UserOverviewEvent";
+import {UserOverviewEvent} from "@/constants/WihTypes/OverviewTypes";
 
 export type WihEventListProps = {
     events: UserOverviewEvent[] | null | undefined;
