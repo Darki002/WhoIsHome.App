@@ -1,4 +1,4 @@
-import {WihOption, WihSingleChoice} from "@/components/WihComponents/input/WihSingleChoice";
+import {WihOption, WihRadioButton} from "@/components/WihComponents/input/WihRadioButton";
 import {WihFlowComponentProps, WihFlowStep} from "@/components/framework/wihFlow/wihFlow";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText, WihTitle} from "@/components/WihComponents/display/WihText";
@@ -56,7 +56,7 @@ const DinnerTimeStep: WihFlowStep<EventBase> = {
             <WihView gap={20} style={{alignItems: "center", justifyContent: "center"}}>
                 <WihTitle>{t(Labels.titles.createFlow.dinnerTimeStep)}</WihTitle>
 
-                <WihSingleChoice<PresenceType>
+                <WihRadioButton<PresenceType>
                     value={state.PresenceType}
                     options={options}
                     direction="row"

@@ -9,20 +9,14 @@ import {StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
-/*
-* TODO
-*  We separate Instance and groups. So you always have groups or instance you view.
-*  No merging together anymore.
-*  When you click on a event in the overview, you can choose between view/edit instance or group
-* */
-
 interface EventViewLayoutProps {
-    event: EventBase;
+    title: string;
+    userId: number;
     onEdit: () => void;
     onDelete: () => Promise<WihResponse<any> | string>;
 }
 
-export default function EventViewLayout({event, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
+export default function EventViewLayout({title, userId, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
     const router = useRouter();
     const navigation = useNavigation();
@@ -30,19 +24,21 @@ export default function EventViewLayout({event, onEdit, onDelete, children}: Pro
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
     useEffect(() => {
-        navigation.setOptions({title: event.Title ?? "Untitled Event"});
-    }, [event]);
+        navigation.setOptions({title: title ?? "Untitled Event"});
+    }, [title]);
 
     const deleteEvent = useCallback(() => {
         onDelete().then(r => {
             if(typeof r !== "string" && r.isValid()){
                 router.back();
+            } else {
+                // TODO: show error
             }
         });
     }, [router, onDelete]);
 
     const showOwnerActions = () => {
-        const isOwner = permissionCheck(event.UserId);
+        const isOwner = permissionCheck(userId);
         if(isOwner) {
             return (
                 <WihView flex="row" style={{gap: 30}}>

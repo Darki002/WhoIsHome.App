@@ -37,6 +37,26 @@ export const WihButton: FC<WihButtonProps> = ({
     );
 };
 
+export const WihTextButton: FC<WihButtonProps> = ({
+                                                  children,
+                                                  onPress,
+                                                  disabled = false,
+                                                  textStyle
+                                              }) => {
+    const theme = useWihTheme();
+
+    return (
+        <Pressable
+            onPress={onPress}
+            disabled={disabled}
+        >
+            <Text style={[styles.text, { color: disabled ? theme.disabled : theme.primary }, textStyle]}>
+                {children}
+            </Text>
+        </Pressable>
+    );
+};
+
 const styles = StyleSheet.create({
     button: {
         paddingVertical: 10,

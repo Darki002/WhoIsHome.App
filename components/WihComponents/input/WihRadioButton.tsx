@@ -17,7 +17,7 @@ export interface WihSingleChoiceProps<T> {
     allowDeselect?: boolean;
 }
 
-export function WihSingleChoice<T>({
+export function WihRadioButton<T>({
                                        value,
                                        options,
                                        direction,

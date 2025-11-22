@@ -23,24 +23,24 @@ export interface EventInstanceDto {
 }
 
 export class EventInstance {
-    id?: number;
-    title?: string;
-    date?: Date;
+    id: number = undefined!;
+    title: string = "";
+    date: Date = undefined!;
     startTime?: Date;
-    endTime?: Date | null;
-    presenceType?: PresenceType;
+    endTime: Date | null = null;
+    presenceType: PresenceType = undefined!;
     dinnerTime?: Date | null;
-    eventGroupId?: number;
-    userId?: number;
+    eventGroupId: number = undefined!;
+    userId: number = undefined!;
 
     constructor(model?: EventInstanceModel) {
         if (!model) return;
 
         this.id = model.id;
         this.title = model.title;
-        this.date = dateStringToDate(model.date);
+        this.date = dateStringToDate(model.date)!;
         this.startTime = timeStringToDate(model.startTime);
-        this.endTime = model.endTime ? timeStringToDate(model.endTime) : null;
+        this.endTime = model.endTime ? timeStringToDate(model.endTime) ?? null : null;
         this.presenceType = model.presenceType as PresenceType;
         this.dinnerTime = model.dinnerTime ? timeStringToDate(model.dinnerTime) : null;
         this.eventGroupId = model.eventGroupId;

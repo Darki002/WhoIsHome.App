@@ -17,8 +17,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        const eventType = event.hasRepetitions ? "oneTime" : "repeated";
-        router.push(`/(app)/event/view/${eventType}/${event.id}`);
+        router.push(`/(app)/event/view/${event.id}`);
     }, [event.id, event.hasRepetitions]);
 
     const renderIcon = (hasRepetitions: boolean) => {

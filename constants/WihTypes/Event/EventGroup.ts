@@ -26,26 +26,26 @@ export interface EventGroupModelDto {
 }
 
 export class EventGroup {
-    id?: number;
-    title?: string;
-    startDate?: Date;
+    id: number = undefined!;
+    title: string = "";
+    startDate: Date = undefined!;
     endDate?: Date | null;
     startTime?: Date;
-    endTime?: Date | null;
-    weekDays?: number[];
-    presenceType?: PresenceType;
+    endTime: Date | null = null;
+    weekDays: number[] = [];
+    presenceType: PresenceType = undefined!;
     dinnerTime?: Date | null;
-    userId?: number;
+    userId: number = undefined!;
 
     constructor(model?: EventGroupModel) {
         if (!model) return;
 
         this.id = model.id;
         this.title = model.title;
-        this.startDate = dateStringToDate(model.startDate);
+        this.startDate = dateStringToDate(model.startDate)!;
         this.endDate = model.endDate ? dateStringToDate(model.endDate) : null;
         this.startTime = timeStringToDate(model.startTime);
-        this.endTime = model.endTime ? timeStringToDate(model.endTime) : null;
+        this.endTime = model.endTime ? timeStringToDate(model.endTime) ?? null : null;
         this.weekDays = model.weekDays;
         this.presenceType = model.presenceType;
         this.dinnerTime = model.dinnerTime ? timeStringToDate(model.dinnerTime) : null;

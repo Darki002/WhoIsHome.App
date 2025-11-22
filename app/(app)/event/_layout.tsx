@@ -13,25 +13,13 @@ export default function EventLayout() {
 
     return (
         <Stack screenOptions={screenOptions}>
-            <Stack.Screen name="view/oneTime/[id]" options={{
+            <Stack.Screen name="view/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: theme.background},
                 headerTintColor: theme.text
             }}/>
-            <Stack.Screen name="view/repeated/[id]" options={{
-                presentation: "modal",
-                title: "Unknown",
-                headerStyle: {backgroundColor: theme.background},
-                headerTintColor: theme.text
-            }}/>
-            <Stack.Screen name="edit/oneTime/[id]" options={{
-                presentation: "modal",
-                title: "Unknown",
-                headerStyle: {backgroundColor: theme.background},
-                headerTintColor: theme.text
-            }}/>
-            <Stack.Screen name="edit/repeated/[id]" options={{
+            <Stack.Screen name="edit/[id]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: theme.background},

@@ -30,8 +30,8 @@ const Labels = {
         endTime: "Labels.EndTime",
         presenceType: "Labels.PresenceType",
         dinnerTime: "Labels.DinnerTime",
-        firstOccurrence: "Labels.FirstOccurrence",
-        lastOccurrence: "Labels.LastOccurrence",
+        startDate: "Labels.StartDate",
+        endDate: "Labels.EndDate",
     },
     tabs: {
         home: "Tabs.Home",

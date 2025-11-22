@@ -30,8 +30,8 @@
     "EndTime": "End Time",
     "PresenceType": "Presence",
     "DinnerTime": "Arrival Time",
-    "FirstOccurrence": "Start Date",
-    "LastOccurrence": "End Date"
+    "StartDate": "Start Date",
+    "EndDate": "End Date"
   },
   "Tabs": {
     "Home": "Home",

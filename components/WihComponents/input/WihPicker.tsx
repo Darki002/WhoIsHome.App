@@ -41,5 +41,4 @@ export function WihPicker<T>({
             </Picker>
         </WihView>
     );
-
 }

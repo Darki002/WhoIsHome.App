@@ -1,19 +1,19 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
-import {OneTimeEvent, OneTimeEventDto, OneTimeEventModel} from "@/constants/WihTypes/Event/OneTimeEvent";
-import {WihText} from "@/components/WihComponents/display/WihText";
 import React, {useCallback, useEffect, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
-import {formatDate, formatTime} from "@/helper/datetimehelper";
+import {WihText} from "@/components/WihComponents/display/WihText";
+import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import WihView from "@/components/WihComponents/view/WihView";
-import {WihOption} from "@/components/WihComponents/input/WihSingleChoice";
+import {dateStringToDate, formatDate, formatTime} from "@/helper/datetimehelper";
+import {WihOption} from "@/components/WihComponents/input/WihRadioButton";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
-import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
+import {useTranslation} from "react-i18next";
 import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
+import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
-import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
@@ -27,23 +27,23 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventModel>) {
+function EventGroupEdit({response} : WihApiFocusComponentParams<RepeatedEventModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const [event, setEvent] = useState<OneTimeEvent>(new OneTimeEvent(response));
+    const [event, setEvent] = useState<RepeatedEvent>(new RepeatedEvent());
     useEffect(() => {
-        setEvent(new OneTimeEvent(response));
+        setEvent(new RepeatedEvent(response));
     }, [response]);
 
-    const updateEvent = useCallback((update: Partial<OneTimeEvent>) => {
+    const updateEvent = (update: Partial<RepeatedEvent>) => {
         setEvent((prev) => ({...prev, ...update}));
-    }, []);
+    }
 
     const onResponse = useOnResponse();
-    const callWihApi = useWihApi<OneTimeEventDto>({
-        endpoint: Endpoints.oneTimeEvent.withId(id),
+    const callWihApi = useWihApi<RepeatedEventDto>({
+        endpoint: Endpoints.repeatedEvent.withId(id),
         method: "PATCH"
     });
 
@@ -53,9 +53,10 @@ function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventMo
 
     const onUpdate = () => {
         if (!event) return;
-        const body: OneTimeEventDto = {
+        const body: RepeatedEventDto = {
             Title: event.Title!,
-            Date: formatDate(event.Date!),
+            FirstOccurrence: formatDate(event.FirstOccurrence!),
+            LastOccurrence: event.LastOccurrence ? formatDate(event.LastOccurrence) : null,
             StartTime: formatTime(event.StartTime!),
             EndTime: formatTime(event.EndTime!),
             PresenceType: event.PresenceType!,
@@ -83,9 +84,17 @@ function OneTimeEventView({response} : WihApiFocusComponentParams<OneTimeEventMo
                 placeholder={t(Labels.placeholders.title)}
                 onChangeText={t => updateEvent({Title: t})}/>
 
-            <WihIconRow name="date-range" flexDirection="row">
-                <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
-                <WihDateInput value={event.Date} onChange={d => updateEvent({Date: d})}></WihDateInput>
+            <WihIconRow name="date-range" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
+                    <WihDateInput value={event.FirstOccurrence}
+                                  onChange={d => updateEvent({FirstOccurrence: d})}/>
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.lastOccurrence)}: </WihText>
+                    <WihDateInput value={event.LastOccurrence}
+                                  onChange={d => updateEvent({LastOccurrence: d})}/>
+                </WihView>
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
@@ -130,6 +139,12 @@ const styles = StyleSheet.create({
 });
 
 export default function () {
-    const {id} = useLocalSearchParams<{ id: string }>();
-    return  <WihApiFocus Component={OneTimeEventView} endpoint={Endpoints.oneTimeEvent.withId(id)} method="GET" />
+    const { id, date } = useLocalSearchParams<{ id: string, date?: string }>();
+
+    if(!date){
+        return <WihApiFocus Component={EventGroupEdit} endpoint={Endpoints.eventGroup.withId(id)} method="GET" />
+    }
+
+    const d = dateStringToDate(date)!;
+    return <WihApiFocus Component={EventInstanceEdit} endpoint={Endpoints.eventGroup.instance.withDate(id, d)} method="GET" />
 }
