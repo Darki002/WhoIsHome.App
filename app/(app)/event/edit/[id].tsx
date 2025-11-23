@@ -21,6 +21,7 @@ import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInp
 import {EventGroup, EventGroupModel, EventGroupDto} from "@/constants/WihTypes/Event/EventGroup";
 import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGroup";
+import {WihTextButton} from "@/components/WihComponents/input/WihButton";
 
 interface EventGroupUpdate {
     title?: string;
@@ -200,6 +201,13 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
 
     return (
         <EventEditLayout title={event.title} userId={event.userId} onCancel={onCancel} onUpdate={onUpdate}>
+            <WihIconRow name="info" flexDirection="column">
+                <WihText>{t(Labels.message.editInstance)}</WihText>
+                <WihTextButton onPress={() => router.setParams({date: undefined})}>
+                    {t(Labels.actions.editGroup)}
+                </WihTextButton>
+            </WihIconRow>
+
             <WihTextInput
                 value={eventUpdate.title ?? event.title}
                 placeholder={t(Labels.placeholders.title)}

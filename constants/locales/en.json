@@ -55,6 +55,7 @@
     "Create": "Create",
     "Confirm": "Confirm",
     "Delete": "Delete",
+    "ViewGroup": "view group",
     "EditGroup": "edit group"
   },
   "Placeholders": {
@@ -77,6 +78,7 @@
     }
   },
   "Message": {
+    "ViewInstance": "You're seeing a single event.",
     "EditInstance": "You're editing a single event."
   },
   "Headers": {

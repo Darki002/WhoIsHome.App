@@ -55,6 +55,7 @@ const Labels = {
         create: "Actions.Create",
         confirm: "Actions.Confirm",
         delete: "Actions.Delete",
+        viewGroup: "Actions.ViewGroup",
         editGroup: "Actions.EditGroup"
     },
     placeholders: {
@@ -77,6 +78,7 @@ const Labels = {
         }
     },
     message: {
+        viewInstance: "Message.ViewInstance",
         editInstance: "Message.EditInstance"
     },
     headers: {

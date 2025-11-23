@@ -118,9 +118,9 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
     return (
         <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="info" flexDirection="column">
-                <WihText>{t(Labels.message.editInstance)}</WihText>
+                <WihText>{t(Labels.message.viewInstance)}</WihText>
                 <WihTextButton onPress={() => router.setParams({date: undefined})}>
-                    {t(Labels.actions.editGroup)}
+                    {t(Labels.actions.viewGroup)}
                 </WihTextButton>
             </WihIconRow>
 

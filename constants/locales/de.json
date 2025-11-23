@@ -55,6 +55,7 @@
     "Create": "Erstellen",
     "Confirm": "Bestätigen",
     "Delete": "Löschen",
+    "ViewGroup": "Gruppe ansehen",
     "EditGroup": "Gruppe bearbeiten"
   },
   "Placeholders": {
@@ -77,6 +78,7 @@
     }
   },
   "Message": {
+    "ViewInstance": "Du siehst gerade ein einzelnes Event an.",
     "EditInstance": "Du bearbeitest ein einzelnes Event."
   },
   "Headers": {
