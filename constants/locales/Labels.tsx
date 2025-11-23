@@ -54,7 +54,8 @@ const Labels = {
         finish: "Actions.Finish",
         create: "Actions.Create",
         confirm: "Actions.Confirm",
-        delete: "Actions.Delete"
+        delete: "Actions.Delete",
+        editGroup: "Actions.EditGroup"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
@@ -74,6 +75,9 @@ const Labels = {
         error: {
             updateEvent: "Toast.Error.UpdateEvent"
         }
+    },
+    message: {
+        editInstance: "Message.EditInstance"
     },
     headers: {
         unknown: "Headers.Unknown",

@@ -1,8 +1,7 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihText} from "@/components/WihComponents/display/WihText";
-import {RepeatedEvent, RepeatedEventDto, RepeatedEventModel} from "@/constants/WihTypes/Event/RepeatedEvent";
 import WihView from "@/components/WihComponents/view/WihView";
 import {dateStringToDate, formatDate, formatTime} from "@/helper/datetimehelper";
 import {WihOption} from "@/components/WihComponents/input/WihRadioButton";
@@ -10,7 +9,7 @@ import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
-import useOnResponse from "@/components/pages/EventEdit/useOnResponse";
+import useUpdateToast from "@/components/pages/EventEdit/useUpdateToast";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
@@ -19,7 +18,29 @@ import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wi
 import useWihApi from "@/hooks/useWihApi";
 import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
 import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
+import {EventGroup, EventGroupModel, EventGroupDto} from "@/constants/WihTypes/Event/EventGroup";
+import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
+import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGroup";
 
+interface EventGroupUpdate {
+    title?: string;
+    startDate?: Date;
+    endDate?: Date | null;
+    startTime?: Date;
+    endTime?: Date | null;
+    weekDays?: number[];
+    presenceType?: PresenceType;
+    dinnerTime?: Date | null;
+}
+
+interface EventInstanceUpdate {
+    title?: string;
+    date?: Date;
+    startTime?: Date;
+    endTime?: Date | null;
+    presenceType?: PresenceType;
+    dinnerTime?: Date | null;
+}
 
 const options : Array<WihOption<PresenceType>> = [
     {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
@@ -27,23 +48,31 @@ const options : Array<WihOption<PresenceType>> = [
     {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
 ];
 
-function EventGroupEdit({response} : WihApiFocusComponentParams<RepeatedEventModel>) {
+const weekDaysOptions: Array<WihOption<number>> = [
+    {value: 1, displayTextLabel: Labels.weekdays.shortByNumber[1]},
+    {value: 2, displayTextLabel: Labels.weekdays.shortByNumber[2]},
+    {value: 3, displayTextLabel: Labels.weekdays.shortByNumber[3]},
+    {value: 4, displayTextLabel: Labels.weekdays.shortByNumber[4]},
+    {value: 5, displayTextLabel: Labels.weekdays.shortByNumber[5]},
+    {value: 6, displayTextLabel: Labels.weekdays.shortByNumber[6]},
+    {value: 0, displayTextLabel: Labels.weekdays.shortByNumber[0]}
+]
+
+function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>) {
     const {t} = useTranslation();
     const router = useRouter();
     const {id} = useLocalSearchParams<{ id: string }>();
 
-    const [event, setEvent] = useState<RepeatedEvent>(new RepeatedEvent());
-    useEffect(() => {
-        setEvent(new RepeatedEvent(response));
-    }, [response]);
+    const [eventUpdate, setEventUpdate] = useState<EventGroupUpdate>({});
+    const event = new EventGroup(response);
 
-    const updateEvent = (update: Partial<RepeatedEvent>) => {
-        setEvent((prev) => ({...prev, ...update}));
+    const updateEvent = (update: Partial<EventGroupUpdate>) => {
+        setEventUpdate(prev => ({...prev, ...update}));
     }
 
-    const onResponse = useOnResponse();
-    const callWihApi = useWihApi<RepeatedEventDto>({
-        endpoint: Endpoints.repeatedEvent.withId(id),
+    const updateToast = useUpdateToast();
+    const callWihApi = useWihApi<EventGroupDto>({
+        endpoint: Endpoints.eventGroup.withId(id),
         method: "PATCH"
     });
 
@@ -52,66 +81,67 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<RepeatedEventMod
     }, [id]);
 
     const onUpdate = () => {
-        if (!event) return;
-        const body: RepeatedEventDto = {
-            Title: event.Title!,
-            FirstOccurrence: formatDate(event.FirstOccurrence!),
-            LastOccurrence: event.LastOccurrence ? formatDate(event.LastOccurrence) : null,
-            StartTime: formatTime(event.StartTime!),
-            EndTime: formatTime(event.EndTime!),
-            PresenceType: event.PresenceType!,
-            DinnerTime: event.DinnerTime ? formatTime(event.DinnerTime) : null
+        const update : EventGroupDto = {
+            title: eventUpdate.title,
+            startDate: eventUpdate.startDate && formatDate(eventUpdate.startDate),
+            endDate: eventUpdate.endDate && formatDate(eventUpdate.endDate),
+            startTime: eventUpdate.startTime && formatTime(eventUpdate.startTime),
+            endTime: eventUpdate.endTime && formatTime(eventUpdate.endTime),
+            weekDays: eventUpdate.weekDays,
+            presenceType: eventUpdate.presenceType,
+            dinnerTime: eventUpdate.dinnerTime && formatDate(eventUpdate.dinnerTime),
         }
-        callWihApi(body).then(onResponse);
+        callWihApi(update).then(updateToast);
     };
 
-    const onDinnerTimeChange = (time: Date | undefined) => {
-        const value = event.PresenceType === "Late" ? time : null;
-        updateEvent({DinnerTime: value});
-    }
-
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
-        updateEvent({PresenceType: presenceType});
+        updateEvent({presenceType: presenceType});
         if (presenceType !== "Late") {
-            updateEvent({DinnerTime: null});
+            updateEvent({dinnerTime: null});
         }
     }
 
     return (
-        <EventEditLayout event={event} onCancel={onCancel} onUpdate={onUpdate}>
+        <EventEditLayout title={event.title} userId={event.userId} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
-                value={event.Title}
+                value={eventUpdate.title ?? event.title}
                 placeholder={t(Labels.placeholders.title)}
-                onChangeText={t => updateEvent({Title: t})}/>
+                onChangeText={t => updateEvent({title: t})}/>
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.firstOccurrence)}: </WihText>
-                    <WihDateInput value={event.FirstOccurrence}
-                                  onChange={d => updateEvent({FirstOccurrence: d})}/>
+                    <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
+                    <WihDateInput value={eventUpdate.startDate ?? event.startDate}
+                                  onChange={d => updateEvent({startDate: d})}/>
                 </WihView>
                 <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.lastOccurrence)}: </WihText>
-                    <WihDateInput value={event.LastOccurrence}
-                                  onChange={d => updateEvent({LastOccurrence: d})}/>
+                    <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
+                    <WihDateInput value={eventUpdate.endDate === undefined ? event.endDate : eventUpdate.endDate}
+                                  onChange={d => updateEvent({endDate: d})}/>
                 </WihView>
+                <WihCheckboxGroup options={weekDaysOptions}
+                                  values={eventUpdate.weekDays ?? event.weekDays}
+                                  onChange={w => updateEvent({weekDays: w})}
+                                  direction="row" />
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={event.StartTime} onChange={st => updateEvent({StartTime: st})}></WihTimeInput>
+                    <WihTimeInput value={eventUpdate.startTime ?? event.startTime}
+                                  onChange={st => updateEvent({startTime: st})} />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={event.EndTime} onChange={et => updateEvent({EndTime: et})}></WihTimeInput>
+                    <WihTimeInput value={eventUpdate.endTime === undefined ? event.endTime : eventUpdate.endTime}
+                                  onChange={et => updateEvent({endTime: et})} />
                 </WihView>
             </WihIconRow>
 
             <WihIconRow name="home" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
-                    value={event.PresenceType}
+                    value={eventUpdate.presenceType ?? event.presenceType}
                     options={options}
                     onChange={onPresenceTypeChange}/>
             </WihIconRow>
@@ -119,9 +149,97 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<RepeatedEventMod
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
-                    value={event.DinnerTime}
-                    disabled={event.PresenceType !== "Late"}
-                    onChange={onDinnerTimeChange}/>
+                    value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
+                    disabled={event.presenceType !== "Late"}
+                    onChange={d => updateEvent({dinnerTime: d})}/>
+            </WihIconRow>
+        </EventEditLayout>
+    )
+}
+
+function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstanceModel>) {
+    const {t} = useTranslation();
+    const router = useRouter();
+    const {id} = useLocalSearchParams<{ id: string }>();
+
+    const [eventUpdate, setEventUpdate] = useState<EventInstanceUpdate>({});
+    const event = new EventInstance(response);
+
+    const updateEvent = (update: Partial<EventInstanceUpdate>) => {
+        setEventUpdate(prev => ({...prev, ...update}));
+    }
+
+    const updateToast = useUpdateToast();
+    const callWihApi = useWihApi<EventInstanceDto>({
+        endpoint: Endpoints.eventGroup.instance.withDate(id, event.date),
+        method: "PATCH"
+    });
+
+    const onCancel = useCallback(() => {
+        router.back();
+    }, [id]);
+
+    const onUpdate = () => {
+        const update : EventInstanceDto = {
+            title: eventUpdate.title,
+            date: eventUpdate.date && formatDate(eventUpdate.date),
+            startTime: eventUpdate.startTime && formatTime(eventUpdate.startTime),
+            endTime: eventUpdate.endTime && formatTime(eventUpdate.endTime),
+            presenceType: eventUpdate.presenceType,
+            dinnerTime: eventUpdate.dinnerTime && formatDate(eventUpdate.dinnerTime),
+        }
+        callWihApi(update).then(updateToast);
+    };
+
+    const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
+        updateEvent({presenceType: presenceType});
+        if (presenceType !== "Late") {
+            updateEvent({dinnerTime: null});
+        }
+    }
+
+    return (
+        <EventEditLayout title={event.title} userId={event.userId} onCancel={onCancel} onUpdate={onUpdate}>
+            <WihTextInput
+                value={eventUpdate.title ?? event.title}
+                placeholder={t(Labels.placeholders.title)}
+                onChangeText={t => updateEvent({title: t})}/>
+
+            <WihIconRow name="date-range" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
+                    <WihDateInput value={eventUpdate.date ?? event.date}
+                                  onChange={d => updateEvent({date: d})}/>
+                </WihView>
+            </WihIconRow>
+
+            <WihIconRow name="timeline" flexDirection="column">
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
+                    <WihTimeInput value={eventUpdate.startTime ?? event.startTime}
+                                  onChange={st => updateEvent({startTime: st})} />
+                </WihView>
+                <WihView style={styles.container}>
+                    <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
+                    <WihTimeInput value={eventUpdate.endTime === undefined ? event.endTime : eventUpdate.endTime}
+                                  onChange={et => updateEvent({endTime: et})} />
+                </WihView>
+            </WihIconRow>
+
+            <WihIconRow name="home" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
+                <WihPicker
+                    value={eventUpdate.presenceType ?? event.presenceType}
+                    options={options}
+                    onChange={onPresenceTypeChange}/>
+            </WihIconRow>
+
+            <WihIconRow name="schedule" flexDirection="row">
+                <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
+                <WihTimeInput
+                    value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
+                    disabled={event.presenceType !== "Late"}
+                    onChange={d => updateEvent({dinnerTime: d})}/>
             </WihIconRow>
         </EventEditLayout>
     )

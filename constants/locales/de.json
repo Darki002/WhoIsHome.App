@@ -54,7 +54,8 @@
     "Finish": "Beenden",
     "Create": "Erstellen",
     "Confirm": "Bestätigen",
-    "Delete": "Löschen"
+    "Delete": "Löschen",
+    "EditGroup": "Gruppe bearbeiten"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -74,6 +75,9 @@
     "Error" : {
       "UpdateEvent" : "Aktualisierung fehlgeschlagen"
     }
+  },
+  "Message": {
+    "EditInstance": "Du bearbeitest ein einzelnes Event."
   },
   "Headers": {
     "Unknown": "Unbekannt",

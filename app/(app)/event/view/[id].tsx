@@ -7,14 +7,14 @@ import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
 import {dateStringToDate, timeDisplayString} from "@/helper/datetimehelper";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
 import {EventGroup, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
 import {EventInstance, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihButton, WihTextButton} from "@/components/WihComponents/input/WihButton";
+import {WihTextButton} from "@/components/WihComponents/input/WihButton";
 
 function EventGroupView({response}: {response: EventGroupModel}) {
     const theme = useWihTheme();
@@ -27,7 +27,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/(app)/event/edit/repeated/${response.id}`);
+        router.push(`/(app)/event/edit/${response.id}`);
     }, [response.id]);
 
     const event = new EventGroup(response);
@@ -110,7 +110,7 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/(app)/event/edit/${response.id}`);
+        router.push(`/(app)/event/edit/${response.id}?date=${response.date}`);
     }, [response.id]);
 
     const event = new EventInstance(response);
@@ -118,7 +118,7 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
     return (
         <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="info" flexDirection="column">
-                <WihText>{t(Labels.message.editGroup)}</WihText>
+                <WihText>{t(Labels.message.editInstance)}</WihText>
                 <WihTextButton onPress={() => router.setParams({date: undefined})}>
                     {t(Labels.actions.editGroup)}
                 </WihTextButton>

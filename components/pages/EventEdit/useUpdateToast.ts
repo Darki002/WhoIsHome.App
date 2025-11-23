@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useRouter} from "expo-router";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 
-const useOnResponse = () => {
+const useUpdateToast = () => {
     const {t} = useTranslation();
     const router = useRouter();
 
@@ -24,4 +24,4 @@ const useOnResponse = () => {
     }, []);
 }
 
-export default useOnResponse;
+export default useUpdateToast;

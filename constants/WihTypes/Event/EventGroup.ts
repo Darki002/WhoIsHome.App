@@ -14,7 +14,7 @@ export interface EventGroupModel {
     userId: number;
 }
 
-export interface EventGroupModelDto {
+export interface EventGroupDto {
     title?: string;
     startDate?: string;
     endDate?: string | null;

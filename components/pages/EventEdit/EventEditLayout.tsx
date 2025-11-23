@@ -1,37 +1,35 @@
-import {EventBase, EventModelBase} from "@/constants/WihTypes/Event/BaseTypes";
 import {PropsWithChildren, useCallback, useEffect} from "react";
 import {useNavigation} from "expo-router";
 import {usePermission} from "@/hooks/usePermission";
 import WihView from "@/components/WihComponents/view/WihView";
-import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {StyleSheet} from "react-native";
-import {WihResponse} from "@/helper/fetch/WihResponse";
 
 interface EventEditLayoutProps {
-    event: EventBase;
+    title: string;
+    userId: number;
     onCancel: () => void;
     onUpdate: () => void;
 }
 
-export default function EventEditLayout({event, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
+export default function EventEditLayout({title, userId, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
     const {t} = useTranslation();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
 
     const onUpdatedChecked = useCallback(() => {
-        const allowed = permissionCheck(event.UserId);
+        const allowed = permissionCheck(userId);
         if(allowed){
             onUpdate();
         }
-    }, [onUpdate, event]);
+    }, [onUpdate, userId]);
 
     useEffect(() => {
-        const title = event.Title ?? t(Labels.errors.header);
-        navigation.setOptions({title: `${t(Labels.headers.editing)}: ${title}`});
-    }, [event]);
+        const effectiveTitle = title ?? t(Labels.errors.header);
+        navigation.setOptions({title: `${t(Labels.headers.editing)}: ${effectiveTitle}`});
+    }, [title]);
 
     return (
         <WihView style={styles.container}>
