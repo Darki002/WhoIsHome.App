@@ -107,9 +107,7 @@
     "UnknownTime": "Unbekannt"
   },
   "Descriptions": {
-    "EventCreator": "Hier kannst du ein neues Event erstellen. Wähle zwischen einmaligen oder wiederholdenem Event:",
-    "OneTimeEvent": "Ein Event für ein sspezifisches Datum.",
-    "RepeatedEvent": "Ein Event das sich ab dem ersten Datum wöchentlich wiederhold bis zum Enddatum.",
+    "EventCreator": "Hier kannst du ein neues Event erstellen:",
     "CreateFlow": {
       "TitleStep": "Gib deinem Event einen Namen."
     }

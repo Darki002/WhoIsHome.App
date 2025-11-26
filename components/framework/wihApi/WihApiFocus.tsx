@@ -13,8 +13,8 @@ export interface WihApiFocusProps<T> extends WihFetchProps {
     Component: (props: WihApiFocusComponentParams<T>) => ReactNode;
 }
 
-export function WihApiFocus<T extends any>({endpoint, method, version, Component} : WihApiFocusProps<T>) {
-    const {data, error, isLoading, refresh} = useWihApiFocus<T>({endpoint, method, version});
+export function WihApiFocus<TResponse>({endpoint, method, version, Component} : WihApiFocusProps<TResponse>) {
+    const {data, error, isLoading, refresh} = useWihApiFocus<TResponse>({endpoint, method, version});
 
     if(isLoading) {
         return <WihLoadingView />;
@@ -31,12 +31,12 @@ export function WihApiFocus<T extends any>({endpoint, method, version, Component
     return <Component response={data} refresh={refresh} />
 }
 
-export default function useWihApiFocus<T>(props: WihFetchProps) {
-    const [data, setData] = useState<T | null | undefined>();
+export default function useWihApiFocus<TResponse>(props: WihFetchProps) {
+    const [data, setData] = useState<TResponse | null | undefined>();
     const [error, setError] = useState<string | Error | undefined | null>();
     const [isLoading, setIsLoading] = useState(true);
 
-    const callApi = useWihApi<T>(props);
+    const callApi = useWihApi<never, TResponse>(props);
 
     const call = useCallback(() => {
         setIsLoading(true);

@@ -31,7 +31,7 @@ export function WihUserProvider({children}: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const getUser = useWihApi<User>({
+    const getUser = useWihApi<never, User>({
         endpoint: Endpoints.user.me,
         method: "GET"
     });

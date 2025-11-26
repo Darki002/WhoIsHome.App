@@ -4,12 +4,11 @@ import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
 import {dateStringToDate, formatDate, formatTime} from "@/helper/datetimehelper";
-import {WihOption} from "@/components/WihComponents/input/WihRadioButton";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";
 import {useTranslation} from "react-i18next";
-import useUpdateToast from "@/components/pages/EventEdit/useUpdateToast";
+import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
 import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {StyleSheet} from "react-native";
@@ -22,6 +21,7 @@ import {EventGroup, EventGroupModel, EventGroupDto} from "@/constants/WihTypes/E
 import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGroup";
 import {WihTextButton} from "@/components/WihComponents/input/WihButton";
+import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
 
 interface EventGroupUpdate {
     title?: string;
@@ -43,21 +43,7 @@ interface EventInstanceUpdate {
     dinnerTime?: Date | null;
 }
 
-const options : Array<WihOption<PresenceType>> = [
-    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
-    {value: "Late", displayTextLabel: Labels.presenceType.late},
-    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
-];
-
-const weekDaysOptions: Array<WihOption<number>> = [
-    {value: 1, displayTextLabel: Labels.weekdays.shortByNumber[1]},
-    {value: 2, displayTextLabel: Labels.weekdays.shortByNumber[2]},
-    {value: 3, displayTextLabel: Labels.weekdays.shortByNumber[3]},
-    {value: 4, displayTextLabel: Labels.weekdays.shortByNumber[4]},
-    {value: 5, displayTextLabel: Labels.weekdays.shortByNumber[5]},
-    {value: 6, displayTextLabel: Labels.weekdays.shortByNumber[6]},
-    {value: 0, displayTextLabel: Labels.weekdays.shortByNumber[0]}
-]
+// TODO: input validations!!! With new validation feature from input components
 
 function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>) {
     const {t} = useTranslation();
@@ -71,8 +57,8 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         setEventUpdate(prev => ({...prev, ...update}));
     }
 
-    const updateToast = useUpdateToast();
-    const callWihApi = useWihApi<EventGroupDto>({
+    const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
+    const callWihApi = useWihApi<EventGroupDto, EventGroupModel>({
         endpoint: Endpoints.eventGroup.withId(id),
         method: "PATCH"
     });
@@ -143,7 +129,7 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
                     value={eventUpdate.presenceType ?? event.presenceType}
-                    options={options}
+                    options={presenceTypeOptions}
                     onChange={onPresenceTypeChange}/>
             </WihIconRow>
 
@@ -170,8 +156,8 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
         setEventUpdate(prev => ({...prev, ...update}));
     }
 
-    const updateToast = useUpdateToast();
-    const callWihApi = useWihApi<EventInstanceDto>({
+    const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
+    const callWihApi = useWihApi<EventInstanceDto, EventInstanceModel>({
         endpoint: Endpoints.eventGroup.instance.withDate(id, event.date),
         method: "PATCH"
     });
@@ -238,7 +224,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
                     value={eventUpdate.presenceType ?? event.presenceType}
-                    options={options}
+                    options={presenceTypeOptions}
                     onChange={onPresenceTypeChange}/>
             </WihIconRow>
 

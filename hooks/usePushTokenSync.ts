@@ -9,7 +9,7 @@ const LAST_PUSH_TOKEN_KEY = 'lastPushToken';
 const LAST_LANGUAGE_CODE_KEY = 'languageCode';
 
 export function usePushTokenSync() {
-    const pushTokenApi = useWihApi<{ token: string | null, languageCode?: string | null, enable?: boolean }>({
+    const pushTokenApi = useWihApi<{ token: string | null, languageCode?: string | null, enable?: boolean }, never>({
         endpoint: Endpoints.pushUp,
         method: "POST",
     });

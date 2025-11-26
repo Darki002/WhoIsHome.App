@@ -107,9 +107,7 @@
     "UnknownTime": "Unknown"
   },
   "Descriptions": {
-    "EventCreator": "Here you can create new events. Choose between an one-time and repeating event:",
-    "OneTimeEvent": "An event for a specific date.",
-    "RepeatedEvent": "An event that is on the first date and repeats every week until the last date.",
+    "EventCreator": "Here you can create new events:",
     "CreateFlow": {
       "TitleStep": "Give your new event a Title."
     }

@@ -11,7 +11,7 @@ export interface WihFetchProps {
     version?: number;
 }
 
-const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<T> | string> => {
+const useWihApi = <TBody, TResponse>(props: WihFetchProps) : (body?: TBody) => Promise<WihResponse<TResponse> | string> => {
     const config = useApiConfig();
     const {session, onNewSession, signOut} = useSession();
 
@@ -21,7 +21,7 @@ const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<
         }
     }
 
-    return async (body?: T): Promise<WihResponse<T> | string> => {
+    return async (body?: TBody): Promise<WihResponse<TResponse> | string> => {
         if (!session || !session.jwtToken || !session.refreshToken) {
             WihLogger.warn(useWihApi.name, `Skip Request ${props.endpoint} due to missing session!`);
             return `Skip Request ${props.endpoint} due to missing session!`;
@@ -38,7 +38,7 @@ const useWihApi = <T>(props: WihFetchProps) : (body?: T) => Promise<WihResponse<
             .setVersion(props.version)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
-            .fetch<T>();
+            .fetch<TResponse>();
 
         if(response.isValid()) return response;
 

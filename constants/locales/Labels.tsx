@@ -1,6 +1,4 @@
 const Labels = {
-    oneTimeEvent: "OneTimeEvent",
-    repeatedEvent: "RepeatedEvent",
     presenceType: {
         unknown: "PresenceType.Unknown",
         late: "PresenceType.Late",
@@ -108,8 +106,6 @@ const Labels = {
     },
     descriptions: {
         eventCreator: "Descriptions.EventCreator",
-        oneTimeEvent: "Descriptions.OneTimeEvent",
-        repeatedEvent: "Descriptions.RepeatedEvent",
         createFlow: {
             titleStep: "Descriptions.CreateFlow.TitleStep",
         }
