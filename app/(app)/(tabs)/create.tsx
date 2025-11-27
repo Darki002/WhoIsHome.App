@@ -18,6 +18,9 @@ import {EventGroupDto, EventGroupModel} from "@/constants/WihTypes/Event/EventGr
 import {Endpoints} from "@/constants/endpoints";
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
 import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
+import {formatDate, formatTime} from "@/helper/datetimehelper";
+import Toast from "react-native-root-toast";
+import useWihValidation from "@/hooks/useWihValidation";
 
 interface NewEventGroup {
     title?: string;
@@ -36,6 +39,7 @@ const Create = () => {
     const {t} = useTranslation();
     const router = useRouter();
 
+    const { handleValidationChange, hasAnyValidationError } = useWihValidation();
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
     const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
     const callApi = useWihApi<EventGroupDto, EventGroupModel>({
@@ -44,7 +48,25 @@ const Create = () => {
     });
 
     const createEvent = () => {
-        callApi(null)
+        if(hasAnyValidationError()){
+            Toast.show(t(Labels.toast.error.fixValidationError), {
+                duration: Toast.durations.SHORT,
+            });
+            return;
+        }
+
+        const createdEvent : EventGroupDto = {
+            title: newEvent.title,
+            startDate: newEvent.startDate && formatDate(newEvent.startDate),
+            endDate: newEvent.endDate && formatDate(newEvent.endDate),
+            startTime: newEvent.startTime && formatTime(newEvent.startTime),
+            endTime: newEvent.endTime && formatTime(newEvent.endTime),
+            weekDays: newEvent.weekDays,
+            presenceType: newEvent.presenceType,
+            dinnerTime: newEvent.dinnerTime && formatTime(newEvent.dinnerTime)
+        }
+
+        callApi(createdEvent)
             .then(r => {
                 updateToast(r);
                 if(typeof r !== "string" && r.isValid()) {
@@ -73,8 +95,13 @@ const Create = () => {
 
             <WihTextInput
                 value={newEvent.title}
+                name="title"
                 placeholder={t(Labels.placeholders.title)}
-                onChangeText={t => updateEvent({title: t})}/>
+                onChangeText={t => updateEvent({title: t})}
+                validate={t => t !== undefined && t.length > 0 && t.length <= 50}
+                validationErrorMessage={Labels.errors.validation.title}
+                onValidationChange={handleValidationChange}
+            />
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
