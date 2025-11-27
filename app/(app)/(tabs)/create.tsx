@@ -33,8 +33,6 @@ interface NewEventGroup {
     dinnerTime?: Date | null;
 }
 
-// TODO: validation function should return the error message. Sometimes you want other error depending on input
-
 const Create = () => {
     const {t} = useTranslation();
     const router = useRouter();
