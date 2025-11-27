@@ -123,13 +123,25 @@ const Create = () => {
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={newEvent.startTime}
-                                  onChange={st => updateEvent({startTime: st})} />
+                    <WihTimeInput
+                        value={newEvent.startTime}
+                        name="startTime"
+                        onChange={st => updateEvent({startTime: st})}
+                        validate={time => !!time}
+                        validationErrorMessage={Labels.errors.validation.startTime}
+                        onValidationChange={handleValidationChange}
+                    />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={newEvent.endTime}
-                                  onChange={et => updateEvent({endTime: et})} />
+                    <WihTimeInput
+                        value={newEvent.endTime}
+                        name="endTime"
+                        onChange={et => updateEvent({endTime: et})}
+                        validate={time => !time || !newEvent.endTime || time > newEvent.endTime}
+                        validationErrorMessage={Labels.errors.validation.endTime}
+                        onValidationChange={handleValidationChange}
+                    />
                 </WihView>
             </WihIconRow>
 

@@ -29,7 +29,7 @@ export const WihTextInput: FC<WihTextInputProps> = ({
     const [isFocused, setIsFocused] = useState(false);
     const [hasValidationError, setHasValidationError] = useState<boolean>(false);
 
-    const onFocusOut = () => {
+    const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;
         setHasValidationError(invalid);
         onValidationChange?.(name, invalid);
@@ -43,7 +43,7 @@ export const WihTextInput: FC<WihTextInputProps> = ({
                 placeholder={placeholder}
                 placeholderTextColor={theme.placeholder}
                 onChangeText={onChangeText}
-                onEndEditing={onFocusOut}
+                onEndEditing={onEndEditing}
                 style={[
                     styles.input,
                     {
