@@ -33,7 +33,7 @@ interface NewEventGroup {
     dinnerTime?: Date | null;
 }
 
-// TODO: input validation. Make input component able to show input validation on focus lost. Take function for validation and error message. Rest done by component
+// TODO: validation function should return the error message. Sometimes you want other error depending on input
 
 const Create = () => {
     const {t} = useTranslation();
@@ -106,18 +106,31 @@ const Create = () => {
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
-                    <WihDateInput value={newEvent.startDate}
-                                  onChange={d => updateEvent({startDate: d})}/>
+                    <WihDateInput
+                        value={newEvent.startDate}
+                        name="startDate"
+                        onChange={d => updateEvent({startDate: d})}
+                        validate={date => !!date}
+                        validationErrorMessage={Labels.errors.validation.startDate}
+                        onValidationChange={handleValidationChange}
+                    />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
-                    <WihDateInput value={newEvent.endDate}
-                                  onChange={d => updateEvent({endDate: d})}/>
+                    <WihDateInput
+                        value={newEvent.endDate}
+                        name="endDate"
+                        onChange={d => updateEvent({endDate: d})}
+                        validate={date => !date || !newEvent.endDate || date > newEvent.endDate}
+                        validationErrorMessage={Labels.errors.validation.endDate}
+                        onValidationChange={handleValidationChange}
+                    />
                 </WihView>
-                <WihCheckboxGroup options={weekDaysOptions}
-                                  values={newEvent.weekDays}
-                                  onChange={w => updateEvent({weekDays: w})}
-                                  direction="row" />
+                <WihCheckboxGroup
+                    options={weekDaysOptions}
+                    values={newEvent.weekDays}
+                    onChange={w => updateEvent({weekDays: w})}
+                    direction="row" />
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
@@ -157,8 +170,11 @@ const Create = () => {
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
                     value={newEvent.dinnerTime}
+                    name="dinnerTime"
                     disabled={newEvent.presenceType !== "Late"}
-                    onChange={d => updateEvent({dinnerTime: d})}/>
+                    onChange={d => updateEvent({dinnerTime: d})}
+                    validate={date => newEvent.presenceType === "Late" ? !!date : !date }
+                />
             </WihIconRow>
 
             <WihButton style={styles.buttons} onPress={createEvent}>
