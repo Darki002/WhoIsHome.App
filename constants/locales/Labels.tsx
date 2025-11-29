@@ -101,6 +101,7 @@ const Labels = {
             date: "Descriptions.Validation.Date",
             startDate: "Descriptions.Validation.StartDate",
             endDate: "Descriptions.Validation.EndDate",
+            weekdays: "Descriptions.Validation.Weekdays",
             presenceType: "Descriptions.Validation.PresenceType",
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",

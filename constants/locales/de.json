@@ -103,6 +103,7 @@
       "Date": "Datum ist erforderlich",
       "StartDate": "Start Datum ist erforderlich.",
       "EndDate": "End Datum muss nach dem Start Datum sein.",
+      "Weekdays": "Mindestens eine Auswahl ist erforderlich.",
       "PresenceType": "Präsenz angabe ist erforderlich",
       "DinnerTime": "Abendessen Zeit ist erforderlich",
       "FirstOccurrence": "Start Date ist erforderlich"

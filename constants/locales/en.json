@@ -103,6 +103,7 @@
       "Date": "Date is required.",
       "StartDate": "Start date is required.",
       "EndDate": "End date must be after end date.",
+      "Weekdays": "At least one is required.",
       "PresenceType": "PresenceType is required.",
       "DinnerTime": "Dinner time is required.",
       "FirstOccurrence": "First occurrence is required."

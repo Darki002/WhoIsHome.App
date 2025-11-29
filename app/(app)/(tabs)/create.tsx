@@ -125,10 +125,15 @@ const Create = () => {
                     />
                 </WihView>
                 <WihCheckboxGroup
+                    name="weekDays"
                     options={weekDaysOptions}
                     values={newEvent.weekDays}
                     onChange={w => updateEvent({weekDays: w})}
-                    direction="row" />
+                    direction="row"
+                    validate={values => values.length > 0}
+                    validationErrorMessage={Labels.errors.validation.weekdays}
+                    onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
