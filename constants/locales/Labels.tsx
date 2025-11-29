@@ -102,7 +102,10 @@ const Labels = {
             startDate: "Descriptions.Validation.StartDate",
             endDate: "Descriptions.Validation.EndDate",
             weekdays: "Descriptions.Validation.Weekdays",
-            presenceType: "Descriptions.Validation.PresenceType",
+            presenceType: {
+                late: "Descriptions.Validation.PresenceType.Late",
+                other: "Descriptions.Validation.PresenceType.Other"
+            },
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",
         },

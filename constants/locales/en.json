@@ -104,7 +104,10 @@
       "StartDate": "Start date is required.",
       "EndDate": "End date must be after end date.",
       "Weekdays": "At least one is required.",
-      "PresenceType": "PresenceType is required.",
+      "PresenceType": {
+        "Late": "Time is required when Late.",
+        "Other": "You can not select a time presence type is not Late."
+      },
       "DinnerTime": "Dinner time is required.",
       "FirstOccurrence": "First occurrence is required."
     },

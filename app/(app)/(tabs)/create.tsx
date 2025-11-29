@@ -165,9 +165,11 @@ const Create = () => {
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
                     value={newEvent.presenceType}
+                    name="presenceType"
                     options={presenceTypeOptions}
                     onChange={onPresenceTypeChange}
-                    validationErrorMessage={/*TODO*/}
+                    validate={t => t !== undefined}
+                    onValidationChange={handleValidationChange}
                 />
             </WihIconRow>
 
@@ -178,7 +180,9 @@ const Create = () => {
                     name="dinnerTime"
                     disabled={newEvent.presenceType !== "Late"}
                     onChange={d => updateEvent({dinnerTime: d})}
-                    validationErrorMessage={/*TODO*/}
+                    validationErrorMessage={newEvent.presenceType === "Late"
+                        ? Labels.errors.validation.presenceType.late
+                        : Labels.errors.validation.presenceType.other}
                     validate={date => newEvent.presenceType === "Late" ? !!date : !date }
                     onValidationChange={handleValidationChange}
                 />
