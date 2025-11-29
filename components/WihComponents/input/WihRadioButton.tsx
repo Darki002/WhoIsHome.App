@@ -3,6 +3,7 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
+import React, {useState} from "react";
 
 export type WihOption<T> = {
     value?: T;
@@ -11,23 +12,36 @@ export type WihOption<T> = {
 
 export interface WihSingleChoiceProps<T> {
     value?: T;
+    name: string;
     options: Array<WihOption<T>>;
     direction?: "row" | "column";
     onChange: (value: T | undefined) => void;
     allowDeselect?: boolean;
+    validate?: (value?: T) => boolean;
+    validationErrorMessage?: string;
+    onValidationChange?: (name: string, hasError: boolean) => void;
 }
 
 export function WihRadioButton<T>({
                                        value,
+                                       name,
                                        options,
                                        direction,
                                        onChange,
+                                       validate,
+                                       validationErrorMessage,
+                                       onValidationChange,
                                        allowDeselect = true,
                                    }: WihSingleChoiceProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
+    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
 
     const handlePress = (optionValue: T | undefined) => {
+        const invalid = validate ? !validate(value) : false;
+        setHasValidationError(invalid);
+        onValidationChange?.(name, invalid);
+
         if (value === optionValue && allowDeselect) {
             onChange(undefined);
         } else {
@@ -57,6 +71,10 @@ export function WihRadioButton<T>({
                     </WihText>
                 </TouchableOpacity>
             ))}
+            {
+                hasValidationError && validationErrorMessage
+                && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
+            }
         </WihView>
     );
 }

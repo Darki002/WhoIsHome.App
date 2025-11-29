@@ -3,6 +3,7 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
+import React, {useState} from "react";
 
 export type WihOption<T> = {
     value?: T;
@@ -11,22 +12,35 @@ export type WihOption<T> = {
 
 export interface WihCheckboxGroupProps<T> {
     values?: T[];
+    name: string;
     options: Array<WihOption<T>>;
     direction?: "row" | "column";
     onChange: (values: T[]) => void;
+    validate?: (value: T[]) => boolean;
+    validationErrorMessage?: string;
+    onValidationChange?: (name: string, hasError: boolean) => void;
 }
 
 export function WihCheckboxGroup<T>({
                                         values = [],
+                                        name,
                                         options,
                                         direction = "column",
                                         onChange,
+                                        validate,
+                                        validationErrorMessage,
+                                        onValidationChange,
                                     }: WihCheckboxGroupProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
+    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
 
     const handlePress = (optionValue: T | undefined) => {
         if (optionValue === undefined) return;
+
+        const invalid = validate ? !validate(values) : false;
+        setHasValidationError(invalid);
+        onValidationChange?.(name, invalid);
 
         const isSelected = values.some(v => v === optionValue);
 
@@ -92,6 +106,10 @@ export function WihCheckboxGroup<T>({
                     </TouchableOpacity>
                 );
             })}
+            {
+                hasValidationError && validationErrorMessage
+                && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
+            }
         </WihView>
     );
 }
