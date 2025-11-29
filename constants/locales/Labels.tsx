@@ -69,10 +69,13 @@ const Labels = {
     },
     toast: {
         success: {
-            updateEvent: "Toast.Success.UpdateEvent"
+            updateEvent: "Toast.Success.UpdateEvent",
+            eventCreated: "Toast.Success.EventCreated"
         },
         error: {
-            updateEvent: "Toast.Error.UpdateEvent"
+            updateEvent: "Toast.Error.UpdateEvent",
+            eventCreated: "Toast.Error.EventCreated",
+            fixValidationError: "Toast.Error.FixValidationError"
         }
     },
     message: {
@@ -94,7 +97,10 @@ const Labels = {
         validation: {
             title: "Errors.Validation.Title",
             startTime: "Descriptions.Validation.StartTime",
+            endTime: "Descriptions.Validation.EndTime",
             date: "Descriptions.Validation.Date",
+            startDate: "Descriptions.Validation.StartDate",
+            endDate: "Descriptions.Validation.EndDate",
             presenceType: "Descriptions.Validation.PresenceType",
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",

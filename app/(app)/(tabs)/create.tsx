@@ -161,7 +161,9 @@ const Create = () => {
                 <WihPicker
                     value={newEvent.presenceType}
                     options={presenceTypeOptions}
-                    onChange={onPresenceTypeChange}/>
+                    onChange={onPresenceTypeChange}
+                    validationErrorMessage={/*TODO*/}
+                />
             </WihIconRow>
 
             <WihIconRow name="schedule" flexDirection="row">
@@ -171,7 +173,9 @@ const Create = () => {
                     name="dinnerTime"
                     disabled={newEvent.presenceType !== "Late"}
                     onChange={d => updateEvent({dinnerTime: d})}
+                    validationErrorMessage={/*TODO*/}
                     validate={date => newEvent.presenceType === "Late" ? !!date : !date }
+                    onValidationChange={handleValidationChange}
                 />
             </WihIconRow>
 

@@ -71,10 +71,13 @@
   },
   "Toast": {
     "Success": {
-      "UpdateEvent" : "Event wurde aktualisiert"
+      "UpdateEvent" : "Event wurde aktualisiert",
+      "EventCreated": "Event wurde erstellt"
     },
     "Error" : {
-      "UpdateEvent" : "Aktualisierung fehlgeschlagen"
+      "UpdateEvent" : "Aktualisierung fehlgeschlagen",
+      "EventCreated": "Event konnte nicht erstelt werden",
+      "FixValidationError": "Keine gültige Eingabe"
     }
   },
   "Message": {
@@ -96,7 +99,10 @@
     "Validation": {
       "Title": "Der Titel muss zwischen 1 und 50 Zeichen lang sein.",
       "StartTime": "Startzeit ist erforderlich",
+      "EndTime": "Endzeit muss später als die Startzeit sein.",
       "Date": "Datum ist erforderlich",
+      "StartDate": "Start Datum ist erforderlich.",
+      "EndDate": "End Datum muss nach dem Start Datum sein.",
       "PresenceType": "Präsenz angabe ist erforderlich",
       "DinnerTime": "Abendessen Zeit ist erforderlich",
       "FirstOccurrence": "Start Date ist erforderlich"

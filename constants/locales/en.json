@@ -71,10 +71,13 @@
   },
   "Toast": {
     "Success": {
-      "UpdateEvent" : "Event updated"
+      "UpdateEvent" : "Event updated",
+      "EventCreated": "Event created"
     },
     "Error" : {
-      "UpdateEvent" : "Update Failed"
+      "UpdateEvent" : "Update Failed",
+      "EventCreated": "Failed to create event",
+      "FixValidationError": "Not a valid input"
     }
   },
   "Message": {
@@ -94,12 +97,15 @@
     "MissingBaseUri": "Base Url is required!",
     "MissingApiKey": "Api Key is required!",
     "Validation": {
-      "Title": "Title must be between 1 - 50 characters",
-      "StartTime": "Starte time is required",
-      "Date": "Date is required",
-      "PresenceType": "PresenceType is required",
-      "DinnerTime": "Dinner time is required",
-      "FirstOccurrence": "First occurrence is required"
+      "Title": "Title must be between 1 - 50 characters.",
+      "StartTime": "Starte time is required.",
+      "EndTime": "End time must be after start time.",
+      "Date": "Date is required.",
+      "StartDate": "Start date is required.",
+      "EndDate": "End date must be after end date.",
+      "PresenceType": "PresenceType is required.",
+      "DinnerTime": "Dinner time is required.",
+      "FirstOccurrence": "First occurrence is required."
     },
     "NoEvents" : "This user currently has no events."
   },
