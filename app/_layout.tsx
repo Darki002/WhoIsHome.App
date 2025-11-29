@@ -60,6 +60,7 @@ const RootLayout = () => {
         }
     };
 
+    // TODO: use <Stack.Protected /> component. See https://docs.expo.dev/router/advanced/authentication/
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <I18nextProvider i18n={i18n}>

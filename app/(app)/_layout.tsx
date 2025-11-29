@@ -47,7 +47,6 @@ const AppLayout = () => {
         }
     };
 
-    // TODO: use <Stack.Protected /> component. See https://docs.expo.dev/router/advanced/authentication/
     return (
         <Stack screenOptions={screenOptions}>
             <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
