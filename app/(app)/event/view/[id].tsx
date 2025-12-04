@@ -126,7 +126,7 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
+                    <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
                     <WihText>{event.date.toLocaleDateString()}</WihText>
                 </WihView>
             </WihIconRow>

@@ -17,7 +17,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        router.push(`/(app)/event/view/${event.id}`);
+        router.push(`/(app)/event/view/${event.id}?date=${event.dateString}`);
     }, [event.id, event.hasRepetitions]);
 
     const renderIcon = (hasRepetitions: boolean) => {

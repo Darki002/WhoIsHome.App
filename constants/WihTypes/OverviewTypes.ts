@@ -14,6 +14,7 @@ export class UserOverviewEvent {
     id: number;
     title: string;
     date: Date | undefined;
+    dateString: string = undefined!;
     startTime: Date | undefined;
     endTime: Date | undefined;
     hasRepetitions: boolean;
@@ -25,6 +26,7 @@ export class UserOverviewEvent {
         this.startTime = timeStringToDate(userOverviewEventModel.startTime);
         this.endTime = timeStringToDate(userOverviewEventModel.endTime);
         this.date = dateStringToDate(userOverviewEventModel.date);
+        this.dateString = model.date;
         this.hasRepetitions = userOverviewEventModel.hasRepetitions;
         this.templateId = userOverviewEventModel.templateId;
     }
