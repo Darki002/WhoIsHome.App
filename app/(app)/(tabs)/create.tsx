@@ -119,7 +119,7 @@ const Create = () => {
                         value={newEvent.endDate}
                         name="endDate"
                         onChange={d => updateEvent({endDate: d})}
-                        validate={date => !date || !newEvent.endDate || date > newEvent.endDate}
+                        validate={date => !date || !newEvent.startDate || date > newEvent.startDate}
                         validationErrorMessage={Labels.errors.validation.endDate}
                         onValidationChange={handleValidationChange}
                     />
@@ -154,7 +154,7 @@ const Create = () => {
                         value={newEvent.endTime}
                         name="endTime"
                         onChange={et => updateEvent({endTime: et})}
-                        validate={time => !time || !newEvent.endTime || time > newEvent.endTime}
+                        validate={time => !time || !newEvent.startTime || time > newEvent.startTime}
                         validationErrorMessage={Labels.errors.validation.endTime}
                         onValidationChange={handleValidationChange}
                     />

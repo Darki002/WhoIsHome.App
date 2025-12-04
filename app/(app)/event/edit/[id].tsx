@@ -22,6 +22,8 @@ import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/W
 import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGroup";
 import {WihTextButton} from "@/components/WihComponents/input/WihButton";
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
+import useWihValidation from "@/hooks/useWihValidation";
+import Toast from "react-native-root-toast";
 
 interface EventGroupUpdate {
     title?: string;
@@ -43,8 +45,6 @@ interface EventInstanceUpdate {
     dinnerTime?: Date | null;
 }
 
-// TODO: input validations!!! With new validation feature from input components
-
 function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>) {
     const {t} = useTranslation();
     const router = useRouter();
@@ -57,6 +57,7 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         setEventUpdate(prev => ({...prev, ...update}));
     }
 
+    const { handleValidationChange, hasAnyValidationError } = useWihValidation();
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<EventGroupDto, EventGroupModel>({
         endpoint: Endpoints.eventGroup.withId(id),
@@ -68,6 +69,13 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
     }, [id]);
 
     const onUpdate = () => {
+        if(hasAnyValidationError()){
+            Toast.show(t(Labels.toast.error.fixValidationError), {
+                duration: Toast.durations.SHORT,
+            });
+            return;
+        }
+
         const update : EventGroupDto = {
             title: eventUpdate.title,
             startDate: eventUpdate.startDate && formatDate(eventUpdate.startDate),
@@ -92,53 +100,94 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         <EventEditLayout title={event.title} userId={event.userId} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
                 value={eventUpdate.title ?? event.title}
+                name="title"
                 placeholder={t(Labels.placeholders.title)}
-                onChangeText={t => updateEvent({title: t})}/>
+                onChangeText={t => updateEvent({title: t})}
+                validate={t => t !== undefined && t.length > 0 && t.length <= 50}
+                validationErrorMessage={Labels.errors.validation.title}
+                onValidationChange={handleValidationChange}
+            />
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
                     <WihDateInput value={eventUpdate.startDate ?? event.startDate}
-                                  onChange={d => updateEvent({startDate: d})}/>
+                                  name="startDate"
+                                  onChange={d => updateEvent({startDate: d})}
+                                  validate={date => !!date}
+                                  validationErrorMessage={Labels.errors.validation.startDate}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
                     <WihDateInput value={eventUpdate.endDate === undefined ? event.endDate : eventUpdate.endDate}
-                                  onChange={d => updateEvent({endDate: d})}/>
+                                  name="endDate"
+                                  onChange={d => updateEvent({endDate: d})}
+                                  validate={date => !date || !eventUpdate.startDate || date > eventUpdate.startDate}
+                                  validationErrorMessage={Labels.errors.validation.endDate}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
-                <WihCheckboxGroup options={weekDaysOptions}
+                <WihCheckboxGroup name="weekDays"
+                                  options={weekDaysOptions}
                                   values={eventUpdate.weekDays ?? event.weekDays}
                                   onChange={w => updateEvent({weekDays: w})}
-                                  direction="row" />
+                                  direction="row"
+                                  validate={values => values.length > 0}
+                                  validationErrorMessage={Labels.errors.validation.weekdays}
+                                  onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
 
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
                     <WihTimeInput value={eventUpdate.startTime ?? event.startTime}
-                                  onChange={st => updateEvent({startTime: st})} />
+                                  name="startTime"
+                                  onChange={st => updateEvent({startTime: st})}
+                                  validate={time => !!time}
+                                  validationErrorMessage={Labels.errors.validation.startTime}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
                     <WihTimeInput value={eventUpdate.endTime === undefined ? event.endTime : eventUpdate.endTime}
-                                  onChange={et => updateEvent({endTime: et})} />
+                                  name="endTime"
+                                  onChange={et => updateEvent({endTime: et})}
+                                  validate={time => !time || !eventUpdate.startTime || time > eventUpdate.startTime}
+                                  validationErrorMessage={Labels.errors.validation.endTime}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
             </WihIconRow>
 
             <WihIconRow name="home" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
+                    name="presenceType"
                     value={eventUpdate.presenceType ?? event.presenceType}
                     options={presenceTypeOptions}
-                    onChange={onPresenceTypeChange}/>
+                    onChange={onPresenceTypeChange}
+                    validate={t => t !== undefined}
+                    onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
 
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
                     value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
+                    name="dinnerTime"
                     disabled={event.presenceType !== "Late"}
-                    onChange={d => updateEvent({dinnerTime: d})}/>
+                    onChange={d => updateEvent({dinnerTime: d})}
+                    validationErrorMessage={eventUpdate.presenceType === "Late"
+                        ? Labels.errors.validation.presenceType.late
+                        : Labels.errors.validation.presenceType.other}
+                    validate={date => eventUpdate.presenceType === "Late" ? !!date : !date }
+                    onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
         </EventEditLayout>
     )
@@ -156,6 +205,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
         setEventUpdate(prev => ({...prev, ...update}));
     }
 
+    const { handleValidationChange, hasAnyValidationError } = useWihValidation();
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<EventInstanceDto, EventInstanceModel>({
         endpoint: Endpoints.eventGroup.instance.withDate(id, event.date),
@@ -167,6 +217,13 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     }, [id]);
 
     const onUpdate = () => {
+        if(hasAnyValidationError()){
+            Toast.show(t(Labels.toast.error.fixValidationError), {
+                duration: Toast.durations.SHORT,
+            });
+            return;
+        }
+
         const update : EventInstanceDto = {
             title: eventUpdate.title,
             date: eventUpdate.date && formatDate(eventUpdate.date),
@@ -195,15 +252,25 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             </WihIconRow>
 
             <WihTextInput
+                name="title"
                 value={eventUpdate.title ?? event.title}
                 placeholder={t(Labels.placeholders.title)}
-                onChangeText={t => updateEvent({title: t})}/>
+                onChangeText={t => updateEvent({title: t})}
+                validate={t => t !== undefined && t.length > 0 && t.length <= 50}
+                validationErrorMessage={Labels.errors.validation.title}
+                onValidationChange={handleValidationChange}
+            />
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
                     <WihDateInput value={eventUpdate.date ?? event.date}
-                                  onChange={d => updateEvent({date: d})}/>
+                                  name="date"
+                                  onChange={d => updateEvent({date: d})}
+                                  validate={d => !!d}
+                                  validationErrorMessage={Labels.errors.validation.date}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
             </WihIconRow>
 
@@ -211,29 +278,50 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
                     <WihTimeInput value={eventUpdate.startTime ?? event.startTime}
-                                  onChange={st => updateEvent({startTime: st})} />
+                                  name="startTime"
+                                  onChange={st => updateEvent({startTime: st})}
+                                  validate={time => !!time}
+                                  validationErrorMessage={Labels.errors.validation.startTime}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
                     <WihTimeInput value={eventUpdate.endTime === undefined ? event.endTime : eventUpdate.endTime}
-                                  onChange={et => updateEvent({endTime: et})} />
+                                  name="endTime"
+                                  onChange={et => updateEvent({endTime: et})}
+                                  validate={time => !time || !eventUpdate.startTime || time > eventUpdate.startTime}
+                                  validationErrorMessage={Labels.errors.validation.endTime}
+                                  onValidationChange={handleValidationChange}
+                    />
                 </WihView>
             </WihIconRow>
 
             <WihIconRow name="home" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
+                    name="presenceType"
                     value={eventUpdate.presenceType ?? event.presenceType}
                     options={presenceTypeOptions}
-                    onChange={onPresenceTypeChange}/>
+                    onChange={onPresenceTypeChange}
+                    validate={t => t !== undefined}
+                    onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
 
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
                     value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
+                    name="dinnerTime"
                     disabled={event.presenceType !== "Late"}
-                    onChange={d => updateEvent({dinnerTime: d})}/>
+                    onChange={d => updateEvent({dinnerTime: d})}
+                    validationErrorMessage={eventUpdate.presenceType === "Late"
+                        ? Labels.errors.validation.presenceType.late
+                        : Labels.errors.validation.presenceType.other}
+                    validate={date => eventUpdate.presenceType === "Late" ? !!date : !date }
+                    onValidationChange={handleValidationChange}
+                />
             </WihIconRow>
         </EventEditLayout>
     )
