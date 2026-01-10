@@ -11,6 +11,9 @@
       "environment": "preview",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "APP_VERSION": "5.0.0-preview"
       }
     },
     "production": {
@@ -29,6 +32,9 @@
       "developmentClient": true,
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "APP_VERSION": "5.0.0-beta"
       }
     }
   }
