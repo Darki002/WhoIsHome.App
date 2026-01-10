@@ -17,10 +17,10 @@ export const Endpoints = {
         }
     },
     quarries: {
-        dailyOverview: "daily-overview",
-        weeklyReport: "weekly-report",
+        dailyOverview: "quarries/daily-overview",
+        weeklyReport: "quarries/weekly-report",
         userOverview: {
-            url: "user-overview",
+            url: "quarries/user-overview",
             withId: (id: number | string) => `${Endpoints.quarries.userOverview.url}/${id}`
         },
     },
