@@ -15,7 +15,11 @@ export default ({ config }: { config: ExpoConfig }) => {
     return {
         ...config,
         version: version,
-        android: { ...config.android, versionCode: code },
+        android: {
+            ...config.android,
+            versionCode: code,
+            googleServicesFile: process.env.GOOGLE_SERVICES_JSON || "./google-services.json"
+        },
         ios:     { ...config.ios, buildNumber: version },
     };
 };
