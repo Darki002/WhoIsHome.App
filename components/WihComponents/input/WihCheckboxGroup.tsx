@@ -74,26 +74,6 @@ export function WihCheckboxGroup<T>({
                         ]}
                     >
                         <WihView style={styles.checkboxContainer}>
-                            <WihView
-                                style={[
-                                    styles.checkbox,
-                                    {
-                                        borderColor: selected ? theme.textInverse : theme.border,
-                                        backgroundColor: selected ? theme.textInverse : 'transparent',
-                                    },
-                                ]}
-                            >
-                                {selected && (
-                                    <WihText
-                                        style={[
-                                            styles.checkmark,
-                                            {color: theme.primary}
-                                        ]}
-                                    >
-                                        ✓
-                                    </WihText>
-                                )}
-                            </WihView>
                             <WihText
                                 style={{
                                     color: selected ? theme.textInverse : theme.text,
