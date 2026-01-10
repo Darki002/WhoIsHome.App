@@ -21,9 +21,6 @@ jobs:
       - name: 🏗 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 📝 Create Google Service Account
-        run: echo "${{ secrets.EXPO_GSA }}" | base64 --decode > google-services.json
-
       - name: 🔢 Derive version from tag
         if: startsWith(github.ref, 'refs/tags/')
         run: |
