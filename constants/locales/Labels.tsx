@@ -96,15 +96,15 @@ const Labels = {
         missingApiKey: "Errors.MissingApiKey",
         validation: {
             title: "Errors.Validation.Title",
-            startTime: "Descriptions.Validation.StartTime",
-            endTime: "Descriptions.Validation.EndTime",
-            date: "Descriptions.Validation.Date",
-            startDate: "Descriptions.Validation.StartDate",
-            endDate: "Descriptions.Validation.EndDate",
-            weekdays: "Descriptions.Validation.Weekdays",
+            startTime: "Errors.Validation.StartTime",
+            endTime: "Errors.Validation.EndTime",
+            date: "Errors.Validation.Date",
+            startDate: "Errors.Validation.StartDate",
+            endDate: "Errors.Validation.EndDate",
+            weekdays: "Errors.Validation.Weekdays",
             presenceType: {
-                late: "Descriptions.Validation.PresenceType.Late",
-                other: "Descriptions.Validation.PresenceType.Other"
+                late: "Errors.Validation.PresenceType.Late",
+                other: "Errors.Validation.PresenceType.Other"
             },
             dinnerTime: "Descriptions.Validation.DinnerTime",
             firstOccurrence: "Titles.CreateFlow.FirstOccurrence",

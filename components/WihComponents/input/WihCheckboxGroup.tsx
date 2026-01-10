@@ -38,17 +38,16 @@ export function WihCheckboxGroup<T>({
     const handlePress = (optionValue: T | undefined) => {
         if (optionValue === undefined) return;
 
-        const invalid = validate ? !validate(values) : false;
+        const isSelected = values.some(v => v === optionValue);
+        const newValues = isSelected
+            ? values.filter(v => v !== optionValue)
+            : [...values, optionValue];
+
+        const invalid = validate ? !validate(newValues) : false;
         setHasValidationError(invalid);
         onValidationChange?.(name, invalid);
 
-        const isSelected = values.some(v => v === optionValue);
-
-        if (isSelected) {
-            onChange(values.filter(v => v !== optionValue));
-        } else {
-            onChange([...values, optionValue]);
-        }
+        onChange(newValues);
     };
 
     const isSelected = (optionValue: T | undefined) => {
@@ -57,68 +56,60 @@ export function WihCheckboxGroup<T>({
     };
 
     return (
-        <WihView style={[styles.container, {flexDirection: direction}]}>
-            {options.map((option, index) => {
-                const selected = isSelected(option.value);
-                return (
-                    <TouchableOpacity
-                        key={index}
-                        onPress={() => handlePress(option.value)}
-                        style={[
-                            styles.option,
-                            {
-                                borderColor: selected ? theme.primary : theme.border,
-                                backgroundColor: selected ? theme.primary : 'transparent',
-                                borderWidth: 2,
-                            },
-                        ]}
-                    >
-                        <WihView style={styles.checkboxContainer}>
-                            <WihText
-                                style={{
-                                    color: selected ? theme.textInverse : theme.text,
-                                    flex: 1,
-                                }}
-                            >
-                                {t(option.displayTextLabel)}
-                            </WihText>
-                        </WihView>
-                    </TouchableOpacity>
-                );
-            })}
+        <WihView>
+            <WihView style={[styles.container, {flexDirection: direction}]}>
+                {options.map((option, index) => {
+                    const selected = isSelected(option.value);
+                    return (
+                        <TouchableOpacity
+                            key={index}
+                            onPress={() => handlePress(option.value)}
+                            style={[
+                                styles.option,
+                                {
+                                    borderColor: selected ? theme.primary : theme.border,
+                                    backgroundColor: 'transparent',
+                                },
+                            ]}
+                        >
+                            <WihView style={styles.checkboxContainer}>
+                                <WihText
+                                    style={{
+                                        color: selected ? theme.primary : theme.text
+                                    }}
+                                >
+                                    {t(option.displayTextLabel)}
+                                </WihText>
+                            </WihView>
+                        </TouchableOpacity>
+                    );
+                })}
+            </WihView>
             {
                 hasValidationError && validationErrorMessage
-                && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
+                && <WihText style={{color: theme.error, paddingTop: 10}}>{t(validationErrorMessage)}</WihText>
             }
         </WihView>
     );
 }
 
+const CIRCLE_SIZE = 36;
+
 const styles = StyleSheet.create({
     container: {
-        gap: 10
+        gap: 10,
+        flexWrap: "wrap",
     },
     option: {
-        padding: 10,
-        borderRadius: 5,
-        alignItems: "center",
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-        width: "100%",
-    },
-    checkbox: {
-        width: 20,
-        height: 20,
-        borderRadius: 3,
-        borderWidth: 2,
+        width: CIRCLE_SIZE,
+        height: CIRCLE_SIZE,
+        borderRadius: CIRCLE_SIZE / 2,
         alignItems: "center",
         justifyContent: "center",
+        borderWidth: 2,
     },
-    checkmark: {
-        fontSize: 14,
-        fontWeight: "bold",
+    checkboxContainer: {
+        alignItems: "center",
+        justifyContent: "center"
     },
 });

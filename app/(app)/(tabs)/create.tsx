@@ -127,16 +127,18 @@ const Create = () => {
                         </WihView>
                     </WihIconRow>
 
-                    <WihCheckboxGroup
-                        name="weekDays"
-                        options={weekDaysOptions}
-                        values={newEvent.weekDays}
-                        onChange={w => updateEvent({weekDays: w})}
-                        direction="row"
-                        validate={values => values.length > 0}
-                        validationErrorMessage={Labels.errors.validation.weekdays}
-                        onValidationChange={handleValidationChange}
-                    />
+                    <WihView style={{alignSelf: "stretch", marginBottom: 20}}>
+                        <WihCheckboxGroup
+                            name="weekDays"
+                            options={weekDaysOptions}
+                            values={newEvent.weekDays}
+                            onChange={w => updateEvent({weekDays: w})}
+                            direction="row"
+                            validate={values => values.length > 0}
+                            validationErrorMessage={Labels.errors.validation.weekdays}
+                            onValidationChange={handleValidationChange}
+                        />
+                    </WihView>
 
                     <WihIconRow name="timeline" flexDirection="column">
                         <WihView style={styles.container}>

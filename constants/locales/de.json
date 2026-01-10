@@ -103,7 +103,7 @@
       "Date": "Datum ist erforderlich",
       "StartDate": "Start Datum ist erforderlich.",
       "EndDate": "End Datum muss nach dem Start Datum sein.",
-      "Weekdays": "Mindestens eine Auswahl ist erforderlich.",
+      "Weekdays": "Mindestens eine Wochentag ist erforderlich.",
       "PresenceType": {
         "Late": "Zeit ist erforderlich mit \"Spät\".",
         "Other": "Du kannst keine zeit wählen wen Anwesenheit nicht \"Spät\" ist."
