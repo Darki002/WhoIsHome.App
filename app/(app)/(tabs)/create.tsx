@@ -21,6 +21,7 @@ import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToas
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import Toast from "react-native-root-toast";
 import useWihValidation from "@/hooks/useWihValidation";
+import {WihRadioButton} from "@/components/WihComponents/input/WihRadioButton";
 
 interface NewEventGroup {
     title?: string;
@@ -38,6 +39,7 @@ const Create = () => {
     const router = useRouter();
 
     const { handleValidationChange, hasAnyValidationError } = useWihValidation();
+    const [isRepeating, setIsRepeating] = useState<boolean>(false);
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
     const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
     const callApi = useWihApi<EventGroupDto, EventGroupModel>({
@@ -78,11 +80,40 @@ const Create = () => {
         setNewEvent(prev => ({...prev, ...update}));
     }
 
+    const switchEventType = (repeating: boolean | undefined) => {
+        setIsRepeating(repeating ?? false);
+        if (!repeating) {
+            const weekday = newEvent.startDate?.getDay();
+            updateEvent({
+                weekDays: !weekday ? [] : [weekday],
+                endDate: newEvent.startDate
+            });
+        }
+    }
+
+    const onStartDateChange = (date: Date | undefined) => {
+        updateEvent({startDate: date});
+        if (!isRepeating) {
+            updateEvent({endDate: date});
+        }
+
+        if(newEvent.weekDays === undefined){
+            const weekday = date?.getDay();
+            if(!weekday) return;
+            updateEvent({weekDays: [weekday]});
+        }
+    }
+
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
         updateEvent({presenceType: presenceType});
         if (presenceType !== "Late") {
             updateEvent({dinnerTime: null});
         }
+    }
+
+    const validateEndDate = (date: Date | null | undefined) => {
+        if (!date || !newEvent.startDate) return true;
+        return date >= newEvent.startDate;
     }
 
     return (
@@ -102,13 +133,26 @@ const Create = () => {
                         onValidationChange={handleValidationChange}
                     />
 
+                    <WihRadioButton
+                        value={isRepeating}
+                        name="isRepeating"
+                        direction="row"
+                        options={[
+                            {value: false, displayTextLabel: Labels.labels.single},
+                            {value: true, displayTextLabel: Labels.labels.repeating}
+                        ]}
+                        onChange={switchEventType}
+                        validate={r => r !== undefined}
+                        onValidationChange={handleValidationChange}
+                    />
+
                     <WihIconRow name="date-range" flexDirection="column">
                         <WihView style={styles.container}>
                             <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
                             <WihDateInput
                                 value={newEvent.startDate}
                                 name="startDate"
-                                onChange={d => updateEvent({startDate: d})}
+                                onChange={onStartDateChange}
                                 validate={date => !!date}
                                 validationErrorMessage={Labels.errors.validation.startDate}
                                 onValidationChange={handleValidationChange}
@@ -120,7 +164,7 @@ const Create = () => {
                                 value={newEvent.endDate}
                                 name="endDate"
                                 onChange={d => updateEvent({endDate: d})}
-                                validate={date => !date || !newEvent.startDate || date > newEvent.startDate}
+                                validate={validateEndDate}
                                 validationErrorMessage={Labels.errors.validation.endDate}
                                 onValidationChange={handleValidationChange}
                             />
