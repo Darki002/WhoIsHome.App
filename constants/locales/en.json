@@ -31,7 +31,9 @@
     "PresenceType": "Presence",
     "DinnerTime": "Arrival Time",
     "StartDate": "Start Date",
-    "EndDate": "End Date"
+    "EndDate": "End Date",
+    "Single": "Single",
+    "Repeating": "Repeating"
   },
   "Tabs": {
     "Home": "Home",

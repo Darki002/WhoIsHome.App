@@ -30,6 +30,8 @@ const Labels = {
         dinnerTime: "Labels.DinnerTime",
         startDate: "Labels.StartDate",
         endDate: "Labels.EndDate",
+        single: "Labels.Single",
+        repeating: "Labels.Repeating",
     },
     tabs: {
         home: "Tabs.Home",

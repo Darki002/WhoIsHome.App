@@ -38,7 +38,7 @@ const Create = () => {
     const {t} = useTranslation();
     const router = useRouter();
 
-    const { handleValidationChange, hasAnyValidationError } = useWihValidation();
+    const validator = useWihValidation("createEvent");
     const [isRepeating, setIsRepeating] = useState<boolean>(false);
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
     const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
@@ -48,7 +48,7 @@ const Create = () => {
     });
 
     const createEvent = () => {
-        if(hasAnyValidationError()){
+        if(validator.hasAnyValidationError()){
             Toast.show(t(Labels.toast.error.fixValidationError), {
                 duration: Toast.durations.SHORT,
             });
@@ -120,31 +120,35 @@ const Create = () => {
         <WihView style={{flex: 1}}>
             <ScrollView style={{height: "100%"}}>
                 <WihView style={styles.mainContainer}>
-                    <WihTitle>{t(Labels.titles.eventCreator)}</WihTitle>
-                    <WihText style={styles.description}>{t(Labels.descriptions.eventCreator)}</WihText>
+                    <WihView style={styles.headline}>
+                        <WihView>
+                            <WihTitle>{t(Labels.titles.eventCreator)}</WihTitle>
+                            <WihText>{t(Labels.descriptions.eventCreator)}</WihText>
+                        </WihView>
 
-                    <WihTextInput
-                        value={newEvent.title}
-                        name="title"
-                        placeholder={t(Labels.placeholders.title)}
-                        onChangeText={t => updateEvent({title: t})}
-                        validate={t => t !== undefined && t.length > 0 && t.length <= 50}
-                        validationErrorMessage={Labels.errors.validation.title}
-                        onValidationChange={handleValidationChange}
-                    />
+                        <WihTextInput
+                            value={newEvent.title}
+                            name="title"
+                            placeholder={t(Labels.placeholders.title)}
+                            onChangeText={t => updateEvent({title: t})}
+                            validate={t => t !== undefined && t.length > 0 && t.length <= 50}
+                            validationErrorMessage={Labels.errors.validation.title}
+                            validator={validator}
+                        />
 
-                    <WihRadioButton
-                        value={isRepeating}
-                        name="isRepeating"
-                        direction="row"
-                        options={[
-                            {value: false, displayTextLabel: Labels.labels.single},
-                            {value: true, displayTextLabel: Labels.labels.repeating}
-                        ]}
-                        onChange={switchEventType}
-                        validate={r => r !== undefined}
-                        onValidationChange={handleValidationChange}
-                    />
+                        <WihRadioButton
+                            value={isRepeating}
+                            name="isRepeating"
+                            direction="row"
+                            options={[
+                                {value: false, displayTextLabel: Labels.labels.single},
+                                {value: true, displayTextLabel: Labels.labels.repeating}
+                            ]}
+                            onChange={switchEventType}
+                            validate={r => r !== undefined}
+                            validator={validator}
+                        />
+                    </WihView>
 
                     <WihIconRow name="date-range" flexDirection="column">
                         <WihView style={styles.container}>
@@ -155,34 +159,42 @@ const Create = () => {
                                 onChange={onStartDateChange}
                                 validate={date => !!date}
                                 validationErrorMessage={Labels.errors.validation.startDate}
-                                onValidationChange={handleValidationChange}
+                                validator={validator}
                             />
                         </WihView>
-                        <WihView style={styles.container}>
-                            <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
-                            <WihDateInput
-                                value={newEvent.endDate}
-                                name="endDate"
-                                onChange={d => updateEvent({endDate: d})}
-                                validate={validateEndDate}
-                                validationErrorMessage={Labels.errors.validation.endDate}
-                                onValidationChange={handleValidationChange}
-                            />
-                        </WihView>
+                        {
+                            isRepeating && (
+                                <WihView style={styles.container}>
+                                    <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
+                                    <WihDateInput
+                                        value={newEvent.endDate}
+                                        name="endDate"
+                                        onChange={d => updateEvent({endDate: d})}
+                                        validate={validateEndDate}
+                                        validationErrorMessage={Labels.errors.validation.endDate}
+                                        validator={validator}
+                                    />
+                                </WihView>
+                            )
+                        }
                     </WihIconRow>
 
-                    <WihView style={{alignSelf: "stretch", marginBottom: 20}}>
-                        <WihCheckboxGroup
-                            name="weekDays"
-                            options={weekDaysOptions}
-                            values={newEvent.weekDays}
-                            onChange={w => updateEvent({weekDays: w})}
-                            direction="row"
-                            validate={values => values.length > 0}
-                            validationErrorMessage={Labels.errors.validation.weekdays}
-                            onValidationChange={handleValidationChange}
-                        />
-                    </WihView>
+                    {
+                        isRepeating && (
+                            <WihView style={{alignSelf: "stretch", marginBottom: 20}}>
+                                <WihCheckboxGroup
+                                    name="weekDays"
+                                    options={weekDaysOptions}
+                                    values={newEvent.weekDays}
+                                    onChange={w => updateEvent({weekDays: w})}
+                                    direction="row"
+                                    validate={values => values.length > 0}
+                                    validationErrorMessage={Labels.errors.validation.weekdays}
+                                    validator={validator}
+                                />
+                            </WihView>
+                        )
+                    }
 
                     <WihIconRow name="timeline" flexDirection="column">
                         <WihView style={styles.container}>
@@ -193,7 +205,7 @@ const Create = () => {
                                 onChange={st => updateEvent({startTime: st})}
                                 validate={time => !!time}
                                 validationErrorMessage={Labels.errors.validation.startTime}
-                                onValidationChange={handleValidationChange}
+                                validator={validator}
                             />
                         </WihView>
                         <WihView style={styles.container}>
@@ -204,7 +216,7 @@ const Create = () => {
                                 onChange={et => updateEvent({endTime: et})}
                                 validate={time => !time || !newEvent.startTime || time > newEvent.startTime}
                                 validationErrorMessage={Labels.errors.validation.endTime}
-                                onValidationChange={handleValidationChange}
+                                validator={validator}
                             />
                         </WihView>
                     </WihIconRow>
@@ -217,7 +229,7 @@ const Create = () => {
                             options={presenceTypeOptions}
                             onChange={onPresenceTypeChange}
                             validate={t => t !== undefined}
-                            onValidationChange={handleValidationChange}
+                            validator={validator}
                         />
                     </WihIconRow>
 
@@ -232,7 +244,7 @@ const Create = () => {
                                 ? Labels.errors.validation.presenceType.late
                                 : Labels.errors.validation.presenceType.other}
                             validate={date => newEvent.presenceType === "Late" ? !!date : !date }
-                            onValidationChange={handleValidationChange}
+                            validator={validator}
                         />
                     </WihIconRow>
 
@@ -252,8 +264,9 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         marginTop: 20
     },
-    description: {
+    headline: {
         marginBottom: 20,
+        gap: 20
     },
     container: {
         display: "flex",

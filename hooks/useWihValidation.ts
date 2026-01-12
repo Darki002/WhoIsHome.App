@@ -1,14 +1,40 @@
 import {useState} from "react";
 
-// TODO: clear when focus lost. Or just make sure the fieldErrors are seperate instance for each component
-export default function useWihValidation() {
-    const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
+export default function useWihValidation(name: string) {
+    const [validators, setValidators] = useState<Validator[]>([]);
 
-    const handleValidationChange = (name: string, hasError: boolean) => {
-        setFieldErrors(prev => ({...prev, [name]: hasError}));
-    };
+    const validator = validators.find(v => v.name === name);
+    if (validator) {
+        return validator;
+    }
 
-    const hasAnyValidationError = () => Object.values(fieldErrors).some(Boolean);
+    const newValidator = new Validator(name);
+    setValidators(prev => [...prev, newValidator]);
+    return newValidator;
+}
 
-    return { handleValidationChange, hasAnyValidationError };
+export class Validator {
+    name: string;
+    fieldErrors: Record<string, boolean> = {};
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    hasAnyValidationError = () => Object.values(this.fieldErrors).some(Boolean);
+
+    handleValidationChange = (name: string, hasError: boolean) => {
+        if (!name){
+            throw new Error("Validator: 'name' parameter is required in handleValidationChange.");
+        }
+        this.fieldErrors[name] = hasError;
+    }
+
+    registerField = (fieldName: string, validateFn: () => boolean) => {
+        if (!this.isRegistered(fieldName)) {
+            this.fieldErrors[fieldName] = validateFn();
+        }
+    }
+
+    isRegistered = (fieldName: string) => Object.keys(this.fieldErrors).includes(fieldName);
 }

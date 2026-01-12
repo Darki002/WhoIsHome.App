@@ -4,6 +4,7 @@ import {useTranslation} from "react-i18next";
 import WihView from "@/components/WihComponents/view/WihView";
 import React, {useState} from "react";
 import {WihText} from "@/components/WihComponents/display/WihText";
+import {Validator} from "@/hooks/useWihValidation";
 
 export type WihOption<T> = {
     value?: T;
@@ -17,7 +18,7 @@ export interface WihPickerProps<T> {
     onChange: (value: T | undefined) => void;
     validate?: (value?: T) => boolean;
     validationErrorMessage?: string;
-    onValidationChange?: (name: string, hasError: boolean) => void;
+    validator?: Validator;
 }
 
 export function WihPicker<T>({
@@ -27,16 +28,17 @@ export function WihPicker<T>({
                                  onChange,
                                  validate,
                                  validationErrorMessage,
-                                 onValidationChange,
+                                 validator,
                              }: WihPickerProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [hasValidationError, setHasValidationError] = useState<boolean>(false);
+    validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;
         setHasValidationError(invalid);
-        onValidationChange?.(name, invalid);
+        validator?.handleValidationChange(name, invalid);
         onChange(value);
     }
 

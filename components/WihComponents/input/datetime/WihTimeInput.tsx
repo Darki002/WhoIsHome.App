@@ -6,6 +6,7 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
+import {Validator} from "@/hooks/useWihValidation";
 
 export interface WihTimeInputProps {
     value?: Date | null;
@@ -14,19 +15,20 @@ export interface WihTimeInputProps {
     disabled?: boolean;
     validate?: (value?: Date | null) => boolean;
     validationErrorMessage?: string;
-    onValidationChange?: (name: string, hasError: boolean) => void;
+    validator?: Validator;
 }
 
-export const WihTimeInput = ({value, name, onChange, validate, validationErrorMessage, onValidationChange, disabled = false}: WihTimeInputProps) => {
+export const WihTimeInput = ({value, name, onChange, validate, validationErrorMessage, validator, disabled = false}: WihTimeInputProps) => {
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [show, setShow] = useState<boolean>(false);
     const [hasValidationError, setHasValidationError] = useState<boolean>(false);
+    validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;
         setHasValidationError(invalid);
-        onValidationChange?.(name, invalid);
+        validator?.handleValidationChange(name, invalid);
     }
 
     const onDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {

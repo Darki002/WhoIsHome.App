@@ -4,6 +4,7 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
 import React, {useState} from "react";
+import {Validator} from "@/hooks/useWihValidation";
 
 export type WihOption<T> = {
     value?: T;
@@ -19,7 +20,7 @@ export interface WihSingleChoiceProps<T> {
     allowDeselect?: boolean;
     validate?: (value?: T) => boolean;
     validationErrorMessage?: string;
-    onValidationChange?: (name: string, hasError: boolean) => void;
+    validator?: Validator;
 }
 
 export function WihRadioButton<T>({
@@ -30,17 +31,18 @@ export function WihRadioButton<T>({
                                        onChange,
                                        validate,
                                        validationErrorMessage,
-                                       onValidationChange,
+                                       validator,
                                        allowDeselect = true,
                                    }: WihSingleChoiceProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [hasValidationError, setHasValidationError] = useState<boolean>(false);
+    validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const handlePress = (optionValue: T | undefined) => {
         const invalid = validate ? !validate(value) : false;
         setHasValidationError(invalid);
-        onValidationChange?.(name, invalid);
+        validator?.handleValidationChange(name, invalid);
 
         if (value === optionValue && allowDeselect) {
             onChange(undefined);

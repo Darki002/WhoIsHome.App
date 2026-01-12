@@ -7,6 +7,7 @@ import {WihLogger} from "@/helper/WihLogger";
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
 export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
 
+// TODO: fix error handling with messages in ui
 export class WihFetchBuilder {
     private readonly config: ApiConfig;
     private tokens?: Tokens;

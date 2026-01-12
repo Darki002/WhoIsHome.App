@@ -4,6 +4,7 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
 import React, {useState} from "react";
+import {Validator} from "@/hooks/useWihValidation";
 
 export type WihOption<T> = {
     value?: T;
@@ -18,7 +19,7 @@ export interface WihCheckboxGroupProps<T> {
     onChange: (values: T[]) => void;
     validate?: (value: T[]) => boolean;
     validationErrorMessage?: string;
-    onValidationChange?: (name: string, hasError: boolean) => void;
+    validator?: Validator;
 }
 
 export function WihCheckboxGroup<T>({
@@ -29,11 +30,12 @@ export function WihCheckboxGroup<T>({
                                         onChange,
                                         validate,
                                         validationErrorMessage,
-                                        onValidationChange,
+                                        validator,
                                     }: WihCheckboxGroupProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [hasValidationError, setHasValidationError] = useState<boolean>(false);
+    validator?.registerField(name, validate ? () => !validate(values) : () => false);
 
     const handlePress = (optionValue: T | undefined) => {
         if (optionValue === undefined) return;
@@ -45,7 +47,7 @@ export function WihCheckboxGroup<T>({
 
         const invalid = validate ? !validate(newValues) : false;
         setHasValidationError(invalid);
-        onValidationChange?.(name, invalid);
+        validator?.handleValidationChange(name, invalid);
 
         onChange(newValues);
     };
