@@ -1,5 +1,5 @@
-import React, {FC, useState} from 'react';
-import { TextInput, StyleSheet, ViewStyle, TextStyle, TextInputProps } from 'react-native';
+import React, {FC, useState, useEffect, useCallback} from 'react';
+import { TextInput, StyleSheet, ViewStyle, TextInputProps } from 'react-native';
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
@@ -28,17 +28,33 @@ export const WihTextInput: FC<WihTextInputProps> = ({
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
-    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
+
+    const [, setTick] = useState(0);
+    const forceUpdate = useCallback(() => setTick(n => n + 1), []);
 
     if (validator && !name) {
         throw new Error("WihTextInput: 'name' prop is required when 'validator' is provided.");
     }
 
-    validator?.registerField(name!, validate ? () => !validate(value) : () => false);
+    useEffect(() => {
+        if (!validator || !name) return;
+
+        validator.registerField(name, () => validate ? validate(value) : true);
+        validator.subscribe(forceUpdate);
+
+        return () => {
+            validator.unsubscribe(forceUpdate);
+        };
+    }, [validator, name, validate, forceUpdate]);
+
+    useEffect(() => {
+        if (!validator || !name) return;
+        const isValid = validate ? validate(value) : true;
+        validator.setFieldValidity(name, isValid, undefined);
+    }, [value, validator, name, validate]);
 
     const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;
-        setHasValidationError(invalid);
         validator?.handleValidationChange?.(name!, invalid);
     }
 
@@ -64,7 +80,7 @@ export const WihTextInput: FC<WihTextInputProps> = ({
                 {...rest}
             />
             {
-                hasValidationError && validationErrorMessage
+                validator?.hasValidationError(name!) && validationErrorMessage
                     && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
             }
         </WihView>

@@ -32,12 +32,10 @@ export function WihPicker<T>({
                              }: WihPickerProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
-    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
     validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;
-        setHasValidationError(invalid);
         validator?.handleValidationChange(name, invalid);
         onChange(value);
     }
@@ -60,7 +58,7 @@ export function WihPicker<T>({
                 ))}
             </Picker>
             {
-                hasValidationError && validationErrorMessage
+                validator?.hasValidationError(name) && validationErrorMessage
                 && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
             }
         </WihView>

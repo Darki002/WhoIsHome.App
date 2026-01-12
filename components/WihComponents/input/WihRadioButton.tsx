@@ -36,12 +36,10 @@ export function WihRadioButton<T>({
                                    }: WihSingleChoiceProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
-    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
     validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const handlePress = (optionValue: T | undefined) => {
         const invalid = validate ? !validate(value) : false;
-        setHasValidationError(invalid);
         validator?.handleValidationChange(name, invalid);
 
         if (value === optionValue && allowDeselect) {
@@ -74,7 +72,7 @@ export function WihRadioButton<T>({
                 </TouchableOpacity>
             ))}
             {
-                hasValidationError && validationErrorMessage
+                validator?.hasValidationError(name) && validationErrorMessage
                 && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
             }
         </WihView>

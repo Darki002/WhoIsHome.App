@@ -22,12 +22,10 @@ export const WihDateInput = ({value, name, onChange, validate, validationErrorMe
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [show, setShow] = useState<boolean>(false);
-    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
     validator?.registerField(name, validate ? () => !validate(value) : () => false);
 
     const onEndEditing = (newValue?: Date | null) => {
         const invalid = validate ? !validate(newValue) : false;
-        setHasValidationError(invalid);
         validator?.handleValidationChange(name, invalid);
     }
 
@@ -64,7 +62,7 @@ export const WihDateInput = ({value, name, onChange, validate, validationErrorMe
                     </WihText>
                 </TouchableOpacity>
                 {
-                    hasValidationError && validationErrorMessage
+                    validator?.hasValidationError(name) && validationErrorMessage
                     && <WihText style={{color: theme.error}}>{t(validationErrorMessage)}</WihText>
                 }
             </WihView>

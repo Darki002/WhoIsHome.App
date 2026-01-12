@@ -48,7 +48,8 @@ const Create = () => {
     });
 
     const createEvent = () => {
-        if(validator.hasAnyValidationError()){
+        validator.showErrors();
+        if (validator.hasAnyValidationError()) {
             Toast.show(t(Labels.toast.error.fixValidationError), {
                 duration: Toast.durations.SHORT,
             });

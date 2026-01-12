@@ -34,7 +34,6 @@ export function WihCheckboxGroup<T>({
                                     }: WihCheckboxGroupProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
-    const [hasValidationError, setHasValidationError] = useState<boolean>(false);
     validator?.registerField(name, validate ? () => !validate(values) : () => false);
 
     const handlePress = (optionValue: T | undefined) => {
@@ -46,7 +45,6 @@ export function WihCheckboxGroup<T>({
             : [...values, optionValue];
 
         const invalid = validate ? !validate(newValues) : false;
-        setHasValidationError(invalid);
         validator?.handleValidationChange(name, invalid);
 
         onChange(newValues);
@@ -88,7 +86,7 @@ export function WihCheckboxGroup<T>({
                 })}
             </WihView>
             {
-                hasValidationError && validationErrorMessage
+                validator?.hasValidationError(name) && validationErrorMessage
                 && <WihText style={{color: theme.error, paddingTop: 10}}>{t(validationErrorMessage)}</WihText>
             }
         </WihView>
