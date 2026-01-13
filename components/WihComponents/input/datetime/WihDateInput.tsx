@@ -30,7 +30,12 @@ export const WihDateInput = ({value, name, onChange, validate, validationErrorMe
         validator?.handleValidationChange(name, invalid);
     }
 
-    const onDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
+    const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+        if(event.type == "dismissed"){
+            setShow(false);
+            return;
+        }
+
         setShow(false);
         onChange(selectedDate);
         onEndEditing(selectedDate);

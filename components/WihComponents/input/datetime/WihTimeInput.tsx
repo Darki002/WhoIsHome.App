@@ -30,7 +30,12 @@ export const WihTimeInput = ({value, name, onChange, validate, validationErrorMe
         validator?.handleValidationChange(name, invalid);
     }
 
-    const onDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
+    const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+        if(event.type == "dismissed"){
+            setShow(false);
+            return;
+        }
+
         const currentDate = selectedDate;
         setShow(false);
         onChange(currentDate);
