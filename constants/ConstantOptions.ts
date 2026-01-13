@@ -13,7 +13,7 @@ export const weekDaysOptions: Array<WihOption<number>> = [
 ]
 
 export const presenceTypeOptions : Array<WihOption<PresenceType>> = [
-    {value: "Unknown", displayTextLabel: Labels.presenceType.unknown},
-    {value: "Late", displayTextLabel: Labels.presenceType.late},
-    {value: "NotPresent", displayTextLabel: Labels.presenceType.notPresent}
+    {value: PresenceType.Unknown, displayTextLabel: Labels.presenceType.unknown},
+    {value: PresenceType.Late, displayTextLabel: Labels.presenceType.late},
+    {value: PresenceType.NotPresent, displayTextLabel: Labels.presenceType.notPresent}
 ];

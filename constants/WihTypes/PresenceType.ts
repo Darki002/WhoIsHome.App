@@ -1,3 +1,8 @@
-export type PresenceType = "Unknown" | "Default" | "Late" | "NotPresent";
+export enum PresenceType {
+    Unknown = "Unknown",
+    Default = "Default",
+    Late = "Late",
+    NotPresent = "NotPresent"
+}
 
-export const PresenceTypes: Array<PresenceType> = ["Unknown", "Default", "Late", "NotPresent"];
+export const PresenceTypes: Array<PresenceType> = [PresenceType.Unknown, PresenceType.Default, PresenceType.Late, PresenceType.NotPresent];

@@ -2,7 +2,7 @@ import {Picker} from "@react-native-picker/picker";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import WihView from "@/components/WihComponents/view/WihView";
-import React, {useEffect} from "react";
+import React from "react";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useWihValidationField, Validator} from "@/hooks/useWihValidation";
 
@@ -35,23 +35,17 @@ export function WihPicker<T>({
 
     useWihValidationField({ validator, name, value, validate });
 
-    useEffect(() => {
-        if (!validator || !name) return;
-        const isValid = validate ? validate(value) : true;
-        validator.setFieldValidity(name, isValid, undefined);
-    }, [value, validator, name, validate]);
-
-    const onEndEditing = () => {
-        const invalid = validate ? !validate(value) : false;
+    const onValueChange = (item: T) => {
+        const invalid = validate ? !validate(item) : false;
         validator?.handleValidationChange(name, invalid);
-        onChange(value);
+        onChange(item);
     }
 
     return (
         <WihView>
             <Picker
                 selectedValue={value}
-                onValueChange={onEndEditing}
+                onValueChange={onValueChange}
                 mode="dropdown"
                 dropdownIconColor={theme.text}
                 style={{

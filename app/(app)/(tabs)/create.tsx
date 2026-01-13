@@ -107,7 +107,7 @@ const Create = () => {
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
         updateEvent({presenceType: presenceType});
-        if (presenceType !== "Late") {
+        if (presenceType !== PresenceType.Late) {
             updateEvent({dinnerTime: null});
         }
     }
@@ -239,12 +239,12 @@ const Create = () => {
                         <WihTimeInput
                             value={newEvent.dinnerTime}
                             name="dinnerTime"
-                            disabled={newEvent.presenceType !== "Late"}
+                            disabled={newEvent.presenceType !== PresenceType.Late}
                             onChange={d => updateEvent({dinnerTime: d})}
-                            validationErrorMessage={newEvent.presenceType === "Late"
+                            validationErrorMessage={newEvent.presenceType === PresenceType.Late
                                 ? Labels.errors.validation.presenceType.late
                                 : Labels.errors.validation.presenceType.other}
-                            validate={date => newEvent.presenceType === "Late" ? !!date : !date }
+                            validate={date => newEvent.presenceType === PresenceType.Late ? !!date : !date }
                             validator={validator}
                         />
                     </WihIconRow>
