@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState, useRef} from "react";
 
 export function useWihValidation(name: string) {
     const [validators, setValidators] = useState<Validator[]>([]);
@@ -94,8 +94,10 @@ export function useWihValidationField<T>(params: {
     name?: string | undefined;
     value: T;
     validate?: (v: T) => boolean;
+    /** optional comparator to determine if two values are equal; if omitted a simple === or JSON stringify fallback is used */
+    compare?: (a: T, b: T) => boolean;
 }) {
-    const { validator, name, value, validate } = params;
+    const { validator, name, value, validate, compare } = params;
 
     if (validator && !name) {
         throw new Error("useWihValidationField: 'name' prop is required when 'validator' is provided.");
@@ -115,9 +117,38 @@ export function useWihValidationField<T>(params: {
         };
     }, [validator, name, validate, forceUpdate]);
 
+    const prevValueRef = useRef<T | undefined>(undefined);
+    const prevIsValidRef = useRef<boolean | undefined>(undefined);
+
+    const defaultCompare = (a: T, b: T) => {
+        if (a === b) return true;
+        try {
+            return JSON.stringify(a) === JSON.stringify(b);
+        } catch (_) {
+            return false;
+        }
+    };
+
+    const cmp = compare ?? defaultCompare;
+
     useEffect(() => {
         if (!validator || !name) return;
         const isValid = validate ? validate(value) : true;
+
+        const prevValue = prevValueRef.current;
+        const prevIsValid = prevIsValidRef.current;
+
+        const valuesEqual = prevValue !== undefined ? cmp(prevValue, value) : false;
+
+        if (valuesEqual && prevIsValid === isValid) {
+            prevValueRef.current = value;
+            prevIsValidRef.current = isValid;
+            return;
+        }
+
         validator.setFieldValidity(name, isValid, undefined);
-    }, [value, validator, name, validate]);
+
+        prevValueRef.current = value;
+        prevIsValidRef.current = isValid;
+    }, [value, validator, name, validate, compare]);
 }
