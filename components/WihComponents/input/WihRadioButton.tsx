@@ -3,8 +3,8 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useTranslation} from "react-i18next";
-import React, {useState} from "react";
-import {Validator} from "@/hooks/useWihValidation";
+import React from "react";
+import {useWihValidationField, Validator} from "@/hooks/useWihValidation";
 
 export type WihOption<T> = {
     value?: T;
@@ -36,7 +36,8 @@ export function WihRadioButton<T>({
                                    }: WihSingleChoiceProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
-    validator?.registerField(name, validate ? () => !validate(value) : () => false);
+
+    useWihValidationField({ validator, name, value, validate });
 
     const handlePress = (optionValue: T | undefined) => {
         const invalid = validate ? !validate(value) : false;

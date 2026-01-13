@@ -2,9 +2,9 @@ import {Picker} from "@react-native-picker/picker";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import WihView from "@/components/WihComponents/view/WihView";
-import React, {useState} from "react";
+import React, {useEffect} from "react";
 import {WihText} from "@/components/WihComponents/display/WihText";
-import {Validator} from "@/hooks/useWihValidation";
+import {useWihValidationField, Validator} from "@/hooks/useWihValidation";
 
 export type WihOption<T> = {
     value?: T;
@@ -32,7 +32,14 @@ export function WihPicker<T>({
                              }: WihPickerProps<T>) {
     const theme = useWihTheme();
     const {t} = useTranslation();
-    validator?.registerField(name, validate ? () => !validate(value) : () => false);
+
+    useWihValidationField({ validator, name, value, validate });
+
+    useEffect(() => {
+        if (!validator || !name) return;
+        const isValid = validate ? validate(value) : true;
+        validator.setFieldValidity(name, isValid, undefined);
+    }, [value, validator, name, validate]);
 
     const onEndEditing = () => {
         const invalid = validate ? !validate(value) : false;

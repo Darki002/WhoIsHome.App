@@ -6,7 +6,7 @@ import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
-import {Validator} from "@/hooks/useWihValidation";
+import {Validator, useWihValidationField} from "@/hooks/useWihValidation";
 
 export interface WihDateInputProps {
     value?: Date | null;
@@ -22,7 +22,8 @@ export const WihDateInput = ({value, name, onChange, validate, validationErrorMe
     const theme = useWihTheme();
     const {t} = useTranslation();
     const [show, setShow] = useState<boolean>(false);
-    validator?.registerField(name, validate ? () => !validate(value) : () => false);
+
+    useWihValidationField({ validator, name, value, validate });
 
     const onEndEditing = (newValue?: Date | null) => {
         const invalid = validate ? !validate(newValue) : false;

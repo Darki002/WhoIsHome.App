@@ -20,7 +20,7 @@ import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions"
 import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import Toast from "react-native-root-toast";
-import useWihValidation from "@/hooks/useWihValidation";
+import {useWihValidation} from "@/hooks/useWihValidation";
 import {WihRadioButton} from "@/components/WihComponents/input/WihRadioButton";
 
 interface NewEventGroup {

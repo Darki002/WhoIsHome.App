@@ -22,7 +22,7 @@ import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/W
 import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGroup";
 import {WihTextButton} from "@/components/WihComponents/input/WihButton";
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
-import useWihValidation from "@/hooks/useWihValidation";
+import {useWihValidation} from "@/hooks/useWihValidation";
 import Toast from "react-native-root-toast";
 
 interface EventGroupUpdate {
