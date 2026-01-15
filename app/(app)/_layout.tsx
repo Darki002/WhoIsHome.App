@@ -51,7 +51,6 @@ const AppLayout = () => {
         <Stack screenOptions={screenOptions}>
             <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
             <Stack.Screen name="user/[id]" options={{presentation: "modal", title: "Unknown", headerStyle: {backgroundColor: theme.background}, headerTintColor: theme.text}} />
-            <Stack.Screen name="createFlow" options={{headerShown: false}} />
             <Stack.Screen name="event" options={{headerShown: false}}/>
         </Stack>
     );

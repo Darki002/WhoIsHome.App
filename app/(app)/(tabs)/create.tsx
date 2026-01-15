@@ -14,7 +14,7 @@ import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInp
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import useWihApi from "@/hooks/useWihApi";
-import {EventGroupDto, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
+import {EventGroupDto} from "@/constants/WihTypes/Event/EventGroup";
 import {Endpoints} from "@/constants/endpoints";
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
 import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
@@ -42,7 +42,7 @@ const Create = () => {
     const [isRepeating, setIsRepeating] = useState<boolean>(false);
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
     const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
-    const callApi = useWihApi<EventGroupDto, EventGroupModel>({
+    const callApi = useWihApi<EventGroupDto, { Id: number }>({
         endpoint: Endpoints.eventGroup.url,
         method: "POST"
     });
@@ -72,7 +72,7 @@ const Create = () => {
                 updateToast(r);
                 if(typeof r !== "string" && r.isValid()) {
                     setNewEvent({});
-                    router.replace(`/(app)/event/view/${r.data!.id}`);
+                    router.replace(`/(app)/event/view/${r.data?.Id}`);
                 }
             });
     }
