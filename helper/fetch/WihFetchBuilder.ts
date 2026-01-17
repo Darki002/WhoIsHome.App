@@ -93,36 +93,36 @@ export class WihFetchBuilder {
                 body: this.body ? JSON.stringify(this.body) : undefined
             });
 
-            const apiResponse = await WihResponse.fromResponse<T>(response);
+            const apiResponse = await WihResponse.fromResponse<T>(uri, response);
 
             if(!apiResponse.isValid()){
                 if(apiResponse.status === 401 && this.tokens?.refreshToken){
-                    return this.refresh<T>();
+                    return this.refresh<T>(uri);
                 }
-                return this.retry<T>();
+                return this.retry<T>(uri);
             }
 
             return apiResponse;
         } catch (error: any) {
             WihLogger.error(WihFetchBuilder.name, error);
-            return WihResponse.error<T>(error);
+            return WihResponse.error<T>(uri, error);
         }
     }
 
-    private async refresh<T>(): Promise<WihResponse<T>> {
+    private async refresh<T>(origin: string): Promise<WihResponse<T>> {
         const newTokens = await refreshJwtToken(this.tokens?.refreshToken!, this.config, this.onNewTokens);
         if (typeof newTokens === "string") {
             WihLogger.info(WihFetchBuilder.name, `Refresh failed! | Message: ${newTokens}`);
-            return WihResponse.fail<T>(`Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
+            return WihResponse.fail<T>(origin, `Refresh token expired, re-authentication required. | Message ${newTokens}`, 401, true);
         }
 
         this.tokens = newTokens;
         this.headers.delete("Authorization");
         this.headers.append("Authorization", `Bearer ${this.tokens.jwtToken}`);
-        return this.retry<T>();
+        return this.retry<T>(origin);
     }
 
-    private async retry<T>(): Promise<WihResponse<T>> {
+    private async retry<T>(origin: string): Promise<WihResponse<T>> {
         const uri = this.buildUrl();
 
         try {
@@ -133,10 +133,10 @@ export class WihFetchBuilder {
                 body: this.body ? JSON.stringify(this.body) : undefined
             });
 
-            return await WihResponse.fromResponse<T>(response);
+            return await WihResponse.fromResponse<T>(origin, response);
         } catch (error: any) {
             WihLogger.error(WihFetchBuilder.name, error);
-            return WihResponse.error<T>(error);
+            return WihResponse.error<T>(origin, error);
         }
     }
 }
