@@ -89,6 +89,7 @@ const Labels = {
         editing: "Headers.Editing"
     },
     errors: {
+        invalidCredentials: "Errors.InvalidCredentials",
         header: "Errors.Header",
         generic: "Errors.Generic",
         missingEmail: "Errors.MissingEmail",

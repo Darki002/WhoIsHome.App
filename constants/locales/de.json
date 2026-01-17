@@ -91,6 +91,7 @@
     "Editing": "Editieren"
   },
   "Errors": {
+    "InvalidCredentials": "Ungültige Anmeldedaten, bitte versuche es erneut.",
     "Header": "Fehler",
     "Generic": "Ups, ein unerwarteter Fehler ist aufgetreten!",
     "MissingEmail": "Email ist erforderlich!",

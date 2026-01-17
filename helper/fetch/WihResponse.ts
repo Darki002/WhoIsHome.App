@@ -28,6 +28,14 @@ export class WihResponse<T> {
             return new WihResponse<T>(response.status, true, data);
         }
 
+        if (response.headers.get("content-type")){
+            const isJson = response.headers.get("Content-Type")?.includes("application/json") ?? false
+            if (isJson) {
+                const errorData = await response.json();
+                return new WihResponse<T>(response.status, false, errorData, errorData.title ?? response.statusText);
+            }
+        }
+
         const errorText = await response.text();
         return new WihResponse<T>(response.status, false, undefined, errorText || response.statusText);
     }

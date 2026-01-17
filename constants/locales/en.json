@@ -91,6 +91,7 @@
     "Editing": "Editing"
   },
   "Errors": {
+    "InvalidCredentials": "Invalid credentials, please try again.",
     "Header": "Error",
     "Generic": "Oops, an unexpected Error occurred!",
     "MissingEmail": "Email is required!",

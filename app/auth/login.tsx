@@ -25,8 +25,9 @@ const Login = () => {
             return;
         }
 
-        const error = await signIn({email, password});
-        setError(error);
+        if (!await signIn({email, password})){
+            setError(t(Labels.errors.invalidCredentials));
+        }
     }
 
     return (

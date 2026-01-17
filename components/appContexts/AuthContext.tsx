@@ -14,14 +14,14 @@ export type LoginInfos = {
 }
 
 const AuthContext = createContext<{
-    signIn: ({email, password}: LoginInfos) => Promise<string | null>;
+    signIn: ({email, password}: LoginInfos) => Promise<boolean>;
     signOut: () => void;
     onNewSession: (tokens: Tokens) => void;
     session: Tokens | null;
     isSessionLoading: boolean;
     isSignedIn: boolean;
 }>({
-    signIn: async () => null,
+    signIn: async () => false,
     signOut: () => null,
     onNewSession: _ => null,
     session: null,
@@ -62,16 +62,16 @@ export function SessionProvider({children}: PropsWithChildren) {
             value={{
                 signIn: async ({email, password}) => {
                     if (!email || !password)
-                        return "Missing Login Information";
+                        return false;
 
                     const response = await sendLoginRequest(config!, email, password);
                     if (!response.isValid()) {
-                        return response.getErrorMessage();
+                        return false;
                     }
 
                     setSession(response.data?.jwtToken || null);
                     setRefreshToken(response.data?.refreshToken || null);
-                    return null;
+                    return true;
                 },
                 signOut: async () => {
                     await disablePushUp();

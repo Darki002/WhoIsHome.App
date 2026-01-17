@@ -11,9 +11,11 @@ import {Endpoints} from "@/constants/endpoints";
 import {ApiConfig, useApiConfig} from "@/hooks/useApiConfig";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {WihResponse} from "@/helper/fetch/WihResponse";
+import {useRouter} from "expo-router";
 
 const register = () => {
     const {t} = useTranslation();
+    const router = useRouter();
     const config = useApiConfig();
     const [userName, onChangeUserName] = useState<string>("");
     const [email, onChangeEmail] = useState<string>("");
@@ -36,11 +38,12 @@ const register = () => {
         }
         const response = await sendRegisterRequest(userName, email, password, config!);
 
-        if (response.isValid()) {
-            setError(response.getErrorMessage());
+        if (!response.isValid()) {
+            setError(Labels.errors.generic);
+        } else if (await signIn({email, password})) {
+            router.replace("/(app)/(tabs)");
         } else {
-            const error = await signIn({email, password});
-            setError(error);
+            setError(Labels.errors.generic);
         }
     }
 
