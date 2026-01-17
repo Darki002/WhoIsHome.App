@@ -18,7 +18,25 @@ export class WihResponse<T> {
         this.error = error;
         this.refreshFailed = refreshFailed;
 
-        WihLogger.debug(WihResponse.name, `Success ${success} | data ${data} | error ${errorMessage} | refresh failed ${refreshFailed}`);
+        let dataString = "";
+        dataString += "Status: " + status + " | ";
+
+        if (success) {
+            if (data) {
+                try {
+                    dataString += JSON.stringify(data);
+                } catch {
+                    dataString += String(data);
+                }
+            }
+        } else {
+            dataString += "Error: " + (errorMessage ?? "Unknown error");
+            if (refreshFailed){
+                dataString += " | Refresh Failed";
+            }
+        }
+
+        WihLogger.debug(WihResponse.name, dataString);
     }
 
     static async fromResponse<T>(response: Response): Promise<WihResponse<T>> {
@@ -40,7 +58,7 @@ export class WihResponse<T> {
         return new WihResponse<T>(response.status, false, undefined, errorText || response.statusText);
     }
 
-    static fail<T>(errorMessage: string, status: number = 400, refreshFailed: boolean = false): WihResponse<T> {
+    static fail<T>(errorMessage: string, status: number = -2, refreshFailed: boolean = false): WihResponse<T> {
         return new WihResponse<T>(status, false, undefined, errorMessage, undefined, refreshFailed);
     }
 
