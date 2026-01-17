@@ -42,7 +42,7 @@ const Create = () => {
     const [isRepeating, setIsRepeating] = useState<boolean>(false);
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
     const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
-    const callApi = useWihApi<EventGroupDto, { Id: number }>({
+    const callApi = useWihApi<EventGroupDto, { id: number }>({
         endpoint: Endpoints.eventGroup.url,
         method: "POST"
     });
@@ -72,7 +72,7 @@ const Create = () => {
                 updateToast(r);
                 if(typeof r !== "string" && r.isValid()) {
                     setNewEvent({});
-                    router.replace(`/(app)/event/view/${r.data?.Id}`);
+                    router.replace(`/(app)/event/view/${r.data?.id}`);
                 }
             });
     }
@@ -100,7 +100,7 @@ const Create = () => {
 
         if(newEvent.weekDays === undefined){
             const weekday = date?.getDay();
-            if(!weekday) return;
+            if(weekday === undefined) return;
             updateEvent({weekDays: [weekday]});
         }
     }

@@ -42,7 +42,8 @@ export default function useWihApiFocus<TResponse>(props: WihFetchProps) {
         setIsLoading(true);
 
         callApi().then(response => {
-
+            setError(null);
+            setData(null);
             if(typeof response === "string"){
                 setError(response);
             }
