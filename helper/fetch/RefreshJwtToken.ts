@@ -39,7 +39,7 @@ async function refresh(
         mode: "cors"
     });
 
-    const wihResponse = await WihResponse.fromResponse<Tokens>(response);
+    const wihResponse = await WihResponse.fromResponse<Tokens>(uri, response);
 
     if (!wihResponse.isValid()){
         return wihResponse.getErrorMessage();

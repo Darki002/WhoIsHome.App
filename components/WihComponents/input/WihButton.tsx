@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
+import {Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
 import {FC, ReactNode} from "react";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
@@ -6,7 +6,7 @@ type WihButtonProps = {
     children: ReactNode;
     onPress: () => void;
     disabled?: boolean;
-    style?: ViewStyle;
+    style?: StyleProp<ViewStyle>;
     textStyle?: TextStyle;
 };
 
@@ -41,7 +41,8 @@ export const WihTextButton: FC<WihButtonProps> = ({
                                                   children,
                                                   onPress,
                                                   disabled = false,
-                                                  textStyle
+                                                  textStyle,
+                                                  style
                                               }) => {
     const theme = useWihTheme();
 
@@ -49,6 +50,7 @@ export const WihTextButton: FC<WihButtonProps> = ({
         <Pressable
             onPress={onPress}
             disabled={disabled}
+            style={style}
         >
             <Text style={[styles.text, { color: disabled ? theme.disabled : theme.primary }, textStyle]}>
                 {children}

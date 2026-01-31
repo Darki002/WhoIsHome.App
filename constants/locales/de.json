@@ -33,7 +33,8 @@
     "StartDate": "Start Datum",
     "EndDate": "End Datum",
     "Single": "Einmalig",
-    "Repeating": "Wiederholend"
+    "Repeating": "Wiederholend",
+    "Modified": "Geändert"
   },
   "Tabs": {
     "Home": "Home",
@@ -52,13 +53,17 @@
     "Cancel": "Abbrechen",
     "Edit": "Bearbeiten",
     "Next": "Weiter",
+    "Previous": "Vorherige",
     "Back": "Zurück",
     "Finish": "Beenden",
     "Create": "Erstellen",
     "Confirm": "Bestätigen",
     "Delete": "Löschen",
     "ViewGroup": "Gruppe ansehen",
-    "EditGroup": "Gruppe bearbeiten"
+    "EditGroup": "Gruppe bearbeiten",
+    "HideInstances": "Events ausblenden",
+    "ShowInstances": "Events anzeigen",
+    "Today": "Heute"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -84,7 +89,9 @@
   },
   "Message": {
     "ViewInstance": "Du siehst gerade ein einzelnes Event an.",
-    "EditInstance": "Du bearbeitest ein einzelnes Event."
+    "EditInstance": "Du bearbeitest ein einzelnes Event.",
+    "Loading": "Lädt...",
+    "NoUpcomingInstances": "Keine bevorstehenden Events."
   },
   "Headers": {
     "Unknown": "Unbekannt",

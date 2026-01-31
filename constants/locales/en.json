@@ -33,7 +33,8 @@
     "StartDate": "Start Date",
     "EndDate": "End Date",
     "Single": "Single",
-    "Repeating": "Repeating"
+    "Repeating": "Repeating",
+    "Modified": "Modified"
   },
   "Tabs": {
     "Home": "Home",
@@ -52,13 +53,17 @@
     "Cancel": "Cancel",
     "Edit": "Edit",
     "Next": "Next",
+    "Previous": "Previous",
     "Back": "Back",
     "Finish": "Finish",
     "Create": "Create",
     "Confirm": "Confirm",
     "Delete": "Delete",
     "ViewGroup": "view group",
-    "EditGroup": "edit group"
+    "EditGroup": "edit group",
+    "HideInstances": "hide events",
+    "ShowInstances": "show events",
+    "Today": "Today"
   },
   "Placeholders": {
     "BaseUri": "URL",
@@ -84,7 +89,9 @@
   },
   "Message": {
     "ViewInstance": "You're seeing a single event.",
-    "EditInstance": "You're editing a single event."
+    "EditInstance": "You're editing a single event.",
+    "Loading": "Loading...",
+    "NoUpcomingInstances": "No upcoming events."
   },
   "Headers": {
     "Unknown": "Unknown",

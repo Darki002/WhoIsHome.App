@@ -32,6 +32,7 @@ const Labels = {
         endDate: "Labels.EndDate",
         single: "Labels.Single",
         repeating: "Labels.Repeating",
+        modified: "Labels.Modified",
     },
     tabs: {
         home: "Tabs.Home",
@@ -50,13 +51,17 @@ const Labels = {
         cancel: "Actions.Cancel",
         edit: "Actions.Edit",
         next: "Actions.Next",
+        previous: "Actions.Previous",
         back: "Actions.Back",
         finish: "Actions.Finish",
         create: "Actions.Create",
         confirm: "Actions.Confirm",
         delete: "Actions.Delete",
         viewGroup: "Actions.ViewGroup",
-        editGroup: "Actions.EditGroup"
+        editGroup: "Actions.EditGroup",
+        hideInstances: "Actions.HideInstances",
+        viewInstances: "Actions.ViewInstances",
+        today: "Actions.Today"
     },
     placeholders: {
         baseUri: "Placeholders.BaseUri",
@@ -82,7 +87,9 @@ const Labels = {
     },
     message: {
         viewInstance: "Message.ViewInstance",
-        editInstance: "Message.EditInstance"
+        editInstance: "Message.EditInstance",
+        loading: "Message.Loading",
+        noUpcomingInstances: "Message.NoUpcomingInstances"
     },
     headers: {
         unknown: "Headers.Unknown",

@@ -1,25 +1,33 @@
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import EventViewLayout from "@/components/pages/EventView/EventViewLayout";
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {Endpoints} from "@/constants/endpoints";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
-import {dateStringToDate, timeDisplayString} from "@/helper/datetimehelper";
+import {dateStringToDate, timeDisplayString, timeStringToDate} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-import {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
+import useWihApiFocus, {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
 import {EventGroup, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
 import {EventInstance, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {WihTextButton} from "@/components/WihComponents/input/WihButton";
+import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 
 function EventGroupView({response}: {response: EventGroupModel}) {
     const theme = useWihTheme();
     const {t} = useTranslation();
     const router = useRouter();
+
+    const [showInstances, setShowInstances] = useState(false);
+    const [date, setDate] = useState<Date>(new Date());
+    const {data, error, isLoading, refresh} = useWihApiFocus<EventInstanceModel[]>({
+        endpoint: Endpoints.eventGroup.instance.with(response.id, date, 2),
+        method: "GET"
+    });
 
     const deleteEvent = useWihApi({
         endpoint: Endpoints.eventGroup.withId(`${response.id}`),
@@ -31,6 +39,51 @@ function EventGroupView({response}: {response: EventGroupModel}) {
     }, [response.id]);
 
     const event = new EventGroup(response);
+
+    const handleToggleInstances = useCallback(() => {
+        setShowInstances(!showInstances);
+    }, [showInstances]);
+
+    const canGoBack = React.useMemo(() => {
+        const prevDate = new Date(date);
+        prevDate.setDate(prevDate.getDate() - 14);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return prevDate >= today;
+    }, [date]);
+
+    const goToNextPeriod = useCallback(() => {
+        const nextDate = new Date(date);
+        nextDate.setDate(nextDate.getDate() + 14); // Move forward 2 weeks
+        setDate(nextDate);
+    }, [date]);
+
+    const goToPreviousPeriod = useCallback(() => {
+        const prevDate = new Date(date);
+        prevDate.setDate(prevDate.getDate() - 14); // Move back 2 weeks
+        const today = new Date();
+        // Don't go before today
+        if (prevDate < today) {
+            setDate(today);
+        } else {
+            setDate(prevDate);
+        }
+    }, [date]);
+
+    const resetToToday = useCallback(() => {
+        setDate(new Date());
+    }, []);
+
+    const isInstanceModified = (instance: EventInstanceModel): boolean => {
+        const instanceDate = new Date(instance.date);
+        const expectedWeekDay = event.weekDays.includes(instanceDate.getDay());
+
+        if (!expectedWeekDay) return true;
+        if (timeStringToDate(instance.startTime) !== event.startTime) return true;
+        if (timeStringToDate(instance.endTime) !== event.endTime) return true;
+        if (dateStringToDate(instance.dinnerTime) !== event.dinnerTime) return true;
+        return instance.presenceType !== event.presenceType;
+    };
 
     const getWeekDays = () => {
         const weekDayIndexes = [1, 2, 3, 4, 5, 6, 0];
@@ -95,6 +148,111 @@ function EventGroupView({response}: {response: EventGroupModel}) {
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihText>{event.dinnerTime ? timeDisplayString(event.dinnerTime) : "-"}</WihText>
+            </WihIconRow>
+
+            <WihIconRow name="event-note" flexDirection="column">
+                <WihTextButton
+                    onPress={handleToggleInstances}
+                    style={styles.instanceToggle}
+                >
+                    {showInstances
+                        ? t(Labels.actions.hideInstances)
+                        : t(Labels.actions.viewInstances)}
+                </WihTextButton>
+
+                {showInstances && (
+                    <WihView style={styles.instanceSection}>
+                        {/* Period Navigation */}
+                        <WihView style={styles.navigationContainer}>
+                            <WihTextButton
+                                disabled={!canGoBack}
+                                onPress={goToPreviousPeriod}
+                                style={styles.navButton}
+                            >
+                                ← {t(Labels.actions.previous)}
+                            </WihTextButton>
+
+                            <WihTextButton
+                                onPress={resetToToday}
+                                style={styles.todayButton}
+                            >
+                                {t(Labels.actions.today)}
+                            </WihTextButton>
+
+                            <WihTextButton
+                                onPress={goToNextPeriod}
+                                style={styles.navButton}
+                            >
+                                {t(Labels.actions.next)} →
+                            </WihTextButton>
+                        </WihView>
+
+                        {/* Current Period Display */}
+                        <WihText style={styles.periodLabel}>
+                            {date.toLocaleDateString()} - {new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                        </WihText>
+
+                        {/* Loading State */}
+                        {isLoading && (
+                            <WihView style={styles.instanceList}>
+                                <WihText>{t(Labels.message.loading)}</WihText>
+                            </WihView>
+                        )}
+
+                        {/* Error State */}
+                        {error && !isLoading && (
+                            <WihView style={styles.instanceList}>
+                                <WihErrorView error={error} refresh={refresh} />
+                            </WihView>
+                        )}
+
+                        {/* Instances List */}
+                        {!isLoading && !error && data && (
+                            <WihView style={styles.instanceList}>
+                                {data.length === 0 ? (
+                                    <WihText>{t(Labels.message.noUpcomingInstances)}</WihText>
+                                ) : (
+                                    data.map((instance) => {
+                                        const instanceDate = new Date(instance.date);
+                                        const isModified = isInstanceModified(instance);
+
+                                        return (
+                                            <WihTextButton
+                                                key={instance.date}
+                                                onPress={() => router.setParams({date: instance.date})}
+                                                style={[
+                                                    styles.instanceButton,
+                                                    isModified && {
+                                                        borderWidth: 2,
+                                                        borderStyle: 'dashed',
+                                                        borderColor: theme.primary,
+                                                    }
+                                                ]}
+                                            >
+                                                <WihView style={styles.instanceButtonContent}>
+                                                    <WihView>
+                                                        <WihText style={styles.instanceDate}>
+                                                            {instanceDate.toLocaleDateString()} - {instanceDate.toLocaleDateString(undefined, {weekday: 'short'})}
+                                                        </WihText>
+                                                        <WihText style={styles.instanceTime}>
+                                                            {timeDisplayString(instance.startTime)}
+                                                            {instance.endTime && ` - ${timeDisplayString(instance.endTime)}`}
+                                                        </WihText>
+                                                    </WihView>
+                                                    {isModified && (
+                                                        <WihText style={[styles.modifiedBadge, {color: theme.primary}]}>
+                                                            {t(Labels.labels.modified)}
+                                                        </WihText>
+                                                    )}
+                                                </WihView>
+                                            </WihTextButton>
+                                        );
+                                    })
+                                )}
+                            </WihView>
+                        )}
+                    </WihView>
+                )}
             </WihIconRow>
         </EventViewLayout>
     )
@@ -171,6 +329,67 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "gray",
         alignItems: "center",
+    },
+    instanceToggle: {
+        alignSelf: 'flex-start',
+    },
+    instanceSection: {
+        marginTop: 12,
+        gap: 12,
+    },
+    navigationContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 8,
+    },
+    navButton: {
+        flex: 1,
+        padding: 8,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "gray",
+        alignItems: 'center',
+    },
+    todayButton: {
+        flex: 1,
+        padding: 8,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "gray",
+        alignItems: 'center',
+    },
+    periodLabel: {
+        textAlign: 'center',
+        fontSize: 12,
+        opacity: 0.7,
+    },
+    instanceList: {
+        gap: 8,
+    },
+    instanceButton: {
+        padding: 12,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "gray",
+    },
+    instanceButtonContent: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    instanceDate: {
+        fontWeight: '600',
+    },
+    instanceTime: {
+        fontSize: 12,
+        opacity: 0.7,
+        marginTop: 4,
+    },
+    modifiedBadge: {
+        fontSize: 10,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
 });
 
