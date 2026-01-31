@@ -1,4 +1,4 @@
-import {dateStringToDate, timeStringToDate} from "@/helper/datetimehelper";
+import {dateStringToDate, formatDate, timeStringToDate} from "@/helper/datetimehelper";
 
 export interface UserOverviewEventModel {
     id: number;
@@ -26,7 +26,7 @@ export class UserOverviewEvent {
         this.startTime = timeStringToDate(userOverviewEventModel.startTime);
         this.endTime = timeStringToDate(userOverviewEventModel.endTime);
         this.date = dateStringToDate(userOverviewEventModel.date);
-        this.dateString = model.date;
+        this.dateString = formatDate(this.date!);
         this.hasRepetitions = userOverviewEventModel.hasRepetitions;
         this.templateId = userOverviewEventModel.templateId;
     }
