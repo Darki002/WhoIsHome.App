@@ -1,54 +1,45 @@
 import {dateStringToDate, formatDate, timeStringToDate} from "@/helper/datetimehelper";
 
 export interface UserOverviewEventModel {
-    id: number;
+    groupId: number;
     title: string;
     date: Date | string;
     startTime: Date | string;
     endTime: Date | string;
     hasRepetitions: boolean;
-    templateId: number;
 }
 
 export class UserOverviewEvent {
-    id: number;
-    title: string;
-    date: Date | undefined;
-    dateString: string = undefined!;
-    startTime: Date | undefined;
-    endTime: Date | undefined;
-    hasRepetitions: boolean;
-    templateId: number;
+    GroupId: number;
+    Title: string;
+    Date: Date | undefined;
+    DateString: string = undefined!;
+    StartTime: Date | undefined;
+    EndTime: Date | undefined;
+    HasRepetitions: boolean;
 
     constructor(userOverviewEventModel: UserOverviewEventModel) {
-        this.id = userOverviewEventModel.id;
-        this.title = userOverviewEventModel.title;
-        this.startTime = timeStringToDate(userOverviewEventModel.startTime);
-        this.endTime = timeStringToDate(userOverviewEventModel.endTime);
-        this.date = dateStringToDate(userOverviewEventModel.date);
-        this.dateString = formatDate(this.date!);
-        this.hasRepetitions = userOverviewEventModel.hasRepetitions;
-        this.templateId = userOverviewEventModel.templateId;
+        this.GroupId = userOverviewEventModel.groupId;
+        this.Title = userOverviewEventModel.title;
+        this.StartTime = timeStringToDate(userOverviewEventModel.startTime);
+        this.EndTime = timeStringToDate(userOverviewEventModel.endTime);
+        this.Date = dateStringToDate(userOverviewEventModel.date);
+        this.DateString = formatDate(this.Date!);
+        this.HasRepetitions = userOverviewEventModel.hasRepetitions;
     }
 }
 
 export type UserOverviewDto = {
     userId: number;
-    today: UserOverviewEventModel[];
-    thisWeek: UserOverviewEventModel[];
-    futureEvents: UserOverviewEventModel[];
+    events: UserOverviewEventModel[];
 }
 
 export class UserOverview {
     UserId: number;
-    Today: UserOverviewEvent[];
-    ThisWeek: UserOverviewEvent[];
-    FutureEvents: UserOverviewEvent[];
+    Events: UserOverviewEvent[];
 
     constructor(userOverviewDto: UserOverviewDto) {
         this.UserId = userOverviewDto.userId;
-        this.Today = userOverviewDto.today.map(e => new UserOverviewEvent(e))
-        this.ThisWeek = userOverviewDto.thisWeek.map(e => new UserOverviewEvent(e))
-        this.FutureEvents = userOverviewDto.futureEvents.map(e => new UserOverviewEvent(e))
+        this.Events = userOverviewDto.events.map(e => new UserOverviewEvent(e))
     }
 }

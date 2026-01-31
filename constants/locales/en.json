@@ -61,8 +61,8 @@
     "Delete": "Delete",
     "ViewGroup": "view group",
     "EditGroup": "edit group",
-    "HideInstances": "hide events",
-    "ShowInstances": "show events",
+    "HideInstances": "Hide events",
+    "ViewInstances": "View events",
     "Today": "Today"
   },
   "Placeholders": {

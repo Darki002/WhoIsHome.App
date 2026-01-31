@@ -112,6 +112,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
     }
 
     return (
+        <>
         <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent}>
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
@@ -159,102 +160,104 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                         ? t(Labels.actions.hideInstances)
                         : t(Labels.actions.viewInstances)}
                 </WihTextButton>
-
-                {showInstances && (
-                    <WihView style={styles.instanceSection}>
-                        {/* Period Navigation */}
-                        <WihView style={styles.navigationContainer}>
-                            <WihTextButton
-                                disabled={!canGoBack}
-                                onPress={goToPreviousPeriod}
-                                style={styles.navButton}
-                            >
-                                ← {t(Labels.actions.previous)}
-                            </WihTextButton>
-
-                            <WihTextButton
-                                onPress={resetToToday}
-                                style={styles.todayButton}
-                            >
-                                {t(Labels.actions.today)}
-                            </WihTextButton>
-
-                            <WihTextButton
-                                onPress={goToNextPeriod}
-                                style={styles.navButton}
-                            >
-                                {t(Labels.actions.next)} →
-                            </WihTextButton>
-                        </WihView>
-
-                        {/* Current Period Display */}
-                        <WihText style={styles.periodLabel}>
-                            {date.toLocaleDateString()} - {new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-                        </WihText>
-
-                        {/* Loading State */}
-                        {isLoading && (
-                            <WihView style={styles.instanceList}>
-                                <WihText>{t(Labels.message.loading)}</WihText>
-                            </WihView>
-                        )}
-
-                        {/* Error State */}
-                        {error && !isLoading && (
-                            <WihView style={styles.instanceList}>
-                                <WihErrorView error={error} refresh={refresh} />
-                            </WihView>
-                        )}
-
-                        {/* Instances List */}
-                        {!isLoading && !error && data && (
-                            <WihView style={styles.instanceList}>
-                                {data.length === 0 ? (
-                                    <WihText>{t(Labels.message.noUpcomingInstances)}</WihText>
-                                ) : (
-                                    data.map((instance) => {
-                                        const instanceDate = new Date(instance.date);
-                                        const isModified = isInstanceModified(instance);
-
-                                        return (
-                                            <WihTextButton
-                                                key={instance.date}
-                                                onPress={() => router.setParams({date: instance.date})}
-                                                style={[
-                                                    styles.instanceButton,
-                                                    isModified && {
-                                                        borderWidth: 2,
-                                                        borderStyle: 'dashed',
-                                                        borderColor: theme.primary,
-                                                    }
-                                                ]}
-                                            >
-                                                <WihView style={styles.instanceButtonContent}>
-                                                    <WihView>
-                                                        <WihText style={styles.instanceDate}>
-                                                            {instanceDate.toLocaleDateString()} - {instanceDate.toLocaleDateString(undefined, {weekday: 'short'})}
-                                                        </WihText>
-                                                        <WihText style={styles.instanceTime}>
-                                                            {timeDisplayString(instance.startTime)}
-                                                            {instance.endTime && ` - ${timeDisplayString(instance.endTime)}`}
-                                                        </WihText>
-                                                    </WihView>
-                                                    {isModified && (
-                                                        <WihText style={[styles.modifiedBadge, {color: theme.primary}]}>
-                                                            {t(Labels.labels.modified)}
-                                                        </WihText>
-                                                    )}
-                                                </WihView>
-                                            </WihTextButton>
-                                        );
-                                    })
-                                )}
-                            </WihView>
-                        )}
-                    </WihView>
-                )}
             </WihIconRow>
         </EventViewLayout>
+        <WihView style={styles.eventPreviewContainer}>
+            {showInstances && (
+                <WihView style={styles.instanceSection}>
+                    {/* Period Navigation */}
+                    <WihView style={styles.navigationContainer}>
+                        <WihTextButton
+                            disabled={!canGoBack}
+                            onPress={goToPreviousPeriod}
+                            style={styles.navButton}
+                        >
+                            ← {t(Labels.actions.previous)}
+                        </WihTextButton>
+
+                        <WihTextButton
+                            onPress={resetToToday}
+                            style={styles.todayButton}
+                        >
+                            {t(Labels.actions.today)}
+                        </WihTextButton>
+
+                        <WihTextButton
+                            onPress={goToNextPeriod}
+                            style={styles.navButton}
+                        >
+                            {t(Labels.actions.next)} →
+                        </WihTextButton>
+                    </WihView>
+
+                    {/* Current Period Display */}
+                    <WihText style={styles.periodLabel}>
+                        {date.toLocaleDateString()} - {new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                    </WihText>
+
+                    {/* Loading State */}
+                    {isLoading && (
+                        <WihView style={styles.instanceList}>
+                            <WihText>{t(Labels.message.loading)}</WihText>
+                        </WihView>
+                    )}
+
+                    {/* Error State */}
+                    {error && !isLoading && (
+                        <WihView style={styles.instanceList}>
+                            <WihErrorView error={error} refresh={refresh} />
+                        </WihView>
+                    )}
+
+                    {/* Instances List */}
+                    {!isLoading && !error && data && (
+                        <WihView style={styles.instanceList}>
+                            {data.length === 0 ? (
+                                <WihText>{t(Labels.message.noUpcomingInstances)}</WihText>
+                            ) : (
+                                data.map((instance) => {
+                                    const instanceDate = new Date(instance.date);
+                                    const isModified = isInstanceModified(instance);
+
+                                    return (
+                                        <WihTextButton
+                                            key={instance.date}
+                                            onPress={() => router.setParams({date: instance.date})}
+                                            style={[
+                                                styles.instanceButton,
+                                                isModified && {
+                                                    borderWidth: 2,
+                                                    borderStyle: 'dashed',
+                                                    borderColor: theme.primary,
+                                                }
+                                            ]}
+                                        >
+                                            <WihView style={styles.instanceButtonContent}>
+                                                <WihView style={{flex: 1}}>
+                                                    <WihText style={styles.instanceDate}>
+                                                        {instanceDate.toLocaleDateString()} - {instanceDate.toLocaleDateString(undefined, {weekday: 'short'})}
+                                                    </WihText>
+                                                    <WihText style={styles.instanceTime}>
+                                                        {timeDisplayString(timeStringToDate(instance.startTime))}
+                                                        {instance.endTime && ` - ${timeDisplayString(timeStringToDate(instance.endTime))}`}
+                                                    </WihText>
+                                                </WihView>
+                                                {isModified && (
+                                                    <WihText style={[styles.modifiedBadge, {color: theme.primary}]}>
+                                                        {t(Labels.labels.modified)}
+                                                    </WihText>
+                                                )}
+                                            </WihView>
+                                        </WihTextButton>
+                                    );
+                                })
+                            )}
+                        </WihView>
+                    )}
+                </WihView>
+            )}
+        </WihView>
+        </>
     )
 }
 
@@ -391,6 +394,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },
+    eventPreviewContainer: {
+        padding: 30,
+    }
 });
 
 export default function () {

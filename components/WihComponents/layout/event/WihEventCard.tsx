@@ -17,8 +17,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const router = useRouter();
 
     const onEventPress = useCallback(() => {
-        router.push(`/(app)/event/view/${event.id}?date=${event.dateString}`);
-    }, [event.id, event.hasRepetitions]);
+        if(event.HasRepetitions){
+            router.push(`/(app)/event/view/${event.GroupId}`);
+            return;
+        }
+        router.push(`/(app)/event/view/${event.GroupId}?date=${event.DateString}`);
+    }, [event.GroupId, event.HasRepetitions]);
 
     const renderIcon = (hasRepetitions: boolean) => {
         return !hasRepetitions
@@ -27,11 +31,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     };
 
     const getDurationText = () => {
-        if(!event.endTime){
-            return timeDisplayString(event.startTime);
+        if(!event.EndTime){
+            return timeDisplayString(event.StartTime);
         }
 
-        return `${timeDisplayString(event.startTime)} - ${timeDisplayString(event.endTime)}`;
+        return `${timeDisplayString(event.StartTime)} - ${timeDisplayString(event.EndTime)}`;
     }
 
     return (
@@ -44,10 +48,10 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             onPress={() => onEventPress()}
         >
             <WihView style={styles.content} gap={10}>
-                <WihView style={styles.iconContainer}>{renderIcon(event.hasRepetitions)}</WihView>
+                <WihView style={styles.iconContainer}>{renderIcon(event.HasRepetitions)}</WihView>
                 <WihView style={styles.textContainer}>
-                    <WihText style={styles.title}>{event.title}</WihText>
-                    <WihText>{event.date?.toLocaleDateString()}</WihText>
+                    <WihText style={styles.title}>{event.Title}</WihText>
+                    <WihText>{event.Date?.toLocaleDateString()}</WihText>
                     <WihText>{getDurationText()}</WihText>
                 </WihView>
             </WihView>
