@@ -97,6 +97,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                     key={i}
                     style={[
                         styles.weekDayOption,
+                        {borderColor: isActive ? theme.primary : theme.border},
                         isActive && {
                             backgroundColor: theme.primary,
                         },
@@ -125,10 +126,11 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                     <WihText style={styles.labels}>{t(Labels.labels.endDate)}: </WihText>
                     <WihText>{event.endDate?.toLocaleDateString() ?? "N/A"}</WihText>
                 </WihView>
-                <WihView style={styles.container}>
-                    {getWeekDays()}
-                </WihView>
             </WihIconRow>
+
+            <WihView style={[styles.container, {gap: 10, marginBottom: 20}]}>
+                {getWeekDays()}
+            </WihView>
 
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
@@ -319,6 +321,8 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
     )
 }
 
+const CIRCLE_SIZE = 36;
+
 const styles = StyleSheet.create({
     container: {
         display: "flex",
@@ -328,11 +332,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     weekDayOption: {
-        padding: 10,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "gray",
+        width: CIRCLE_SIZE,
+        height: CIRCLE_SIZE,
+        borderRadius: CIRCLE_SIZE / 2,
         alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 2
     },
     instanceToggle: {
         alignSelf: 'flex-start',
