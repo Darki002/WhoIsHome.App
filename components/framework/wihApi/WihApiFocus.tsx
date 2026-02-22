@@ -56,7 +56,7 @@ export default function useWihApiFocus<TResponse>(props: WihFetchProps) {
 
             setIsLoading(false);
         });
-    }, []);
+    }, [callApi]);
 
     useFocusEffect(useCallback(() => call(), []));
 

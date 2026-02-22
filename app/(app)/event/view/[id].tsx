@@ -56,6 +56,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 14); // Move forward 2 weeks
         setDate(nextDate);
+        refresh();
     }, [date]);
 
     const goToPreviousPeriod = useCallback(() => {
@@ -68,10 +69,12 @@ function EventGroupView({response}: {response: EventGroupModel}) {
         } else {
             setDate(prevDate);
         }
+        refresh();
     }, [date]);
 
     const resetToToday = useCallback(() => {
         setDate(new Date());
+        refresh();
     }, []);
 
     const isInstanceModified = (instance: EventInstanceModel): boolean => {
