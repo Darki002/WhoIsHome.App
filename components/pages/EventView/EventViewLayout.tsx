@@ -5,21 +5,25 @@ import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {usePermission} from "@/hooks/usePermission";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {StyleSheet} from "react-native";
+import {RefreshControl, ScrollView, StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
+import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 
 interface EventViewLayoutProps {
     title: string;
     userId: number;
+    onRefresh: () => void;
     onEdit: () => void;
     onDelete: () => Promise<WihResponse<any> | string>;
 }
 
-export default function EventViewLayout({title, userId, onEdit, onDelete, children}: PropsWithChildren<EventViewLayoutProps>) {
+export default function EventViewLayout({title, userId, onEdit, onDelete, onRefresh, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
     const router = useRouter();
     const navigation = useNavigation();
+
+    const [refreshing, setRefreshing] = useState(false);
     const permissionCheck = usePermission();
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
@@ -37,6 +41,12 @@ export default function EventViewLayout({title, userId, onEdit, onDelete, childr
         });
     }, [router, onDelete]);
 
+    const onScrollRefresh = useCallback(() => {
+        setRefreshing(true);
+        onRefresh && onRefresh();
+        setRefreshing(false);
+    }, [onRefresh]);
+
     const showOwnerActions = () => {
         const isOwner = permissionCheck(userId);
         if(isOwner) {
@@ -51,33 +61,34 @@ export default function EventViewLayout({title, userId, onEdit, onDelete, childr
     }
 
     return (
-        <WihView style={styles.container}>
-            {children}
+        <WihRefreshableScrollView onRefresh={onRefresh}>
+            <WihView style={styles.container}>
 
-            {showOwnerActions()}
+                {children}
 
-            <WihDialog
-                visible={showDeleteDialog}
-                title={t(Labels.dialog.deleteTitle)}
-                message={t(Labels.dialog.deleteMessage)}
-                onConfirm={() => {
-                    setShowDeleteDialog(false);
-                    deleteEvent();
-                }}
-                onCancel={() => setShowDeleteDialog(false)}
-            />
+                {showOwnerActions()}
 
-        </WihView>
+                <WihDialog
+                    visible={showDeleteDialog}
+                    title={t(Labels.dialog.deleteTitle)}
+                    message={t(Labels.dialog.deleteMessage)}
+                    onConfirm={() => {
+                        setShowDeleteDialog(false);
+                        deleteEvent();
+                    }}
+                    onCancel={() => setShowDeleteDialog(false)}
+                />
+            </WihView>
+        </WihRefreshableScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        display: "flex",
-        flexDirection: "column",
         gap: 20,
-        alignItems: "center",
-        justifyContent: "center"
+        padding: 20,
+        paddingTop: 40,
+        marginTop: 20
     }
 })
