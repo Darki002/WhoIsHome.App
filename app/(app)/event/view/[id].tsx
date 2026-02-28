@@ -214,7 +214,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                                         return (
                                             <WihTextButton
                                                 key={instance.date}
-                                                onPress={() => router.setParams({date: instance.date})}
+                                                onPress={() => router.push(`/(app)/event/view/${response.id}?date=${instance.date}`)}
                                                 style={[
                                                     styles.instanceButton,
                                                     isModified && {
