@@ -14,7 +14,7 @@ import useWihApi from "@/hooks/useWihApi";
 import {EventGroup, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
 import {EventInstance, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihButton, WihTextButton} from "@/components/WihComponents/input/WihButton";
+import {WihButton, WihIconButton, WihTextButton} from "@/components/WihComponents/input/WihButton";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 
 type EventInstanceQueryParams = {
@@ -177,16 +177,9 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                     <WihView style={styles.instanceSection}>
                         {/* Period Navigation */}
                         <WihView style={styles.navigationContainer}>
-                            <WihTextButton disabled={!canGoBack} onPress={goToPreviousPeriod} style={styles.navButton}>←</WihTextButton>
-
-                            <WihTextButton
-                                onPress={resetToToday}
-                                style={styles.todayButton}
-                            >
-                                {t(Labels.actions.today)}
-                            </WihTextButton>
-
-                            <WihTextButton onPress={goToNextPeriod} style={styles.navButton}>→</WihTextButton>
+                            <WihIconButton onPress={goToPreviousPeriod} disabled={!canGoBack} buttonStyle={styles.navButton} size={20} name="arrow-back" />
+                            <WihIconButton onPress={resetToToday} buttonStyle={styles.todayButton} size={20} name="today" />
+                            <WihIconButton onPress={goToNextPeriod} buttonStyle={styles.navButton} size={20} name="arrow-forward" />
                         </WihView>
 
                         {/* Current Period Display */}
@@ -344,24 +337,14 @@ const styles = StyleSheet.create({
     },
     navigationContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 8,
     },
     navButton: {
         flex: 1,
-        padding: 8,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "gray",
         alignItems: 'center',
     },
     todayButton: {
         flex: 1,
-        padding: 8,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "gray",
         alignItems: 'center',
     },
     periodLabel: {

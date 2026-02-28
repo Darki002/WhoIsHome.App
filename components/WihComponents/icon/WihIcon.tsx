@@ -22,8 +22,9 @@ export const IonIcon = ({style, color, ...rest}: IoniconsProps) => {
     return <Ionicons style={[{color: tintColor}, style]} {...rest} />;
 }
 
-export interface MaterialIconProps extends IconProps<ComponentProps<typeof MaterialIcons>["name"]> {
-}
+export type MaterialIconNameType = ComponentProps<typeof MaterialIcons>["name"];
+
+export interface MaterialIconProps extends IconProps<ComponentProps<typeof MaterialIcons>["name"]> {}
 
 export const WihMaterialIcon = ({style, color, ...rest}: MaterialIconProps) => {
     const tintColor = useIconColor(color);

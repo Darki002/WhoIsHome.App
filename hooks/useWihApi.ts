@@ -18,7 +18,7 @@ const useWihApi = <TBody = unknown, TResponse = unknown, TQuery extends QueryPar
 ): (body?: TBody, queryParams?: TQuery) => Promise<WihResponse<TResponse> | string> => {
 
     const config = useApiConfig();
-    const { session, onNewSession } = useSession();
+    const { session, onNewSession, signOut } = useSession();
 
     function onNewTokens(tokens: Tokens | undefined | null) {
         if (tokens) {
@@ -42,13 +42,19 @@ const useWihApi = <TBody = unknown, TResponse = unknown, TQuery extends QueryPar
         // Create the final endpoint string with query params
         const fullEndpoint = buildEndpointWithQuery(props.endpoint, queryParams);
 
-        return await new WihFetchBuilder(config, session)
+        const response = await new WihFetchBuilder(config, session)
             .setEndpoint(fullEndpoint)
             .setMethod(props.method)
             .setVersion(props.version)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
             .fetch<TResponse>();
+
+        if (response.refreshFailed) {
+            signOut();
+        }
+
+        return response;
     };
 };
 
