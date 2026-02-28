@@ -6,7 +6,7 @@ import {Endpoints} from "@/constants/endpoints";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
-import {dateStringToDate, timeDisplayString, timeStringToDate} from "@/helper/datetimehelper";
+import {dateStringToDate, formatDate, timeDisplayString, timeStringToDate} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import useWihApiFocus, {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
@@ -14,8 +14,13 @@ import useWihApi from "@/hooks/useWihApi";
 import {EventGroup, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
 import {EventInstance, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
-import {WihTextButton} from "@/components/WihComponents/input/WihButton";
+import {WihButton, WihTextButton} from "@/components/WihComponents/input/WihButton";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
+
+type EventInstanceQueryParams = {
+    start: string;
+    weeks: number;
+}
 
 function EventGroupView({response}: {response: EventGroupModel}) {
     const theme = useWihTheme();
@@ -24,8 +29,9 @@ function EventGroupView({response}: {response: EventGroupModel}) {
 
     const [showInstances, setShowInstances] = useState(false);
     const [date, setDate] = useState<Date>(new Date());
-    const {data, error, isLoading, refresh} = useWihApiFocus<EventInstanceModel[]>({
-        endpoint: Endpoints.eventGroup.instance.with(response.id, date, 2),
+    const {data, error, isLoading, refresh} = useWihApiFocus<EventInstanceModel[], EventInstanceQueryParams>({
+        endpoint: Endpoints.eventGroup.instance.withId(response.id),
+        defaultQueryParams: { start: formatDate(date), weeks: 2 },
         method: "GET"
     });
 
@@ -54,27 +60,28 @@ function EventGroupView({response}: {response: EventGroupModel}) {
 
     const goToNextPeriod = useCallback(() => {
         const nextDate = new Date(date);
-        nextDate.setDate(nextDate.getDate() + 14); // Move forward 2 weeks
+        nextDate.setDate(nextDate.getDate() + 14);
         setDate(nextDate);
-        refresh();
+        refresh({ start: formatDate(nextDate), weeks: 2 });
     }, [date]);
 
     const goToPreviousPeriod = useCallback(() => {
         const prevDate = new Date(date);
-        prevDate.setDate(prevDate.getDate() - 14); // Move back 2 weeks
+        prevDate.setDate(prevDate.getDate() - 14);
         const today = new Date();
-        // Don't go before today
+
         if (prevDate < today) {
             setDate(today);
         } else {
             setDate(prevDate);
         }
-        refresh();
+        refresh({ start: formatDate(prevDate), weeks: 2 });
     }, [date]);
 
     const resetToToday = useCallback(() => {
-        setDate(new Date());
-        refresh();
+        const date = new Date();
+        setDate(date);
+        refresh({ start: formatDate(date), weeks: 2 });
     }, []);
 
     const isInstanceModified = (instance: EventInstanceModel): boolean => {
@@ -156,27 +163,21 @@ function EventGroupView({response}: {response: EventGroupModel}) {
             </WihIconRow>
 
             <WihIconRow name="event-note" flexDirection="column">
-                <WihTextButton
+                <WihButton
                     onPress={handleToggleInstances}
                     style={styles.instanceToggle}
                 >
                     {showInstances
                         ? t(Labels.actions.hideInstances)
                         : t(Labels.actions.viewInstances)}
-                </WihTextButton>
+                </WihButton>
             </WihIconRow>
             <WihView style={styles.eventPreviewContainer}>
                 {showInstances && (
                     <WihView style={styles.instanceSection}>
                         {/* Period Navigation */}
                         <WihView style={styles.navigationContainer}>
-                            <WihTextButton
-                                disabled={!canGoBack}
-                                onPress={goToPreviousPeriod}
-                                style={styles.navButton}
-                            >
-                                ← {t(Labels.actions.previous)}
-                            </WihTextButton>
+                            <WihTextButton disabled={!canGoBack} onPress={goToPreviousPeriod} style={styles.navButton}>←</WihTextButton>
 
                             <WihTextButton
                                 onPress={resetToToday}
@@ -185,12 +186,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                                 {t(Labels.actions.today)}
                             </WihTextButton>
 
-                            <WihTextButton
-                                onPress={goToNextPeriod}
-                                style={styles.navButton}
-                            >
-                                {t(Labels.actions.next)} →
-                            </WihTextButton>
+                            <WihTextButton onPress={goToNextPeriod} style={styles.navButton}>→</WihTextButton>
                         </WihView>
 
                         {/* Current Period Display */}

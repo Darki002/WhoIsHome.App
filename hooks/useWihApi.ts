@@ -11,9 +11,14 @@ export interface WihFetchProps {
     version?: number;
 }
 
-const useWihApi = <TBody, TResponse>(props: WihFetchProps) : (body?: TBody) => Promise<WihResponse<TResponse> | string> => {
+export type QueryParams = Record<string, string | number | boolean | undefined>;
+
+const useWihApi = <TBody = unknown, TResponse = unknown, TQuery extends QueryParams = QueryParams>(
+    props: WihFetchProps
+): (body?: TBody, queryParams?: TQuery) => Promise<WihResponse<TResponse> | string> => {
+
     const config = useApiConfig();
-    const {session, onNewSession, signOut} = useSession();
+    const { session, onNewSession } = useSession();
 
     function onNewTokens(tokens: Tokens | undefined | null) {
         if (tokens) {
@@ -21,33 +26,47 @@ const useWihApi = <TBody, TResponse>(props: WihFetchProps) : (body?: TBody) => P
         }
     }
 
-    return async (body?: TBody): Promise<WihResponse<TResponse> | string> => {
-        if (!session || !session.jwtToken || !session.refreshToken) {
-            WihLogger.warn(useWihApi.name, `Skip Request ${props.endpoint} due to missing session!`);
-            return `Skip Request ${props.endpoint} due to missing session!`;
+    return async (body?: TBody, queryParams?: TQuery): Promise<WihResponse<TResponse> | string> => {
+        if (!session?.jwtToken || !session?.refreshToken) {
+            const error = `Skip Request ${props.endpoint} due to missing session!`;
+            WihLogger.warn("useWihApi", error);
+            return error;
         }
 
-        if(!config?.apikey || !config.baseUri){
-            WihLogger.warn(useWihApi.name, `Skip Request ${props.endpoint} due to missing API Key or baseUri!`);
-            return `Skip Request ${props.endpoint} due to missing API Key or baseUri!`;
+        if (!config?.apikey || !config.baseUri) {
+            const error = `Skip Request ${props.endpoint} due to missing API Key or baseUri!`;
+            WihLogger.warn("useWihApi", error);
+            return error;
         }
 
-        const response = await new WihFetchBuilder(config, session)
-            .setEndpoint(props.endpoint)
+        // Create the final endpoint string with query params
+        const fullEndpoint = buildEndpointWithQuery(props.endpoint, queryParams);
+
+        return await new WihFetchBuilder(config, session)
+            .setEndpoint(fullEndpoint)
             .setMethod(props.method)
             .setVersion(props.version)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
             .fetch<TResponse>();
+    };
+};
 
-        if(response.isValid()) return response;
-
-        if (response.refreshFailed) {
-            signOut();
-        }
-
-        return response;
+function buildEndpointWithQuery(endpoint: string, params?: QueryParams): string {
+    if (!params || Object.keys(params).length === 0) {
+        return endpoint;
     }
+
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            searchParams.append(key, String(value));
+        }
+    });
+
+    const queryString = searchParams.toString();
+    return queryString ? `${endpoint}?${queryString}` : endpoint;
 }
 
 export default useWihApi;

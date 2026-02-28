@@ -1,5 +1,3 @@
-import {formatDate} from "@/helper/datetimehelper";
-
 export const Endpoints = {
     auth: {
         register: "auth/register",
@@ -15,7 +13,7 @@ export const Endpoints = {
         url: "event-group",
         withId: (id: number | string) => `${Endpoints.eventGroup.url}/${id}`,
         instance: {
-            with: EventInstanceQueryParams,
+            withId: (id: number | string) => `${Endpoints.eventGroup.url}/${id}/instance/`,
             withDate: (id: number | string, date: Date) => `${Endpoints.eventGroup.url}/${id}/instance/${date.toISOString()}`,
         }
     },
@@ -29,18 +27,3 @@ export const Endpoints = {
     },
     pushUp: "push-up-settings",
 } as const;
-
-function EventInstanceQueryParams(id: number | string, start: Date | null, weeks: number | null) {
-    let url = `${Endpoints.eventGroup.url}/${id}/instance/`;
-
-    if(start != null){
-        url += `?start=${encodeURIComponent(formatDate(start))}`;
-    }
-
-    if(weeks != null){
-        const separator = start != null ? "&" : "?";
-        url += `${separator}weeks=${encodeURIComponent(weeks.toString())}`;
-    }
-
-    return url;
-}
