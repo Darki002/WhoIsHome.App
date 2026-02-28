@@ -264,7 +264,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
     )
 }
 
-function EventInstanceView({response}: {response: EventInstanceModel}) {
+function EventInstanceView({response, refresh}: {response: EventInstanceModel, refresh: () => void}) {
     const {t} = useTranslation();
     const router = useRouter();
 
@@ -280,7 +280,7 @@ function EventInstanceView({response}: {response: EventInstanceModel}) {
     const event = new EventInstance(response);
 
     return (
-        <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent}>
+        <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent} onRefresh={refresh}>
             <WihIconRow name="info" flexDirection="column">
                 <WihText>{t(Labels.message.viewInstance)}</WihText>
                 <WihTextButton onPress={() => router.setParams({date: undefined})}>
