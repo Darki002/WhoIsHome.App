@@ -25,7 +25,13 @@ export default function EventLayout() {
                 headerStyle: {backgroundColor: theme.background},
                 headerTintColor: theme.text
             }}/>
-            <Stack.Screen name="edit/[id]" options={{
+            <Stack.Screen name="edit/[id]/index" options={{
+                presentation: "modal",
+                title: "Unknown",
+                headerStyle: {backgroundColor: theme.background},
+                headerTintColor: theme.text
+            }}/>
+            <Stack.Screen name="edit/[id]/[date]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: theme.background},
