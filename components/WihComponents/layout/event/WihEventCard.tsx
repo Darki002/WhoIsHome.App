@@ -21,7 +21,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             router.push(`/(app)/event/view/${event.GroupId}`);
             return;
         }
-        router.push(`/(app)/event/view/${event.GroupId}?date=${event.DateString}`);
+        router.push(`/(app)/event/view/${event.GroupId}/${event.DateString}`);
     }, [event.GroupId, event.HasRepetitions]);
 
     const renderIcon = (hasRepetitions: boolean) => {

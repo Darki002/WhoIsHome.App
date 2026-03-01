@@ -41,7 +41,7 @@ function EventInstanceView({response, refresh}: {response: EventInstanceModel, r
         <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent} onRefresh={refresh}>
             <WihIconRow name="info" flexDirection="column">
                 <WihText>{t(Labels.message.viewInstance)}</WihText>
-                <WihTextButton onPress={() => router.push(`(app)/event/view/${event.eventGroupId}`)}>
+                <WihTextButton onPress={() => router.push(`/(app)/event/view/${event.eventGroupId}`)}>
                     {t(Labels.actions.viewGroup)}
                 </WihTextButton>
             </WihIconRow>
