@@ -23,7 +23,6 @@ export default function EventViewLayout({title, userId, onEdit, onDelete, onRefr
     const router = useRouter();
     const navigation = useNavigation();
 
-    const [refreshing, setRefreshing] = useState(false);
     const permissionCheck = usePermission();
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
@@ -82,7 +81,6 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 20,
         padding: 20,
-        paddingTop: 40,
-        marginTop: 20
+        paddingTop: 40
     }
 })

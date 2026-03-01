@@ -30,12 +30,10 @@ function EventInstanceView({response, refresh}: {response: EventInstanceModel, r
     });
 
     const onEdit = useCallback(() => {
-        router.push(`/(app)/event/edit/${response.id}?date=${response.date}`);
+        router.push(`/(app)/event/edit/${response.eventGroupId}/${response.date}`);
     }, [response.id]);
 
     const event = new EventInstance(response);
-
-    console.log(`Event Date ${event.date}`);
 
     return (
         <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent} onRefresh={refresh}>

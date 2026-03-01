@@ -16,7 +16,6 @@ import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihTextButton} from "@/components/WihComponents/input/WihButton";
-import {WihTextInput} from "@/components/WihComponents/input/WihTextInput";
 import WihView from "@/components/WihComponents/view/WihView";
 import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInput";
 import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
@@ -33,7 +32,7 @@ interface EventInstanceUpdate {
 }
 
 export default function () {
-    const { id, date } = useLocalSearchParams<{ id: string, date?: string }>();
+    const { id, date } = useLocalSearchParams<{ id: string, date: string }>();
     const d = dateStringToDate(date)!;
     return <WihApiFocus Component={EventInstanceEdit} endpoint={Endpoints.eventGroup.instance.withDate(id, d)} method="GET" />
 }
