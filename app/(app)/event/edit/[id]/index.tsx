@@ -85,6 +85,11 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         }
     }
 
+    const isPresencePickerDisabled = () => {
+        const presenceType = eventUpdate.presenceType && eventUpdate.presenceType;
+        return presenceType !== PresenceType.Late
+    }
+
     return (
         <EventEditLayout title={event.title} userId={event.userId} onCancel={onCancel} onUpdate={onUpdate}>
             <WihTextInput
@@ -170,12 +175,12 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
                 <WihTimeInput
                     value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
                     name="dinnerTime"
-                    disabled={event.presenceType !== "Late"}
+                    disabled={isPresencePickerDisabled()}
                     onChange={d => updateEvent({dinnerTime: d})}
-                    validationErrorMessage={eventUpdate.presenceType === "Late"
+                    validationErrorMessage={eventUpdate.presenceType === PresenceType.Late
                         ? Labels.errors.validation.presenceType.late
                         : Labels.errors.validation.presenceType.other}
-                    validate={date => eventUpdate.presenceType === "Late" ? !!date : !date }
+                    validate={date => eventUpdate.presenceType === PresenceType.Late ? !!date : !date }
                     validator={validator}
                 />
             </WihIconRow>
