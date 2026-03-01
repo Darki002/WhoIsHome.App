@@ -13,7 +13,13 @@ export default function EventLayout() {
 
     return (
         <Stack screenOptions={screenOptions}>
-            <Stack.Screen name="view/[id]" options={{
+            <Stack.Screen name="view/[id]/index" options={{
+                presentation: "modal",
+                title: "Unknown",
+                headerStyle: {backgroundColor: theme.background},
+                headerTintColor: theme.text
+            }}/>
+            <Stack.Screen name="view/[id]/[date]" options={{
                 presentation: "modal",
                 title: "Unknown",
                 headerStyle: {backgroundColor: theme.background},

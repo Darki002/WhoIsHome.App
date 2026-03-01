@@ -1,8 +1,9 @@
-import {ReactNode, useCallback, useState} from "react";
+import {ReactNode, useCallback, useEffect, useState} from "react";
 import useWihApi, {QueryParams, WihFetchProps} from "@/hooks/useWihApi";
 import {useFocusEffect} from "expo-router";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 import {WihLoadingView} from "@/components/WihComponents/feedback/WihLoading";
+import {WihLogger} from "@/helper/WihLogger";
 
 export interface WihApiFocusComponentParams<T, TQuery extends QueryParams = QueryParams> {
     response: T;
@@ -61,9 +62,9 @@ export default function useWihApiFocus<TResponse, TQuery extends QueryParams = Q
 
             setIsLoading(false);
         });
-    }, [callApi]);
+    }, [props.endpoint]);
 
-    useFocusEffect(useCallback(() => call(), []));
+    useFocusEffect(useCallback(() => call(), [call]));
 
     return {data, error, isLoading, refresh: call};
 }

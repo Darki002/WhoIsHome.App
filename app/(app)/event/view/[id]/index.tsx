@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 import useWihApiFocus, {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
 import useWihApi from "@/hooks/useWihApi";
 import {EventGroup, EventGroupModel} from "@/constants/WihTypes/Event/EventGroup";
-import {EventInstance, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
+import {EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
 import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 import {WihButton, WihIconButton, WihTextButton} from "@/components/WihComponents/input/WihButton";
 import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
@@ -20,6 +20,11 @@ import {WihErrorView} from "@/components/WihComponents/feedback/WihErrorView";
 type EventInstanceQueryParams = {
     start: string;
     weeks: number;
+}
+
+export default function () {
+    const { id } = useLocalSearchParams<{ id: string }>();
+    return <WihApiFocus Component={EventGroupView} endpoint={Endpoints.eventGroup.withId(id)} method="GET" />
 }
 
 function EventGroupView({response}: {response: EventGroupModel}) {
@@ -214,7 +219,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                                         return (
                                             <WihTextButton
                                                 key={instance.date}
-                                                onPress={() => router.push(`/(app)/event/view/${response.id}?date=${instance.date}`)}
+                                                onPress={() => router.push(`/(app)/event/view/${response.id}/${instance.date}`)}
                                                 style={[
                                                     styles.instanceButton,
                                                     isModified && {
@@ -249,63 +254,6 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                     </WihView>
                 )}
             </WihView>
-        </EventViewLayout>
-    )
-}
-
-function EventInstanceView({response, refresh}: {response: EventInstanceModel, refresh: () => void}) {
-    const {t} = useTranslation();
-    const router = useRouter();
-
-    const deleteEvent = useWihApi({
-        endpoint: Endpoints.eventGroup.withId(`${response.id}`),
-        method: "DELETE"
-    });
-
-    const onEdit = useCallback(() => {
-        router.push(`/(app)/event/edit/${response.id}?date=${response.date}`);
-    }, [response.id]);
-
-    const event = new EventInstance(response);
-
-    return (
-        <EventViewLayout title={event.title} userId={event.userId} onEdit={onEdit} onDelete={deleteEvent} onRefresh={refresh}>
-            <WihIconRow name="info" flexDirection="column">
-                <WihText>{t(Labels.message.viewInstance)}</WihText>
-                <WihTextButton onPress={() => router.setParams({date: undefined})}>
-                    {t(Labels.actions.viewGroup)}
-                </WihTextButton>
-            </WihIconRow>
-
-            <WihIconRow name="date-range" flexDirection="column">
-                <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
-                    <WihText>{event.date.toLocaleDateString()}</WihText>
-                </WihView>
-            </WihIconRow>
-
-            <WihIconRow name="timeline" flexDirection="column">
-                <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihText>{timeDisplayString(event.startTime)}</WihText>
-                </WihView>
-                {event.endTime && (
-                    <WihView style={styles.container}>
-                        <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                        <WihText>{timeDisplayString(event.endTime)}</WihText>
-                    </WihView>
-                )}
-            </WihIconRow>
-
-            <WihIconRow name="home" flexDirection="row">
-                <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
-                <WihText>{event.presenceType}</WihText>
-            </WihIconRow>
-
-            <WihIconRow name="schedule" flexDirection="row">
-                <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
-                <WihText>{event.dinnerTime ? timeDisplayString(event.dinnerTime) : "-"}</WihText>
-            </WihIconRow>
         </EventViewLayout>
     )
 }
@@ -383,14 +331,3 @@ const styles = StyleSheet.create({
         padding: 30,
     }
 });
-
-export default function () {
-    const { id, date } = useLocalSearchParams<{ id: string, date?: string }>();
-
-    if(!date){
-        return <WihApiFocus Component={EventGroupView} endpoint={Endpoints.eventGroup.withId(id)} method="GET" />
-    }
-
-    const d = dateStringToDate(date)!;
-    return <WihApiFocus Component={EventInstanceView} endpoint={Endpoints.eventGroup.instance.withDate(id, d)} method="GET" />
-}
