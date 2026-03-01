@@ -5,7 +5,7 @@ import WihView from "@/components/WihComponents/view/WihView";
 import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {StyleSheet} from "react-native";
+import {ScrollView, StyleSheet} from "react-native";
 
 interface EventEditLayoutProps {
     title: string;
@@ -32,13 +32,17 @@ export default function EventEditLayout({title, userId, onCancel, onUpdate, chil
     }, [title]);
 
     return (
-        <WihView style={styles.container}>
-            {children}
+        <WihView style={{flex: 1}}>
+            <ScrollView style={{height: "100%"}}>
+                <WihView style={styles.container}>
+                    {children}
 
-            <WihView style={styles.buttons}>
-                <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
-                <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
-            </WihView>
+                    <WihView flex="row" center="vertical" style={{gap: 30}}>
+                        <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
+                        <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
+                    </WihView>
+                </WihView>
+            </ScrollView>
         </WihView>
     )
 }
@@ -46,15 +50,8 @@ export default function EventEditLayout({title, userId, onCancel, onUpdate, chil
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        gap: 20,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    buttons: {
-        display: "flex",
-        flexDirection: "row",
-        gap: 30
+        padding: 20,
+        paddingTop: 40,
+        marginTop: 20
     }
 })

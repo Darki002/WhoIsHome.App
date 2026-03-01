@@ -41,12 +41,6 @@ export default function EventViewLayout({title, userId, onEdit, onDelete, onRefr
         });
     }, [router, onDelete]);
 
-    const onScrollRefresh = useCallback(() => {
-        setRefreshing(true);
-        onRefresh && onRefresh();
-        setRefreshing(false);
-    }, [onRefresh]);
-
     const showOwnerActions = () => {
         const isOwner = permissionCheck(userId);
         if(isOwner) {

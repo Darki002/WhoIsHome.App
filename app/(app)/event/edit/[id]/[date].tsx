@@ -96,16 +96,6 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 </WihTextButton>
             </WihIconRow>
 
-            <WihTextInput
-                name="title"
-                value={eventUpdate.title ?? event.title}
-                placeholder={t(Labels.placeholders.title)}
-                onChangeText={t => updateEvent({title: t})}
-                validate={t => t !== undefined && t.length > 0 && t.length <= 50}
-                validationErrorMessage={Labels.errors.validation.title}
-                validator={validator}
-            />
-
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
