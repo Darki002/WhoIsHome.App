@@ -7,13 +7,15 @@ import {User} from "@/constants/WihTypes/User";
 import {Endpoints} from "@/constants/endpoints";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
-import {WihCollapsible} from "@/components/WihComponents/view/WihCollapsible";
 import {StyleSheet} from "react-native";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 
-const EVENT_COUNT_THRESHOLD = 4;
+export default function UserView() {
+    const {id} = useLocalSearchParams<{ id: string }>();
+    return <WihApiFocus Component={UserViewOverviewComponent} endpoint={Endpoints.user.withId(id)} method="GET"/>
+}
 
 function UserViewComponent({user, overviewResponse, overviewRefresh}: {
     user: User;
@@ -33,43 +35,16 @@ function UserViewComponent({user, overviewResponse, overviewRefresh}: {
         <WihView style={styles.container}>
             <WihRefreshableScrollView onRefresh={overviewRefresh}>
                 {
-                    overview.Today.length + overview.ThisWeek.length + overview.FutureEvents.length < 1 && (
+                    overview.Events.length < 1 && (
                         <WihView center="full">
                             <WihText>{t(Labels.errors.noEvents)}</WihText>
                         </WihView>
                     )
                 }
 
-                {/* Event Lists */}
                 <WihView style={styles.eventLists}>
-                    {/* Today */}
-                    {overview.Today.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.today)}
-                            isDefaultOpen={overview.Today.length < EVENT_COUNT_THRESHOLD}
-                        >
-                            <WihEventList events={overview.Today}/>
-                        </WihCollapsible>
-                    )}
-
-                    {/* This Week */}
-                    {overview.ThisWeek.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.thisWeek)}
-                            isDefaultOpen={overview.ThisWeek.length < EVENT_COUNT_THRESHOLD}
-                        >
-                            <WihEventList events={overview.ThisWeek}/>
-                        </WihCollapsible>
-                    )}
-
-                    {/* Future Events */}
-                    {overview.FutureEvents.length > 0 && (
-                        <WihCollapsible
-                            title={t(Labels.sections.other)}
-                            isDefaultOpen={overview.FutureEvents.length < EVENT_COUNT_THRESHOLD}
-                        >
-                            <WihEventList events={overview.FutureEvents}/>
-                        </WihCollapsible>
+                    {overview.Events.length > 0 && (
+                        <WihEventList events={overview.Events}/>
                     )}
                 </WihView>
             </WihRefreshableScrollView>
@@ -86,11 +61,6 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
-
-export default function UserView() {
-    const {id} = useLocalSearchParams<{ id: string }>();
-    return <WihApiFocus Component={UserViewOverviewComponent} endpoint={Endpoints.user.withId(id)} method="GET"/>
-}
 
 function UserViewOverviewComponent({response}: WihApiFocusComponentParams<User>) {
     const {id} = useLocalSearchParams<{ id: string }>();
