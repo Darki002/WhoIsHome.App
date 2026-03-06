@@ -4,11 +4,13 @@ import {Tokens} from "@/constants/WihTypes/Auth";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihFetchBuilder} from "@/helper/fetch/WihFetchBuilder";
 import {WihLogger} from "@/helper/WihLogger";
+import {WihContentTypes} from "@/helper/fetch/WihContentTypes";
 
 export interface WihFetchProps {
     endpoint: string;
     method: "GET" | "POST" | "DELETE" | "PATCH";
     version?: number;
+    contentType?: WihContentTypes;
 }
 
 export type QueryParams = Record<string, string | number | boolean | undefined>;
@@ -46,6 +48,7 @@ const useWihApi = <TBody = unknown, TResponse = unknown, TQuery extends QueryPar
             .setEndpoint(fullEndpoint)
             .setMethod(props.method)
             .setVersion(props.version)
+            .setContentType(props.contentType)
             .setBody(body)
             .addNewTokenListener(onNewTokens)
             .fetch<TResponse>();

@@ -3,6 +3,7 @@ import {ApiConfig} from "@/hooks/useApiConfig";
 import {refreshJwtToken} from "@/helper/fetch/RefreshJwtToken";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihLogger} from "@/helper/WihLogger";
+import {WihContentTypes} from "@/helper/fetch/WihContentTypes";
 
 export type WihApiMethods = "GET" | "POST" | "DELETE" | "PATCH";
 export type OnNewTokenCallback = (tokens: (Tokens | undefined | null)) => void;
@@ -16,6 +17,7 @@ export class WihFetchBuilder {
     private endpoint: string = "";
     private apiVersion: number = 1;
     private method: WihApiMethods = "GET";
+    private contentType: WihContentTypes = WihContentTypes.JSON;
 
     private headers = new Headers();
     private body?: any;
@@ -33,6 +35,12 @@ export class WihFetchBuilder {
     setMethod(method?: WihApiMethods) {
         if(!method) return this;
         this.method = method;
+        return this;
+    }
+
+    setContentType(contentType: WihContentTypes | undefined) {
+        if(!contentType) return this;
+        this.contentType = contentType;
         return this;
     }
 
@@ -58,7 +66,7 @@ export class WihFetchBuilder {
     }
 
     private buildHeaders() {
-        this.headers.append("Content-Type", "application/json");
+        this.headers.append("Content-Type", this.contentType);
 
         if(this.config.apikey){
             this.headers.append("X-API-KEY", this.config.apikey);

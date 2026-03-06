@@ -21,7 +21,8 @@ import {WihCheckboxGroup} from "@/components/WihComponents/input/WihCheckboxGrou
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
 import {useWihValidation} from "@/hooks/useWihValidation";
 import Toast from "react-native-root-toast";
-import {DtoPatch, PathDocument} from "@/constants/WihTypes/DtoPatch";
+import {PathDocument} from "@/constants/WihTypes/DtoPatch";
+import {WihContentTypes} from "@/helper/fetch/WihContentTypes";
 
 function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>) {
     const {t} = useTranslation();
@@ -34,7 +35,8 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<PathDocument, EventGroupModel>({
         endpoint: Endpoints.eventGroup.withId(response.id),
-        method: "PATCH"
+        method: "PATCH",
+        contentType: WihContentTypes.JSONPatch
     });
 
     const onCancel = useCallback(() => {
