@@ -3,7 +3,6 @@ import React, {useCallback, useState} from "react";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
 import {WihText} from "@/components/WihComponents/display/WihText";
 import WihView from "@/components/WihComponents/view/WihView";
-import {formatDate, formatTime} from "@/helper/datetimehelper";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import {Endpoints} from "@/constants/endpoints";
 import Labels from "@/constants/locales/Labels";

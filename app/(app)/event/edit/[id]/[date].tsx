@@ -1,10 +1,10 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import {Endpoints} from "@/constants/endpoints";
-import {dateStringToDate, formatDate, formatTime} from "@/helper/datetimehelper";
+import {dateStringToDate} from "@/helper/datetimehelper";
 import React, {useCallback, useState} from "react";
 import {StyleSheet} from "react-native";
-import {EventInstance, EventInstanceDto, EventInstanceModel} from "@/constants/WihTypes/Event/EventInstance";
+import {EventInstance, EventInstanceModel, EventInstanceUpdate} from "@/constants/WihTypes/Event/EventInstance";
 import {useTranslation} from "react-i18next";
 import {useWihValidation} from "@/hooks/useWihValidation";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
@@ -21,15 +21,7 @@ import {WihDateInput} from "@/components/WihComponents/input/datetime/WihDateInp
 import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInput";
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {presenceTypeOptions} from "@/constants/ConstantOptions";
-
-interface EventInstanceUpdate {
-    title?: string;
-    date?: Date;
-    startTime?: Date;
-    endTime?: Date | null;
-    presenceType?: PresenceType;
-    dinnerTime?: Date | null;
-}
+import {PathDocument} from "@/constants/WihTypes/DtoPatch";
 
 export default function () {
     const { id, date } = useLocalSearchParams<{ id: string, date: string }>();
@@ -41,16 +33,12 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     const {t} = useTranslation();
     const router = useRouter();
 
-    const [eventUpdate, setEventUpdate] = useState<EventInstanceUpdate>({});
+    const [update] = useState(new EventInstanceUpdate());
     const event = new EventInstance(response);
-
-    const updateEvent = (update: Partial<EventInstanceUpdate>) => {
-        setEventUpdate(prev => ({...prev, ...update}));
-    }
 
     const validator = useWihValidation(EventInstanceEdit.name);
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
-    const callWihApi = useWihApi<EventInstanceDto, EventInstanceModel>({
+    const callWihApi = useWihApi<PathDocument, EventInstanceModel>({
         endpoint: Endpoints.eventGroup.instance.withDate(response.id, event.date),
         method: "PATCH"
     });
@@ -68,21 +56,13 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             return;
         }
 
-        const update : EventInstanceDto = {
-            title: eventUpdate.title,
-            date: eventUpdate.date && formatDate(eventUpdate.date),
-            startTime: eventUpdate.startTime && formatTime(eventUpdate.startTime),
-            endTime: eventUpdate.endTime && formatTime(eventUpdate.endTime),
-            presenceType: eventUpdate.presenceType,
-            dinnerTime: eventUpdate.dinnerTime && formatDate(eventUpdate.dinnerTime),
-        }
-        callWihApi(update).then(updateToast);
+        callWihApi(update.getUpdates()).then(updateToast);
     };
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
-        updateEvent({presenceType: presenceType});
+        update.updatePresenceType(presenceType);
         if (presenceType !== "Late") {
-            updateEvent({dinnerTime: null});
+            update.updateDinnerTime(null);
         }
     }
 
@@ -98,9 +78,9 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
-                    <WihDateInput value={eventUpdate.date ?? event.date}
+                    <WihDateInput value={update.Date ?? event.date}
                                   name="date"
-                                  onChange={d => updateEvent({date: d})}
+                                  onChange={d => update.updateDate(d)}
                                   validate={d => !!d}
                                   validationErrorMessage={Labels.errors.validation.date}
                                   validator={validator}
@@ -111,9 +91,9 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={eventUpdate.startTime ?? event.startTime}
+                    <WihTimeInput value={update.startTime ?? event.startTime}
                                   name="startTime"
-                                  onChange={st => updateEvent({startTime: st})}
+                                  onChange={st => update.updateStartTime(st)}
                                   validate={time => !!time}
                                   validationErrorMessage={Labels.errors.validation.startTime}
                                   validator={validator}
@@ -121,10 +101,10 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={eventUpdate.endTime === undefined ? event.endTime : eventUpdate.endTime}
+                    <WihTimeInput value={update.endTime === undefined ? event.endTime : update.endTime}
                                   name="endTime"
-                                  onChange={et => updateEvent({endTime: et})}
-                                  validate={time => !time || !eventUpdate.startTime || time > eventUpdate.startTime}
+                                  onChange={et => update.updateEndTime(update.endTime)}
+                                  validate={time => !time || !update.startTime || time > update.startTime}
                                   validationErrorMessage={Labels.errors.validation.endTime}
                                   validator={validator}
                     />
@@ -135,7 +115,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
                     name="presenceType"
-                    value={eventUpdate.presenceType ?? event.presenceType}
+                    value={update.presenceType ?? event.presenceType}
                     options={presenceTypeOptions}
                     onChange={onPresenceTypeChange}
                     validate={t => t !== undefined}
@@ -146,14 +126,14 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
-                    value={eventUpdate.dinnerTime === undefined ? event.dinnerTime : eventUpdate.dinnerTime}
+                    value={update.dinnerTime === undefined ? event.dinnerTime : update.dinnerTime}
                     name="dinnerTime"
                     disabled={event.presenceType !== "Late"}
-                    onChange={d => updateEvent({dinnerTime: d})}
-                    validationErrorMessage={eventUpdate.presenceType === "Late"
+                    onChange={d => update.updateDinnerTime(d)}
+                    validationErrorMessage={update.presenceType === "Late"
                         ? Labels.errors.validation.presenceType.late
                         : Labels.errors.validation.presenceType.other}
-                    validate={date => eventUpdate.presenceType === "Late" ? !!date : !date }
+                    validate={date => update.presenceType === "Late" ? !!date : !date }
                     validator={validator}
                 />
             </WihIconRow>
