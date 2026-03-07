@@ -27,6 +27,7 @@ import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {presenceTypeOptions} from "@/constants/ConstantOptions";
 import {PathDocument} from "@/constants/WihTypes/DtoPatch";
 import {usePatchReducer} from "@/hooks/usePatchReducer";
+import {WihContentTypes} from "@/helper/fetch/WihContentTypes";
 
 export default function () {
     const { id, date } = useLocalSearchParams<{ id: string, date: string }>();
@@ -45,7 +46,8 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<PathDocument, EventInstanceModel>({
         endpoint: Endpoints.eventGroup.instance.withDate(response.id, event.date),
-        method: "PATCH"
+        method: "PATCH",
+        contentType: WihContentTypes.JSONPatch
     });
 
     const onCancel = useCallback(() => {
@@ -69,6 +71,11 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
         if (presenceType !== "Late") {
             dispatch({dinnerTime: null});
         }
+    }
+
+    const validatePresenceType = (date?: Date | null) =>{
+        const presenceType = state.data.presenceType ? state.data.presenceType : event.presenceType;
+        return presenceType === PresenceType.Late ? !!date : !date;
     }
 
     const isPresencePickerDisabled = () => {
@@ -136,14 +143,14 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
-                    value={state.data.dinnerTime === undefined ? event.dinnerTime : dateStringToDate(state.data.dinnerTime)}
+                    value={state.data.dinnerTime === undefined ? event.dinnerTime : timeStringToDate(state.data.dinnerTime)}
                     name="dinnerTime"
                     disabled={isPresencePickerDisabled()}
-                    onChange={d => dispatch({dinnerTime: d && formatDate(d)})}
+                    onChange={d => dispatch({dinnerTime: d && formatTime(d)})}
                     validationErrorMessage={state.data.presenceType === PresenceType.Late
                         ? Labels.errors.validation.presenceType.late
                         : Labels.errors.validation.presenceType.other}
-                    validate={date => state.data.presenceType === PresenceType.Late ? !!date : !date }
+                    validate={validatePresenceType}
                     validator={validator}
                 />
             </WihIconRow>

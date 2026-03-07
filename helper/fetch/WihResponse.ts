@@ -32,7 +32,7 @@ export class WihResponse<T> {
                 }
             }
         } else {
-            dataString += "Error: " + (errorMessage ?? "Unknown error");
+            dataString += "Error: " + (errorMessage ? errorMessage : "Unknown error");
             if (refreshFailed){
                 dataString += " | Refresh Failed";
             }
@@ -52,7 +52,8 @@ export class WihResponse<T> {
             const isJson = response.headers.get("Content-Type")?.includes("application/json") ?? false
             if (isJson) {
                 const errorData = await response.json();
-                return new WihResponse<T>(origin, response.status, false, errorData, errorData.title ?? response.statusText);
+                const errorMessage = errorData.errors ? errorData.errors[0] : response.statusText;
+                return new WihResponse<T>(origin, response.status, false, errorData, errorMessage);
             }
         }
 

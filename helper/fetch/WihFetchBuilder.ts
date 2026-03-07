@@ -91,7 +91,7 @@ export class WihFetchBuilder {
             WihLogger.warn(WihFetchBuilder.name, `Attempting a GET request with a body for ${this.endpoint}`);
         }
 
-        WihLogger.debug(WihFetchBuilder.name, `Request ${this.method} ${uri}`);
+        WihLogger.debug(WihFetchBuilder.name, `Request ${this.method} ${uri} | ContentType: ${this.contentType}`);
 
         try {
             const response = await fetch(uri, {
@@ -103,11 +103,8 @@ export class WihFetchBuilder {
 
             const apiResponse = await WihResponse.fromResponse<T>(uri, response);
 
-            if(!apiResponse.isValid()){
-                if(apiResponse.status === 401 && this.tokens?.refreshToken){
-                    return this.refresh<T>(uri);
-                }
-                return this.retry<T>(uri);
+            if(apiResponse.status === 401 && this.tokens?.refreshToken){
+                return this.refresh<T>(uri);
             }
 
             return apiResponse;

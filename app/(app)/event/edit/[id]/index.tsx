@@ -64,6 +64,11 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         }
     }
 
+    const validatePresenceType = (date?: Date | null) =>{
+        const presenceType = state.data.presenceType ? state.data.presenceType : event.presenceType;
+        return presenceType === PresenceType.Late ? !!date : !date;
+    }
+
     const isPresencePickerDisabled = () => {
         const presenceType = state.data.presenceType ? state.data.presenceType : event.presenceType;
         return presenceType !== PresenceType.Late
@@ -152,14 +157,14 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
-                    value={state.data.dinnerTime === undefined ? event.dinnerTime : dateStringToDate(state.data.dinnerTime)}
+                    value={state.data.dinnerTime === undefined ? event.dinnerTime : timeStringToDate(state.data.dinnerTime)}
                     name="dinnerTime"
                     disabled={isPresencePickerDisabled()}
-                    onChange={d => dispatch({dinnerTime: d && formatDate(d)})}
+                    onChange={d => dispatch({dinnerTime: d && formatTime(d)})}
                     validationErrorMessage={state.data.presenceType === PresenceType.Late
                         ? Labels.errors.validation.presenceType.late
                         : Labels.errors.validation.presenceType.other}
-                    validate={date => state.data.presenceType === PresenceType.Late ? !!date : !date }
+                    validate={validatePresenceType}
                     validator={validator}
                 />
             </WihIconRow>
