@@ -27,7 +27,7 @@ export default function WihDialog({ visible, title, message, onConfirm, onCancel
                     {title && <WihText style={styles.title}>{title}</WihText>}
                     {message && <WihText style={styles.message}>{message}</WihText>}
                     <WihView flex="row">
-                        <WihButton onPress={onCancel} style={styles.cancelButton}>
+                        <WihButton onPress={onCancel} style={[styles.cancelButton, {backgroundColor: theme.buttonBackground}]}>
                             {t(Labels.actions.cancel)}
                         </WihButton>
                         <WihButton onPress={onConfirm} style={styles.confirmButton}>
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     cancelButton: {
         flex: 1,
         marginRight: 10,
-        backgroundColor: "gray",
     },
     confirmButton: {
         flex: 1,

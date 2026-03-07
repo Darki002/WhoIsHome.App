@@ -45,7 +45,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     const validator = useWihValidation(EventInstanceEdit.name);
     const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<PathDocument, EventInstanceModel>({
-        endpoint: Endpoints.eventGroup.instance.withDate(response.id, event.date),
+        endpoint: Endpoints.eventGroup.instance.withDate(response.eventGroupId, event.date),
         method: "PATCH",
         contentType: WihContentTypes.JSONPatch
     });

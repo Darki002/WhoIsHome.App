@@ -9,6 +9,8 @@ import {RefreshControl, ScrollView, StyleSheet} from "react-native";
 import WihDialog from "@/components/WihComponents/modal/WihDialog";
 import {WihResponse} from "@/helper/fetch/WihResponse";
 import {WihRefreshableScrollView} from "@/components/WihComponents/view/WihRefreshableScrollView";
+import {useTheme} from "@react-navigation/core";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 interface EventViewLayoutProps {
     title: string;
@@ -20,6 +22,7 @@ interface EventViewLayoutProps {
 
 export default function EventViewLayout({title, userId, onEdit, onDelete, onRefresh, children}: PropsWithChildren<EventViewLayoutProps>) {
     const {t} = useTranslation();
+    const theme = useWihTheme();
     const router = useRouter();
     const navigation = useNavigation();
 
@@ -45,7 +48,7 @@ export default function EventViewLayout({title, userId, onEdit, onDelete, onRefr
         if(isOwner) {
             return (
                 <WihView flex="row" center="vertical" style={{gap: 30}}>
-                    <WihButton onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
+                    <WihButton style={{backgroundColor: theme.buttonCareful}} onPress={() => setShowDeleteDialog(true)}>{t(Labels.actions.delete)}</WihButton>
                     <WihButton onPress={onEdit}>{t(Labels.actions.edit)}</WihButton>
                 </WihView>
             )

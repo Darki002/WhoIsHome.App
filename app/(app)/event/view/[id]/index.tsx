@@ -6,7 +6,7 @@ import {Endpoints} from "@/constants/endpoints";
 import WihIconRow from "@/components/WihComponents/icon/WihIconRow";
 import Labels from "@/constants/locales/Labels";
 import WihView from "@/components/WihComponents/view/WihView";
-import {dateStringToDate, formatDate, timeDisplayString, timeStringToDate} from "@/helper/datetimehelper";
+import {formatDate, timeDisplayString, timeStringToDate} from "@/helper/datetimehelper";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 import useWihApiFocus, {WihApiFocus} from "@/components/framework/wihApi/WihApiFocus";
@@ -96,7 +96,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
         if (!expectedWeekDay) return true;
         if (timeStringToDate(instance.startTime)?.getTime() !== event.startTime?.getTime()) return true;
         if (timeStringToDate(instance.endTime)?.getTime() !== event.endTime?.getTime()) return true;
-        if (dateStringToDate(instance.dinnerTime)?.getTime() !== event.dinnerTime?.getTime()) return true;
+        if (timeStringToDate(instance.dinnerTime)?.getTime() !== event.dinnerTime?.getTime()) return true;
         return instance.presenceType !== event.presenceType;
     };
 
@@ -220,14 +220,7 @@ function EventGroupView({response}: {response: EventGroupModel}) {
                                             <WihTextButton
                                                 key={instance.date}
                                                 onPress={() => router.push(`/(app)/event/view/${response.id}/${instance.date}`)}
-                                                style={[
-                                                    styles.instanceButton,
-                                                    isModified && {
-                                                        borderWidth: 2,
-                                                        borderStyle: 'dashed',
-                                                        borderColor: theme.primary,
-                                                    }
-                                                ]}
+                                                style={styles.instanceButton}
                                             >
                                                 <WihView style={styles.instanceButtonContent}>
                                                     <WihView style={{flex: 1}}>

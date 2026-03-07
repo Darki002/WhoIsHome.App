@@ -6,6 +6,7 @@ import {WihButton} from "@/components/WihComponents/input/WihButton";
 import {useTranslation} from "react-i18next";
 import Labels from "@/constants/locales/Labels";
 import {ScrollView, StyleSheet} from "react-native";
+import {useWihTheme} from "@/components/appContexts/WihThemeProvider";
 
 interface EventEditLayoutProps {
     title: string;
@@ -16,6 +17,7 @@ interface EventEditLayoutProps {
 
 export default function EventEditLayout({title, userId, onCancel, onUpdate, children}: PropsWithChildren<EventEditLayoutProps>) {
     const {t} = useTranslation();
+    const theme = useWihTheme();
     const navigation = useNavigation();
     const permissionCheck = usePermission();
 
@@ -38,7 +40,7 @@ export default function EventEditLayout({title, userId, onCancel, onUpdate, chil
                     {children}
 
                     <WihView flex="row" center="vertical" style={{gap: 30}}>
-                        <WihButton onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
+                        <WihButton style={{backgroundColor: theme.buttonBackgroundSecondary}} onPress={onCancel}>{t(Labels.actions.cancel)}</WihButton>
                         <WihButton onPress={onUpdatedChecked}>{t(Labels.actions.save)}</WihButton>
                     </WihView>
                 </WihView>
