@@ -47,7 +47,7 @@ jobs:
         run: npm i
 
       - name: 👷 Build android app
-        run: eas build --profile production --platform android --non-interactive --include-untracked --local --output=./whoishome.apk
+        run: eas build --profile production --platform android --non-interactive --local --output=./whoishome.apk
 
       - name: 📤 Upload Release to Google Drive
         uses: adityak74/google-drive-upload-git-action@main
