@@ -1,10 +1,14 @@
 import {useLocalSearchParams, useRouter} from "expo-router";
 import {WihApiFocus, WihApiFocusComponentParams} from "@/components/framework/wihApi/WihApiFocus";
 import {Endpoints} from "@/constants/endpoints";
-import {dateStringToDate} from "@/helper/datetimehelper";
-import React, {useCallback, useState} from "react";
+import {dateStringToDate, formatDate, formatTime, timeStringToDate} from "@/helper/datetimehelper";
+import React, {useCallback} from "react";
 import {StyleSheet} from "react-native";
-import {EventInstance, EventInstanceModel, EventInstanceUpdate} from "@/constants/WihTypes/Event/EventInstance";
+import {
+    EventInstance,
+    EventInstanceDto,
+    EventInstanceModel,
+} from "@/constants/WihTypes/Event/EventInstance";
 import {useTranslation} from "react-i18next";
 import {useWihValidation} from "@/hooks/useWihValidation";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
@@ -22,6 +26,7 @@ import {WihTimeInput} from "@/components/WihComponents/input/datetime/WihTimeInp
 import {WihPicker} from "@/components/WihComponents/input/WihPicker";
 import {presenceTypeOptions} from "@/constants/ConstantOptions";
 import {PathDocument} from "@/constants/WihTypes/DtoPatch";
+import {usePatchReducer} from "@/hooks/usePatchReducer";
 
 export default function () {
     const { id, date } = useLocalSearchParams<{ id: string, date: string }>();
@@ -33,7 +38,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     const {t} = useTranslation();
     const router = useRouter();
 
-    const [update] = useState(new EventInstanceUpdate());
+    const {state, dispatch} = usePatchReducer<EventInstanceDto>();
     const event = new EventInstance(response);
 
     const validator = useWihValidation(EventInstanceEdit.name);
@@ -56,14 +61,19 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             return;
         }
 
-        callWihApi(update.getUpdates()).then(updateToast);
+        callWihApi(state.updates).then(updateToast);
     };
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
-        update.updatePresenceType(presenceType);
+        dispatch({presenceType: presenceType});
         if (presenceType !== "Late") {
-            update.updateDinnerTime(null);
+            dispatch({dinnerTime: null});
         }
+    }
+
+    const isPresencePickerDisabled = () => {
+        const presenceType = state.data.presenceType ? state.data.presenceType : event.presenceType;
+        return presenceType !== PresenceType.Late
     }
 
     return (
@@ -77,10 +87,10 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
 
             <WihIconRow name="date-range" flexDirection="column">
                 <WihView style={styles.container}>
-                    <WihText style={styles.labels}>{t(Labels.labels.startDate)}: </WihText>
-                    <WihDateInput value={update.Date ?? event.date}
+                    <WihText style={styles.labels}>{t(Labels.labels.date)}: </WihText>
+                    <WihDateInput value={dateStringToDate(state.data.date) ?? event.date}
                                   name="date"
-                                  onChange={d => update.updateDate(d)}
+                                  onChange={d => dispatch({date: d && formatDate(d)})}
                                   validate={d => !!d}
                                   validationErrorMessage={Labels.errors.validation.date}
                                   validator={validator}
@@ -91,9 +101,9 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="timeline" flexDirection="column">
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.startTime)}: </WihText>
-                    <WihTimeInput value={update.startTime ?? event.startTime}
+                    <WihTimeInput value={timeStringToDate(state.data.startTime) ?? event.startTime}
                                   name="startTime"
-                                  onChange={st => update.updateStartTime(st)}
+                                  onChange={st => dispatch({startTime: st && formatTime(st)})}
                                   validate={time => !!time}
                                   validationErrorMessage={Labels.errors.validation.startTime}
                                   validator={validator}
@@ -101,10 +111,10 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 </WihView>
                 <WihView style={styles.container}>
                     <WihText style={styles.labels}>{t(Labels.labels.endTime)}: </WihText>
-                    <WihTimeInput value={update.endTime === undefined ? event.endTime : update.endTime}
+                    <WihTimeInput value={state.data.endTime === undefined ? event.endTime : timeStringToDate(state.data.endTime)}
                                   name="endTime"
-                                  onChange={et => update.updateEndTime(update.endTime)}
-                                  validate={time => !time || !update.startTime || time > update.startTime}
+                                  onChange={et => dispatch({endTime: et && formatTime(et)})}
+                                  validate={time => !time || !state.data.startTime || time > timeStringToDate(state.data.startTime)!}
                                   validationErrorMessage={Labels.errors.validation.endTime}
                                   validator={validator}
                     />
@@ -115,7 +125,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
                 <WihText style={styles.labels}>{t(Labels.labels.presenceType)}: </WihText>
                 <WihPicker
                     name="presenceType"
-                    value={update.presenceType ?? event.presenceType}
+                    value={state.data.presenceType ?? event.presenceType}
                     options={presenceTypeOptions}
                     onChange={onPresenceTypeChange}
                     validate={t => t !== undefined}
@@ -126,14 +136,14 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             <WihIconRow name="schedule" flexDirection="row">
                 <WihText style={styles.labels}>{t(Labels.labels.dinnerTime)}: </WihText>
                 <WihTimeInput
-                    value={update.dinnerTime === undefined ? event.dinnerTime : update.dinnerTime}
+                    value={state.data.dinnerTime === undefined ? event.dinnerTime : dateStringToDate(state.data.dinnerTime)}
                     name="dinnerTime"
-                    disabled={event.presenceType !== "Late"}
-                    onChange={d => update.updateDinnerTime(d)}
-                    validationErrorMessage={update.presenceType === "Late"
+                    disabled={isPresencePickerDisabled()}
+                    onChange={d => dispatch({dinnerTime: d && formatDate(d)})}
+                    validationErrorMessage={state.data.presenceType === PresenceType.Late
                         ? Labels.errors.validation.presenceType.late
                         : Labels.errors.validation.presenceType.other}
-                    validate={date => update.presenceType === "Late" ? !!date : !date }
+                    validate={date => state.data.presenceType === PresenceType.Late ? !!date : !date }
                     validator={validator}
                 />
             </WihIconRow>
