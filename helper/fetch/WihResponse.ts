@@ -74,6 +74,6 @@ export class WihResponse<T> {
     }
 
     getErrorMessage(): string {
-        return this.errorMessage || "Unknown error";
+        return this.errorMessage ? this.errorMessage : "Unknown error";
     }
 }

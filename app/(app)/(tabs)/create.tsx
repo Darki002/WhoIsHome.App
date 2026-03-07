@@ -17,7 +17,7 @@ import useWihApi from "@/hooks/useWihApi";
 import {EventGroupDto} from "@/constants/WihTypes/Event/EventGroup";
 import {Endpoints} from "@/constants/endpoints";
 import {presenceTypeOptions, weekDaysOptions} from "@/constants/ConstantOptions";
-import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
+import useWihResponseHandler from "@/components/pages/EventEdit/useWihResponseHandler";
 import {formatDate, formatTime} from "@/helper/datetimehelper";
 import Toast from "react-native-root-toast";
 import {useWihValidation} from "@/hooks/useWihValidation";
@@ -41,7 +41,7 @@ const Create = () => {
     const validator = useWihValidation("createEvent");
     const [isRepeating, setIsRepeating] = useState<boolean>(false);
     const [newEvent, setNewEvent] = useState<NewEventGroup>({});
-    const updateToast = useWihResponseToast(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
+    const updateToast = useWihResponseHandler(Labels.toast.success.eventCreated, Labels.toast.error.eventCreated);
     const callApi = useWihApi<EventGroupDto, { id: number }>({
         endpoint: Endpoints.eventGroup.url,
         method: "POST"

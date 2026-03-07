@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {useWihValidation} from "@/hooks/useWihValidation";
 import {PresenceType} from "@/constants/WihTypes/PresenceType";
 import Labels from "@/constants/locales/Labels";
-import useWihResponseToast from "@/components/pages/EventEdit/useWihResponseToast";
+import useWihResponseHandler from "@/components/pages/EventEdit/useWihResponseHandler";
 import useWihApi from "@/hooks/useWihApi";
 import Toast from "react-native-root-toast";
 import EventEditLayout from "@/components/pages/EventEdit/EventEditLayout";
@@ -43,7 +43,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
     const event = new EventInstance(response);
 
     const validator = useWihValidation(EventInstanceEdit.name);
-    const updateToast = useWihResponseToast(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
+    const handleResponse = useWihResponseHandler(Labels.toast.success.updateEvent, Labels.toast.error.updateEvent);
     const callWihApi = useWihApi<PathDocument, EventInstanceModel>({
         endpoint: Endpoints.eventGroup.instance.withDate(response.eventGroupId, event.date),
         method: "PATCH",
@@ -63,7 +63,7 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             return;
         }
 
-        callWihApi(state.updates).then(updateToast);
+        callWihApi(state.updates).then(handleResponse);
     };
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
