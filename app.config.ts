@@ -1,5 +1,4 @@
 import type { ExpoConfig } from '@expo/config';
-import path from "path";
 
 const semverToCode = (v: string) => {
     const [maj, min] = v.split('.').map(n => parseInt(n || '0', 10));
@@ -13,7 +12,7 @@ export default ({ config }: { config: ExpoConfig }) => {
         ? parseInt(process.env.ANDROID_VERSION_CODE, 10)
         : semverToCode(version);
 
-    const googleFile = process.env.GOOGLE_SERVICES_JSON || path.resolve(__dirname, 'google-services.json');
+    const googleFile = process.env.GOOGLE_SERVICES_JSON || "./google-services.json";
 
     return {
         ...config,
