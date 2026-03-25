@@ -2,7 +2,7 @@
 
 This repository is the mobile app for the WhoIsHome project. For the app to work, it needs a running instance of
 the Backend Service either local or hosted on a server. 
-See the docs on the backend repo for how to run it locally: https://github.com/Darki002/WhoIsHome
+See the docs on the backend repo for how to run it locally: https://github.com/LlynBaum/WhoIsHome
 
 # What is WhoIsHome
 
