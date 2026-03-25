@@ -7,17 +7,18 @@ import {WihResponse} from "@/helper/fetch/WihResponse";
 const useWihResponseHandler = (messageLabel: string, errorLabel: string) => {
     const {t} = useTranslation();
 
-    return useCallback((res: WihResponse<any> | string) => {
+    return useCallback((res: WihResponse<any> | string): boolean => {
         if (typeof res === "string" || !res || !res.isValid()) {
             Toast.show(t(errorLabel), {
                 duration: Toast.durations.LONG,
             });
-            return;
+            return false;
         }
 
         Toast.show(t(messageLabel), {
             duration: Toast.durations.SHORT,
         });
+        return true;
     }, []);
 }
 

@@ -55,8 +55,9 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
         }
 
         callWihApi(state.updates).then(r => {
-            handleResponse(r);
-            router.back();
+            if(handleResponse(r)){
+                router.back();
+            }
         });
     };
 

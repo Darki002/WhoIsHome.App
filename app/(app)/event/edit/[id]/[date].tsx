@@ -64,8 +64,9 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
         }
 
         callWihApi(state.updates).then(r => {
-            handleResponse(r);
-            router.back();
+            if(handleResponse(r)){
+                router.back();
+            }
         });
     };
 
