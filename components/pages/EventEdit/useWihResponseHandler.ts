@@ -6,7 +6,6 @@ import {WihResponse} from "@/helper/fetch/WihResponse";
 
 const useWihResponseHandler = (messageLabel: string, errorLabel: string) => {
     const {t} = useTranslation();
-    const router = useRouter();
 
     return useCallback((res: WihResponse<any> | string) => {
         if (typeof res === "string" || !res || !res.isValid()) {
@@ -19,7 +18,6 @@ const useWihResponseHandler = (messageLabel: string, errorLabel: string) => {
         Toast.show(t(messageLabel), {
             duration: Toast.durations.SHORT,
         });
-        router.back();
     }, []);
 }
 

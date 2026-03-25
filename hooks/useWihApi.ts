@@ -54,7 +54,7 @@ const useWihApi = <TBody = unknown, TResponse = unknown, TQuery extends QueryPar
             .fetch<TResponse>();
 
         if (response.refreshFailed) {
-            signOut();
+            signOut(); // TODO: try remove this, and make it over layouts, and hopefully less flaky
         }
 
         return response;

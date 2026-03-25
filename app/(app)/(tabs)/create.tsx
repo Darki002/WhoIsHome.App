@@ -72,7 +72,7 @@ const Create = () => {
                 updateToast(r);
                 if(typeof r !== "string" && r.isValid()) {
                     setNewEvent({});
-                    router.replace(`/(app)/event/view/${r.data?.id}`);
+                    router.push(`/(app)/event/view/${r.data?.id}`);
                 }
             });
     }
