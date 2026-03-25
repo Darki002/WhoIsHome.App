@@ -54,7 +54,10 @@ function EventGroupEdit({response} : WihApiFocusComponentParams<EventGroupModel>
             return;
         }
 
-        callWihApi(state.updates).then(handleResponse);
+        callWihApi(state.updates).then(r => {
+            handleResponse(r);
+            router.back();
+        });
     };
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {

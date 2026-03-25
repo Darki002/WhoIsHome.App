@@ -63,7 +63,10 @@ function EventInstanceEdit({response} : WihApiFocusComponentParams<EventInstance
             return;
         }
 
-        callWihApi(state.updates).then(handleResponse);
+        callWihApi(state.updates).then(r => {
+            handleResponse(r);
+            router.back();
+        });
     };
 
     const onPresenceTypeChange = (presenceType: PresenceType | undefined) => {
