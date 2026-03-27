@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback } from 'react';
 import { WihLogger } from "@/helper/WihLogger";
 import useWihApi from "@/hooks/useWihApi";
@@ -26,7 +25,7 @@ export function usePushTokenSync() {
             }
 
             if (response.isValid()) {
-                WihLogger.debug("PushToken", "Token successfully synced.");
+                WihLogger.log("PushToken", "Token successfully synced.");
             } else {
                 WihLogger.error("PushToken", "Sync failed: " + response.getErrorMessage());
             }
@@ -36,8 +35,6 @@ export function usePushTokenSync() {
     }, [pushTokenApi]);
 
     const disablePushUp = useCallback(async () => {
-        if (!token) return;
-
         const response = await pushTokenApi({ token: null, enable: false });
         if (typeof response !== 'string' && response.isValid()) {
             WihLogger.debug("PushToken", "Disabled and cleared.");
